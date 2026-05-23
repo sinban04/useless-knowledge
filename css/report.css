@@ -1,0 +1,203 @@
+/* ─── report page (per-report reading view) ───────────────────────── */
+/* layered on top of style.css — inherits palette, fonts, dark mode    */
+
+body.report {
+  max-width: 760px;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+/* the back-link wordmark gets normal serif treatment via the inherited
+   .wordmark rule from style.css; we just make sure :hover works. */
+body.report .wordmark { color: var(--ink); }
+body.report .wordmark:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+/* ─── article shell ────────────────────────────────────────────────── */
+.report-page h1 {
+  font-size: 2.25rem;
+  font-weight: 500;
+  line-height: 1.15;
+  margin: 1rem 0 0.4rem;
+}
+.report-page .report-meta {
+  font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  margin: 0 0 1.75rem;
+  letter-spacing: 0.01em;
+}
+.report-page .dek {
+  font-size: 1.1875rem;       /* 19px */
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0 0 2.5rem;
+}
+
+/* ─── per-chapter sections ─────────────────────────────────────────── */
+.report-page section {
+  scroll-margin-top: 1.5rem;  /* offset for in-page anchor jumps */
+  margin-top: 4rem;
+}
+.report-page section h2 {
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+.report-page section h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 2.25rem 0 0.6rem;
+}
+.report-page section h4 {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  margin: 1.5rem 0 0.5rem;
+}
+
+/* ─── body content ─────────────────────────────────────────────────── */
+.report-page p {
+  margin: 0 0 1em;
+  line-height: 1.65;
+}
+.report-page ul,
+.report-page ol {
+  margin: 0 0 1em;
+  padding-left: 1.5rem;
+  list-style: revert;   /* re-enable bullets/numbers (style.css resets them) */
+}
+.report-page li { margin-bottom: 0.35em; }
+
+.report-page a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+.report-page a:hover { color: var(--ink); }
+
+.report-page strong { font-weight: 500; }
+.report-page em     { font-style: italic; }
+
+.report-page code {
+  font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.875em;
+  background: var(--rule);
+  padding: 0.05em 0.35em;
+  border-radius: 2px;
+}
+.report-page pre {
+  font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  background: var(--rule);
+  padding: 0.85rem 1rem;
+  border-radius: 2px;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+.report-page pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.report-page blockquote {
+  margin: 1em 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--rule);
+  color: var(--muted);
+}
+
+.report-page hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 2.5rem 0;
+}
+
+/* ─── tables (the chapters use these heavily) ──────────────────────── */
+.report-page table {
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  width: 100%;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+.report-page th,
+.report-page td {
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.report-page th {
+  font-weight: 500;
+  border-bottom: 2px solid var(--rule);
+}
+
+/* ─── TOC nav ──────────────────────────────────────────────────────── */
+.report-page .toc {
+  border: 1px solid var(--rule);
+  padding: 1.5rem 2rem 1.75rem;
+  margin: 2rem 0 0;
+}
+.report-page .toc h2 {
+  font-size: 0.8125rem;
+  font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 0;
+  padding: 0;
+  margin: 0 0 0.9rem;
+  color: var(--muted);
+}
+.report-page .toc ol {
+  margin: 0;
+  padding-left: 1.5rem;
+  list-style: decimal;
+}
+.report-page .toc li { margin-bottom: 0.4em; }
+.report-page .toc a {
+  color: var(--ink);
+  text-decoration: none;
+}
+.report-page .toc a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+/* the chip inherits from style.css; nothing to add here */
+
+/* ─── footer on a report page ──────────────────────────────────────── */
+body.report footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+
+/* ─── dark-mode adjustments specific to the report ─────────────────── */
+@media (prefers-color-scheme: dark) {
+  .report-page code,
+  .report-page pre {
+    /* in dark mode, var(--rule) is #2A2E33 which sits *just* below body
+       background; nudge it a touch lighter so code blocks pop. */
+    background: #1E2226;
+  }
+}
