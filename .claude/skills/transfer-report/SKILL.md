@@ -135,11 +135,42 @@ Notes on the message:
 - For directory ports, include the file count and the kinds of files in the body (e.g., "TOC, 11 chapters, consolidated paper, 5 glossaries"). For single-file ports, one line of topic summary is enough.
 - If `git push` fails (auth, hook, non-fast-forward), surface the error and stop. Don't `--force` or `--no-verify`.
 
-### 7. Report back
+### 7. Update `README.md` and commit it separately
 
-Tell the user in one or two lines: the report name, the file count (or "single file"), and the resulting commit hash. Example:
+After the port commit lands, update the repo's top-level `README.md` to reflect the new entry. The README maintains a `## Reports` section listing every published report in **reverse chronological order** (newest first by the `YYYY-MM-DD-` prefix in the directory name). Each entry uses this format:
 
-> Ported `2026-04-24-gpu-arch-101` (8 files) — commit `a1b2c3d` pushed to `origin/main`.
+```markdown
+- **[YYYY-MM-DD — Display Title](report/<dirname>)** *(Author)*  
+  One-line factual topic summary — what the report covers. Reuse the
+  descriptive sentence from the port commit message body so the
+  README stays consistent with git history.
+```
+
+Rules for filling in the template:
+
+- **Date** comes from the `YYYY-MM-DD-` prefix on the directory name.
+- **Display Title** is a human-readable rewrite of the directory name (e.g., `2026-04-17-AI-Compiler-Suhwan` → `AI Compiler`). Drop the date prefix and the author suffix, replace hyphens/underscores with spaces, and use Title Case. Keep it short — a long-form description goes in the summary line, not the title.
+- **`(Author)` parenthetical** is included only when the source directory or filename explicitly carries an author suffix (e.g., `...-Suhwan`). If there's no suffix, omit the parenthetical — don't guess the author.
+- **Summary** is one factual sentence (max ~2). Pull it from the port commit's first body paragraph; trim it down if needed.
+- **Position**: insert at the **top** of the `## Reports` list. The list is reverse-chronological — newer dates appear above older ones.
+
+Then commit and push this as **its own separate commit** (do not amend or squash into the port commit — atomic separation matters):
+
+```bash
+git add README.md
+git commit -m "README: list <name>
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
+git push
+```
+
+**Why a separate commit:** the report is the *content*; the README entry is a *derived index*. Separating them keeps each diff small and obvious, lets the user revert a README typo without losing the port, and matches the repeated `Add report: …` / `README: …` rhythm already in this repo's history.
+
+### 8. Report back
+
+Tell the user in one or two lines: the report name, the file count (or "single file wrapped in directory"), and **both** commit hashes (port + README). Example:
+
+> Ported `2026-04-24-gpu-arch-101` (8 files) — commit `a1b2c3d` for the port, `e4f5g6h` for the README, both pushed to `origin/main`.
 
 ## Edge cases and variations
 
