@@ -1,5 +1,7 @@
 # Useless Knowledge
 
+**Live at:** <https://sinban04.github.io/useless-knowledge/>
+
 A place to share the "useless knowledge" we have studied — purely out of curiosity, with no career or productivity goal attached. The label is self-deprecating; the knowledge itself is real.
 
 ## About
