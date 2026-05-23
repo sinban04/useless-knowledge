@@ -86,3 +86,65 @@ header {
   height: 3px;       /* the 3px gap between the two 1px lines */
   margin: 2rem 0 1rem;
 }
+
+/* ─── reports list ──────────────────────────────────────── */
+.reports {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+}
+.reports li {
+  position: relative;        /* anchor the title's ::after overlay (Task 4) */
+}
+/* hairline divider between entries (not after the last) */
+.reports li + li::before {
+  content: "";
+  display: block;
+  width: 50%;
+  border-top: 1px solid var(--rule);
+  margin-top: -1.25rem;      /* offset against the flex gap so it sits centered */
+  margin-bottom: 1.25rem;
+}
+
+.reports article {
+  /* nothing yet — interactive states arrive in Task 4 */
+}
+
+/* meta row: date + chips */
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+.chips { display: inline-flex; gap: 0.5rem; }
+.chip {
+  /* typographic chip — brackets render via CSS so the HTML stays clean */
+  font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.8125rem;
+}
+.chip::before { content: "[ "; }
+.chip::after  { content: " ]"; }
+
+/* report title */
+.reports h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 0 0 0.4rem;
+}
+.reports h2 a {
+  color: var(--ink);
+}
+
+/* dek (1-line summary) */
+.dek {
+  color: var(--ink);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
