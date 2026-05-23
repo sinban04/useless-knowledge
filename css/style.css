@@ -1,0 +1,56 @@
+/* ─── reset ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+body, h1, h2, h3, p, ol, ul { margin: 0; padding: 0; }
+ol, ul { list-style: none; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* ─── light-mode palette ────────────────────────────────── */
+:root {
+  --paper:  #FBFBF9;
+  --ink:    #1A1A1A;
+  --accent: #B5341F;
+  --rule:   #E3E1DC;
+  --muted:  #6B6B6B;
+}
+
+/* ─── base body & layout ────────────────────────────────── */
+html { background: var(--paper); }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Newsreader", "Source Serif Pro", "Source Serif 4",
+               Georgia, "Noto Serif KR", serif;
+  font-size: 1.0625rem;     /* 17px */
+  line-height: 1.6;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3rem;
+}
+
+/* ─── header ────────────────────────────────────────────── */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2rem;
+}
+.wordmark {
+  font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+.github-link {
+  font-family: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.8125rem;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+}
+.github-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
