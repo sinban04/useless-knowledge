@@ -58,15 +58,33 @@ ls <repo-root>/report/<name> 2>/dev/null
 
 If it already exists, **stop and ask the user before proceeding**. Updating an existing report and accidentally re-running the port are two different intentions that need different handling. Don't silently overwrite.
 
-### 4. Copy as-is
+### 4. Copy
+
+**Layout invariant: every entry under `report/` is a directory** — no loose files at the top level. Two cases follow from this:
+
+- **Source is a directory** in probe-lab → copy it verbatim with `cp -r`. The directory keeps its full name (date prefix and all) on the destination side.
+- **Source is a single file** in probe-lab (e.g., a standalone `.md`, `.html`, or any other format) → create a wrapper directory whose name is the source filename with its extension stripped, and put the file inside with its original filename intact.
 
 ```bash
 mkdir -p <repo-root>/report
+
+# Case A — source is a directory:
 cp -r <workspace-root>/useless-engineers/probe-lab/<name> <repo-root>/report/
+
+# Case B — source is a single file:
+dirname="${name%.*}"   # bash extension-strip: foo.md → foo; bar.html → bar
+mkdir -p <repo-root>/report/$dirname
+cp <workspace-root>/useless-engineers/probe-lab/<name> <repo-root>/report/$dirname/
 ```
 
-- `cp -r` works correctly for both single `.md` files and directories — probe-lab uses both conventions.
-- **Do not rename. Do not restructure. Do not add headers or footers. Do not insert a `Source:` line inside any file.** The owner of this repo has said this explicitly and repeatedly; it's not a stylistic preference you can override.
+Two rules that apply to both cases:
+
+- **Content stays verbatim.** Do not rename files. Do not restructure. Do not add an editorial header or summary. **Do not insert a `Source:` line inside any file.** The source URL belongs in the commit message body only.
+- **The wrap rule is file-type agnostic.** It applies to `.md`, `.html`, and any other single-file format the source repo may contain.
+
+Edge case on extension stripping: `${name%.*}` removes only the last `.<ext>`. A file like `e2e_v2_b2.timeline.html` becomes `e2e_v2_b2.timeline` (which is usually the desired behavior — strip the format suffix, keep the rest). If the source name has unusual punctuation that makes this look wrong, surface it to the user before proceeding.
+
+**Why directory uniformity:** every entry being a directory makes the repo's structure predictable for readers, gives room to add supplemental files (images, slides, a future README) to a single-file port later without restructuring, and gives GitHub's web UI a sensible folder to land on when someone clicks into the entry.
 
 ### 5. Verify the copy landed correctly
 
@@ -78,12 +96,14 @@ ls <workspace-root>/useless-engineers/probe-lab/<name> | wc -l
 ls <repo-root>/report/<name>                          | wc -l
 ```
 
-For a **single-file** source:
+For a **single-file** source (now wrapped in a directory per the layout invariant):
 
 ```bash
-# both paths should exist with the same size
+# the wrapper directory should contain exactly one file with the original name
+ls -la <repo-root>/report/${name%.*}/
+# source and wrapped destination should have the same size
 ls -la <workspace-root>/useless-engineers/probe-lab/<name>
-ls -la <repo-root>/report/<name>
+ls -la <repo-root>/report/${name%.*}/<name>
 ```
 
 If counts/sizes diverge, something went wrong — investigate before committing.
