@@ -182,3 +182,21 @@ a:focus-visible {
 .inline-link:hover {
   color: var(--ink);
 }
+
+/* ─── dark mode (auto via system preference) ────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper:  #14171A;
+    --ink:    #E6E4DF;
+    --accent: #E07A5F;
+    --rule:   #2A2E33;
+    --muted:  #8A8F95;
+  }
+  /* chips get a faint border in dark mode to separate from the darker paper;
+     brackets stay so light/dark chips share their typographic register. */
+  .chip {
+    border: 1px solid var(--rule);
+    padding: 0.05em 0.4em;
+    border-radius: 1px;
+  }
+}
