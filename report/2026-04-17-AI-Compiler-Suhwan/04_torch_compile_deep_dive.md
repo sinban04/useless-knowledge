@@ -37,11 +37,10 @@ graph LR
 
 ```mermaid
 graph TD
-    A["Python 코드<br/>model(input)"] 
-    -->|"① Python Bytecode 가로채기"| B["TorchDynamo<br/>FX Graph 캡처"]
-    -->|"② 순전파/역전파 그래프 분리"| C["AOT Autograd<br/>Forward + Backward Graph"]
-    -->|"③ 최적화 & 코드 생성"| D["Inductor<br/>Triton (GPU) / C++ (CPU)"]
-    -->|"④ 실행"| E["최적화된 커널"]
+    A["Python 코드<br/>model(input)"] -->|"① Python Bytecode 가로채기"| B["TorchDynamo<br/>FX Graph 캡처"]
+    B -->|"② 순전파/역전파 그래프 분리"| C["AOT Autograd<br/>Forward + Backward Graph"]
+    C -->|"③ 최적화 & 코드 생성"| D["Inductor<br/>Triton (GPU) / C++ (CPU)"]
+    D -->|"④ 실행"| E["최적화된 커널"]
     
     style B fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
     style C fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
