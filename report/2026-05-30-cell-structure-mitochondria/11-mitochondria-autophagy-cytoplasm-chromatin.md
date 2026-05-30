@@ -479,4 +479,4 @@ cell inheritance:
 
 ---
 
-[Back: Synthesis And Study Guide](10-synthesis-and-study-guide.md) | [Table of Contents](00-table-of-contents.md) | [References](references.md)
+[Back: Synthesis And Study Guide](10-synthesis-and-study-guide.md) | [Next: Human DNA And Mitochondrial Inheritance](12-human-dna-and-mitochondrial-inheritance.md) | [References](references.md)

@@ -33,6 +33,9 @@
 - Cooper GM. *The Cell: A Molecular Approach. 2nd edition.* [Intermediate Filaments](https://www.ncbi.nlm.nih.gov/books/NBK9834/). NCBI Bookshelf. Used for intermediate-filament coiled-coil assembly, apolar organization, rope-like structure, nuclear lamins, and mechanical resilience.
 - Alberts B, Johnson A, Lewis J, et al. *Molecular Biology of the Cell. 4th edition.* [Chromosomal DNA and Its Packaging in the Chromatin Fiber](https://www.ncbi.nlm.nih.gov/books/NBK26834/). NCBI Bookshelf. Used for nucleosomes, histone octamers, chromatin fiber organization, and chromosome packing.
 - Cooper GM. *The Cell: A Molecular Approach. 2nd edition.* [Chromosomes and Chromatin](https://www.ncbi.nlm.nih.gov/books/NBK9863/). NCBI Bookshelf. Used for nucleosome structure, histone H1, chromatin fiber, and chromosome condensation.
+- Brown TA. *Genomes. 2nd edition.* [The Human Genome](https://www.ncbi.nlm.nih.gov/books/NBK21134/). NCBI Bookshelf. Used for human nuclear genome and mitochondrial genome framing.
+- MedlinePlus Genetics. [What is mitochondrial DNA?](https://medlineplus.gov/genetics/understanding/basics/mtdna/). Used for mitochondrial DNA definition and maternal inheritance framing.
+- National Human Genome Research Institute. [Mitochondrial DNA](https://www.genome.gov/genetics-glossary/Mitochondrial-DNA). Used for mtDNA inheritance and organelle-genome overview.
 
 ## Classic And Historical Sources
 
@@ -70,6 +73,8 @@
 - Wikimedia Commons. [Biomolecular partitioning.png](https://commons.wikimedia.org/wiki/File:Biomolecular_partitioning.png). URL-embedded in chapter 11.
 - Wikimedia Commons. [Basic units of chromatin structure.svg](https://commons.wikimedia.org/wiki/File:Basic_units_of_chromatin_structure.svg). URL-embedded in chapter 11.
 - Wikimedia Commons. [DNA compaction steps.svg](https://commons.wikimedia.org/wiki/File:DNA_compaction_steps.svg). URL-embedded in chapter 11.
+- Wikimedia Commons. [Human karyotype.svg](https://commons.wikimedia.org/wiki/File:Human_karyotype.svg). URL-embedded in chapter 12.
+- Wikimedia Commons. [Map of the human mitochondrial genome.svg](https://commons.wikimedia.org/wiki/File:Map_of_the_human_mitochondrial_genome.svg). URL-embedded in chapter 12.
 
 ## Video Sources
 

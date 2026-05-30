@@ -12,19 +12,19 @@ Note on terminology: "Risosome" is not a standard cell-biology term. This report
 01 -> 02 -> 08 -> 09 -> 10
 
 ### "I want mitochondria and their relationship to the cell"
-01 -> 03 -> 04 -> 05 -> 07 -> 08 -> 11
+01 -> 03 -> 04 -> 05 -> 07 -> 08 -> 11 -> 12
 
 ### "I want organelles one by one"
 02 -> 03 -> 04 -> 05 -> 06 -> 07 -> 11
 
 ### "I want the follow-up questions"
-11, then back to 03 -> 05 -> 06 if you want the foundation chapters
+11 -> 12, then back to 03 -> 05 -> 06 if you want the foundation chapters
 
 ### "I want animal versus plant cells"
 01 -> 02 -> 05 -> 06 -> 07 -> 09
 
 ### "Full read"
-01 -> 02 -> 03 -> 04 -> 05 -> 06 -> 07 -> 08 -> 09 -> 10 -> 11 -> references
+01 -> 02 -> 03 -> 04 -> 05 -> 06 -> 07 -> 08 -> 09 -> 10 -> 11 -> 12 -> references
 
 ---
 
@@ -43,6 +43,7 @@ This report now uses URL-embedded figures alongside the ASCII diagrams. The imag
 | Cytoskeletal filament systems, video walkthroughs, microtubule tube geometry, intermediate-filament rope geometry, and actin-myosin sliding | [07-cytoskeleton-shape-transport-and-division.md](07-cytoskeleton-shape-transport-and-division.md) |
 | Animal versus plant cell architecture, plant three-genome coordination, chloroplast origin, and vacuole/lysosome comparison | [09-animal-cell-versus-plant-cell.md](09-animal-cell-versus-plant-cell.md) |
 | Endosymbiosis, autophagy/mitophagy, protein phase state, and chromatin packing | [11-mitochondria-autophagy-cytoplasm-chromatin.md](11-mitochondria-autophagy-cytoplasm-chromatin.md) |
+| Nuclear DNA, mitochondrial DNA, fertilization inheritance, maternal mtDNA, and heteroplasmy | [12-human-dna-and-mitochondrial-inheritance.md](12-human-dna-and-mitochondrial-inheritance.md) |
 
 ---
 
@@ -62,6 +63,7 @@ This report now uses URL-embedded figures alongside the ASCII diagrams. The imag
 | [09-animal-cell-versus-plant-cell.md](09-animal-cell-versus-plant-cell.md) | Shared eukaryotic core plus plant three-genome coordination, chloroplast/plastid origin, vacuole-versus-lysosome function, and animal-specific/plant-specific structures |
 | [10-synthesis-and-study-guide.md](10-synthesis-and-study-guide.md) | Final mental model, misconceptions, and a practical way to read cell diagrams |
 | [11-mitochondria-autophagy-cytoplasm-chromatin.md](11-mitochondria-autophagy-cytoplasm-chromatin.md) | Follow-up deep dive: endosymbiotic mitochondria, nuclear encoding of mitochondrial proteins, autophagy versus mitophagy versus macrophage, protein cytoplasmic/phase status, and chromatin structure |
+| [12-human-dna-and-mitochondrial-inheritance.md](12-human-dna-and-mitochondrial-inheritance.md) | Follow-up deep dive: what "human DNA" usually means, nuclear DNA versus mtDNA, fertilization, maternal mitochondrial inheritance, and heteroplasmy |
 | [references.md](references.md) | OpenStax, NCBI Bookshelf, classic membrane and endosymbiosis references, and molecular-structure links |
 
 ---

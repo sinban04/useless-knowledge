@@ -26,7 +26,7 @@ Totally interest-oriented — no fixed theme. Past probe-lab subjects have range
 In reverse chronological order (newest first).
 
 - **[2026-05-30 — Cell Structure and Mitochondria](report/2026-05-30-cell-structure-mitochondria/html/index.html)**
-  Visual multi-chapter report on cell structure: membrane, nucleus, ribosomes, mitochondria, lysosomes, cytoskeleton, organelle cooperation, animal versus plant cells, autophagy, chromatin, and mitochondrial relationships. Includes an HTML companion report with diagrams, workflow figures, and video links.
+  Visual multi-chapter report on cell structure: membrane, nucleus, ribosomes, mitochondria, lysosomes, cytoskeleton, organelle cooperation, animal versus plant cells, autophagy, chromatin, mitochondrial relationships, and nuclear versus mitochondrial inheritance. Includes an HTML companion report with diagrams, workflow figures, and video links.
 
 - **[2026-05-15 — Principles of Taste](report/2026-05-15-principles-of-taste-Suhwan)** *(Suhwan)*
   Korean-language seminar (~1–1.5 hours) on taste from molecule to perception: papillae and taste-bud anatomy, the five tastes (sweet / salty / sour / bitter / umami), what makes food "delicious", 9 self-experiments, and 5 appendices. Includes images and slides.
