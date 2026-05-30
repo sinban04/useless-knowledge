@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 Mitochondria, Autophagy, Cytoplasm, And Chromatin - Cell Structure And Mitochondria</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <strong>Cell Structure And Mitochondria</strong>
+      <span>Chapter 11 presentation page</span>
+    </div>
+    <nav class="nav" aria-label="Report pages">
+      <a href="index.html">Index</a>
+      <a href="01-overview.html">01</a>
+      <a href="02-membrane-cytoplasm-and-compartmentalization.html">02</a>
+      <a href="03-nucleus-genome-and-control.html">03</a>
+      <a href="04-ribosomes-and-protein-traffic.html">04</a>
+      <a href="05-mitochondria-and-cellular-energy.html">05</a>
+      <a href="06-endomembrane-system-and-lysosomes.html">06</a>
+      <a href="07-cytoskeleton-shape-transport-and-division.html">07</a>
+      <a href="08-organelle-cooperation-and-mitochondrial-relationships.html">08</a>
+      <a href="09-animal-cell-versus-plant-cell.html">09</a>
+      <a href="10-synthesis-and-study-guide.html">10</a>
+      <a href="11-mitochondria-autophagy-cytoplasm-chromatin.html" aria-current="page">11</a>
+      <a href="sources.html">Sources</a>
+    </nav>
+  </header>
+
+  <main>
+    <article class="presentation-deep">
+      <section class="deep-hero" id="top">
+        <div>
+          <p class="deep-kicker">Follow-up deep dive</p>
+          <h1>Mitochondria, self-recycling, protein state, and chromatin</h1>
+          <p class="deep-summary">A modern eukaryotic cell is best understood as a historical merger that became one operating system. Mitochondria retain bacterial ancestry, the nucleus now controls most mitochondrial construction, autophagy removes failed parts, proteins keep their state through targeting and quality control, and chromatin packages DNA as a regulated material rather than as a passive spool.</p>
+          <div class="actions">
+            <a class="button" href="../11-mitochondria-autophagy-cytoplasm-chromatin.md">Markdown chapter</a>
+            <a class="button secondary" href="sources.html">Sources</a>
+          </div>
+        </div>
+        <aside class="hero-aside" aria-label="Core answers">
+          <div class="hero-stat"><strong>2 genomes</strong><span>Nuclear DNA plus mitochondrial DNA cooperate inside one cell.</span></div>
+          <div class="hero-stat"><strong>13 proteins</strong><span>Human mtDNA encodes only a small set of respiratory-chain protein subunits; most mitochondrial proteins are nuclear encoded.</span></div>
+          <div class="hero-stat"><strong>3 phagy words</strong><span>Autophagy, mitophagy, and macrophage share an eating root but describe different biological scales.</span></div>
+          <div class="hero-stat"><strong>147 bp</strong><span>About 147 base pairs of DNA wrap around a histone octamer in each nucleosome core particle.</span></div>
+        </aside>
+      </section>
+
+      <section aria-labelledby="questions-title">
+        <div class="section-heading">
+          <h2 id="questions-title">Questions Answered</h2>
+          <p>Use these as a map. Each answer below is written as a visual explanation first, with the longer markdown chapter preserved as the canonical text version.</p>
+        </div>
+        <div class="question-grid">
+          <a class="question-tile" href="#merger"><span class="mini-label">Mitochondria</span><strong>Is the cell two parts?</strong><span>Historically, yes in a useful sense: a host lineage integrated a bacterial endosymbiont. Operationally, no: it is now one coordinated eukaryotic system.</span></a>
+          <a class="question-tile" href="#import"><span class="mini-label">Genes</span><strong>How can nuclear genes encode mitochondrial proteins?</strong><span>A gene can live in the nucleus while its protein works in mitochondria, if the protein is translated in the cytosol and imported through mitochondrial membranes.</span></a>
+          <a class="question-tile" href="#phagy"><span class="mini-label">Recycling</span><strong>What are autophagy and mitophagy?</strong><span>They are intracellular recycling pathways. A macrophage is a whole immune cell, not the same thing.</span></a>
+          <a class="question-tile" href="#plasm"><span class="mini-label">Cell material</span><strong>What is protein "plasm" status?</strong><span>The modern answer is protein state: location, folding, binding, modification, phase behavior, and lifetime.</span></a>
+        </div>
+      </section>
+
+      <section id="merger" aria-labelledby="merger-title">
+        <div class="section-heading">
+          <h2 id="merger-title">1. The Cell As A Historical Merger</h2>
+          <p>The phrase "mitochondrion part and the other part coexist" is a strong intuition, but it needs one correction: mitochondria are not independent partners living beside the cell. They are descendants of a once-free-living bacterial lineage that became an organelle.</p>
+        </div>
+        <div class="split-layout">
+          <div>
+            <div class="key-answer">
+              <strong>Best mental model</strong>
+              <span>A eukaryotic cell is not a bag containing a mitochondrion. It is a host-derived cellular system plus bacterial-descended mitochondria plus integration machinery that makes both sides depend on each other.</span>
+            </div>
+            <div class="fact-grid spaced-top">
+              <div class="fact-tile"><span class="mini-label">Host-derived</span><strong>The surrounding cell system</strong><span>Nucleus, cytosol, plasma membrane, ER, Golgi, lysosomes, cytoskeleton, most ribosomes, signaling pathways, and most gene regulation.</span></div>
+              <div class="fact-tile"><span class="mini-label">Bacterial-descended</span><strong>The mitochondrial system</strong><span>Double membrane, small genome, local ribosomes, respiratory-chain membrane, fission/fusion dynamics, and specialized energy conversion.</span></div>
+              <div class="fact-tile"><span class="mini-label">Integration</span><strong>The bridge between them</strong><span>Nuclear genes for mitochondrial proteins, cytosolic translation, TOM/TIM import, lipid exchange, cytoskeletal positioning, and lysosomal quality control.</span></div>
+              <div class="fact-tile"><span class="mini-label">Correction</span><strong>Not two equal organisms</strong><span>Modern mitochondria cannot rebuild themselves from nothing and cannot live as their ancestor did. They grow and divide only inside the cellular environment.</span></div>
+            </div>
+          </div>
+          <figure class="presentation-figure">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Endosymbiotic_theory.svg/1280px-Endosymbiotic_theory.svg.png" alt="Endosymbiotic theory diagram showing a host cell acquiring mitochondria and chloroplasts by endosymbiosis.">
+            <figcaption>Endosymbiosis explains why mitochondria look partly bacterial and partly eukaryotic: a bacterial lineage became an internal energy organelle. Source: <a href="https://commons.wikimedia.org/wiki/File:Endosymbiotic_theory.svg">Wikimedia Commons, Endosymbiotic theory.svg</a>.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section aria-labelledby="bacterial-host-title">
+        <div class="section-heading">
+          <h2 id="bacterial-host-title">What Stayed Bacterial, And What Became Host-Controlled?</h2>
+          <p>The present cell carries both signatures at once. The bacterial ancestry explains mitochondrial membranes, DNA, ribosomes, and fission. The host takeover explains why most mitochondrial protein construction is now routed through the nucleus and cytosol.</p>
+        </div>
+        <div class="compare-board">
+          <div class="compare-cell">
+            <h3>Bacterial traces</h3>
+            <ul>
+              <li>Double membrane architecture.</li>
+              <li>Small mitochondrial genome.</li>
+              <li>Mitochondrial ribosomes and local translation.</li>
+              <li>Growth and division by fission from existing mitochondria.</li>
+              <li>Energy conversion across a specialized inner membrane.</li>
+            </ul>
+          </div>
+          <div class="compare-cell">
+            <h3>Host control</h3>
+            <ul>
+              <li>Most mitochondrial proteins are encoded by nuclear genes.</li>
+              <li>Many mitochondrial proteins are translated by cytosolic ribosomes.</li>
+              <li>Import channels deliver proteins into mitochondrial compartments.</li>
+              <li>Lipid exchange and cytoskeleton positioning require the rest of the cell.</li>
+              <li>Damaged mitochondria can be removed by mitophagy.</li>
+            </ul>
+          </div>
+          <div class="compare-cell">
+            <h3>Integrated result</h3>
+            <ul>
+              <li>The mitochondrion keeps enough autonomy to run local energy chemistry.</li>
+              <li>The nucleus keeps enough control to coordinate energy, growth, stress, and death decisions.</li>
+              <li>The boundary is historical, not a clean split between two living organisms.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="import" aria-labelledby="import-title">
+        <div class="section-heading">
+          <h2 id="import-title">2. Nuclear Genes Can Make Mitochondrial Proteins</h2>
+          <p>The apparent paradox disappears when gene location and protein work location are separated. A mitochondrial protein is a protein that functions in mitochondria; it does not have to be encoded by mitochondrial DNA.</p>
+        </div>
+        <div class="dense-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Protein category</th>
+                <th>Gene location</th>
+                <th>Protein workplace</th>
+                <th>What this means</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Mitochondrial DNA-encoded protein</td>
+                <td>Mitochondrial genome</td>
+                <td>Mitochondrion</td>
+                <td>In humans, this is a small set of respiratory-chain protein subunits made inside mitochondria.</td>
+              </tr>
+              <tr>
+                <td>Nuclear DNA-encoded mitochondrial protein</td>
+                <td>Nuclear genome</td>
+                <td>Mitochondrion</td>
+                <td>Most mitochondrial enzymes, structural proteins, import factors, ribosomal proteins, and DNA-maintenance proteins belong here.</td>
+              </tr>
+              <tr>
+                <td>Non-mitochondrial protein</td>
+                <td>Usually nuclear genome</td>
+                <td>Cytosol, nucleus, ER, Golgi, lysosome, membrane, secretion path, or another compartment</td>
+                <td>Location is controlled by sequence signals, transport machinery, and retention/degradation systems.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section aria-labelledby="route-title">
+        <div class="section-heading">
+          <h2 id="route-title">The Route: Nuclear Gene To Mitochondrial Protein</h2>
+          <p>A protein can be encoded in the nucleus and still become a mitochondrial protein because the protein carries address information and mitochondria have import machinery.</p>
+        </div>
+        <div class="flow-rail">
+          <div class="process-step"><div class="step-number">1</div><div><strong>Nuclear DNA stores the gene</strong><span>The gene is transcribed in the nucleus under nuclear regulatory control.</span></div></div>
+          <div class="flow-arrow">&darr;</div>
+          <div class="process-step"><div class="step-number">2</div><div><strong>mRNA exits through nuclear pores</strong><span>The message is now in the cytosol, where cytosolic ribosomes can translate it.</span></div></div>
+          <div class="flow-arrow">&darr;</div>
+          <div class="process-step"><div class="step-number">3</div><div><strong>Cytosolic ribosome makes a precursor protein</strong><span>Many mitochondrial proteins are synthesized outside mitochondria before import.</span></div></div>
+          <div class="flow-arrow">&darr;</div>
+          <div class="process-step"><div class="step-number">4</div><div><strong>Targeting signal identifies the destination</strong><span>A mitochondrial targeting sequence or internal targeting information makes the protein recognizable to mitochondrial import receptors.</span></div></div>
+          <div class="flow-arrow">&darr;</div>
+          <div class="process-step"><div class="step-number">5</div><div><strong>TOM and TIM channels move the protein across membranes</strong><span>The outer membrane TOM complex and inner membrane TIM complexes route the protein to the matrix, inner membrane, intermembrane space, or outer membrane.</span></div></div>
+          <div class="flow-arrow">&darr;</div>
+          <div class="process-step"><div class="step-number">6</div><div><strong>Assembly finishes inside the organelle</strong><span>Imported proteins combine with locally made mitochondrial proteins, cofactors, lipids, and other subunits to build working mitochondrial systems.</span></div></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="transfer-title">
+        <div class="section-heading">
+          <h2 id="transfer-title">How Did Mitochondrial Genes Move To The Nucleus?</h2>
+          <p>Over evolutionary time, pieces of endosymbiont DNA could enter the host genome. Most transfers would be useless. A transfer became useful only if the nuclear copy could be expressed, targeted back to mitochondria, and coordinated with the remaining mitochondrial system.</p>
+        </div>
+        <div class="timeline-rail">
+          <div class="timeline-step"><div class="step-number">A</div><div><strong>DNA transfer</strong><span>Fragments from the ancestral mitochondrial genome entered the host nuclear lineage.</span></div></div>
+          <div class="timeline-step"><div class="step-number">B</div><div><strong>Nuclear expression</strong><span>A transferred gene needed promoters, RNA processing, and expression timing that worked in the nucleus.</span></div></div>
+          <div class="timeline-step"><div class="step-number">C</div><div><strong>Protein targeting</strong><span>The encoded protein needed a way back to mitochondria, often through acquisition or preservation of mitochondrial targeting information.</span></div></div>
+          <div class="timeline-step"><div class="step-number">D</div><div><strong>Functional replacement</strong><span>The imported nuclear-encoded protein had to replace the organelle-encoded version without breaking respiratory complexes or mitochondrial maintenance.</span></div></div>
+          <div class="timeline-step"><div class="step-number">E</div><div><strong>Dependence locks in</strong><span>Once the organelle lost the local gene, it depended on the host nucleus and protein-import machinery.</span></div></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="first-title">
+        <div class="section-heading">
+          <h2 id="first-title">How Was The First Mitochondrion Created?</h2>
+          <p>The first mitochondrion was not assembled as an organelle from loose molecules. It began as a living bacterial cell associated with a host lineage, then became an organelle through endosymbiosis and genetic integration.</p>
+        </div>
+        <div class="compare-board">
+          <div class="compare-cell">
+            <h3>First origin</h3>
+            <p>An ancestral host lineage associated with an aerobic bacterial lineage. The relationship became stable and beneficial enough that the bacterium lived inside or tightly with the host.</p>
+            <div class="compare-meta"><div>Evolutionary event, not routine cell construction.</div></div>
+          </div>
+          <div class="compare-cell">
+            <h3>Transition</h3>
+            <p>Genes were lost, transferred, or functionally replaced. Protein import deepened the dependency. Metabolic exchange made the merger advantageous.</p>
+            <div class="compare-meta"><div>Endosymbiont becomes organelle.</div></div>
+          </div>
+          <div class="compare-cell">
+            <h3>Modern biogenesis</h3>
+            <p>Modern mitochondria grow, import proteins and lipids, replicate mitochondrial DNA, and divide from pre-existing mitochondria. Cells do not build mitochondria from zero.</p>
+            <div class="compare-meta"><div>Inheritance plus growth plus fission.</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="phagy" aria-labelledby="phagy-title">
+        <div class="section-heading">
+          <h2 id="phagy-title">3. Autophagy, Mitophagy, And Macrophage</h2>
+          <p>The similar sound comes from the eating root, but the mechanisms are not the same. Autophagy and mitophagy are pathways inside a cell. A macrophage is a whole immune cell.</p>
+        </div>
+        <div class="compare-board">
+          <div class="compare-cell">
+            <h3>Autophagy</h3>
+            <p><strong>Literal idea:</strong> self-eating.</p>
+            <p><strong>Where:</strong> inside the cytoplasm of eukaryotic cells.</p>
+            <p><strong>What is made:</strong> a temporary autophagosome assembled around cargo.</p>
+            <p><strong>By whom:</strong> the cell's own autophagy machinery, mostly nuclear-encoded ATG-pathway proteins.</p>
+          </div>
+          <div class="compare-cell">
+            <h3>Mitophagy</h3>
+            <p><strong>Literal idea:</strong> mitochondria-eating.</p>
+            <p><strong>Where:</strong> in the cytoplasm, at mitochondria marked for removal.</p>
+            <p><strong>What is made:</strong> an autophagosome around a damaged or selected mitochondrion.</p>
+            <p><strong>By whom:</strong> the same cell, using selective-autophagy receptors/adaptors and lysosomes.</p>
+          </div>
+          <div class="compare-cell">
+            <h3>Macrophage</h3>
+            <p><strong>Literal idea:</strong> big eater.</p>
+            <p><strong>Where:</strong> tissues, immune sites, and inflammation contexts as a living immune cell.</p>
+            <p><strong>What is made:</strong> a differentiated phagocytic cell, not an autophagosome.</p>
+            <p><strong>By whom:</strong> the organism's hematopoietic and tissue-development systems; adult inflammatory macrophages often derive from blood monocytes, while many tissue-resident macrophages are embryonically seeded.</p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="autophagy-route-title">
+        <div class="section-heading">
+          <h2 id="autophagy-route-title">Autophagy Is A Temporary Recycling Route</h2>
+          <p>An autophagosome is not inherited like a mitochondrion and is not a cell type like a macrophage. It is assembled when the cell needs to recycle material, survive starvation, remove damaged components, or reshape its internal contents.</p>
+        </div>
+        <div class="split-layout">
+          <div class="flow-rail">
+            <div class="process-step"><div class="step-number">1</div><div><strong>Trigger</strong><span>Nutrient stress, organelle damage, protein aggregates, developmental programs, infection, or quality-control signals activate the pathway.</span></div></div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="process-step"><div class="step-number">2</div><div><strong>Phagophore nucleation</strong><span>A membrane grows around selected cargo. Membrane sources can include ER-associated sites and other membrane pools depending on context.</span></div></div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="process-step"><div class="step-number">3</div><div><strong>Autophagosome closure</strong><span>The double-membrane compartment seals cargo away from the rest of the cytosol.</span></div></div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="process-step"><div class="step-number">4</div><div><strong>Lysosome fusion</strong><span>The autophagosome fuses with lysosomal degradation machinery.</span></div></div>
+            <div class="flow-arrow">&darr;</div>
+            <div class="process-step"><div class="step-number">5</div><div><strong>Recycling</strong><span>Macromolecules are broken down and useful building blocks return to metabolism.</span></div></div>
+          </div>
+          <figure class="presentation-figure">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Autophagy_diagram_PLoS_Biology.jpg" alt="Autophagy diagram showing initiation, autophagosome formation, fusion with lysosome, and degradation.">
+            <figcaption>Autophagy forms a membrane around cargo, closes it into an autophagosome, then delivers it to lysosomal degradation. Source: <a href="https://commons.wikimedia.org/wiki/File:Autophagy_diagram_PLoS_Biology.jpg">Wikimedia Commons, Autophagy diagram PLoS Biology.jpg</a>.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section aria-labelledby="mitophagy-title">
+        <div class="section-heading">
+          <h2 id="mitophagy-title">Mitophagy Is Mitochondrial Quality Control</h2>
+          <p>Damaged mitochondria are risky because they can lose membrane potential, disturb calcium handling, produce excess reactive oxygen species, fail at ATP production, or push death signaling. Mitophagy lets the cell remove the defective unit without destroying the whole cell.</p>
+        </div>
+        <div class="flow-rail">
+          <div class="process-step"><div class="step-number">1</div><div><strong>Damage or selection</strong><span>A mitochondrion loses function, becomes developmentally scheduled for removal, or is otherwise marked as excess or defective.</span></div></div>
+          <div class="flow-arrow">&darr;</div>
+          <div class="process-step"><div class="step-number">2</div><div><strong>Marking</strong><span>In a canonical pathway, PINK1 accumulates on a damaged mitochondrial outer membrane and Parkin-related ubiquitin signaling can help recruit autophagy machinery. Other receptor-mediated routes also exist.</span></div></div>
+          <div class="flow-arrow">&darr;</div>
+          <div class="process-step"><div class="step-number">3</div><div><strong>Engulfment</strong><span>Selective autophagy receptors/adaptors connect the marked mitochondrion to the growing autophagosome membrane.</span></div></div>
+          <div class="flow-arrow">&darr;</div>
+          <div class="process-step"><div class="step-number">4</div><div><strong>Lysosomal digestion</strong><span>The mitochondrion is delivered to lysosomes, degraded, and recycled.</span></div></div>
+        </div>
+      </section>
+
+      <section id="plasm" aria-labelledby="plasm-title">
+        <div class="section-heading">
+          <h2 id="plasm-title">4. "Plasm" Means Living Cell Material, But Protein Status Is More Precise</h2>
+          <p>"Plasm" by itself is not a precise modern mechanism word. It appears in cytoplasm, nucleoplasm, protoplasm, plasma membrane, and plasmodesmata. The useful modern question is: how does each protein keep the right state and location in the crowded cell interior?</p>
+        </div>
+        <div class="dense-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Word</th>
+                <th>Meaning</th>
+                <th>How it relates to protein state</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cytoplasm</td>
+                <td>Cytosol plus organelles and internal structures outside the nucleus.</td>
+                <td>Many proteins are translated, folded, transported, modified, concentrated, or degraded here.</td>
+              </tr>
+              <tr>
+                <td>Nucleoplasm</td>
+                <td>The nuclear interior around chromatin and nuclear bodies.</td>
+                <td>Contains transcription factors, polymerases, chromatin proteins, nuclear bodies, RNAs, and import/export machinery.</td>
+              </tr>
+              <tr>
+                <td>Protoplasm</td>
+                <td>Older broad term for living cell contents.</td>
+                <td>Useful historically, but too broad for mechanism.</td>
+              </tr>
+              <tr>
+                <td>Plasma membrane</td>
+                <td>The lipid-protein cell boundary.</td>
+                <td>Many proteins are kept in a membrane state by transmembrane helices, lipid anchors, trafficking, and retention.</td>
+              </tr>
+              <tr>
+                <td>Plasmodesmata</td>
+                <td>Plant-cell channels through cell walls.</td>
+                <td>Connect cytoplasms between neighboring plant cells.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section aria-labelledby="protein-state-title">
+        <div class="section-heading">
+          <h2 id="protein-state-title">How Proteins Keep Their State</h2>
+          <p>Proteins do not merely float in a featureless liquid. Their status is maintained by sequence signals, transport systems, folding control, binding equilibria, post-translational modifications, phase behavior, and degradation.</p>
+        </div>
+        <div class="state-grid">
+          <div class="state-tile"><strong>Location</strong><span>Signal peptides, mitochondrial targeting sequences, nuclear localization signals, transmembrane helices, peroxisomal targeting signals, vesicle routes, and retention systems.</span></div>
+          <div class="state-tile"><strong>Folding</strong><span>Chaperones, folding catalysts, redox conditions, quality-control checkpoints, and degradation pathways keep proteins from remaining misfolded.</span></div>
+          <div class="state-tile"><strong>Binding</strong><span>Proteins can be free, bound to partners, built into complexes, attached to scaffolds, or held at membrane/cytoskeleton surfaces.</span></div>
+          <div class="state-tile"><strong>Chemical modification</strong><span>Phosphorylation, acetylation, methylation, ubiquitination, oxidation, nucleotide binding, and lipidation alter activity, location, and lifetime.</span></div>
+          <div class="state-tile"><strong>Phase behavior</strong><span>Some proteins remain dilute, some enter biomolecular condensates, some polymerize, some embed in membranes, and damaged ones may aggregate.</span></div>
+          <div class="state-tile"><strong>Lifetime</strong><span>The ubiquitin-proteasome system, lysosomes, autophagy, and cell division dilution keep protein populations from persisting forever.</span></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="phase-title">
+        <div class="section-heading">
+          <h2 id="phase-title">Cytoplasm Is Liquid, But Not Homogeneous</h2>
+          <p>The cytoplasm is water-rich, yet crowded and organized. Proteins and RNAs experience local differences in concentration, pH, ions, ATP, redox state, membrane surface, cytoskeletal proximity, and stress condition.</p>
+        </div>
+        <div class="split-layout">
+          <figure class="presentation-figure">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Biomolecular_partitioning.png/1280px-Biomolecular_partitioning.png" alt="Biomolecular partitioning diagram showing molecules distributing between dilute and condensed phases.">
+            <figcaption>Proteins and RNAs can partition differently between dilute cytoplasm and dense condensates. Source: <a href="https://commons.wikimedia.org/wiki/File:Biomolecular_partitioning.png">Wikimedia Commons, Biomolecular partitioning.png</a>.</figcaption>
+          </figure>
+          <div>
+            <div class="key-answer">
+              <strong>Better phrase than "plasm status"</strong>
+              <span>Use protein state: where the protein is, what it is bound to, whether it is folded, how it is modified, which physical phase it occupies, and how long it will last.</span>
+            </div>
+            <ul class="plain-list spaced-top">
+              <li>A soluble enzyme can remain diffuse in the cytosol.</li>
+              <li>A receptor can stay embedded in a membrane through transmembrane domains.</li>
+              <li>A transcription factor can accumulate in the nucleus through a nuclear localization signal.</li>
+              <li>A mitochondrial protein can be translated in the cytosol and imported through TOM/TIM complexes.</li>
+              <li>An RNA-binding protein can move into a stress granule-like condensate under stress.</li>
+              <li>A misfolded protein can be refolded, degraded by proteasomes, or captured by autophagy if aggregates form.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="chromatin" aria-labelledby="chromatin-title">
+        <div class="section-heading">
+          <h2 id="chromatin-title">5. "Chromatic" Here Means Chromatin</h2>
+          <p>Chromatin is DNA plus histones plus non-histone proteins, RNAs, and regulatory factors. Its job is not just compaction. It packages DNA while controlling access for transcription, replication, repair, recombination, and chromosome segregation.</p>
+        </div>
+        <div class="split-layout">
+          <figure class="presentation-figure">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Basic_units_of_chromatin_structure.svg/1280px-Basic_units_of_chromatin_structure.svg.png" alt="Basic chromatin unit diagram showing DNA wrapping around a histone octamer to form nucleosomes.">
+            <figcaption>The nucleosome is the basic chromatin unit: DNA wraps around a histone octamer and linker DNA connects neighboring nucleosomes. Source: <a href="https://commons.wikimedia.org/wiki/File:Basic_units_of_chromatin_structure.svg">Wikimedia Commons, Basic units of chromatin structure.svg</a>.</figcaption>
+          </figure>
+          <div class="chromatin-stack">
+            <div class="chromatin-level"><strong>DNA double helix</strong><span>The sequence stores genetic information, but naked DNA would be too long and too exposed.</span></div>
+            <div class="chromatin-level"><strong>Nucleosome</strong><span>About 147 base pairs wrap around histone proteins H2A, H2B, H3, and H4.</span></div>
+            <div class="chromatin-level"><strong>Beads on a string</strong><span>Neighboring nucleosomes are connected by linker DNA; histone H1 can help organize higher compaction.</span></div>
+            <div class="chromatin-level"><strong>Domains and loops</strong><span>Regions fold into regulatory neighborhoods so promoters, enhancers, silencers, and boundary elements can interact in 3D.</span></div>
+            <div class="chromatin-level"><strong>Mitotic chromosome</strong><span>During cell division, chromatin condenses into a segregation-ready state.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="compaction-title">
+        <div class="section-heading">
+          <h2 id="compaction-title">Chromatin Is A Dynamic Packing System</h2>
+          <p>The same DNA can be easy or hard to read depending on nucleosome placement, histone marks, chromatin remodelers, DNA methylation in some contexts, transcription-factor binding, loop organization, and nuclear neighborhood.</p>
+        </div>
+        <div class="split-layout">
+          <figure class="presentation-figure">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/DNA_compaction_steps.svg/1280px-DNA_compaction_steps.svg.png" alt="DNA compaction steps from double helix through nucleosomes and chromatin loops to chromosomes.">
+            <figcaption>DNA packing has multiple organizational states: double helix, nucleosome fiber, looped chromatin, chromosome territories, and mitotic chromosomes. Source: <a href="https://commons.wikimedia.org/wiki/File:DNA_compaction_steps.svg">Wikimedia Commons, DNA compaction steps.svg</a>.</figcaption>
+          </figure>
+          <div class="chromatin-grid">
+            <div class="chromatin-tile"><strong>Open chromatin</strong><span>More accessible nucleosomes and active regulatory marks make it easier for transcription factors and polymerases to reach DNA.</span></div>
+            <div class="chromatin-tile"><strong>Compact chromatin</strong><span>Dense packing and repressive marks make regions harder to access and often associated with gene silencing.</span></div>
+            <div class="chromatin-tile"><strong>Looped regulation</strong><span>Distant DNA sites can be brought near one another so enhancers, promoters, silencers, and insulators work in 3D.</span></div>
+            <div class="chromatin-tile"><strong>Mitotic condensation</strong><span>Chromatin becomes highly compact for safe chromosome segregation; transcription is broadly reduced during this state.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="changes-title">
+        <div class="section-heading">
+          <h2 id="changes-title">How Chromatin Changes Without Changing DNA Sequence</h2>
+          <p>The cell can change access to DNA without rewriting the letters. That is why chromatin belongs in the same mental category as membranes and cytoplasm: it is regulated physical organization.</p>
+        </div>
+        <div class="state-grid">
+          <div class="state-tile"><strong>Nucleosome movement</strong><span>Remodeling machines can slide, eject, or reposition nucleosomes.</span></div>
+          <div class="state-tile"><strong>Histone variants</strong><span>Replacing standard histones can alter local chromatin properties.</span></div>
+          <div class="state-tile"><strong>Histone-tail marks</strong><span>Acetylation, methylation, phosphorylation, ubiquitination, and other marks recruit readers and influence accessibility.</span></div>
+          <div class="state-tile"><strong>DNA methylation</strong><span>In many eukaryotic contexts, methylation helps define long-term regulatory states.</span></div>
+          <div class="state-tile"><strong>Architectural loops</strong><span>Protein complexes can organize DNA into loops and domains.</span></div>
+          <div class="state-tile"><strong>Replication and repair reset points</strong><span>DNA copying and repair require temporary opening and later reassembly of chromatin.</span></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="synthesis-title">
+        <div class="section-heading">
+          <h2 id="synthesis-title">One Integrated Model</h2>
+          <p>The four questions are connected by one principle: a cell survives by managing inherited history and present-time organization at the same time.</p>
+        </div>
+        <div class="summary-board">
+          <div><strong>Identity</strong><span>The nucleus stores and regulates most instructions.</span></div>
+          <div><strong>Energy</strong><span>Mitochondria preserve a bacterial-descended energy module.</span></div>
+          <div><strong>Maintenance</strong><span>Autophagy and lysosomes recycle failed or excess parts.</span></div>
+          <div><strong>Physical state</strong><span>Cytoplasm and nucleoplasm keep proteins in regulated locations and phases.</span></div>
+          <div><strong>Inheritance</strong><span>Chromatin packages DNA so it can be read, copied, repaired, silenced, or divided.</span></div>
+        </div>
+      </section>
+    </article>
+
+    <div class="footer">
+      <a href="10-synthesis-and-study-guide.html">Previous: Synthesis And Study Guide</a>
+      <a href="../11-mitochondria-autophagy-cytoplasm-chromatin.md">Markdown 11</a>
+      <a href="sources.html">Sources</a>
+    </div>
+  </main>
+</body>
+</html>

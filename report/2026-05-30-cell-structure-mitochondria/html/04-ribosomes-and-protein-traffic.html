@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>04 Ribosomes And Protein Traffic - Cell Structure And Mitochondria</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <strong>Cell Structure And Mitochondria</strong>
+      <span>Chapter 04 presentation page</span>
+    </div>
+    <nav class="nav" aria-label="Report pages">
+      <a href="index.html">Index</a>
+      <a href="01-overview.html">01</a>
+      <a href="02-membrane-cytoplasm-and-compartmentalization.html">02</a>
+      <a href="03-nucleus-genome-and-control.html">03</a>
+      <a href="04-ribosomes-and-protein-traffic.html" aria-current="page">04</a>
+      <a href="05-mitochondria-and-cellular-energy.html">05</a>
+      <a href="06-endomembrane-system-and-lysosomes.html">06</a>
+      <a href="07-cytoskeleton-shape-transport-and-division.html">07</a>
+      <a href="08-organelle-cooperation-and-mitochondrial-relationships.html">08</a>
+      <a href="09-animal-cell-versus-plant-cell.html">09</a>
+      <a href="10-synthesis-and-study-guide.html">10</a>
+      <a href="11-mitochondria-autophagy-cytoplasm-chromatin.html">11</a>
+      <a href="sources.html">Sources</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-title">
+      <p class="eyebrow">Chapter 04</p>
+      <h1>Ribosomes And Protein Traffic</h1>
+      <p class="lede">The ribosome is the cell&#x27;s protein-synthesis machine. It reads messenger RNA in codons and links amino acids into a polypeptide. Ribosomes are found in all cells, including bacteria, plant cells, and animal cells. They are not bounded by a membrane, so they are better described as ribonucleoprotein machines than as membrane-bound organelles.</p>
+      <div class="actions">
+        <a class="button" href="../04-ribosomes-and-protein-traffic.md">Markdown chapter</a>
+        <a class="button secondary" href="05-mitochondria-and-cellular-energy.html">Next chapter</a>
+      </div>
+    </section>
+
+    <article class="prose">
+<p>The <strong>ribosome</strong> is the cell&#x27;s protein-synthesis machine. It reads messenger RNA in codons and links amino acids into a polypeptide. Ribosomes are found in all cells, including bacteria, plant cells, and animal cells. They are not bounded by a membrane, so they are better described as ribonucleoprotein machines than as membrane-bound organelles.</p>
+<p>OpenStax&#x27;s translation chapter describes ribosomes as large and small subunits that translate mRNA into protein. NCBI Bookshelf&#x27;s <em>Molecular Biology of the Cell</em> describes the ribosome as a catalytic machine made of ribosomal RNAs and many proteins, with protein synthesis taking place in the cytoplasm.</p>
+<h3 id="ribosome-logic">Ribosome Logic</h3>
+<pre><code>mRNA:       AUG  GCU  UUU  GGA  UAA
+             |    |    |    |    |
+tRNA:       Met  Ala  Phe  Gly  stop
+             \    \    \    \
+              +----+----+----+--&gt; growing polypeptide
+
+ribosome roles:
+  small subunit -&gt; reads mRNA codons
+  large subunit -&gt; catalyzes peptide-bond formation</code></pre>
+<figure class="figure"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Ribosome_mRNA_translation_en.svg/1280px-Ribosome_mRNA_translation_en.svg.png" alt="Ribosome translation diagram showing mRNA, tRNA, amino acids, and growing polypeptide chain."></figure>
+<p><em>Figure 1. Translation is easier to read visually: mRNA moves through the ribosome, tRNAs match codons, and the growing polypeptide exits as the protein product. Source: <a href="https://commons.wikimedia.org/wiki/File:Ribosome_mRNA_translation_en.svg">Wikimedia Commons, LadyofHats, public domain</a>.</em></p>
+<p>The ribosome is not simply a platform. Its RNA component performs core catalytic work, which is why ribosomes are often discussed as ribozymes.</p>
+<h3 id="where-ribosomes-work">Where Ribosomes Work</h3>
+<p>Eukaryotic ribosomes work in two major visible contexts:</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Ribosome location</th><th>Typical products</th></tr></thead>
+<tbody>
+<tr><td>Free in cytosol</td><td>Cytosolic proteins, nuclear proteins, many mitochondrial proteins, peroxisomal proteins</td></tr>
+<tr><td>Bound to rough ER</td><td>Secreted proteins, plasma membrane proteins, lysosomal proteins, many ER/Golgi/endosomal proteins</td></tr>
+</tbody>
+</table></div>
+<p>The same ribosome can be free or ER-bound depending on the protein being translated. Binding to the ER is usually driven by a signal peptide emerging from the nascent polypeptide, not by a permanent ribosome identity.</p>
+<h3 id="protein-targeting-is-an-address-system">Protein Targeting Is An Address System</h3>
+<p>New proteins need addresses. A protein&#x27;s amino-acid sequence can contain targeting information that routes it to a compartment.</p>
+<pre><code>new protein starts on ribosome
+        |
+        v
+does it contain a targeting signal?
+        |
+        +-- no obvious signal -&gt; stays in cytosol
+        |
+        +-- nuclear localization signal -&gt; nucleus
+        |
+        +-- mitochondrial targeting sequence -&gt; mitochondrion
+        |
+        +-- ER signal peptide -&gt; ER -&gt; Golgi -&gt; membrane/secreted/lysosome
+        |
+        +-- peroxisomal targeting signal -&gt; peroxisome</code></pre>
+<p>NCBI Bookshelf&#x27;s compartmentalization chapter emphasizes that organelle proteins follow specific pathways guided by signal sequences or signal patches. This is one of the most important ideas in cell structure: organelles are not just containers; they are destinations in a traffic network.</p>
+<h3 id="ribosomes-and-the-nucleus">Ribosomes And The Nucleus</h3>
+<p>Ribosomes depend on the nucleus in two ways.</p>
+<p>First, mRNA is transcribed from nuclear genes. Second, ribosomal subunits are assembled from ribosomal RNA and ribosomal proteins. Ribosomal RNA is made in the nucleolus, ribosomal proteins are imported into the nucleus after cytosolic synthesis, and partially assembled subunits are exported back to the cytoplasm.</p>
+<pre><code>nucleus:
+  rRNA transcription in nucleolus
+  ribosomal protein import
+  subunit assembly
+      |
+      v
+nuclear pore export
+      |
+      v
+cytoplasm:
+  mature ribosomes translate mRNA</code></pre>
+<p>This loop is a good example of cell interdependence. The nucleus makes the RNA parts of ribosomes, but cytoplasmic ribosomes make the protein parts that the nucleus needs.</p>
+<h3 id="ribosomes-and-mitochondria">Ribosomes And Mitochondria</h3>
+<p>Mitochondria have their own ribosomes, reflecting their bacterial ancestry. However, mitochondrial ribosomes make only a limited subset of mitochondrial proteins. Many proteins required for mitochondrial structure, DNA replication, transcription, translation, import, metabolism, and dynamics are encoded in the nucleus and made on cytosolic ribosomes.</p>
+<pre><code>mitochondrial protein origins:
+
+  nuclear genome -&gt; cytosolic ribosome -&gt; imported protein
+  mitochondrial genome -&gt; mitochondrial ribosome -&gt; local protein</code></pre>
+<p>That split requires coordination. The cell must match nuclear and mitochondrial gene expression so respiratory-chain complexes assemble correctly. If one side fails, mitochondria cannot simply compensate by making everything themselves.</p>
+<h3 id="rough-er-is-a-ribosome-studded-gateway">Rough ER Is A Ribosome-Studded Gateway</h3>
+<p>The <strong>rough endoplasmic reticulum</strong> looks rough under electron microscopy because ribosomes bind to its cytosolic surface. Proteins entering the ER can be folded, modified, and routed through the Golgi to the plasma membrane, secretion, or lysosomes.</p>
+<figure class="figure"><img src="https://upload.wikimedia.org/wikipedia/commons/8/81/Nucleus_ER_golgi_ex.jpg" alt="Secretory pathway diagram showing nucleus, rough ER, smooth ER, transport vesicles, Golgi apparatus, secretory vesicles, and plasma membrane release."></figure>
+<p><em>Figure 2. The rough-ER route connects translation to folding, Golgi processing, vesicle transport, and membrane or secretory destinations. Source: <a href="https://commons.wikimedia.org/wiki/File:Nucleus_ER_golgi_ex.jpg">Wikimedia Commons, Magnus Manske, public domain</a>.</em></p>
+<p>This creates a major distinction:</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Protein class</th><th>Common route</th></tr></thead>
+<tbody>
+<tr><td>Cytosolic enzyme</td><td>Free ribosome -&gt; cytosol</td></tr>
+<tr><td>Nuclear transcription factor</td><td>Free ribosome -&gt; nucleus</td></tr>
+<tr><td>Mitochondrial enzyme</td><td>Free ribosome -&gt; mitochondrion</td></tr>
+<tr><td>Secreted hormone</td><td>ER-bound ribosome -&gt; ER -&gt; Golgi -&gt; secretion</td></tr>
+<tr><td>Plasma membrane receptor</td><td>ER-bound ribosome -&gt; ER -&gt; Golgi -&gt; plasma membrane</td></tr>
+<tr><td>Lysosomal enzyme</td><td>ER-bound ribosome -&gt; ER -&gt; Golgi -&gt; lysosome</td></tr>
+</tbody>
+</table></div>
+<h3 id="summary">Summary</h3>
+<ul><li>Ribosomes translate mRNA into protein and are ribonucleoprotein machines, not membrane-bound organelles.</li><li>Free and ER-bound ribosomes are functional states, not separate permanent species.</li><li>Protein targeting is an address system based on amino-acid signals.</li><li>The nucleus supplies mRNA and ribosomal RNA; ribosomes supply proteins that the nucleus and organelles need.</li><li>Mitochondria contain their own ribosomes but depend heavily on cytosolic ribosomes for imported nuclear-encoded proteins.</li></ul>
+<hr>
+<p><a href="03-nucleus-genome-and-control.html">Back: Nucleus, Genome, And Control</a> | <a href="05-mitochondria-and-cellular-energy.html">Next: Mitochondria And Cellular Energy -&gt;</a></p>
+    </article>
+
+    <div class="footer">
+      <a href="03-nucleus-genome-and-control.html">Previous: Nucleus, Genome, And Control</a>
+      <a href="../04-ribosomes-and-protein-traffic.md">Markdown 04</a>
+      <a href="05-mitochondria-and-cellular-energy.html">Next: Mitochondria And Cellular Energy</a>
+    </div>
+
+  </main>
+</body>
+</html>
