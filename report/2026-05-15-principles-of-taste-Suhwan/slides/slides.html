@@ -26,7 +26,11 @@ body{
 #stage{position:relative}
 #deck{
   width:1280px; height:720px; position:relative;
-  transform-origin:center center;
+  /* scale from the top-left corner: fit() sizes #stage to the post-scale
+     box and flexbox centers that box, so the deck must grow/shrink from the
+     same corner the stage is anchored at. center-origin offsets it down-right
+     and body{overflow:hidden} clips it. */
+  transform-origin:top left;
 }
 .slide{
   position:absolute; inset:0; background:var(--paper);
