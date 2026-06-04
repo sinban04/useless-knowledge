@@ -17,6 +17,20 @@
 - 본문 8개 챕터 + 심화(부록) 2편: **SCoP**(`site/aside-scop.html`), **Farkas Lemma**(`site/aside-farkas.html`).
 - 폴리헤드럴 변환 인터랙티브 애니메이션 10편 — `viz/`.
 
+## 챕터별 문서
+
+단일 문서(`seminar-2026-06-12.md`)를 챕터별로 나눈 판. 본문은 동일하다.
+
+1. [도입](01_intro.md)
+2. [MLIR 탄생 배경](02_background.md)
+3. [MLIR 핵심 개념](03_concepts.md)
+4. [설계 철학 (세 원칙)](04_design_philosophy.md)
+5. [Progressive Lowering](05_progressive_lowering.md)
+6. [Polyhedral 모델](06_polyhedral_model.md)
+7. [Affine Dialect 변환](07_affine_transforms.md)
+8. [종합 (ISA 경계)](08_synthesis.md)
+- [참고문헌 (References)](09_references.md) — 전 챕터 공유 `[1]`–`[10]`
+
 ## 기반 논문
 
 - [1] *MLIR: A Compiler Infrastructure for the End of Moore's Law*, arXiv:2002.11054, 2020.
