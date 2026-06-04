@@ -1,0 +1,226 @@
+/* seminar.css — seminar-specific components layered on useless-knowledge's style.css + report.css.
+   Inherits the paper palette (--paper/--ink/--accent/--rule/--muted) + auto dark mode + serif/mono fonts. */
+
+:root { --mono-ui: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace; }
+
+/* give the reading column a touch more room for diagrams/animations than the default report */
+body.report { max-width: 820px; }
+
+/* ─── index: papers line + reading order ─────────────────────────────── */
+.report-page .paper-line {
+  font-size: 0.95rem; color: var(--muted); margin: 0 0 2.25rem; padding: 0.7rem 0;
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); line-height: 1.55;
+}
+.report-page .paper-line em { font-style: italic; }
+.report-page ol.reading-order { list-style: none; padding: 0; margin: 1.25rem 0 0; }
+.report-page ol.reading-order li + li { border-top: 1px solid var(--rule); }
+.report-page ol.reading-order a {
+  display: grid; grid-template-columns: auto 1fr; gap: 0.15rem 1.1rem;
+  padding: 1.1rem 0.25rem; text-decoration: none; align-items: baseline;
+}
+.report-page ol.reading-order .on {
+  grid-row: span 2; align-self: center; font-family: var(--mono-ui);
+  font-size: 1.5rem; color: var(--accent); font-weight: 500;
+}
+.report-page ol.reading-order .oh { font-size: 1.2rem; font-weight: 500; color: var(--ink); transition: color 120ms; }
+.report-page ol.reading-order a:hover .oh { color: var(--accent); }
+.report-page ol.reading-order .od { color: var(--muted); font-size: 0.95rem; line-height: 1.5; }
+
+/* ─── code blocks (renderer emits <pre class="code"> with token spans) ── */
+.report-page pre.code { white-space: pre; }
+.report-page pre.code .kw  { color: #0b5fa5; }
+.report-page pre.code .dia { color: #8a3ffc; font-weight: 500; }
+.report-page pre.code .num { color: #b5341f; }
+.report-page pre.code .ty  { color: #1a7f4b; }
+.report-page pre.code .cm  { color: #8a8f95; font-style: italic; }
+
+/* ─── tables (renderer wraps in .tablewrap) ──────────────────────────── */
+.report-page .tablewrap { overflow-x: auto; margin: 1.5em 0; }
+.report-page .tablewrap table { margin: 0; }
+
+/* ─── mermaid diagrams ───────────────────────────────────────────────── */
+.report-page figure.diagram { margin: 2rem 0; }
+.report-page figure.diagram pre.mermaid {
+  margin: 0; background: transparent; border: 1px solid var(--rule); border-radius: 3px;
+  padding: 1.1rem; text-align: center; overflow-x: auto;
+}
+.report-page figure.diagram pre.mermaid:not([data-processed]) {
+  font-family: var(--mono-ui); font-size: 0.78rem; color: var(--muted); text-align: left; white-space: pre;
+}
+.report-page figure.graphmap pre.mermaid { padding: 1.6rem; }
+.report-page figure.diagram figcaption,
+.report-page figure.img figcaption,
+.report-page figure.viz figcaption {
+  font-family: var(--mono-ui); font-size: 0.8125rem; color: var(--muted); margin-top: 0.6rem; line-height: 1.5;
+}
+.report-page figure.diagram figcaption { text-align: center; }
+/* mermaid htmlLabels 안전망: 라벨 텍스트가 노드 박스에서 잘리지 않도록 (특수 글리프·줄바꿈 대비) */
+.report-page figure.diagram .nodeLabel,
+.report-page figure.diagram .edgeLabel,
+.report-page figure.diagram foreignObject { overflow: visible; }
+.report-page figure.diagram .nodeLabel { line-height: 1.4; white-space: normal; }
+
+/* ─── external images ────────────────────────────────────────────────── */
+.report-page figure.img { margin: 2rem 0; text-align: center; }
+.report-page figure.img img { border: 1px solid var(--rule); border-radius: 3px; background: #fff; max-width: 100%; }
+.report-page figure.img figcaption { text-align: center; }
+.report-page figure.img figcaption .src { display: block; margin-top: 0.3rem; font-size: 0.75rem; }
+.report-page figure.img figcaption .src a { color: var(--muted); }
+
+/* ─── inline animation widget (dark "screen" card inside the paper page) ─ */
+.report-page figure.viz { margin: 2.25rem 0; }
+.report-page .vizbox {
+  border: 1px solid var(--rule); border-radius: 4px; background: #0e131f; overflow: hidden; min-height: 130px;
+}
+.report-page .vizph {
+  color: #93a0bb; font-family: var(--mono-ui); font-size: 0.85rem; text-align: center; padding: 2.6rem 1rem;
+}
+.report-page .vizph .vp-play { color: #58d1ff; }
+.report-page figure.viz figcaption { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+.report-page figure.viz figcaption b { color: var(--ink); font-weight: 600; }
+.report-page figure.viz figcaption a { white-space: nowrap; }
+
+/* ─── personal-opinion box (editorial, accent-tinted) ────────────────── */
+.report-page .opinion {
+  margin: 2rem 0; padding: 1rem 1.25rem 1.1rem;
+  border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+  background: #FBEFEA; border-radius: 0 3px 3px 0;
+}
+.report-page .opinion .olabel {
+  font-family: var(--mono-ui); font-size: 0.78rem; letter-spacing: 0.03em; color: var(--accent); font-weight: 500; margin-bottom: 0.45rem;
+}
+.report-page .opinion p { margin: 0.45rem 0 0; }
+.report-page .opinion p:first-of-type { margin-top: 0; }
+
+/* ─── citations ──────────────────────────────────────────────────────── */
+.report-page sup.cite a { color: var(--accent); font-size: 0.7em; text-decoration: none; }
+.report-page sup.cite a:hover { text-decoration: underline; }
+
+/* ─── per-page references ────────────────────────────────────────────── */
+.report-page .pagerefs { margin-top: 3.5rem; }
+.report-page .pagerefs .r { font-size: 0.9rem; color: var(--muted); margin: 0.35em 0; line-height: 1.55; }
+.report-page .pagerefs .r b { color: var(--accent); font-weight: 500; }
+
+/* ─── related (the page graph: cross-links) ──────────────────────────── */
+.report-page .related { margin-top: 3rem; border-top: 1px solid var(--rule); padding-top: 1.5rem; }
+.report-page .related .rl {
+  font-family: var(--mono-ui); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 1rem;
+}
+.report-page .related .rgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+@media (max-width: 680px) { .report-page .related .rgrid { grid-template-columns: 1fr; } }
+.report-page .related a.rcard {
+  display: block; padding: 0.85rem 1rem; border: 1px solid var(--rule); border-radius: 3px;
+  text-decoration: none; transition: border-color 120ms;
+}
+.report-page .related a.rcard:hover { border-color: var(--accent); }
+.report-page .related a.rcard .rn { font-family: var(--mono-ui); font-size: 0.75rem; color: var(--accent); }
+.report-page .related a.rcard .rt { color: var(--ink); font-weight: 500; margin: 0.15rem 0; }
+.report-page .related a.rcard .redge { color: var(--muted); font-size: 0.8rem; }
+
+/* ─── prev / next pager ──────────────────────────────────────────────── */
+.report-page nav.pager { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2.25rem; }
+.report-page nav.pager a {
+  flex: 1; padding: 0.9rem 1rem; border: 1px solid var(--rule); border-radius: 3px;
+  text-decoration: none; color: var(--ink); transition: border-color 120ms;
+}
+.report-page nav.pager a:hover { border-color: var(--accent); }
+.report-page nav.pager a.next { text-align: right; }
+.report-page nav.pager a .d { display: block; font-family: var(--mono-ui); font-size: 0.72rem; color: var(--muted); margin-bottom: 0.2rem; }
+.report-page nav.pager a.disabled { opacity: 0.4; pointer-events: none; }
+
+/* ─── dark-mode tweaks for the paper-specific extras ─────────────────── */
+@media (prefers-color-scheme: dark) {
+  .report-page pre.code .kw  { color: #7cc7ff; }
+  .report-page pre.code .dia { color: #c7a3ff; }
+  .report-page pre.code .num { color: #ffb454; }
+  .report-page pre.code .ty  { color: #5ce6a3; }
+  .report-page pre.code .cm  { color: #6b7794; }
+  .report-page .opinion { background: #241b16; }
+  .report-page figure.img img { background: #fff; }   /* keep light bg behind transparent SVGs */
+}
+
+/* ─── two-topic structure (주제 1 MLIR · 주제 2 Polyhedral · 마무리 종합) ── */
+.part-mlir  { --paccent: #B5341F; }
+.part-poly  { --paccent: #1d6a8c; }
+.part-synth { --paccent: #7a5a2e; }
+@media (prefers-color-scheme: dark) {
+  .part-mlir  { --paccent: #E07A5F; }
+  .part-poly  { --paccent: #6aa9c4; }
+  .part-synth { --paccent: #c4a36a; }
+}
+
+/* header part tag */
+header .hdr-part { font-family: var(--mono-ui); font-size: 0.8125rem; color: var(--paccent, var(--accent)); margin-left: auto; margin-right: 1rem; white-space: nowrap; }
+
+/* part band atop each chapter */
+.report-page .partband { display: flex; align-items: baseline; gap: 0.6rem; padding: 0.2rem 0 0.85rem; border-bottom: 2px solid var(--paccent, var(--accent)); margin-bottom: 1.3rem; }
+.report-page .partband .pb-label { font-family: var(--mono-ui); font-size: 0.78rem; letter-spacing: 0.08em; color: var(--paccent, var(--accent)); font-weight: 600; }
+.report-page .partband .pb-name { font-family: var(--mono-ui); font-size: 0.85rem; color: var(--muted); }
+
+/* part chip uses the topic accent */
+.report-page .report-meta .pchip { color: var(--paccent, var(--accent)); }
+@media (prefers-color-scheme: dark) { .report-page .report-meta .pchip { border: 1px solid var(--paccent); padding: 0.05em 0.4em; border-radius: 1px; } }
+
+/* bridge box (connects the two topics at part boundaries) */
+.report-page .bridge { margin: 2rem 0; padding: 0.85rem 1.1rem 0.95rem; border: 1px solid var(--rule); border-left: 3px solid var(--paccent, var(--accent)); border-radius: 0 3px 3px 0; }
+.report-page .bridge .bk { font-family: var(--mono-ui); font-size: 0.78rem; letter-spacing: 0.04em; color: var(--paccent, var(--accent)); font-weight: 600; margin-bottom: 0.35rem; }
+.report-page .bridge p { margin: 0; font-size: 0.95rem; line-height: 1.6; }
+
+/* cross-topic pager links carry the target topic accent */
+.report-page nav.pager a.xpart { border-color: var(--paccent, var(--accent)); }
+.report-page nav.pager a.xpart:hover { border-color: var(--paccent, var(--accent)); }
+.report-page nav.pager a.xpart .d { color: var(--paccent, var(--accent)); font-weight: 600; }
+
+/* index: topic blocks */
+.report-page section.topic { margin: 2.5rem 0 0; padding-top: 1.3rem; border-top: 1px solid var(--rule); }
+.report-page section.topic .topichead { border-left: 4px solid var(--paccent, var(--accent)); padding-left: 0.9rem; margin-bottom: 0.5rem; }
+.report-page section.topic .topichead .tlabel { font-family: var(--mono-ui); font-size: 0.78rem; letter-spacing: 0.08em; color: var(--paccent, var(--accent)); font-weight: 600; }
+.report-page section.topic .topichead h2 { border: 0; padding: 0; margin: 0.1rem 0 0.2rem; }
+.report-page section.topic .topichead .ttag { color: var(--muted); margin: 0; font-size: 0.95rem; }
+.report-page section.topic .reading-order .on { color: var(--paccent, var(--accent)); }
+
+/* ─── embedded-animation fixes (widget sits inside .report-page → isolate it) ── */
+/* (1) page element styles (uk-report.css: .report-page pre/code/table/a) bleed into the
+       dark widget and wash out the code. Re-assert the widget's own dark styling. */
+.report-page .vizbox { color: var(--ink); }                 /* --ink = viz light ink within .vizbox */
+.report-page .vizbox .pv-codecard { background: var(--panel); }
+.report-page .vizbox pre.pv-code {
+  background: transparent; color: var(--ink); margin: 0; padding: 14px 16px;
+  border: 0; border-radius: 0; font-size: 12.5px; line-height: 1.65; overflow-x: auto;
+}
+.report-page .vizbox .pv-caption code {
+  background: rgba(88, 209, 255, .10); color: var(--accent); border: 0; padding: 1px 5px; border-radius: 5px; font-size: 12px;
+}
+.report-page .vizbox .pv-matrix table { width: auto; margin: 0; font-size: 13px; border-collapse: collapse; }
+.report-page .vizbox .pv-matrix td, .report-page .vizbox .pv-matrix th { border: 0; padding: 0 7px; }
+.report-page .vizbox a { color: var(--accent); text-decoration: none; }
+.report-page .vizbox p { margin: 0; }
+
+/* (2) keep the schedule-matrix θ widget OUT of the iteration space:
+       reserve a band below the canvas and park the (absolute, opacity-toggled) widget there. */
+.report-page .vizbox .pv-canvas-wrap { padding-bottom: 58px; }
+.report-page .vizbox .pv-matrix {
+  top: auto; bottom: 5px; right: 8px; left: auto;
+  background: var(--panel2); box-shadow: none; backdrop-filter: none;
+  padding: 5px 10px; font-size: 12px;
+}
+.report-page .vizbox .pv-matrix .lbl { margin-bottom: 2px; }
+.report-page .vizbox .pv-matrix table { font-size: 12px; }
+
+/* (3) widget layout = 재생(controls) → 애니메이션(canvas) → 코드(code), single column full width.
+   The engine builds  main[stage(canvas) | side(code)] · caption · controls · steps  — so the play
+   button ends up *below* the code. Flatten the stage|side grid with display:contents so every part
+   becomes one flex column on .pv-root, then re-order. Full width also fixes the code's horizontal scroll. */
+.report-page .vizbox.pv-root { display: flex; flex-direction: column; gap: 12px; padding: 14px; }
+.report-page .vizbox .pv-main,
+.report-page .vizbox .pv-stage,
+.report-page .vizbox .pv-side { display: contents; }
+.report-page .vizbox .pv-controls   { order: 1; margin: 0; }   /* 재생 버튼 — 맨 위 */
+.report-page .vizbox .pv-steps       { order: 2; margin: 0; }   /* 단계 칩(내비) */
+.report-page .vizbox .pv-canvas-wrap { order: 3; }              /* 애니메이션 */
+.report-page .vizbox .pv-aux         { order: 4; margin-top: 0; }
+.report-page .vizbox .pv-legend      { order: 5; margin: 0; }
+.report-page .vizbox .pv-caption     { order: 6; margin: 0; }   /* 단계 설명 */
+.report-page .vizbox .pv-codecard    { order: 7; }              /* 코드 — 맨 아래 */
+.report-page .vizbox pre.pv-code { font-size: 12px; }
