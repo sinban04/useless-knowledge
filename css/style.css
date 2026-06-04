@@ -130,6 +130,11 @@ header {
 }
 .chip::before { content: "[ "; }
 .chip::after  { content: " ]"; }
+/* author chip: same typographic register, but self-labelling so a reader
+   can tell a person ("author: Suhwan") from a language tag ("KR"/"EN").
+   Label renders via CSS so the HTML carries only the name. */
+.chip.author { color: var(--ink); }
+.chip.author::before { content: "[ author: "; }
 
 /* report title */
 .reports h2 {
