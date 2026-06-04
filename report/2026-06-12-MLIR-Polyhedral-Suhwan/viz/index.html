@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>affine-MLIR 폴리헤드럴 모델 시각화</title>
+  <link rel="stylesheet" href="assets/poly.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="pv-nav">
+      <span>affine-MLIR · polyhedral model</span>
+      <span class="badge">10편 · 인터랙티브</span>
+    </div>
+
+    <div class="idx-hero">
+      <h1>반복 공간은 어떻게 변형되는가</h1>
+      <p class="tagline">
+        affine MLIR과 <b>폴리헤드럴 모델</b>로 루프와 iteration space가 변해가는 모습을 애니메이션으로 본다.
+        스케줄 행렬 <b>θ</b>를 바꾸거나 영역을 다시 분할하는 것만으로 — <b>없던 병렬성이 생기고</b>,
+        SIMD·페이징·파이프라인에 맞춰 <b>타일링</b>되고, <b>코어에 분배</b>되는 과정을 단계별로 따라간다.
+      </p>
+    </div>
+
+    <div class="idx-section-title">폴리헤드럴 모델 한 장 요약</div>
+    <div class="idx-primer">
+      <div class="card">
+        <h3>① 반복 영역 (Domain)</h3>
+        <p>루프 인덱스가 만족하는 affine 부등식들이 정의하는 정수 다면체. 각 점 = 본문의 한 실행 인스턴스.</p>
+        <div class="formula">{ (i,j) ∈ Z² | 0 ≤ i,j &lt; N }</div>
+      </div>
+      <div class="card">
+        <h3>② 스케줄 θ (Schedule)</h3>
+        <p>각 반복에 논리적 시간(timestamp)을 주는 affine 사상 = <b>변환행렬</b>. 교환·스큐·타일이 모두 θ를 바꾸는 일.</p>
+        <div class="formula">θ(i,j) = M · (i,j)ᵀ</div>
+      </div>
+      <div class="card">
+        <h3>③ 접근 함수 (Access)</h3>
+        <p>반복 (i,j)가 건드리는 메모리 위치를 주는 affine 사상. 재사용·지역성·페이지 거동을 정확히 계산하게 해준다.</p>
+        <div class="formula">f(i,j) = A[i][j]</div>
+      </div>
+      <div class="card">
+        <h3>④ 의존성 (Dependence)</h3>
+        <p>두 반복이 같은 메모리를 쓸 때의 거리 벡터. <b>합법 변환은 모든 의존성을 시간상 앞으로</b> 유지해야 한다.</p>
+        <div class="formula">δ = (Δi, Δj) ≻ 0</div>
+      </div>
+    </div>
+
+    <div class="idx-section-title">시각화 10편</div>
+    <div class="idx-grid" id="grid"></div>
+
+    <div class="idx-footer">
+      <p>각 페이지는 좌측 격자(iteration space) + 우측 MLIR 코드 + 스케줄 행렬 θ + 보조 패널(Gantt·벡터레인·페이징·speedup)로 구성된다.
+      <b>재생 ▶</b>으로 변환 흐름을 자동 재생하거나, 단계 칩을 눌러 한 스텝씩 살펴볼 수 있다.</p>
+      <p>외부 의존성 없음 — <code>index.html</code>을 브라우저로 바로 열면 된다 (file:// 동작). 엔진: <code>assets/poly.js</code>.</p>
+    </div>
+  </div>
+
+  <script src="topics/topics.js"></script>
+  <script>
+    (function () {
+      var grid = document.getElementById('grid');
+      (window.POLY_TOPICS || []).forEach(function (t) {
+        var a = document.createElement('a');
+        a.className = 'idx-card';
+        a.href = 'topics/' + t.file;
+        var tags = (t.tags || []).map(function (x) { return '<span>' + x + '</span>'; }).join('');
+        a.innerHTML =
+          '<span class="num">' + t.n + '</span>' +
+          '<h3>' + t.title + '</h3>' +
+          '<p class="en">' + (t.en || '') + '</p>' +
+          '<p>' + (t.blurb || '') + '</p>' +
+          '<div class="tags">' + tags + '</div>' +
+          '<span class="arrow">→</span>';
+        grid.appendChild(a);
+      });
+    })();
+  </script>
+</body>
+</html>

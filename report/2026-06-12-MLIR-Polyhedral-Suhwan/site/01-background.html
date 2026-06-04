@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>주제 1 · 01. 배경·두 논문 · MLIR 세미나</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/uk-style.css">
+<link rel="stylesheet" href="assets/uk-report.css">
+<link rel="stylesheet" href="assets/viz.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
+<link rel="stylesheet" href="assets/seminar.css">
+</head>
+<body class="report part-mlir" id="top" data-page="01-background">
+<header>
+<a class="wordmark" href="index.html">← MLIR 세미나</a>
+<span class="hdr-part">주제 1 · MLIR</span><a class="github-link" href="index.html">[ 전체 지도 ◇ ]</a></header>
+<main>
+<article class="report-page">
+<div class="partband"><span class="pb-label">주제 1</span><span class="pb-name">MLIR</span></div>
+<h1>MLIR 탄생 배경 — Moore의 법칙 종말과 두 논문</h1>
+<p class="report-meta"><span class="chip pchip">주제 1 · MLIR</span> · <span class="chip">CH 01</span> · <time datetime="2026-06-12">2026-06-12</time></p>
+<p class="dek">DSA 황금기, 컴파일러 파편화, 그리고 '하나의 진정한 IR 인프라'.</p>
+
+<figure class="diagram"><pre class="mermaid">flowchart TD
+  M["무어의 법칙 둔화&lt;br/&gt;(DSA 황금기)"] --&gt; D["GPU · TPU · NPU&lt;br/&gt;도메인 특화 가속기 폭증"] --&gt; F["컴파일러 파편화&lt;br/&gt;N×M 중복"] --&gt; ML["MLIR&lt;br/&gt;하나의 IR 인프라"]:::hi
+  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;</pre><figcaption>무어의 법칙 둔화 → 도메인 특화 가속기 폭증 → 컴파일러 파편화 → MLIR이라는 공통 인프라.</figcaption></figure>
+
+
+<figure class="img"><img class="" src="../images/moores-law.png" alt="1970년부터 2020년까지 마이크로프로세서 트랜지스터 수를 로그 스케일로 나타낸 그래프"><figcaption>마이크로프로세서 &lt;b&gt;트랜지스터 수&lt;/b&gt; 추이(1970–2020, 로그 스케일) — 약 2년마다 2배. 이 곡선이 꺾이며(무어의 법칙 둔화) 도메인 특화 가속기(DSA)의 황금기가 열렸다.<div class="src">출처: <a href="https://commons.wikimedia.org/wiki/File:Moore's_Law_Transistor_Count_1970-2020.png" target="_blank" rel="noopener">Our World in Data (Max Roser, Hannah Ritchie) via Wikimedia Commons</a> · CC BY 4.0</div></figcaption></figure>
+
+<h3 id="한-work-두-제목">한 work, 두 제목</h3>
+<p>MLIR(Multi-Level Intermediate Representation, 다층 중간표현)을 소개하는 논문은 사실상 하나의 작업이 두 가지 프레이밍으로 발표된 것이다. 먼저 arXiv 프리프린트가 "MLIR: A Compiler Infrastructure for the End of Moore's Law"라는 제목으로 나왔고 <sup class="cite"><a href="#ref-1">[1]</a></sup>, 이후 정식 출판본이 CGO 2021에서 "MLIR: Scaling Compiler Infrastructure for Domain Specific Computation"으로 나왔다 <sup class="cite"><a href="#ref-2">[2]</a></sup>. 같은 저자, 같은 내용이지만 강조점이 다르다. 전자는 <strong>"왜 지금 이게 필요한가"</strong>(시대적 동기)를, 후자는 <strong>"무엇을 어떻게 한다"</strong>(도메인 특화 연산으로의 확장)를 앞세운다. 이 발표에서 직접 인용은 CGO 정본 <sup class="cite"><a href="#ref-2">[2]</a></sup>을 기준으로 삼는다.</p>
+<blockquote><p>용어 한 줄 정의 — <strong>IR(Intermediate Representation, 중간표현)</strong>: 컴파일러가 소스코드를 기계어로 바꾸는 중간 단계에서 쓰는 내부 표현. 사람이 짠 코드와 최종 기계어 사이에 놓인 "작업용 자료구조"라고 보면 된다. 하드웨어로 치면 ISA가 소프트웨어와 마이크로아키텍처 사이의 계약인 것처럼, IR은 프론트엔드와 백엔드 사이의 계약이다.</p></blockquote>
+<h3 id="큰-그림-하드웨어가-바뀌니-컴파일러가-터졌다">큰 그림 — 하드웨어가 바뀌니 컴파일러가 터졌다</h3>
+<p>MLIR이 등장한 배경은 하드웨어 트렌드의 전환이다. 청중이 익숙한 흐름으로 정리하면 이렇다.</p>
+<ul><li><strong>Moore의 법칙 둔화</strong> — 같은 면적에 트랜지스터를 더 넣기가 점점 어려워졌다.</li><li><strong>Dennard scaling 종료</strong> — 트랜지스터가 작아져도 전력 밀도가 더 이상 비례해 줄지 않게 되면서, 클럭을 마냥 올릴 수 없게 됐다(전력·발열 벽).</li><li>그 결과 <strong>범용 CPU 단일 코어 성능이 정체</strong>됐고, 성능을 더 짜내려면 <strong>특정 도메인에 특화된 하드웨어(Domain-Specific Architecture, DSA)</strong>로 가는 수밖에 없게 됐다. Hennessy와 Patterson은 이를 "컴퓨터 아키텍처의 새로운 황금기"라 불렀다 <sup class="cite"><a href="#ref-3">[3]</a></sup>. TPU, GPU 텐서코어, NPU, 각종 DSP/가속기가 이 시기의 산물이다.</li></ul>
+<p>문제는 여기서 생긴다. <strong>가속기마다 자기 컴파일러가 필요하다.</strong> 메모리 계층, 자원 모델, 코드 생성 규칙이 칩마다 다르기 때문이다. 그런데 가속기가 우후죽순 늘어나니, 각 팀이 자기 IR과 자기 최적화 패스를 <em>처음부터 다시</em> 짜기 시작했다. 컴파일러 생태계가 조각조각 갈라지는 <strong>fragmentation(파편화)</strong>이 심해진 것이다. 비유하자면, 새 ISA가 나올 때마다 OS·드라이버·툴체인을 매번 백지에서 다시 만드는 상황에 가깝다.</p>
+<h3 id="저자들의-진단-다섯-가지-고통">저자들의 진단 — 다섯 가지 고통</h3>
+<p>논문 §I에서 저자들은 당시 컴파일러 인프라의 <strong>5가지 pain point</strong>를 명시한다 <sup class="cite"><a href="#ref-2">[2 §I]</a></sup>.</p>
+<ol><li><strong>One-size-fits-all IR의 한계</strong> — LLVM IR이나 JVM 바이트코드처럼 <em>하나의 추상 레벨(single abstraction level)</em>만 가진 IR은 자기 영역에선 훌륭하지만, 그보다 높거나 낮은 추상에서의 분석(예: 소스 레벨 분석)에는 부적합하다. 저자들은 LLVM IR을 두고 "C with vectors"(벡터가 붙은 C 언어 수준)라고 표현한다 — 즉 스칼라·명령형 수준에 머문다.</li><li><strong>N개 컴파일러의 중복 재구현</strong> — Swift, Rust, Julia, Fortran이 각자 자기 high-level IR을 만들었고, ML 프레임워크들도 각자 "ML graph"를 만들었다. 인프라와 도메인 지식이 <em>팀 단위로 갇힌다</em>. 같은 바퀴를 N번 다시 발명하는 셈이다.</li><li><strong>사용자에게 그대로 보이는 결함</strong> — 이 파편화는 곧장 "poor error messages, failures in edge cases, unpredictable performance, and difficulty generalizing the stack to support new hardware"(빈약한 에러 메시지, 엣지 케이스 실패, 예측 불가능한 성능, 새 하드웨어 지원으로의 일반화 곤란)로 이어진다 <sup class="cite"><a href="#ref-2">[2 §I]</a></sup>.</li><li><strong>Premature lowering(조기 하강)</strong> — 고수준 의미가 너무 일찍 사라지는 문제. 후속 분석이 사라진 정보를 <em>복원</em>하느라 매달려야 하는데, 그 복원은 fragile(깨지기 쉽고)·expensive(비싸고)·invasive(침습적)하다.</li><li><strong>이질 가속기 컴파일의 어려움</strong> — LLVM IR을 통한 <em>동질적(homogeneous)</em> 컴파일과 달리, 가속기는 저마다 고유한 코드 생성·자원 모델·메모리 계층을 요구한다.</li></ol>
+<blockquote><p>용어 한 줄 정의 — <strong>lowering(하강)</strong>: 높은 추상 수준의 표현을 더 낮은(기계에 가까운) 수준으로 단계적으로 내리는 변환. 예: "행렬 곱"이라는 한 덩어리 의미를 → 루프 중첩 → 개별 곱셈/덧셈 명령으로 점점 풀어내는 과정.</p></blockquote>
+<h4 id="왜-single-abstraction-level-이-문제인가-비유">왜 "single abstraction level"이 문제인가 — 비유</h4>
+<p>이 부분은 청중에게 가장 중요한 직관이다. 추상화 레벨이 하나뿐인 IR을 <strong>메모리 계층이 단 한 층뿐인 컴퓨터</strong>에 비유할 수 있다.</p>
+<p>캐시 없이 메인 메모리 한 층만 있는 기계를 떠올려 보자. 동작은 한다. 하지만 "이 데이터는 자주 쓰이니 가까이 두자" 같은 <em>지역성 정보</em>를 표현할 자리가 없다. 모든 접근이 같은 한 층에서 일어나므로, 빠르게 만들 여지를 시스템이 <em>구조적으로</em> 갖지 못한다.</p>
+<p>IR도 마찬가지다. LLVM IR 한 층만 있으면, "이건 행렬 곱이다", "이건 affine 루프 중첩이다", "이 텐서의 shape는 이렇다" 같은 <em>고수준 의미</em>를 담을 자리가 없다. 그래서 이 정보들은 컴파일 초반에 잘게 풀려 사라지고, 나중에 최적화기는 잘게 부서진 명령어 더미를 보고 "혹시 이거 원래 행렬 곱 아니었나?"를 <em>역추론</em>해야 한다. 이게 4번 pain point인 premature lowering이고, 1번과 직결된다. <strong>한 층짜리 IR은 한 층짜리 메모리처럼, 정보를 적절한 높이에 둘 자리 자체가 없다.</strong></p>
+<blockquote><p>용어 한 줄 정의 — <strong>abstraction level(추상화 레벨)</strong>: 같은 계산을 얼마나 "사람의 의도에 가깝게" vs "기계 명령에 가깝게" 표현하는지의 높낮이. 고수준일수록 의미(행렬 곱)가 보이고, 저수준일수록 기계 동작(load/add/store)이 보인다.</p></blockquote>
+<h3 id="경제적-동기-n개를-다-고칠-여력이-없었다">경제적 동기 — "N개를 다 고칠 여력이 없었다"</h3>
+<p>저자들은 이 문제를 <em>학술적</em>이기보다 <em>경제적</em>으로 솔직하게 인정한다 <sup class="cite"><a href="#ref-2">[2 §I.B]</a></sup>.</p>
+<blockquote><p>"we could not afford to implement N improved compiler instances, we decided to go for a more general solution: investing in a high quality infrastructure" <sup class="cite"><a href="#ref-2">[2 §I.B]</a></sup></p></blockquote>
+<p>즉 "N개의 개선된 컴파일러를 각각 구현할 여력이 없으니, 더 일반적인 해법 — 고품질 인프라에 투자하는 길 — 을 택했다"는 것이다. 이건 대규모 시스템을 운영하는 조직이라면 누구나 공감할 논리다. 칩마다 펌웨어/드라이버를 백지에서 짜는 대신 공통 HAL(하드웨어 추상화 계층)에 투자하는 결정과 똑같은 사고방식이다.</p>
+<h3 id="핵심-자세-하나의-진정한-ir은-없지만-하나의-진정한-ir-인프라는-가능하다">핵심 자세 — "하나의 진정한 IR은 없지만, 하나의 진정한 IR 인프라는 가능하다"</h3>
+<p>여기서 MLIR의 철학이 한 문장으로 압축된다. 모든 도메인을 만족시키는 <em>단 하나의 IR(one true IR)</em>을 만드는 것은 불가능하다 — 도메인마다 필요한 추상이 다르기 때문이다. 대신 MLIR은 **여러 IR(dialect)을 정의하고 함께 굴릴 수 있는 <em>하나의 인프라</em>를 만들자**고 답한다 <sup class="cite"><a href="#ref-1">[1]</a></sup><sup class="cite"><a href="#ref-2">[2]</a></sup>.</p>
+<blockquote><p>용어 한 줄 정의 — <strong>dialect(다이얼렉트, 방언)</strong>: MLIR에서 특정 도메인을 위한 연산(operation)·타입·속성의 묶음. 하나의 IR "방언"이라고 보면 된다. 예: 루프를 위한 <code>affine</code> dialect, 텐서 연산을 위한 <code>linalg</code> dialect, 저수준을 위한 <code>llvm</code> dialect. 사용자가 새 dialect를 자유롭게 추가할 수 있다(user-extensible).</p></blockquote>
+<p>이 자세를 하드웨어 비유로 옮기면 명확하다. 모든 워크로드에 최적인 <em>단 하나의 ISA</em>는 없다(범용 CPU, GPU, DSP의 ISA가 다 다른 이유). 하지만 그 칩들을 <em>만들고 검증하고 연결하는 공통 인프라</em>(EDA 툴체인, 표준 인터커넥트, 공통 검증 방법론)는 분명히 가능하고 가치가 있다. MLIR이 노리는 자리가 바로 그 "공통 인프라" 쪽이다 — 특정 IR이 아니라 IR을 만드는 <em>틀</em>이다.</p>
+<h3 id="채택-증거-논문-시점에-이미-모이고-있었다">채택 증거 — 논문 시점에 이미 모이고 있었다</h3>
+<p>MLIR 논문이 흥미로운 점은, 보통의 컴파일러 논문처럼 <em>정량 벤치마크</em>로 자기를 증명하기보다 <em>실제 채택 사례</em>를 evaluation으로 내세운다는 것이다. 논문 시점(§IV·§V)에 이미 다음과 같은 모멘텀이 있었다 <sup class="cite"><a href="#ref-2">[2]</a></sup>.</p>
+<ul><li><strong>학계</strong>: 16개 대학, 4개 국립연구소가 참여한 워크숍.</li><li><strong>산업</strong>: 14개 다국적 기업의 endorsement(공식 지지).</li><li><strong>개발 중인 dialect</strong>: <strong>26개 이상</strong>이 이미 개발 중.</li><li><strong>인프라 교체</strong>: <strong>7개 프로젝트</strong>가 기존의 custom 컴파일러 인프라를 걷어내고 MLIR로 갈아탔다.</li></ul>
+<p>이 숫자들이 말하는 바는, MLIR이 "좋은 아이디어"에 그치지 않고 <em>공통 인프라를 갈망하던 생태계의 수요</em>에 정확히 들어맞았다는 것이다. 파편화의 고통이 그만큼 실재했다는 방증이기도 하다. 오늘날 TensorFlow, OpenXLA/StableHLO <sup class="cite"><a href="#ref-9">[9]</a></sup>, LLVM Polly <sup class="cite"><a href="#ref-10">[10]</a></sup> 계열을 비롯한 수많은 스택이 MLIR 위에 서 있는 흐름의 출발점이 바로 이 두 논문이다.</p><section class="pagerefs"><h2>참고문헌</h2><p class="r" id="ref-1"><b>[1]</b> Lattner et al., "MLIR: A Compiler Infrastructure for the End of Moore's Law", arXiv:2002.11054, 2020.</p><p class="r" id="ref-2"><b>[2]</b> Lattner et al., "MLIR: Scaling Compiler Infrastructure for Domain Specific Computation", IEEE/ACM CGO 2021. doi:10.1109/CGO51591.2021.9370308</p><p class="r" id="ref-3"><b>[3]</b> J. L. Hennessy, D. A. Patterson, "A New Golden Age for Computer Architecture", CACM 62(2), 2019.</p><p class="r" id="ref-9"><b>[9]</b> OpenXLA / StableHLO — https://openxla.org/stablehlo .</p><p class="r" id="ref-10"><b>[10]</b> LLVM Polly — https://polly.llvm.org/ .</p></section><div class="related"><div class="rl">연결된 주제 (graph)</div><div class="rgrid"><a class="rcard" href="07-synthesis.html"><div class="rn">07 · 종합·전망</div><div class="rt">종합</div><div class="redge">↳ dialect 폭발 = 파편화 재발</div></a></div></div><nav class="pager"><a class="prev" href="00-intro.html"><div class="d">← 이전 · 00</div>도입</a><a class="next" href="02-concepts.html"><div class="d">다음 · 02 →</div>핵심 개념</a></nav>
+</article>
+</main>
+<footer>
+<span class="contributors">MLIR · Polyhedral / Affine 세미나 · 2026-06-12 · 발표 Suhwan</span>
+<a href="index.html">전체 지도 ↩</a>
+</footer>
+<script src="assets/poly.js"></script>
+<script src="assets/viz-scenes.js"></script>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/auto-render.min.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>심화 · Farkas · MLIR 세미나</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/uk-style.css">
+<link rel="stylesheet" href="assets/uk-report.css">
+<link rel="stylesheet" href="assets/viz.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
+<link rel="stylesheet" href="assets/seminar.css">
+</head>
+<body class="report part-poly" id="top" data-page="aside-farkas">
+<header>
+<a class="wordmark" href="index.html">← MLIR 세미나</a>
+<span class="hdr-part">심화 자료 · Farkas</span><a class="github-link" href="index.html">[ 전체 지도 ◇ ]</a></header>
+<main>
+<article class="report-page">
+<div class="partband"><span class="pb-label">심화 자료</span><span class="pb-name">부록 · Farkas</span></div>
+<h1>Farkas Lemma — 무한한 합법성 검사를 유한한 ILP로</h1>
+<p class="report-meta"><span class="chip pchip">심화 · Appendix</span> · <span class="chip">Farkas</span> · <time datetime="2026-06-12">2026-06-12</time></p>
+<p class="dek">∀(반복공간의 모든 점) 부등식을 λ 계수 문제로 접어, 합법 스케줄 θ를 ILP로 푸는 폴리헤드럴 스케줄링의 심장.</p>
+<nav class="toc" aria-label="Table of contents"><h2>이 페이지</h2><ol><li><a href="#문제-합법성은-무한히-많은-부등식-이다">문제 — 합법성은 "무한히 많은 부등식"이다</a></li><li><a href="#farkas-lemma-아핀-형태-affine-form">Farkas Lemma (아핀 형태, affine form)</a></li><li><a href="#핵심은-늘-한-조각의-반복이다">핵심은 늘 한 조각의 반복이다</a></li><li><a href="#예제-1-성공-psi-i-i-3-이-1-le-i-le-n-에서-항상-ge-0-인가">예제 1 (성공) — $\psi(i)=i+3$ 이 $1\le i\le N$ 에서 항상 $\ge 0$ 인가?</a></li><li><a href="#예제-2-실패-psi-i-2i-n-은-항상-ge-0-인가">예제 2 (실패) — $\psi(i)=2i-N$ 은 항상 $\ge 0$ 인가?</a></li><li><a href="#미지수가-스케줄-계수-일-때-진짜-쓰임새">미지수가 스케줄 계수 일 때 — 진짜 쓰임새</a></li><li><a href="#스텐실은-왜-손으로-풀렸나-uniform-vs-farkas">스텐실은 왜 손으로 풀렸나 — uniform vs Farkas</a></li><li><a href="#presburger-ilp-연결">Presburger·ILP 연결</a></li><li><a href="#한눈-요약">한눈 요약</a></li><li><a href="#references">References</a></li></ol></nav>
+<h2 id="문제-합법성은-무한히-많은-부등식-이다">문제 — 합법성은 "무한히 많은 부등식"이다</h2>
+<p>폴리헤드럴 변환에서 스케줄 $\Theta$ 가 <em>합법(legal)</em> 이려면, 모든 의존성이 변환 뒤에도 시간상 앞으로 흘러야 한다:</p>
+<p>$$\forall\, \mathbf{i} \in D : \qquad \theta(\mathbf{i}') - \theta(\mathbf{i}) \;=\; \Theta\,\delta \;\succeq\; 0$$</p>
+<p>문제는 $\forall\,\mathbf{i} \in D$ 다. 반복 공간에는 정수격자점이 수천 개(파라미터 $N$ 에 따라 <em>무한히</em> 많을 수도) 있고, 점마다 부등식이 하나씩 생긴다. 미지수인 스케줄 계수를 풀려면 이 <em>무한히 많은 제약</em>을 <strong>유한한 문제</strong>로 접어야 한다. 그 접개를 가능케 하는 정리가 <strong>Farkas Lemma</strong>다 <sup class="cite"><a href="#ref-6">[6]</a></sup>.</p>
+<h2 id="farkas-lemma-아핀-형태-affine-form">Farkas Lemma (아핀 형태, affine form)</h2>
+<blockquote><p><strong>정리.</strong> 다면체 $D = \{\,\mathbf{x} : A\mathbf{x} + \mathbf{b} \ge \mathbf{0}\,\}$ 가 공집합이 아니라고 하자. 어떤 <strong>아핀 함수</strong> $\psi(\mathbf{x})$ 가 $D$ 위에서 항상 비음수($\forall \mathbf{x}\in D:\ \psi(\mathbf{x}) \ge 0$)일 <strong>필요충분조건</strong>은, 제약식들의 <strong>비음수 결합</strong>으로 그 함수를 쓸 수 있다는 것이다:</p><p>$$\psi(\mathbf{x}) \;\equiv\; \lambda_0 \;+\; \sum_{k} \lambda_k\,\big(A_k\,\mathbf{x} + b_k\big), \qquad \lambda_0,\ \lambda_k \;\ge\; 0$$</p></blockquote>
+<p>직관: "이 affine 함수가 영역 전체에서 양수다"라는 <em>기하학적·전칭(∀)</em> 명제를, "이 함수는 (이미 양수인) 제약식들을 양수 배율로 더한 것일 뿐"이라는 <em>대수적·존재(∃)</em> 명제로 <strong>맞바꾼다</strong>. 우변은 점 $\mathbf{x}$ 를 더 이상 일일이 검사하지 않는다 — <strong>$\lambda$ 라는 유한개의 곱수(multiplier)</strong> 만 찾으면 된다.</p>
+<h2 id="핵심은-늘-한-조각의-반복이다">핵심은 늘 한 조각의 반복이다</h2>
+<p>스케줄 합법성 검사는, 따지고 보면 <em>이 한 가지 질문을 의존성마다 반복</em>하는 것이다:</p>
+<blockquote><p>주어진 아핀 식 $\psi(\mathbf{i})$ 가 다면체 $D$ 의 <strong>모든</strong> 점에서 $\ge 0$ 인가?</p></blockquote>
+<p>Farkas는 이 ∀ 질문을 "$\psi$ 를 제약식들의 비음수 결합으로 쓰는 $\lambda$ 가 <strong>존재하는가</strong>"로 바꾼다. 추상적으로 들리니 <strong>숫자로 직접</strong> 해 보자.</p>
+<h2 id="예제-1-성공-psi-i-i-3-이-1-le-i-le-n-에서-항상-ge-0-인가">예제 1 (성공) — $\psi(i)=i+3$ 이 $1\le i\le N$ 에서 항상 $\ge 0$ 인가?</h2>
+<p>영역은 두 부등식 제약으로 적힌다: $D=\{\,i:\ \underbrace{i-1}_{\ge 0},\ \underbrace{N-i}_{\ge 0}\,\}$. Farkas에 따라 $\psi$ 를 <em>이 두 제약의 비음수 결합 + 비음수 상수</em>로 놓는다:</p>
+<p>$$\underbrace{i+3}_{\psi(i)} \;\equiv\; \lambda_0 \;+\; \lambda_1\,(i-1) \;+\; \lambda_2\,(N-i), \qquad \lambda_0,\lambda_1,\lambda_2\ge 0$$</p>
+<p>우변을 <strong>펼쳐서 $i,\ N$, 상수로 정리</strong>하면:</p>
+<p>$$= (\lambda_1-\lambda_2)\,i \;+\; \lambda_2\,N \;+\; (\lambda_0-\lambda_1)$$</p>
+<p>이제 양변에서 <strong>같은 항(같은 변수)의 계수를 일치</strong>시킨다 — 이 단계가 바로 "$i$ 계수 매칭 → $i$ 소거"다. $\psi$ 에는 $N$ 이 없으니 $N$ 의 계수는 $0$:</p>
+<div class="tablewrap"><table><thead><tr><th>항</th><th>좌변 계수</th><th>우변 계수</th><th>나오는 식</th></tr></thead><tbody><tr><td>$i$</td><td>$1$</td><td>$\lambda_1-\lambda_2$</td><td>$\lambda_1-\lambda_2=1$</td></tr><tr><td>$N$</td><td>$0$</td><td>$\lambda_2$</td><td>$\lambda_2=0$</td></tr><tr><td>상수</td><td>$3$</td><td>$\lambda_0-\lambda_1$</td><td>$\lambda_0-\lambda_1=3$</td></tr></tbody></table></div>
+<p>차례로 풀면 $\lambda_2=0 \Rightarrow \lambda_1=1 \Rightarrow \lambda_0=4$. 셋 다 $\ge 0$ ✔. 즉</p>
+<p>$$i+3 \;=\; \underbrace{4}_{\ge 0} \;+\; \underbrace{1}_{\ge 0}\cdot(i-1) \;+\; \underbrace{0}_{\ge 0}\cdot(N-i)$$</p>
+<p><strong>점 하나 대입하지 않고</strong> $\psi\ge 0$ 이 증명됐다. 찾은 $\lambda$ 는 "이 식은 이미 양수인 제약들을 양수배로 더한 것"이라는 <em>영수증</em>인 셈이다.</p>
+<h2 id="예제-2-실패-psi-i-2i-n-은-항상-ge-0-인가">예제 2 (실패) — $\psi(i)=2i-N$ 은 항상 $\ge 0$ 인가?</h2>
+<p>같은 절차를 그대로 밟는다:</p>
+<p>$$2i - N \;\equiv\; \lambda_0+\lambda_1(i-1)+\lambda_2(N-i) \;=\; (\lambda_1-\lambda_2)\,i+\lambda_2\,N+(\lambda_0-\lambda_1)$$</p>
+<div class="tablewrap"><table><thead><tr><th>항</th><th>좌변 계수</th><th>나오는 식</th></tr></thead><tbody><tr><td>$i$</td><td>$2$</td><td>$\lambda_1-\lambda_2=2$</td></tr><tr><td>$N$</td><td>$-1$</td><td>$\lambda_2=-1$ ❌</td></tr><tr><td>상수</td><td>$0$</td><td>$\lambda_0-\lambda_1=0$</td></tr></tbody></table></div>
+<p>$N$ 의 계수가 $\lambda_2=-1&lt;0$ 을 요구한다 — 그런데 Farkas는 $\lambda\ge 0$ 만 허용한다. <strong>비음수 $\lambda$ 가 존재하지 않으므로</strong>, Farkas는 "$\psi\ge 0$ 은 거짓"이라 <em>판정</em>한다. 실제로 $i=1,\ N=10$ 이면 $2\cdot1-10=-8&lt;0$ — 반례가 있다. 정리하면: <strong>$\lambda$ 해가 없다 = 그 식이 영역 어딘가에서 음수다 = 그 스케줄은 불법.</strong></p>
+<h2 id="미지수가-스케줄-계수-일-때-진짜-쓰임새">미지수가 <em>스케줄 계수</em> 일 때 — 진짜 쓰임새</h2>
+<p>위 두 예제는 $\psi$ 가 이미 주어졌다. 실제 스케줄링에선 $\theta(i)=c\,i+d$ 의 <strong>계수 $c,d$ 가 미지수</strong>이고, 우리는 <em>합법이 되게 하는 $c,d$ 를 찾는다</em>. 의존성 거리가 $i$ 에 따라 변하는 예 — 반복 $i$ 와 반복 $2i$ 사이에 의존성이 있어 늦은 쪽이 이른 쪽 뒤에 와야 하는 경우 — 합법성은</p>
+<p>$$\psi(i)=\theta(2i)-\theta(i)=c\,(2i)+d-(c\,i+d)=c\,i \;\ge\; 1 \qquad (\forall\, i\ge 1)$$</p>
+<p>여기 $\psi(i)=c\,i$ 는 <strong>$i$ 에 의존</strong>하므로 눈으로 못 끝낸다. Farkas로 "$c\,i-1\ge 0$ over $\{i-1\ge 0\}$"를 전개·매칭하면:</p>
+<p>$$c\,i-1 \equiv \lambda_0+\lambda_1(i-1) \;\Rightarrow\; \underbrace{c=\lambda_1}_{i\text{ 계수}},\quad \underbrace{-1=\lambda_0-\lambda_1}_{\text{상수}} \;\Rightarrow\; \lambda_0=c-1\ge 0 \;\Rightarrow\; \boxed{c\ge 1}$$</p>
+<p>매칭이 <strong>미지수 $c$ 에 대한 부등식 $c\ge 1$</strong> 을 뱉었다. 일반적으로는 <em>모든 의존성</em>에 대해 이런 식을 모아 $(c,\,d,\,\lambda\ge 0)$ 의 <strong>연립 선형 시스템</strong>을 만들고, 그걸 <strong>ILP/LP</strong> 가 푼다(여러 합법해 중 통신·지역성 비용이 최소인 것을 고른다). 이것이 Feautrier·Pluto 스케줄러의 엔진이다 <sup class="cite"><a href="#ref-6">[6]</a></sup><sup class="cite"><a href="#ref-4">[4]</a></sup>.</p>
+
+<figure class="diagram"><pre class="mermaid">flowchart TD
+  A["합법성 한 조각&lt;br/&gt;ψ(i) ≥ 0  (∀ i ∈ D)"] --&gt; B["Farkas로 전개&lt;br/&gt;ψ = λ0 + Σ λk·(제약 k)"]:::hi
+  B --&gt; C["i·N 계수를 좌·우변에서&lt;br/&gt;매칭 → i 소거"]
+  C --&gt; D["λ(와 미지 스케줄 계수)에&lt;br/&gt;대한 유한 선형식"]
+  D --&gt; E{"모든 λ ≥ 0 인&lt;br/&gt;해가 있나?"}
+  E --&gt;|"있음"| OK["ψ ≥ 0 증명&lt;br/&gt;= 스케줄 합법 (예제 1)"]:::hi
+  E --&gt;|"없음"| NO["반례 존재&lt;br/&gt;= 스케줄 불법 (예제 2)"]:::no
+  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;
+  classDef no fill:#f3f3f0,stroke:#999,color:#555;</pre></figure>
+
+<h2 id="스텐실은-왜-손으로-풀렸나-uniform-vs-farkas">스텐실은 왜 <em>손으로</em> 풀렸나 — uniform vs Farkas</h2>
+<p>세미나의 2D 스텐실은 의존성이 $\delta_1=(1,0),\ \delta_2=(0,1)$ 로 <strong>상수(uniform)</strong>다. 그러면 $\Theta\delta$ 도 상수라 $i$ 가 애초에 등장하지 않고, 위의 매칭 없이 눈으로 끝난다:</p>
+<p>$$\Theta=\begin{bmatrix}1&amp;1\\0&amp;1\end{bmatrix}:\qquad \Theta\delta_1=\begin{bmatrix}1\\0\end{bmatrix}\succ 0,\qquad \Theta\delta_2=\begin{bmatrix}1\\1\end{bmatrix}\succ 0$$</p>
+<p><strong>Farkas가 진짜 필요한 건</strong> 의존성·경계가 파라미터 $N$ 이나 인덱스 $i$ 에 의존해(예제 2·미지수 예처럼) 점마다 달라질 때다. 스텐실은 그 일반 기계의 <em>손으로 풀리는 특수예</em>인 셈이다.</p>
+<h2 id="presburger-ilp-연결">Presburger·ILP 연결</h2>
+<p>반복 공간 $D$ 와 접근 함수 $F$ 가 affine이면 의존성도 affine 관계이고, "겹치는 점이 존재하는가"는 <strong>Presburger 산술의 가해성(feasibility)</strong> — 정수 부등식계에 해가 있는지 — 로 <em>정확히</em> 판정된다. Farkas는 이 세계 안에서 <em>합법성</em>(∀가 ≥0)을, Presburger 가해성은 <em>의존성 존재</em>(∃ 겹침)를 담당한다. 둘 다 무한한 점 검사를 <strong>유한한 정수 선형 문제</strong>로 환원한다는 같은 정신이다 <sup class="cite"><a href="#ref-6">[6]</a></sup>.</p>
+<h2 id="한눈-요약">한눈 요약</h2>
+<ul><li>합법성 한 조각 = "<strong>아핀 식 $\psi$ 가 영역 $D$ 위에서 항상 $\ge 0$?</strong>" — 본래 ∀(무한히 많은 점).</li><li>Farkas: $\psi=\lambda_0+\sum_k\lambda_k(\text{제약}_k),\ \lambda\ge 0$ 로 <strong>전개</strong> → $i,N$ <strong>계수 매칭으로 $i$ 소거</strong> → $\lambda$(와 미지 스케줄 계수)에 대한 유한 선형식.</li><li>$\lambda\ge 0$ 해가 <strong>있으면 합법</strong>(예제 1: $\lambda=(4,1,0)$), <strong>없으면 불법</strong>(예제 2: $\lambda_2=-1$).</li><li>미지수가 스케줄 계수면 매칭이 $c\ge 1$ 같은 부등식을 주고, 전체를 <strong>ILP</strong> 가 푼다 — Feautrier·Pluto의 심장 <sup class="cite"><a href="#ref-6">[6]</a></sup><sup class="cite"><a href="#ref-4">[4]</a></sup>. 적용 영역이 <a href="aside-scop.html">SCoP</a>임은 전제다.</li></ul>
+<h2 id="references">References</h2>
+<p><sup class="cite"><a href="#ref-4">[4]</a></sup> U. Bondhugula et al., "A Practical Automatic Polyhedral Parallelizer and Locality Optimizer" (Pluto), PLDI 2008. <sup class="cite"><a href="#ref-5">[5]</a></sup> T. Grosser et al., "Polly — Polyhedral Optimization in LLVM", IMPACT 2012. <sup class="cite"><a href="#ref-6">[6]</a></sup> P. Feautrier, "Some efficient solutions to the affine scheduling problem", Int. J. Parallel Programming, 1992. <sup class="cite"><a href="#ref-7">[7]</a></sup> R. Allen, K. Kennedy, "Optimizing Compilers for Modern Architectures", 2002.</p><section class="pagerefs"><h2>참고문헌</h2><p class="r" id="ref-4"><b>[4]</b> U. Bondhugula et al., "A Practical Automatic Polyhedral Parallelizer and Locality Optimizer" (Pluto), PLDI 2008.</p><p class="r" id="ref-5"><b>[5]</b> T. Grosser et al., "Polly — Polyhedral Optimization in LLVM", IMPACT 2012.</p><p class="r" id="ref-6"><b>[6]</b> P. Feautrier, "Some efficient solutions to the affine scheduling problem", Int. J. Parallel Programming, 1992.</p><p class="r" id="ref-7"><b>[7]</b> R. Allen, K. Kennedy, "Optimizing Compilers for Modern Architectures", 2002.</p></section><div class="related"><div class="rl">관련</div><div class="rgrid"><a class="rcard" href="05-polyhedral.html"><div class="rn">05 · Polyhedral</div><div class="rt">폴리헤드럴 모델 심화</div><div class="redge">↳ 본문으로 돌아가기</div></a><a class="rcard" href="aside-scop.html"><div class="rn">심화 · SCoP</div><div class="rt">SCoP</div><div class="redge">↳ 함께 보기</div></a></div></div><nav class="pager"><a class="prev" href="05-polyhedral.html"><div class="d">← 본문</div>05 · Polyhedral</a><a class="next" href="index.html"><div class="d">전체 지도 →</div>지도로</a></nav>
+</article>
+</main>
+<footer>
+<span class="contributors">MLIR · Polyhedral / Affine 세미나 · 2026-06-12 · 발표 Suhwan</span>
+<a href="index.html">전체 지도 ↩</a>
+</footer>
+<script src="assets/poly.js"></script>
+<script src="assets/viz-scenes.js"></script>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/auto-render.min.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

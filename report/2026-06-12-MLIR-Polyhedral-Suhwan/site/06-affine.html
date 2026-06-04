@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>주제 2 · 06. Affine 변환 · MLIR 세미나</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/uk-style.css">
+<link rel="stylesheet" href="assets/uk-report.css">
+<link rel="stylesheet" href="assets/viz.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
+<link rel="stylesheet" href="assets/seminar.css">
+</head>
+<body class="report part-poly" id="top" data-page="06-affine">
+<header>
+<a class="wordmark" href="index.html">← MLIR 세미나</a>
+<span class="hdr-part">주제 2 · Polyhedral</span><a class="github-link" href="index.html">[ 전체 지도 ◇ ]</a></header>
+<main>
+<article class="report-page">
+<div class="partband"><span class="pb-label">주제 2</span><span class="pb-name">Polyhedral Model &amp; Affine</span></div>
+<h1>Affine Dialect 변환 심화</h1>
+<p class="report-meta"><span class="chip pchip">주제 2 · Polyhedral</span> · <span class="chip">CH 06</span> · <time datetime="2026-06-12">2026-06-12</time></p>
+<p class="dek">스케줄을 바꾸면 병렬성이 생긴다 — 지역성·스큐잉·하드웨어 매핑.</p>
+
+<figure class="diagram"><pre class="mermaid">flowchart TD
+  subgraph loc["지역성"]
+    direction TB
+    I[Interchange] --&gt; Fu[Fusion] --&gt; Ti[Tiling] --&gt; Pa[Paging]
+  end
+  subgraph par["병렬성 ★"]
+    Sk["Skewing&lt;br/&gt;없던 병렬성"]:::hi
+  end
+  subgraph hw["하드웨어 매핑"]
+    direction TB
+    Si[SIMD] --&gt; Mc[Multicore] --&gt; Pi[Pipeline]
+  end
+  loc --&gt; par --&gt; hw
+  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;</pre><figcaption>affine 변환의 세 갈래. ★ 스큐잉은 '없던 병렬성'을 만들어내는 유일한 변환이다.</figcaption></figure>
+
+<p>앞 섹션에서 폴리헤드럴 모델이 루프를 <em>다면체(polyhedron)</em> — 부등식으로 둘러싸인 다차원 공간 — 로 보고, 실행 순서를 행렬(스케줄, schedule)로 바꾼다는 큰 그림을 봤다. 이번 섹션은 그 이론이 MLIR의 <strong>Affine dialect</strong> 위에서 실제로 어떻게 동작하는지를, 대표적인 변환들과 애니메이션으로 따라간다.</p>
+<blockquote><p>용어 빠른 정의: <strong>dialect</strong> = MLIR에서 한 추상화 수준의 연산(op) 묶음(하드웨어로 치면 하나의 ISA 레이어). <strong>Affine dialect</strong> = 루프 경계·배열 인덱스가 모두 <em>아핀식</em>(변수의 1차식 + 상수)으로 제한된 dialect로, 폴리헤드럴 분석을 IR 문법 차원에서 강제한다. <strong>lowering</strong> = 높은 추상화의 op를 더 낮은 op로 점진적으로 내려보내는 것.</p></blockquote>
+<h3 id="1-affine-문법-60초-요약">1. Affine 문법 60초 요약</h3>
+<p>Affine dialect는 다섯 개의 연산만 알면 거의 다 읽힌다.</p>
+<pre class="code"><span class="dia">affine</span>.for %i = <span class="num">0</span> <span class="kw">to</span> %N { ... }        <span class="cm">// 경계가 아핀식인 카운트 루프</span>
+<span class="dia">affine</span>.if <span class="kw">affine_set</span>&lt;(d0) : (d0 - <span class="num">1</span> &gt;= <span class="num">0</span>)&gt; { ... }   <span class="cm">// 조건이 정수집합(integer_set)인 분기</span>
+%v = <span class="dia">affine</span>.load  %A[%i, %j] : <span class="ty">memref</span>&lt;NxMxf32&gt;      <span class="cm">// 아핀 인덱스로 메모리 읽기</span>
+     <span class="dia">affine</span>.store %v, %A[%i, %j] : <span class="ty">memref</span>&lt;NxMxf32&gt;  <span class="cm">//       〃          쓰기</span>
+%t = <span class="dia">affine</span>.apply <span class="kw">affine_map</span>&lt;(d0,d1)-&gt;(d0+d1)&gt;(%i,%j) <span class="cm">// 인덱스를 아핀식으로 다시 계산</span>
+<span class="dia">affine</span>.parallel (%i,%j) = (<span class="num">0</span>,<span class="num">0</span>) <span class="kw">to</span> (%N,%M) { ... }  <span class="cm">// 반복끼리 의존성 없음을 *선언*</span></pre>
+<p>한 줄 해설: <code>affine.for</code>는 보통의 for 루프, <code>affine.if</code>의 조건은 부등식 집합(integer_set)으로만 쓸 수 있고, <code>affine.load/store</code>는 <code>memref</code>(메모리 버퍼 타입)에 아핀 인덱스로만 접근하며, <code>affine.apply</code>는 좌표 변환을 계산하고, <code>affine.parallel</code>은 "이 반복들은 동시에 돌려도 안전하다"는 <em>합법성 보증</em>을 IR에 박아 넣는다. 폴리헤드럴 모델의 세 기둥(반복공간 $D$, 의존성, 스케줄 $\Theta$)이 각각 <code>affine.for</code>의 경계 / 의존성 분석 / <code>affine.apply</code>·루프 순서로 대응된다 <sup class="cite"><a href="#ref-1">[1]</a></sup>.</p>
+<p>핵심은 이 <em>문법 제약 자체가 분석을 가능하게 한다</em>는 점이다. 인덱스를 임의의 함수로 못 쓰게 막았기 때문에, 컴파일러는 "이 두 접근이 같은 칸을 건드리나?"를 정수 부등식으로 <em>정확히(exact)</em> 풀 수 있다. 보수적으로 "혹시 겹칠지 모르니 포기"하는 일반 컴파일러와 갈리는 지점이다.</p>
+<h3 id="2-affine-pass-폴리헤드럴-변환-대응표">2. Affine pass ↔ 폴리헤드럴 변환 대응표</h3>
+<p>MLIR에서 각 폴리헤드럴 변환은 하나의 <em>pass</em>(IR을 받아 변형하는 단위)로 제공된다 <sup class="cite"><a href="#ref-1">[1]</a></sup><sup class="cite"><a href="#ref-8">[8]</a></sup>.</p>
+<div class="tablewrap"><table><thead><tr><th>Affine pass</th><th>폴리헤드럴 변환</th><th>한 줄 효과</th></tr></thead><tbody><tr><td><code>affine-loop-tile</code></td><td>Tiling</td><td>strip-mining으로 다면체 분할 → 워킹셋을 캐시에 가둠</td></tr><tr><td><code>affine-loop-fusion</code></td><td>Fusion</td><td>두 다면체를 하나로 → producer-consumer 지역성↑</td></tr><tr><td><code>affine-parallelize</code></td><td>(병렬 스케줄)</td><td>의존성 없는 루프를 <code>affine.parallel</code>로 승격</td></tr><tr><td><code>affine-super-vectorize</code></td><td>(SIMD)</td><td>병렬 루프를 벡터 op로 묶음</td></tr><tr><td><code>affine-loop-coalescing</code></td><td>(1D 평탄화)</td><td>N-D nest → 1-D, GPU 1-D thread index 친화</td></tr><tr><td>(Interchange)</td><td>Interchange</td><td>스케줄 행렬의 행 교환 → stride/지역성 개선</td></tr></tbody></table></div>
+<p>LLVM upstream에는 in-tree affine pass가 15종 가까이 있다(<code>affine-loop-normalize</code>·<code>-tile</code>·<code>-fusion</code>·<code>-coalescing</code>·<code>-unroll</code>·<code>-unroll-jam</code>·<code>affine-parallelize</code>·<code>affine-super-vectorize</code>·<code>affine-scalrep</code>·<code>affine-data-copy-generate</code>·<code>affine-pipeline-data-transfer</code>·<code>affine-expand-index-ops</code>·<code>lower-affine</code> 등) <sup class="cite"><a href="#ref-8">[8]</a></sup>. <strong>단, Interchange는 예외다 — LLVM에는 standalone <code>affine-loop-interchange</code> pass가 없어</strong>, in-tree 유틸리티 <code>permuteLoops</code>(와 테스트 pass <code>-test-loop-permutation</code>)가 그 역할을 한다 <sup class="cite"><a href="#ref-8">[8]</a></sup>. 이제 표의 변환들을 애니메이션과 함께 본다.</p>
+<h3 id="3-루프-순서-교환-interchange">3. 루프 순서 교환 (Interchange)</h3>
+<p>원리: 스케줄 행렬을 치환행렬(permutation matrix)로 곱하면 루프 중첩 순서가 바뀐다. 안쪽 루프가 메모리를 한 칸씩(stride 1, 인접 주소를 차례로) 훑도록 순서를 고르면 캐시 히트가 급증한다.</p>
+
+<figure class="viz"><div class="vizbox" data-scene="02-interchange"><div class="vizph"><span class="vp-play">▶</span> 루프 순서 교환 — 스크롤하면 자동 로드</div></div><figcaption><span><b>인터랙티브 애니메이션</b> · 루프 순서를 바꾸면 메모리 접근 stride가 바뀌어 공간 지역성이 좋아진다. (▶ 재생 · 단계 조작)</span><a href="../viz/topics/02-interchange.html" target="_blank" rel="noopener">↗ 전체화면</a></figcaption></figure>
+
+<p>행 우선 배열을 열 방향으로 훑던 루프를 뒤집어 행 방향으로 훑게 만드는 고전적 변환으로, 변환 자체는 스케줄 행렬의 행 두 개를 맞바꾸는 것에 불과하다 <sup class="cite"><a href="#ref-1">[1]</a></sup>. (MLIR 측에서는 별도 pass 대신 <code>permuteLoops</code> 유틸리티가 이 행 교환을 수행한다 <sup class="cite"><a href="#ref-8">[8]</a></sup>.)</p>
+<h3 id="4-타일링-tiling">4. 타일링 (Tiling)</h3>
+
+<figure class="img"><img class="" src="../images/memory-hierarchy.svg" alt="레지스터·캐시·주기억장치·디스크로 이어지는 메모리 계층 피라미드"><figcaption>&lt;b&gt;메모리 계층&lt;/b&gt; 피라미드 — 위로 갈수록 빠르고 작은 레지스터/캐시, 아래로 갈수록 느리고 큰 메모리/디스크. 타일링·페이징은 워킹셋을 상위 계층에 가둬 지역성을 높이는 변환이다.<div class="src">출처: <a href="https://commons.wikimedia.org/wiki/File:Computer_Memory_Hierarchy.svg" target="_blank" rel="noopener">Wikimedia Commons · Danlash / Akvitberg</a> · Public domain</div></figcaption></figure>
+
+<p>원리: 큰 루프를 strip-mine(작은 블록으로 쪼개기) + interchange의 조합으로 <em>타일</em> 단위로 재배열한다. 타일 하나의 워킹셋이 캐시/SRAM 안에 들어가면 DRAM 왕복이 줄어든다.</p>
+
+<figure class="viz"><div class="vizbox" data-scene="04-tiling"><div class="vizph"><span class="vp-play">▶</span> 루프 타일링 — 스크롤하면 자동 로드</div></div><figcaption><span><b>인터랙티브 애니메이션</b> · 타일링 = strip-mine + interchange. 한 타일의 데이터를 캐시에 가둬 재사용한다. (▶ 재생 · 단계 조작)</span><a href="../viz/topics/04-tiling.html" target="_blank" rel="noopener">↗ 전체화면</a></figcaption></figure>
+
+<p><code>affine-loop-tile</code>의 핵심 한 가지: 옵션 <code>separate=true</code>를 주면 컴파일러가 타일 경계를 <code>affine.if</code>로 분리해 <strong>full tile(딱 떨어지는 타일)과 partial tile(자투리)을 코드 레벨에서 갈라낸다</strong>. 이것은 폴리헤드럴에서 말하는 <em>iteration domain peeling</em>(반복공간을 조각내 자투리를 떼어내는 것)을 MLIR이 first-class 문법(<code>affine.if</code> + integer_set)으로 표현한 것이다 <sup class="cite"><a href="#ref-8">[8]</a></sup>. full 경로는 경계가 상수가 되므로 뒤이은 unroll·vectorize의 최적화 진입로가 된다. 즉 "자투리 처리"라는 실무적 골칫거리가, 이론의 peeling과 그대로 맞아떨어진다.</p>
+<h3 id="5-융합-fusion">5. 융합 (Fusion)</h3>
+<p>원리: 한 루프가 만든 배열을 다음 루프가 곧장 소비할 때, 두 반복영역을 하나로 합치면 중간 버퍼가 사라지고(producer 결과를 바로 consumer가 씀) 지역성이 올라간다.</p>
+
+<figure class="viz"><div class="vizbox" data-scene="03-fusion"><div class="vizph"><span class="vp-play">▶</span> 루프 융합 — 스크롤하면 자동 로드</div></div><figcaption><span><b>인터랙티브 애니메이션</b> · 융합 = 두 반복영역을 합쳐 중간 버퍼를 없애고 producer-consumer 지역성을 높인다. (▶ 재생 · 단계 조작)</span><a href="../viz/topics/03-fusion.html" target="_blank" rel="noopener">↗ 전체화면</a></figcaption></figure>
+
+<p><code>affine-loop-fusion</code> 다음에 <code>affine-scalrep</code>(스칼라 승격)을 이어 붙이면, 3단계 체인의 중간 배열이 레지스터로 승격되며 완전히 사라진다 — 폴리헤드럴의 <em>array contraction</em>(배열 축약) 자동화에 해당한다 <sup class="cite"><a href="#ref-8">[8]</a></sup>. 이 점이 고수준 dialect와 닿는 지점인데, 뒤의 의견 박스에서 다시 다룬다.</p>
+<h3 id="6-스큐잉-없던-병렬성을-만들어내기">6. ★ 스큐잉 — 없던 병렬성을 만들어내기</h3>
+<p>이번 섹션의 하이라이트다. 의존성 벡터가 <code>(1,0)</code>과 <code>(0,1)</code> 두 개 걸린 2D 스텐실은, <code>i</code> 루프도 <code>j</code> 루프도 <em>그대로는 병렬화할 수 없다</em> — 어느 방향으로 펼쳐도 옆 칸 결과를 기다려야 하기 때문이다.</p>
+<p>폴리헤드럴의 답은 <strong>스케줄 행렬을 바꾸는 것</strong> 하나뿐이다. 스큐(skew) 스케줄</p>
+<p>$$\theta(i,j) = (i+j,\; j), \qquad \theta = \begin{bmatrix}1&amp;1\\0&amp;1\end{bmatrix}$$</p>
+<p>직관 해설: 새 시간축 $t = i+j$(반대각선)를 도입하면, 두 의존성 $(1,0)$·$(0,1)$이 <em>모두</em> $\Delta t \ge 1$로 바뀐다(각각 $\Delta t = 1+0 = 1$, $0+1 = 1$). 즉 모든 의존성이 시간상 <em>앞으로만</em> 향하게 밀려난다. 그러면 같은 $t$ 값을 가진 점들(한 wavefront, 원래의 반대각선)끼리는 의존성이 <em>전혀 없으므로</em> 동시에 실행할 수 있다. 행렬식이 1인 unimodular 변환이라 반복 점은 하나도 손실되지 않는다 <sup class="cite"><a href="#ref-1">[1]</a></sup><sup class="cite"><a href="#ref-8">[8]</a></sup>.</p>
+
+<figure class="viz"><div class="vizbox" data-scene="07-skewing"><div class="vizph"><span class="vp-play">▶</span> 스큐잉 → 웨이브프론트 병렬성 — 스크롤하면 자동 로드</div></div><figcaption><span><b>인터랙티브 애니메이션</b> · $\theta=\begin{bmatrix}1&amp;1\\0&amp;1\end{bmatrix}$로 격자를 기울이면 의존성이 모두 시간축으로 밀려, 같은 wavefront 안에서 병렬성이 솟아난다. (▶ 재생 · 단계 조작)</span><a href="../viz/topics/07-skewing.html" target="_blank" rel="noopener">↗ 전체화면</a></figcaption></figure>
+
+<p>before / after MLIR (2D 스텐실 예제):</p>
+<pre class="code"><span class="cm">// Before — 두 루프 모두 loop-carried 의존성, 병렬 불가</span>
+<span class="dia">affine</span>.for %i = <span class="num">1</span> <span class="kw">to</span> <span class="num">7</span> {
+  <span class="dia">affine</span>.for %j = <span class="num">1</span> <span class="kw">to</span> <span class="num">7</span> {
+    %n = <span class="dia">affine</span>.load %A[%i - <span class="num">1</span>, %j] : <span class="ty">memref</span>&lt;8x8xf32&gt;   <span class="cm">// dep (1,0)</span>
+    %w = <span class="dia">affine</span>.load %A[%i, %j - <span class="num">1</span>] : <span class="ty">memref</span>&lt;8x8xf32&gt;   <span class="cm">// dep (0,1)</span>
+    %s = <span class="dia">arith</span>.addf %n, %w : <span class="ty">f32</span>
+    %h = <span class="dia">arith</span>.mulf %s, %c : <span class="ty">f32</span>
+    <span class="dia">affine</span>.store %h, %A[%i, %j] : <span class="ty">memref</span>&lt;8x8xf32&gt;
+  }
+}</pre>
+<pre class="code"><span class="cm">// After — θ(i,j)=(i+j, j) ; i = t - j. 바깥은 시간(순차), 안쪽은 병렬</span>
+<span class="dia">affine</span>.for %t = <span class="num">2</span> <span class="kw">to</span> <span class="num">13</span> {
+  <span class="dia">affine</span>.parallel (%j) = (max(<span class="num">1</span>, %t - <span class="num">6</span>)) <span class="kw">to</span> (min(<span class="num">7</span>, %t)) {
+    %i = <span class="dia">affine</span>.apply <span class="kw">affine_map</span>&lt;(t, j) -&gt; (t - j)&gt;(%t, %j)
+    %n = <span class="dia">affine</span>.load %A[%i - <span class="num">1</span>, %j] : <span class="ty">memref</span>&lt;8x8xf32&gt;
+    %w = <span class="dia">affine</span>.load %A[%i, %j - <span class="num">1</span>] : <span class="ty">memref</span>&lt;8x8xf32&gt;
+    %s = <span class="dia">arith</span>.addf %n, %w : <span class="ty">f32</span>
+    %h = <span class="dia">arith</span>.mulf %s, %c : <span class="ty">f32</span>
+    <span class="dia">affine</span>.store %h, %A[%i, %j] : <span class="ty">memref</span>&lt;8x8xf32&gt;
+  }
+}</pre>
+<p>한 줄 해설: 바깥 <code>affine.for %t</code>는 wavefront를 순서대로(시간) 훑고, 안쪽 <code>affine.parallel (%j)</code>는 <code>max/min</code> 아핀 경계로 그 wavefront의 폭만큼 펼쳐진다. <code>%i = affine.apply (t - j)</code>로 원래 인덱스를 복원한다. 의존성은 하나도 깨지 않고 <em>순서만</em> 바꿔 병렬성을 합성한 것이 스큐잉의 핵심이다 <sup class="cite"><a href="#ref-1">[1]</a></sup>. 이 $6\times6$ 예제(반복점 36개, $t=2..12$로 wavefront 11개)에서 코어 6개 기준 <strong>36개 순차 스텝이 11개 wavefront로 줄어 약 $3.3\times$ 속도</strong>가 된다(최대 wavefront 폭이 6이라 코어 6개에 딱 맞음) <sup class="cite"><a href="#ref-8">[8]</a></sup>.</p>
+<h3 id="7-simd-벡터화">7. SIMD 벡터화</h3>
+<p>원리: 병렬화된 안쪽 루프의 연속 반복들을 벡터 폭 VL만큼 한 묶음으로 만든다. 벡터 op 한 번 = VL개 반복을 한 번에 처리.</p>
+
+<figure class="viz"><div class="vizbox" data-scene="08-simd"><div class="vizph"><span class="vp-play">▶</span> SIMD 벡터화 — 스크롤하면 자동 로드</div></div><figcaption><span><b>인터랙티브 애니메이션</b> · 병렬 안쪽 루프를 벡터폭 VL로 묶으면 한 벡터 op가 VL개 반복을 동시에 계산한다. (▶ 재생 · 단계 조작)</span><a href="../viz/topics/08-simd.html" target="_blank" rel="noopener">↗ 전체화면</a></figcaption></figure>
+
+<p>MLIR <code>affine-super-vectorize</code>는 target-independent한 n-D 가상 벡터(virtual vector, 예: <code>vector&lt;4x4xf32&gt;</code>)로 표현해 두고, 실제 하드웨어 벡터폭은 나중 lowering에서 결정한다 <sup class="cite"><a href="#ref-8">[8]</a></sup>.</p>
+<h3 id="8-메모리-정렬-paging">8. 메모리 정렬 (Paging)</h3>
+<p>원리: 타일을 페이지 경계에 정렬하면 한 타일을 도는 동안 page fault와 TLB(주소 변환 캐시) miss가 줄어든다(가상메모리 관점의 타일링).</p>
+
+<figure class="viz"><div class="vizbox" data-scene="05-paging"><div class="vizph"><span class="vp-play">▶</span> 타일링과 페이징/TLB — 스크롤하면 자동 로드</div></div><figcaption><span><b>인터랙티브 애니메이션</b> · 타일을 페이지에 정렬하면 page fault·TLB miss가 줄어든다. (▶ 재생 · 단계 조작)</span><a href="../viz/topics/05-paging.html" target="_blank" rel="noopener">↗ 전체화면</a></figcaption></figure>
+
+<h3 id="9-멀티코어-분배-multicore">9. 멀티코어 분배 (Multicore)</h3>
+<p>원리: 바깥 병렬 루프(또는 타일들)를 P개 코어에 block 또는 cyclic으로 나눠 주면, 전체 완료 시간(makespan)이 줄고 speedup이 난다.</p>
+
+<figure class="viz"><div class="vizbox" data-scene="09-multicore"><div class="vizph"><span class="vp-play">▶</span> 멀티코어 분배 — 스크롤하면 자동 로드</div></div><figcaption><span><b>인터랙티브 애니메이션</b> · 바깥 병렬 루프/타일을 P코어에 block/cyclic 분배 → makespan 단축. (▶ 재생 · 단계 조작)</span><a href="../viz/topics/09-multicore.html" target="_blank" rel="noopener">↗ 전체화면</a></figcaption></figure>
+
+<h3 id="10-소프트웨어-파이프라이닝-pipelining">10. 소프트웨어 파이프라이닝 (Pipelining)</h3>
+<p>원리: 연속한 반복들의 단계(stage)를 II(initiation interval) 간격으로 겹쳐 발사한다 — 한 반복의 연산이 끝나기 전에 다음 반복을 시작시켜 파이프라인을 채운다(prologue → steady state → epilogue).</p>
+
+<figure class="viz"><div class="vizbox" data-scene="10-pipeline"><div class="vizph"><span class="vp-play">▶</span> 소프트웨어 파이프라이닝 — 스크롤하면 자동 로드</div></div><figcaption><span><b>인터랙티브 애니메이션</b> · 연속 반복의 스테이지를 II 간격으로 겹쳐 발사 — prologue/steady/epilogue. (▶ 재생 · 단계 조작)</span><a href="../viz/topics/10-pipeline.html" target="_blank" rel="noopener">↗ 전체화면</a></figcaption></figure>
+
+<p><code>affine-pipeline-data-transfer</code>는 DMA 데이터 전송과 계산을 자동으로 겹쳐주는데, 그 핵심이 <code>affine.apply (d0)-&gt;(d0-1)</code> — 즉 <em>스케줄을 -1만큼 시프트</em>하는 한 줄과 double buffer로 표현된다. minimum modulo scheduling의 MLIR 표현인 셈이다 <sup class="cite"><a href="#ref-8">[8]</a></sup>.</p>
+<h3 id="11-mlir-pass의-잘-드러나지-않는-두-성질">11. MLIR pass의 잘 드러나지 않는 두 성질</h3>
+<p>이 섹션의 변환들에는, 직접 들여다보지 않으면 놓치기 쉬운 두 가지 깊은 성질이 있다.</p>
+<p>첫째, <strong>진입점 불변성(4중 byte-identical)</strong>. 같은 unroll 변환을 (1) wrapper pass, (2) in-tree CLI(<code>mlir-opt --affine-loop-unroll</code>), (3) pipeline string, (4) C++ <code>PassManager</code>에 직접 <code>addPass</code>하는 네 경로 중 어느 것으로 호출해도 <em>결과 IR이 바이트 단위로 동일</em>하다 <sup class="cite"><a href="#ref-8">[8]</a></sup>. 호출 경로가 무엇이든 변환 의미가 불변(invariance)이라는 직접적 증거다 — 즉 MLIR pass는 진입점이 아니라 IR 변환 그 자체로 정의된다. (네 경로 모두 결국 같은 <code>loopUnrollByFactor</code> 함수를 호출하기 때문이다.)</p>
+<p>둘째, <strong>lower-affine의 Euclidean correction</strong>. affine 영역을 떠날 때(<code>--lower-affine</code>) affine의 <code>mod</code>는 arith dialect의 순진한 나머지로 1:1 번역되지 않는다. affine <code>mod</code>는 음수에서도 항상 비음수 결과를 보장하는 <em>Euclidean</em> 의미라서, lowering이 <code>remsi</code>(부호 있는 나머지) + <code>cmpi</code>(음수 검사) + <code>addi</code> + <code>select</code>의 보정 시퀀스로 풀어낸다 <sup class="cite"><a href="#ref-8">[8]</a></sup>. 같은 <code>mod</code>라도 dialect마다 의미가 미묘하게 다르다는 것을, 내려보내기 코드가 드러내 준다.</p>
+<h3 id="12-어디까지-내려갈-것인가">12. 어디까지 내려갈 것인가</h3>
+<p>마지막으로 실무 판단 하나. 변환을 affine까지 내려서 할지, 더 높은 linalg dialect에 머물지의 트레이드오프다.</p>
+<p>고수준 linalg에 머물면 matmul·conv 같은 연산의 <em>의미</em>가 보존돼 fusion이 싸고 직관적이다. 반면 affine까지 내려가면 skewing·interchange·peeling 같은 극한 루프 변형이 가능해지지만, 한 번 내려가면 고수준 의미를 되살리기 어렵다. 따라서 어느 레벨에 머물지는 타깃이 정한다 — 범용 가속기(GPU 등)는 의미를 오래 보존하는 linalg 중심이, 루프를 하드웨어 opcode 크기에 맞춰 극한으로 변형해야 하는 커스텀 가속기는 affine까지 내려가는 편이 유리하다.</p><section class="pagerefs"><h2>참고문헌</h2><p class="r" id="ref-1"><b>[1]</b> Lattner et al., "MLIR: A Compiler Infrastructure for the End of Moore's Law", arXiv:2002.11054, 2020.</p><p class="r" id="ref-8"><b>[8]</b> MLIR official documentation — https://mlir.llvm.org/docs/ .</p></section><div class="related"><div class="rl">연결된 주제 (graph)</div><div class="rgrid"><a class="rcard" href="04-lowering.html"><div class="rn">04 · Lowering·파이프라인</div><div class="rt">Progressive Lowering과 현대 컴파일러 파이프라인</div><div class="redge">↳ linalg→affine 위계</div></a></div></div><nav class="pager"><a class="prev" href="05-polyhedral.html"><div class="d">← 이전 · 05</div>Polyhedral</a><a class="next xpart part-synth" href="07-synthesis.html"><div class="d">마무리 · 종합 →</div>종합·전망</a></nav>
+</article>
+</main>
+<footer>
+<span class="contributors">MLIR · Polyhedral / Affine 세미나 · 2026-06-12 · 발표 Suhwan</span>
+<a href="index.html">전체 지도 ↩</a>
+</footer>
+<script src="assets/poly.js"></script>
+<script src="assets/viz-scenes.js"></script>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/auto-render.min.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

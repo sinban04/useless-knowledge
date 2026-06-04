@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MLIR · Polyhedral / Affine — 세미나 (2026-06-12)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/uk-style.css">
+<link rel="stylesheet" href="assets/uk-report.css">
+<link rel="stylesheet" href="assets/viz.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
+<link rel="stylesheet" href="assets/seminar.css">
+</head>
+<body class="report" id="top">
+<header>
+<a class="wordmark" href="index.html">← MLIR 세미나</a>
+<a class="github-link" href="https://mlir.llvm.org/" target="_blank" rel="noopener">[ mlir.llvm.org ↗ ]</a></header>
+<main>
+<article class="report-page">
+<h1>MLIR · Polyhedral / Affine</h1>
+<p class="report-meta"><time datetime="2026-06-12">2026-06-12</time> · <span class="chip">심화 세미나</span> · <span class="chip">두 주제</span> · <span class="chip">발표 Suhwan</span></p>
+<p class="dek">이 세미나는 크게 <strong>두 주제</strong>로 구성됩니다 — <strong>주제 1 · MLIR</strong>(왜 MLIR인가·설계 철학·파이프라인)과 <strong>주제 2 · Polyhedral Model & Affine</strong>(루프를 수학으로). 둘은 <code>affine</code> dialect를 통해 만나고, 마무리에서 <strong>ISA 경계</strong>로 종합됩니다.</p>
+<p class="paper-line"><strong>기반 논문</strong> · [1] <em>MLIR: A Compiler Infrastructure for the End of Moore's Law</em> (arXiv:2002.11054, 2020) · [2] <em>MLIR: Scaling Compiler Infrastructure for Domain Specific Computation</em> (CGO 2021)</p>
+<h2>주제 지도 — 두 주제와 그 연결</h2>
+<figure class="diagram graphmap"><pre class="mermaid">flowchart TD
+  subgraph G_mlir["주제 1 · MLIR"]
+    direction TB
+    p00["00 · 도입"]
+    p01["01 · 배경·두 논문"]
+    p02["02 · 핵심 개념"]
+    p03["03 · 설계 철학"]
+    p04["04 · Lowering·파이프라인"]
+  end
+  subgraph G_poly["주제 2 · Polyhedral"]
+    direction TB
+    p05["05 · Polyhedral"]
+    p06["06 · Affine 변환"]
+  end
+  subgraph G_synth["마무리 · 종합"]
+    direction TB
+    p07["07 · 종합·전망"]
+  end
+  p00 --&gt; p01
+  p01 --&gt; p02
+  p02 --&gt; p03
+  p03 --&gt; p04
+  p04 --&gt; p05
+  p05 --&gt; p06
+  p06 --&gt; p07
+  p00 -. "premature lowering → Progressivity" .-&gt; p03
+  p03 -. "철학 → 실천" .-&gt; p04
+  p02 -. "affine dialect → 폴리헤드럴" .-&gt; p05
+  p05 -. "정보 보존 = Progressivity" .-&gt; p03
+  p04 -. "linalg→affine 위계" .-&gt; p06
+  p04 -. "파이프라인 → ISA 경계" .-&gt; p07
+  p06 -. "custom target → ISA" .-&gt; p07
+  p07 -. "dialect 폭발 = 파편화 재발" .-&gt; p01
+  click p00 "00-intro.html" "도입"
+  click p01 "01-background.html" "배경·두 논문"
+  click p02 "02-concepts.html" "핵심 개념"
+  click p03 "03-philosophy.html" "설계 철학"
+  click p04 "04-lowering.html" "Lowering·파이프라인"
+  click p05 "05-polyhedral.html" "Polyhedral"
+  click p06 "06-affine.html" "Affine 변환"
+  click p07 "07-synthesis.html" "종합·전망"
+</pre><figcaption>두 묶음 = 두 주제 · 실선 = 읽기 흐름 · 점선 = 개념 연결 · 노드를 클릭하면 이동합니다.</figcaption></figure>
+<section class="topic part-mlir"><div class="topichead"><span class="tlabel">주제 1</span><h2>MLIR</h2><p class="ttag">왜 MLIR인가 — 개념, Chris Lattner의 설계 철학, 그리고 현대 컴파일러 파이프라인.</p></div><ol class="reading-order"><li><a href="00-intro.html"><span class="on">00</span><span class="oh">도입</span><span class="od">소스코드가 기계어가 되기까지, 그리고 '컴파일러 동물원' 문제.</span></a></li>
+<li><a href="01-background.html"><span class="on">01</span><span class="oh">MLIR 탄생 배경</span><span class="od">DSA 황금기, 컴파일러 파편화, 그리고 '하나의 진정한 IR 인프라'.</span></a></li>
+<li><a href="02-concepts.html"><span class="on">02</span><span class="oh">MLIR 핵심 개념</span><span class="od">Operation · Dialect · Region/Block · SSA · Trait/Interface · TableGen.</span></a></li>
+<li><a href="03-philosophy.html"><span class="on">03</span><span class="oh">Chris Lattner의 설계 철학</span><span class="od">Parsimony · Traceability · Progressivity, 그리고 원칙들의 충돌.</span></a></li>
+<li><a href="04-lowering.html"><span class="on">04</span><span class="oh">Progressive Lowering과 현대 컴파일러 파이프라인</span><span class="od">linalg→affine→scf→LLVM, StableHLO 진입, custom dialect — MLIR은 어떻게 쓰이는가.</span></a></li></ol></section>
+<div class="bridge part-poly"><div class="bk">두 주제는 어떻게 이어지는가</div><p><b>affine dialect = 폴리헤드럴 모델의 MLIR 구현.</b> 주제 1의 lowering 파이프라인이 <code>linalg → affine</code>으로 내려가는 바로 그 <code>affine</code>을, 주제 2가 <em>수학(반복 공간·의존성·스케줄 θ)</em>으로 푼다. 그리고 마무리의 <b>ISA 경계</b> 논의가 두 주제(컴파일러 ↔ 하드웨어)를 하나로 종합한다.</p></div>
+<section class="topic part-poly"><div class="topichead"><span class="tlabel">주제 2</span><h2>Polyhedral Model &amp; Affine</h2><p class="ttag">루프를 수학으로 — 폴리헤드럴 모델과 그 MLIR 구현(affine dialect).</p></div><ol class="reading-order"><li><a href="05-polyhedral.html"><span class="on">05</span><span class="oh">Polyhedral 모델 심화</span><span class="od">반복 공간 · 의존성 · 스케줄 θ · Farkas · SCoP.</span></a></li>
+<li><a href="06-affine.html"><span class="on">06</span><span class="oh">Affine Dialect 변환 심화</span><span class="od">스케줄을 바꾸면 병렬성이 생긴다 — 지역성·스큐잉·하드웨어 매핑.</span></a></li></ol></section>
+<section class="topic part-synth"><div class="topichead"><span class="tlabel">마무리</span><h2>두 주제를 잇다</h2><p class="ttag">MLIR의 한계와 ISA 경계 — 두 주제가 실제로 만나는 지점.</p></div><ol class="reading-order"><li><a href="07-synthesis.html"><span class="on">07</span><span class="oh">종합</span><span class="od">MLIR의 정직한 한계, 그리고 ISA 경계라는 책임 분담선.</span></a></li></ol></section>
+<section class="topic part-poly"><div class="topichead"><span class="tlabel">심화 자료 · 부록</span><h2>더 깊이 — 개념 노트</h2><p class="ttag">본문 여러 곳에서 링크되는 두 핵심 개념의 상세 페이지.</p></div><ol class="reading-order"><li><a href="aside-scop.html"><span class="on">∞</span><span class="oh">SCoP</span><span class="od">무엇이 SCoP를 만드는가 — affine 경계·첨자·분기, 5객체, 그리고 MLIR affine이 SCoP를 문법으로 강제하는 법.</span></a></li>
+<li><a href="aside-farkas.html"><span class="on">∞</span><span class="oh">Farkas Lemma</span><span class="od">∀(반복공간의 모든 점) 부등식을 λ 계수 문제로 접어, 합법 스케줄 θ를 ILP로 푸는 폴리헤드럴 스케줄링의 심장.</span></a></li></ol></section>
+</article>
+</main>
+<footer>
+<span class="contributors">MLIR · Polyhedral / Affine 세미나 · 2026-06-12 · 발표 Suhwan</span>
+<a href="index.html">전체 지도 ↩</a>
+</footer>
+<script src="assets/poly.js"></script>
+<script src="assets/viz-scenes.js"></script>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/auto-render.min.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

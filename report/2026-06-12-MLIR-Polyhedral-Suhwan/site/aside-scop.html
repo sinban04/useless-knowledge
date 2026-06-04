@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>심화 · SCoP · MLIR 세미나</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/uk-style.css">
+<link rel="stylesheet" href="assets/uk-report.css">
+<link rel="stylesheet" href="assets/viz.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
+<link rel="stylesheet" href="assets/seminar.css">
+</head>
+<body class="report part-poly" id="top" data-page="aside-scop">
+<header>
+<a class="wordmark" href="index.html">← MLIR 세미나</a>
+<span class="hdr-part">심화 자료 · SCoP</span><a class="github-link" href="index.html">[ 전체 지도 ◇ ]</a></header>
+<main>
+<article class="report-page">
+<div class="partband"><span class="pb-label">심화 자료</span><span class="pb-name">부록 · SCoP</span></div>
+<h1>SCoP — Static Control Part (폴리헤드럴 분석이 적용되는 영역)</h1>
+<p class="report-meta"><span class="chip pchip">심화 · Appendix</span> · <span class="chip">SCoP</span> · <time datetime="2026-06-12">2026-06-12</time></p>
+<p class="dek">무엇이 SCoP를 만드는가 — affine 경계·첨자·분기, 5객체, 그리고 MLIR affine이 SCoP를 문법으로 강제하는 법.</p>
+<nav class="toc" aria-label="Table of contents"><h2>이 페이지</h2><ol><li><a href="#scop란-폴리헤드럴-분석이-적용되는-코드-영역">SCoP란 — 폴리헤드럴 분석이 적용되는 코드 영역</a></li><li><a href="#무엇이-scop를-만드는가-세-가지-affine-조건">무엇이 SCoP를 만드는가 — 세 가지 affine 조건</a></li><li><a href="#scop에서-추출하는-5객체">SCoP에서 추출하는 5객체</a></li><li><a href="#scop-vs-비-scop-경계-예시">SCoP vs 비-SCoP — 경계 예시</a></li><li><a href="#mlir은-scop를-ir-문법으로-강제한다">MLIR은 SCoP를 IR 문법으로 강제한다</a></li><li><a href="#한눈-요약">한눈 요약</a></li><li><a href="#references">References</a></li></ol></nav>
+<h2 id="scop란-폴리헤드럴-분석이-적용되는-코드-영역">SCoP란 — 폴리헤드럴 분석이 적용되는 코드 영역</h2>
+<p><strong>SCoP</strong>(Static Control Part, 정적 제어 영역)는 <em>폴리헤드럴 모델로 정확히 분석·변환할 수 있는 코드의 최대 영역</em>이다. 직관적으로는 "<strong>제어 흐름과 메모리 접근이 컴파일 타임에 전부 affine(1차)으로 결정되는 중첩 루프 덩어리</strong>"다 <sup class="cite"><a href="#ref-4">[4]</a></sup><sup class="cite"><a href="#ref-6">[6]</a></sup>.</p>
+<p>핵심은 <em>정적(static)</em> 이라는 말에 있다. 루프를 몇 번 도는지, 어떤 배열 칸을 건드리는지, 어떤 분기를 타는지가 — <strong>실행해 보지 않아도</strong> 루프 인덱스와 컴파일 타임 파라미터의 1차식만으로 결정되어야 한다. 그래야 반복 공간을 정수 다면체(polyhedron)로 적고, 의존성을 정수 부등식으로 <em>정확히(exact)</em> 풀 수 있다 <sup class="cite"><a href="#ref-6">[6]</a></sup>.</p>
+<h2 id="무엇이-scop를-만드는가-세-가지-affine-조건">무엇이 SCoP를 만드는가 — 세 가지 affine 조건</h2>
+<p>중첩 루프가 SCoP이려면 다음 셋이 <strong>모두</strong> 루프 인덱스 벡터 $\mathbf{i}$ 와 파라미터 $\mathbf{N}$ 의 <strong>affine 식</strong>(계수의 곱·합·상수만)이어야 한다 <sup class="cite"><a href="#ref-4">[4]</a></sup><sup class="cite"><a href="#ref-6">[6]</a></sup>:</p>
+<ol><li><strong>모든 루프 경계</strong> (lower/upper bound) — 예: <code>for i = 1 to N-1</code>은 OK, <code>for i = 1 to f(i)</code>는 불가.</li><li><strong>모든 배열 첨자</strong> (array subscript) — 예: <code>A[i+j-1]</code>은 OK, <code>A[i*j]</code>·<code>A[B[i]]</code>는 불가.</li><li><strong>모든 분기 조건</strong> (<code>if</code>) — 예: <code>if (i + 2*j &lt;= N)</code>은 OK, <code>if (A[i] &gt; 0)</code>(데이터 의존)은 불가.</li></ol>
+<p>그리고 영역 안에서 <strong>부수효과·포인터 alias·함수 호출</strong>이 분석을 깨지 않아야 한다(순수한 배열 read/write만). 이 조건들이 만족되면 경계 부등식을 모아 <strong>반복 공간</strong></p>
+<p>$$D = \{\, \mathbf{i} \in \mathbb{Z}^n \ :\ A\,\mathbf{i} + \mathbf{b} \ge \mathbf{0} \,\}$$</p>
+<p>이라는 정수 다면체를 얻는다. 각 정수격자점이 루프 본문의 한 실행 인스턴스다.</p>
+
+<figure class="diagram"><pre class="mermaid">flowchart TD
+  src["중첩 루프 소스"] --&gt; q1{"모든 경계가 affine?"}
+  q1 --&gt;|"아니오"| no["SCoP 아님&lt;br/&gt;(보수적 분석)"]:::no
+  q1 --&gt;|"예"| q2{"모든 배열 첨자가 affine?"}
+  q2 --&gt;|"아니오"| no
+  q2 --&gt;|"예"| q3{"모든 분기 조건이 affine?&lt;br/&gt;부수효과 없음?"}
+  q3 --&gt;|"아니오"| no
+  q3 --&gt;|"예"| yes["SCoP&lt;br/&gt;→ 다면체 + 5객체 추출"]:::hi
+  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;
+  classDef no fill:#f3f3f0,stroke:#999,color:#555;</pre></figure>
+
+<h2 id="scop에서-추출하는-5객체">SCoP에서 추출하는 5객체</h2>
+<p>한 SCoP가 확정되면, 폴리헤드럴 표현은 다섯 가지 객체로 코드를 완전히 기술한다 <sup class="cite"><a href="#ref-4">[4]</a></sup><sup class="cite"><a href="#ref-6">[6]</a></sup>:</p>
+<div class="tablewrap"><table><thead><tr><th>#</th><th>객체</th><th>무엇</th><th>수식</th></tr></thead><tbody><tr><td>1</td><td><strong>반복 공간</strong> (iteration domain)</td><td>어떤 인스턴스들이 도는가</td><td>$D=\{\mathbf{i}: A\mathbf{i}+\mathbf{b}\ge\mathbf{0}\}$</td></tr><tr><td>2</td><td><strong>접근 함수</strong> (access function)</td><td>각 인스턴스가 건드리는 메모리 칸</td><td>$F(\mathbf{i})=A_F\mathbf{i}+\mathbf{f}$</td></tr><tr><td>3</td><td><strong>의존성</strong> (dependences)</td><td>어떤 인스턴스가 어떤 인스턴스에 묶이나</td><td>$\delta=\mathbf{i}'-\mathbf{i}$</td></tr><tr><td>4</td><td><strong>스케줄</strong> (schedule)</td><td>인스턴스의 <em>논리적 실행 시각</em></td><td>$\theta(\mathbf{i})=\Theta\mathbf{i}$</td></tr><tr><td>5</td><td><strong>파라미터/문맥</strong> (context)</td><td>컴파일 타임 상수의 제약</td><td>$N\ge 1$ 등</td></tr></tbody></table></div>
+<p>①②③은 <em>코드에서 읽어 들이는</em> 사실이고, ④ 스케줄만이 <strong>우리가 바꿀 수 있는 자유도</strong>다 — 폴리헤드럴 최적화 = 합법적인 $\Theta$ 를 찾는 일이다(합법성 판정에는 <a href="aside-farkas.html">Farkas Lemma</a>가 쓰인다).</p>
+<h2 id="scop-vs-비-scop-경계-예시">SCoP vs 비-SCoP — 경계 예시</h2>
+<pre class="code"><span class="cm">// ✅ SCoP — 경계·첨자·조건이 모두 affine</span>
+for (i = <span class="num">1</span>; i &lt; N-<span class="num">1</span>; i++)
+  for (j = <span class="num">1</span>; j &lt; N-<span class="num">1</span>; j++)
+    A[i][j] = A[i-<span class="num">1</span>][j] + A[i][j-<span class="num">1</span>];
+
+<span class="cm">// ❌ 비-SCoP — 비선형/간접/데이터 의존</span>
+for (i = <span class="num">0</span>; i &lt; N; i++)
+  for (j = <span class="num">0</span>; j &lt; i*i; j++)     <span class="cm">// 경계가 i*i (비선형)</span>
+    A[B[i]][j] = C[i] / A[i][j]; <span class="cm">// 첨자 B[i] (간접), 0-나눗셈 가능</span></pre>
+<div class="tablewrap"><table><thead><tr><th>패턴</th><th>SCoP?</th><th>이유</th></tr></thead><tbody><tr><td><code>for i=0..N</code>, <code>A[2*i+1]</code></td><td>✅</td><td>경계·첨자 affine</td></tr><tr><td><code>A[i*j]</code></td><td>❌</td><td>첨자 비선형 (두 인덱스의 곱)</td></tr><tr><td><code>A[B[i]]</code></td><td>❌</td><td>간접 접근 (데이터 의존 첨자)</td></tr><tr><td><code>while (p != null)</code></td><td>❌</td><td>반복 횟수가 정적이지 않음</td></tr><tr><td><code>if (A[i] &gt; 0)</code></td><td>❌</td><td>분기가 데이터에 의존</td></tr><tr><td><code>if (i + j &lt;= N)</code></td><td>✅</td><td>분기가 affine</td></tr></tbody></table></div>
+<p>비-SCoP 코드도 컴파일은 되지만, 컴파일러는 "혹시 겹칠지 모른다"는 <strong>보수적 가정</strong>으로 후퇴해 타일링·병렬화 같은 공격적 변환을 포기한다. SCoP는 그 포기 없이 <em>정확히</em> 푸는 영역이다.</p>
+<h2 id="mlir은-scop를-ir-문법으로-강제한다">MLIR은 SCoP를 IR 문법으로 강제한다</h2>
+<p>폴리헤드럴 컴파일러(Pluto, Polly 등)는 일반 IR/소스에서 SCoP를 <em>탐지(detect)</em> 해야 한다 <sup class="cite"><a href="#ref-4">[4]</a></sup><sup class="cite"><a href="#ref-5">[5]</a></sup>. MLIR의 <strong>affine dialect</strong>는 발상을 뒤집는다 — <code>affine.for</code>·<code>affine.if</code>·<code>affine.load/store</code>는 <strong>문법적으로 affine 식만 받도록 제한</strong>되어 있어, "affine dialect에 들어와 있다 = 이미 SCoP 안에 있다"가 성립한다 <sup class="cite"><a href="#ref-8">[8]</a></sup>. 즉 SCoP가 <em>사후 분석 결과</em>가 아니라 <em>IR 타입 수준의 보장</em>이다.</p>
+<ul><li><code>affine.for %i = 0 to affine_map&lt;()[s0]-&gt;(s0)&gt;()[%N]</code> — 경계가 affine map</li><li><code>affine.if affine_set&lt;(d0,d1) : (d0 + d1 - 1 &gt;= 0)&gt;</code> — 조건이 integer set(다면체)</li><li><code>affine.load %A[%i + %j - 1]</code> — 첨자가 affine</li></ul>
+<p>이 제약 덕분에 <code>affine-loop-tile</code>·<code>affine-loop-fusion</code> 같은 변환이 다면체 위에서 안전하게 동작한다. 반대로 첨자에 <code>arith.muli</code>로 만든 비-affine 인덱스를 쓰면 verifier가 거부한다 — IR이 SCoP를 벗어나지 못하게 막는 셈이다.</p>
+<h2 id="한눈-요약">한눈 요약</h2>
+<ul><li>SCoP = <strong>경계·첨자·분기가 모두 affine한, 폴리헤드럴로 정확히 분석되는 최대 코드 영역.</strong></li><li>만족 조건 셋(affine 경계·affine 첨자·affine 분기 + 부수효과 없음) → 반복 공간 다면체 → 5객체 추출.</li><li>5객체 중 <strong>스케줄 $\Theta$ 만이 바꿀 수 있는 자유도</strong>, 그 합법성은 <a href="aside-farkas.html">Farkas Lemma</a>로 유한 검사.</li><li>MLIR affine dialect는 SCoP를 <em>탐지</em>가 아니라 <em>문법으로 강제</em> — 그래서 affine = "분석 가능 영역".</li></ul>
+<h2 id="references">References</h2>
+<p><sup class="cite"><a href="#ref-4">[4]</a></sup> U. Bondhugula et al., "A Practical Automatic Polyhedral Parallelizer and Locality Optimizer" (Pluto), PLDI 2008. <sup class="cite"><a href="#ref-5">[5]</a></sup> T. Grosser et al., "Polly — Polyhedral Optimization in LLVM", IMPACT 2012. <sup class="cite"><a href="#ref-6">[6]</a></sup> P. Feautrier, "Some efficient solutions to the affine scheduling problem", Int. J. Parallel Programming, 1992. <sup class="cite"><a href="#ref-8">[8]</a></sup> MLIR official documentation — https://mlir.llvm.org/docs/ (Dialects/Affine).</p><section class="pagerefs"><h2>참고문헌</h2><p class="r" id="ref-4"><b>[4]</b> U. Bondhugula et al., "A Practical Automatic Polyhedral Parallelizer and Locality Optimizer" (Pluto), PLDI 2008.</p><p class="r" id="ref-5"><b>[5]</b> T. Grosser et al., "Polly — Polyhedral Optimization in LLVM", IMPACT 2012.</p><p class="r" id="ref-6"><b>[6]</b> P. Feautrier, "Some efficient solutions to the affine scheduling problem", Int. J. Parallel Programming, 1992.</p><p class="r" id="ref-8"><b>[8]</b> MLIR official documentation — https://mlir.llvm.org/docs/ .</p></section><div class="related"><div class="rl">관련</div><div class="rgrid"><a class="rcard" href="05-polyhedral.html"><div class="rn">05 · Polyhedral</div><div class="rt">폴리헤드럴 모델 심화</div><div class="redge">↳ 본문으로 돌아가기</div></a><a class="rcard" href="aside-farkas.html"><div class="rn">심화 · Farkas</div><div class="rt">Farkas Lemma</div><div class="redge">↳ 함께 보기</div></a></div></div><nav class="pager"><a class="prev" href="05-polyhedral.html"><div class="d">← 본문</div>05 · Polyhedral</a><a class="next" href="index.html"><div class="d">전체 지도 →</div>지도로</a></nav>
+</article>
+</main>
+<footer>
+<span class="contributors">MLIR · Polyhedral / Affine 세미나 · 2026-06-12 · 발표 Suhwan</span>
+<a href="index.html">전체 지도 ↩</a>
+</footer>
+<script src="assets/poly.js"></script>
+<script src="assets/viz-scenes.js"></script>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/auto-render.min.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

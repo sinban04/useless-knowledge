@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>주제 1 · 04. Lowering·파이프라인 · MLIR 세미나</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/uk-style.css">
+<link rel="stylesheet" href="assets/uk-report.css">
+<link rel="stylesheet" href="assets/viz.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
+<link rel="stylesheet" href="assets/seminar.css">
+</head>
+<body class="report part-mlir" id="top" data-page="04-lowering">
+<header>
+<a class="wordmark" href="index.html">← MLIR 세미나</a>
+<span class="hdr-part">주제 1 · MLIR</span><a class="github-link" href="index.html">[ 전체 지도 ◇ ]</a></header>
+<main>
+<article class="report-page">
+<div class="partband"><span class="pb-label">주제 1</span><span class="pb-name">MLIR</span></div>
+<h1>Progressive Lowering과 현대 컴파일러 파이프라인</h1>
+<p class="report-meta"><span class="chip pchip">주제 1 · MLIR</span> · <span class="chip">CH 04</span> · <time datetime="2026-06-12">2026-06-12</time></p>
+<p class="dek">linalg→affine→scf→LLVM, StableHLO 진입, custom dialect — MLIR은 어떻게 쓰이는가.</p>
+<nav class="toc" aria-label="Table of contents"><h2>이 페이지</h2><ol><li><a href="#mlir은-결국-한-번에-안-내려간다">MLIR은 결국 "한 번에 안 내려간다"</a></li><li><a href="#한-dialect가-두-단계의-하강을-가진다">한 dialect가 두 단계의 하강을 가진다</a></li><li><a href="#4단계-추상화-계단">4단계 추상화 계단</a></li><li><a href="#입구는-어디인가-ml-프레임워크-그래프가-mlir로-들어오는-길">입구는 어디인가 — ML 프레임워크 그래프가 MLIR로 들어오는 길</a></li><li><a href="#예시-전형적인-npu-백엔드가-upstream-affine-pass를-재사용하는-방식">예시 — 전형적인 NPU 백엔드가 upstream affine pass를 재사용하는 방식</a></li><li><a href="#custom-dialect로-졸업하기-mlir의-진짜-강점">Custom dialect로 졸업하기 — MLIR의 진짜 강점</a></li></ol></nav>
+
+<figure class="diagram"><pre class="mermaid">flowchart TD
+  M["model&lt;br/&gt;ONNX·PyTorch"] --&gt; X["XLA"] --&gt; SH["stablehlo"] --&gt; L["linalg"]:::hi --&gt; A["affine"]:::hi --&gt; SCF["scf·arith·memref"]:::hi --&gt; LL["LLVM IR"] --&gt; HW["기계어 / 가속기"]
+  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;</pre><figcaption>baseline 파이프라인. 각 화살표가 한 번의 lowering이다.</figcaption></figure>
+
+<h2 id="mlir은-결국-한-번에-안-내려간다">MLIR은 결국 "한 번에 안 내려간다"</h2>
+<p>앞 섹션까지 MLIR이 <em>무엇인지</em>(여러 dialect가 공존하는 IR 인프라)를 봤다면, 이번 섹션은 <em>실제로 어떻게 쓰이는지</em>다. 핵심 키워드는 <strong>progressive lowering(점진적 하강)</strong> 이다.</p>
+<p>여기서 잠깐 용어 정리. <strong>IR</strong>(intermediate representation, 중간 표현)은 소스 코드와 기계어 사이에서 컴파일러가 다루는 프로그램의 내부 표현이다. <strong>dialect</strong>(방언)는 MLIR 안에서 특정 추상화 수준·도메인을 담당하는 op(연산) 묶음이다. <strong>lowering</strong>(하강)은 높은 추상화의 표현을 더 낮은(기계에 가까운) 표현으로 바꾸는 것이다.</p>
+<p>비유하자면 ISA 설계에서 "한 명령으로 모든 걸 하는 CISC 거대 명령"을 만들지 않고, 마이크로옵(micro-op)으로 쪼개 단계적으로 실행하는 것과 같다. MLIR은 고수준 의미를 단번에 기계어로 떨어뜨리지 않고, <em>추상화 계단을 한 칸씩</em> 내려간다. 각 계단에서 그 계단에 맞는 분석·최적화를 끝낸 뒤 결과만 다음 계단으로 넘긴다 <sup class="cite"><a href="#ref-1">[1]</a></sup><sup class="cite"><a href="#ref-2">[2]</a></sup>.</p>
+<h2 id="한-dialect가-두-단계의-하강을-가진다">한 dialect가 두 단계의 하강을 가진다</h2>
+
+<figure class="diagram"><pre class="mermaid">flowchart TD
+  A1["affine.delinearize_index"] --&gt;|"내부 lowering&lt;br/&gt;--affine-expand-index-ops"| A2["affine.apply ×3&lt;br/&gt;(여전히 affine)"]
+  A2 --&gt;|"경계 졸업&lt;br/&gt;--lower-affine"| S["scf + arith + memref"]</pre><figcaption>한 dialect의 두 단계 추상화: 내부 lowering(같은 dialect) → 경계 졸업(다른 dialect).</figcaption></figure>
+
+<p>progressive lowering을 정확히 이해하는 열쇠는, <strong>하나의 dialect가 두 종류의 "내려가기"를 가진다</strong>는 점이다 <sup class="cite"><a href="#ref-8">[8]</a></sup>.</p>
+<h3 id="1-내부-lowering-같은-dialect-안에서-더-기본적인-op으로">(1) 내부 lowering — 같은 dialect 안에서 더 기본적인 op으로</h3>
+<p>같은 dialect 안에 머무르되, 추상도가 높은 op을 더 fundamental한(원시적인) op들로 풀어쓴다. 예를 들어 affine dialect의 <code>--affine-expand-index-ops</code> pass는 다중 결과를 내는 고수준 인덱스 op을 여러 개의 기본 인덱스 계산 op으로 분해한다. 결과물은 <em>여전히 affine.\</em> op*이다 — 분석 영역을 떠나지 않는다.</p>
+<pre class="code"><span class="cm">// 입력: 평탄한 인덱스 %t를 (4,3,2) 모양으로 풀어내는 고수준 op</span>
+%i, %j, %k = <span class="dia">affine</span>.delinearize_index %t into (%c4, %c3, %c2) : <span class="ty">index</span>, <span class="ty">index</span>, <span class="ty">index</span>
+<span class="cm">// 출력: 여전히 affine — 나눗셈/나머지로 풀어쓴 기본 affine.apply 3개</span>
+%<span class="num">0</span> = <span class="dia">affine</span>.apply <span class="kw">affine_map</span>&lt;()[s0] -&gt; (s0 floordiv <span class="num">6</span>)&gt;()[%t]
+%<span class="num">1</span> = <span class="dia">affine</span>.apply <span class="kw">affine_map</span>&lt;()[s0] -&gt; ((s0 mod <span class="num">6</span>) floordiv <span class="num">2</span>)&gt;()[%t]
+%<span class="num">2</span> = <span class="dia">affine</span>.apply <span class="kw">affine_map</span>&lt;()[s0] -&gt; (s0 mod <span class="num">2</span>)&gt;()[%t]</pre>
+<p>한 줄 해설: 인덱스 하나를 다차원 좌표로 푸는 "편한 op"을, 사람이 손으로 쓰던 floordiv/mod 산식 3개로 바꾸되 여전히 affine 영역 안에 있다. (3,2 모양에서 첫 좌표는 <code>t floordiv 6</code>, 다음은 <code>(t mod 6) floordiv 2</code>, 마지막은 <code>t mod 2</code>.)</p>
+<h3 id="2-경계-졸업-다른-dialect로-넘어가기">(2) 경계 졸업 — 다른 dialect로 넘어가기</h3>
+<p>이제 해당 dialect에서 할 일을 다 했으면, 다른 dialect로 <em>완전히 이전</em>한다. affine dialect의 <code>--lower-affine</code> pass가 대표적이다. affine의 루프·조건·메모리 접근 op을 scf(structured control flow, 구조적 제어 흐름) + arith(arithmetic, 산술) + memref(memory reference, 메모리 참조) dialect로 바꾼다. 이 변환은 <strong>ConversionPattern</strong>(변환 패턴)이라는 프레임워크로 구현된다 — 출력에는 더 이상 affine.\*가 남지 않는다 <sup class="cite"><a href="#ref-8">[8]</a></sup>.</p>
+<pre class="code"><span class="cm">// 입력 (affine 영역)</span>
+<span class="dia">affine</span>.for %i = <span class="num">0</span> <span class="kw">to</span> <span class="num">32</span> { <span class="dia">affine</span>.load %A[%i] }
+<span class="cm">// 출력 (affine 졸업: scf + arith + memref)</span>
+%c0 = <span class="dia">arith</span>.constant <span class="num">0</span> : <span class="ty">index</span>
+%c32 = <span class="dia">arith</span>.constant <span class="num">32</span> : <span class="ty">index</span>
+%c1 = <span class="dia">arith</span>.constant <span class="num">1</span> : <span class="ty">index</span>
+<span class="dia">scf</span>.for %arg1 = %c0 <span class="kw">to</span> %c32 <span class="kw">step</span> %c1 {
+  <span class="dia">memref</span>.load %arg0[%arg1] : <span class="ty">memref</span>&lt;32xf32&gt;
+}</pre>
+<p>한 줄 해설: affine 전용 루프가 일반적인 구조적 for 루프와 평범한 메모리 load로 "졸업"한다. 루프 경계도 더 이상 affine 속성이 아닌 평범한 <code>arith.constant</code>가 된다. 여기서부터는 affine 분석 도구가 더 이상 관여하지 않는다.</p>
+<p>정리하면 — <strong>내부 lowering</strong>은 같은 영역에서 더 원시적으로(분석 영역 유지), <strong>경계 졸업</strong>은 다른 영역으로 완전 이전(layer 이동)이다 <sup class="cite"><a href="#ref-8">[8]</a></sup>.</p>
+<h2 id="4단계-추상화-계단">4단계 추상화 계단</h2>
+<p>이 두 가지 하강을 쌓으면, ML 컴파일러의 전형적인 4단계 계단이 나온다 <sup class="cite"><a href="#ref-8">[8]</a></sup>.</p>
+<pre class="code">[계단 <span class="num">1</span>] linalg     — 고수준 의미 (예: <span class="dia">linalg</span>.matmul = "행렬곱"이라는 뜻 그대로)
+   │  --convert-linalg-<span class="kw">to</span>-affine-loops   (경계 졸업)
+   ▼
+[계단 <span class="num">2</span>] affine     — 폴리헤드럴 분석 영역 (루프 변환·타일링·병렬화가 자연스러운 곳)
+   │     ├─ [내부] --affine-expand-<span class="ty">index</span>-ops
+   │  --lower-affine                       (경계 졸업)
+   ▼
+[계단 <span class="num">3</span>] scf + arith + <span class="ty">memref</span>   — imperative(명령형) 저수준: 일반 루프·산술·메모리
+   │  --convert-scf-<span class="kw">to</span>-llvm + --convert-arith-<span class="kw">to</span>-llvm + ...   (경계 졸업)
+   ▼
+[계단 <span class="num">4</span>] LLVM IR    — codegen(코드 생성) 대상</pre>
+<p>여기서 잠깐 용어. <strong>affine</strong>(아핀)은 인덱스가 루프 변수들의 <em>1차 결합</em>(상수배의 합)으로만 표현되는 영역을 말한다. <strong>폴리헤드럴</strong>(polyhedral)은 그 루프 반복 공간을 다면체(부등식 집합)로 모델링해 변환을 수학적으로 다루는 분석 기법이다 <sup class="cite"><a href="#ref-4">[4]</a></sup><sup class="cite"><a href="#ref-6">[6]</a></sup>. 이 계단의 핵심은 — <strong>폴리헤드럴 분석은 계단 2(affine)에서 자연스럽게 일어나고</strong>, 그 변환 결과만 계단 3으로 졸업한다는 점이다. 각 계단이 자기 영역에서 할 일을 끝내고 결과만 넘긴다 <sup class="cite"><a href="#ref-1">[1]</a></sup><sup class="cite"><a href="#ref-8">[8]</a></sup>. (계단 2의 affine/폴리헤드럴 변환이 실제로 뭘 하는지는 다음 섹션에서 애니메이션으로 본다.)</p>
+<p>이게 왜 강점인가? LLVM 같은 전통적 IR은 추상화 차이를 기껏해야 pass 순서로만 흉내 낼 뿐 <em>dialect 시스템 자체가 없다</em>. Polly는 LLVM IR 한 종류 안에서 분석하고 다시 LLVM IR로 돌아온다 <sup class="cite"><a href="#ref-5">[5]</a></sup><sup class="cite"><a href="#ref-10">[10]</a></sup>. Pluto/CLooG류는 소스→IR→소스로 회귀할 뿐 progressive lowering이 없다 <sup class="cite"><a href="#ref-4">[4]</a></sup>. MLIR만이 dialect 시스템 + ConversionPattern으로 <em>자유로운 다단계 하강</em>을 한다 <sup class="cite"><a href="#ref-1">[1]</a></sup><sup class="cite"><a href="#ref-2">[2]</a></sup>.</p>
+<h2 id="입구는-어디인가-ml-프레임워크-그래프가-mlir로-들어오는-길">입구는 어디인가 — ML 프레임워크 그래프가 MLIR로 들어오는 길</h2>
+<p>계단 꼭대기(계단 1보다 더 위)에는 ML 프레임워크의 연산 그래프가 들어오는 입구 dialect가 있다. 대표가 <strong>StableHLO</strong>다. 원래 XLA(Google의 ML 컴파일러) 내부 IR이던 HLO를 OpenXLA 거버넌스로 분리·표준화해, frontend(프레임워크)와 compiler 사이의 portable interface로 만든 MLIR dialect다 <sup class="cite"><a href="#ref-9">[9]</a></sup>. (HLO = High-Level Optimizer IR. XLA = Accelerated Linear Algebra.) 비슷한 입구로 tosa도 있다.</p>
+<p>실무에서 모델이 MLIR로 들어오는 대표적인 producer 경로 한 예:</p>
+<pre class="code">ONNX → onnx2torch → torch.export → torch_xla → StableHLO</pre>
+<p>ONNX(개방형 모델 포맷)를 PyTorch로 받아 export하고, torch_xla를 거쳐 StableHLO로 떨군다. 이런 경로가 선호되는 이유는 QDQ(양자화) 패턴을 완전히 제어할 수 있고, weight 매핑(MLIR arg와 원본 parameter의 정확한 연결)과 디버깅이 쉽기 때문이다.</p>
+<h2 id="예시-전형적인-npu-백엔드가-upstream-affine-pass를-재사용하는-방식">예시 — 전형적인 NPU 백엔드가 upstream affine pass를 재사용하는 방식</h2>
+<p>이 계단 모델이 책상 위 이론이 아님을 보여주는, 전형적인 NPU 백엔드 lowering 시나리오를 예로 든다. StableHLO를 입력으로 받아 NPU(neural processing unit, 신경망 가속기) 하드웨어에 맞게 내려보내는 경로는 대략 다음과 같이 짤 수 있다.</p>
+<ul><li><strong>spatial tiling (예: $32\times 32$)</strong>: NPU의 on-chip SRAM(예: Unified Buffer) 크기 제한 때문에 feature map을 타일 단위로 쪼갠다. 출력 기준으로 타일을 나누고 입력 receptive field를 역산하며, 버퍼 예산 안에서 최대 타일 크기를 탐색한다(adaptive tiling). — 캐시 크기에 맞춰 blocking하는 것과 같은 발상이다.</li><li><strong>custom bufferization</strong>: tensor(값 의미) 표현을 memref(실제 메모리 버퍼)로 바꾼다. upstream의 one-shot bufferize가 백엔드 고유의 custom op까지는 다루지 못하는 경우, 그 부분만 직접 작성해 보완한다.</li><li><strong>scf.forall → affine.for</strong>: 타일 루프를 affine 영역으로 끌어올려 폴리헤드럴 분석 대상으로 만든다.</li><li><strong>멀티코어 분배</strong>: 그리고 <strong>MLIR upstream의 affine pass를 그대로 재사용</strong>한다 — <code>affine-loop-coalescing</code>(2D 루프를 1D로 합침) + <code>affine-loop-tile</code>(strip-mining으로 코어 수만큼 타일을 나눠 분배, 예: 8-core면 <code>tile-size=8</code>). 멀티코어에 일감을 쪼개 나눠주는 작업을, 컴파일러 인프라가 공짜로 제공하는 셈이다.</li></ul>
+<p>핵심은 — <em>upstream의 범용 affine pass를 NPU 백엔드가 자기 파이프라인에 그대로 끼워 재사용</em>할 수 있다는 점이다. 이게 MLIR 재사용 철학의 실증이다 <sup class="cite"><a href="#ref-1">[1]</a></sup><sup class="cite"><a href="#ref-2">[2]</a></sup>.</p>
+<h2 id="custom-dialect로-졸업하기-mlir의-진짜-강점">Custom dialect로 졸업하기 — MLIR의 진짜 강점</h2>
+<p>마지막 한 가지. <code>--lower-affine</code>은 target이 scf/arith/memref로 <strong>hard-coded(고정)</strong> 되어 있다. 그러면 "내 NPU dialect로 내리고 싶은데?" 싶을 텐데 — 바로 여기가 MLIR의 핵심 강점이다. <strong>본인이 ConversionPattern을 작성하면 affine을 임의의 dialect로 졸업시킬 수 있다</strong> <sup class="cite"><a href="#ref-8">[8]</a></sup>.</p>
+<pre class="code">struct AffineForToMyNPUPattern : OpConversionPattern&lt;affine::AffineForOp&gt; {
+  LogicalResult matchAndRewrite(affine::AffineForOp op, OpAdaptor adaptor,
+      ConversionPatternRewriter &amp;rewriter) const override {
+    <span class="cm">// affine.for → my_npu.parallel_loop 로 직접 변환</span>
+    auto npuLoop = rewriter.create&lt;my_npu::ParallelLoopOp&gt;(
+        op.getLoc(), op.getLowerBound(), op.getUpperBound(), op.getStep());
+    rewriter.inlineRegionBefore(op.getRegion(), npuLoop.getRegion(),
+                                npuLoop.getRegion().end());
+    rewriter.eraseOp(op);
+    <span class="kw">return</span> success();
+  }
+};
+<span class="cm">// 등록: target.addLegalDialect&lt;my_npu::MyNPUDialect&gt;();</span>
+<span class="cm">//       target.addIllegalDialect&lt;affine::AffineDialect&gt;();</span></pre>
+<p>한 줄 해설: affine 루프를 표준 scf 대신 <em>내가 정의한 NPU 전용 루프 op</em>으로 바꾸는 변환 규칙. target을 내 dialect로 지정(addLegalDialect)하면 끝이다.</p>
+<p>즉 <strong>affine 영역에서 폴리헤드럴 분석·변환을 다 마친 결과를, 내 가속기 dialect로 졸업</strong>시킬 수 있다. 이것이 새 하드웨어 백엔드를 만들 때 MLIR을 고르는 가장 큰 이유다. 실제로 Gemmini·NVDLA·Tenstorrent 같은 오픈 HW 타겟을 겨냥한 컴파일러들도, 바로 이 "기존 상위 계단을 재사용하고 마지막 졸업만 내 타겟으로" 전략을 전제로 한다.</p>
+<blockquote><p>한 가지 예고: "그럼 어느 계단부터를 내 하드웨어 ISA가 책임지고, 어디까지를 컴파일러가 책임지나?" 하는 <em>경계 책임 분담</em> 문제는 발표 마지막 종합 섹션에서 더 깊이 다룬다.</p></blockquote>
+<div class="bridge part-poly"><div class="bk">주제 2로 이어집니다 →</div><p>방금 lowering 파이프라인에서 만난 <b>affine</b> dialect는 사실 <b>폴리헤드럴 모델</b>의 MLIR 구현입니다. 다음 주제에서 그 <em>수학적 바탕</em> — 반복 공간·의존성·스케줄 θ — 을 직접 들여다봅니다.</p></div>
+<section class="pagerefs"><h2>참고문헌</h2><p class="r" id="ref-1"><b>[1]</b> Lattner et al., "MLIR: A Compiler Infrastructure for the End of Moore's Law", arXiv:2002.11054, 2020.</p><p class="r" id="ref-2"><b>[2]</b> Lattner et al., "MLIR: Scaling Compiler Infrastructure for Domain Specific Computation", IEEE/ACM CGO 2021. doi:10.1109/CGO51591.2021.9370308</p><p class="r" id="ref-4"><b>[4]</b> U. Bondhugula et al., "A Practical Automatic Polyhedral Parallelizer and Locality Optimizer" (Pluto), PLDI 2008.</p><p class="r" id="ref-5"><b>[5]</b> T. Grosser et al., "Polly — Polyhedral Optimization in LLVM", IMPACT 2012.</p><p class="r" id="ref-6"><b>[6]</b> P. Feautrier, "Some efficient solutions to the affine scheduling problem", Int. J. Parallel Programming, 1992.</p><p class="r" id="ref-8"><b>[8]</b> MLIR official documentation — https://mlir.llvm.org/docs/ .</p><p class="r" id="ref-9"><b>[9]</b> OpenXLA / StableHLO — https://openxla.org/stablehlo .</p><p class="r" id="ref-10"><b>[10]</b> LLVM Polly — https://polly.llvm.org/ .</p></section><div class="related"><div class="rl">연결된 주제 (graph)</div><div class="rgrid"><a class="rcard" href="06-affine.html"><div class="rn">06 · Affine 변환</div><div class="rt">Affine Dialect 변환 심화</div><div class="redge">↳ linalg→affine 위계</div></a><a class="rcard" href="07-synthesis.html"><div class="rn">07 · 종합·전망</div><div class="rt">종합</div><div class="redge">↳ 파이프라인 → ISA 경계</div></a></div></div><nav class="pager"><a class="prev" href="03-philosophy.html"><div class="d">← 이전 · 03</div>설계 철학</a><a class="next xpart part-poly" href="05-polyhedral.html"><div class="d">주제 2 · Polyhedral →</div>Polyhedral</a></nav>
+</article>
+</main>
+<footer>
+<span class="contributors">MLIR · Polyhedral / Affine 세미나 · 2026-06-12 · 발표 Suhwan</span>
+<a href="index.html">전체 지도 ↩</a>
+</footer>
+<script src="assets/poly.js"></script>
+<script src="assets/viz-scenes.js"></script>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/auto-render.min.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>
