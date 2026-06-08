@@ -155,6 +155,11 @@
     else if (hAttr) box.style.height = (parseInt(hAttr, 10) || 320) + "px";
     // else: rely on CSS height (slide decks size .cy via CSS)
 
+    // text-align:center 가 상속되면 cytoscape 의 absolute 캔버스가 left 미지정 상태에서
+    // 정적 위치가 컨테이너 중앙(폭/2)으로 계산돼 그래프가 우측으로 잘리고 hit-test(클릭·드래그·줌)가
+    // 빗나간다. 좌측 정렬로 캔버스를 원점에 고정한다.
+    box.style.textAlign = "left";
+
     var p = palette(box);
     var fontsObj = fonts(box);
     var hasClickable = (spec.elements || []).some(function (el) { return el.data && el.data.href; });
