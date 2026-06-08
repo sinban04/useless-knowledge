@@ -24,20 +24,7 @@
 <p class="report-meta"><span class="chip pchip">주제 2 · Polyhedral</span> · <span class="chip">CH 06</span> · <time datetime="2026-06-12">2026-06-12</time></p>
 <p class="dek">스케줄을 바꾸면 병렬성이 생긴다 — 지역성·스큐잉·하드웨어 매핑.</p>
 
-<figure class="diagram"><pre class="mermaid">flowchart TD
-  subgraph loc["지역성"]
-    direction TB
-    I[Interchange] --&gt; Fu[Fusion] --&gt; Ti[Tiling] --&gt; Pa[Paging]
-  end
-  subgraph par["병렬성 ★"]
-    Sk["Skewing&lt;br/&gt;없던 병렬성"]:::hi
-  end
-  subgraph hw["하드웨어 매핑"]
-    direction TB
-    Si[SIMD] --&gt; Mc[Multicore] --&gt; Pi[Pipeline]
-  end
-  loc --&gt; par --&gt; hw
-  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;</pre><figcaption>affine 변환의 세 갈래. ★ 스큐잉은 '없던 병렬성'을 만들어내는 유일한 변환이다.</figcaption></figure>
+<figure class="diagram"><div class="cy" data-h="560"></div><script type="application/json" class="cy-spec">{"rankDir":"TD","elements":[{"data":{"id":"loc","label":"지역성"}},{"data":{"id":"I","label":"Interchange","parent":"loc"}},{"data":{"id":"Fu","label":"Fusion","parent":"loc"}},{"data":{"id":"Ti","label":"Tiling","parent":"loc"}},{"data":{"id":"Pa","label":"Paging","parent":"loc"}},{"data":{"id":"par","label":"병렬성 ★"}},{"data":{"id":"Sk","label":"Skewing\n없던 병렬성","parent":"par"},"classes":"hi"},{"data":{"id":"hw","label":"하드웨어 매핑"}},{"data":{"id":"Si","label":"SIMD","parent":"hw"}},{"data":{"id":"Mc","label":"Multicore","parent":"hw"}},{"data":{"id":"Pi","label":"Pipeline","parent":"hw"}},{"data":{"source":"I","target":"Fu"}},{"data":{"source":"Fu","target":"Ti"}},{"data":{"source":"Ti","target":"Pa"}},{"data":{"source":"Si","target":"Mc"}},{"data":{"source":"Mc","target":"Pi"}},{"data":{"source":"loc","target":"par"}},{"data":{"source":"par","target":"hw"}}]}</script><figcaption>affine 변환의 세 갈래. ★ 스큐잉은 '없던 병렬성'을 만들어내는 유일한 변환이다.</figcaption></figure>
 
 <p>앞 섹션에서 폴리헤드럴 모델이 루프를 <em>다면체(polyhedron)</em> — 부등식으로 둘러싸인 다차원 공간 — 로 보고, 실행 순서를 행렬(스케줄, schedule)로 바꾼다는 큰 그림을 봤다. 이번 섹션은 그 이론이 MLIR의 <strong>Affine dialect</strong> 위에서 실제로 어떻게 동작하는지를, 대표적인 변환들과 애니메이션으로 따라간다.</p>
 <blockquote><p>용어 빠른 정의: <strong>dialect</strong> = MLIR에서 한 추상화 수준의 연산(op) 묶음(하드웨어로 치면 하나의 ISA 레이어). <strong>Affine dialect</strong> = 루프 경계·배열 인덱스가 모두 <em>아핀식</em>(변수의 1차식 + 상수)으로 제한된 dialect로, 폴리헤드럴 분석을 IR 문법 차원에서 강제한다. <strong>lowering</strong> = 높은 추상화의 op를 더 낮은 op로 점진적으로 내려보내는 것.</p></blockquote>
@@ -144,7 +131,11 @@
 </footer>
 <script src="assets/poly.js"></script>
 <script src="assets/viz-scenes.js"></script>
-<script src="assets/mermaid.min.js"></script>
+<script src="assets/cytoscape.min.js"></script>
+<script src="assets/dagre.min.js"></script>
+<script src="assets/cytoscape-dagre.min.js"></script>
+<script src="assets/cyto.js?v=20260608b"></script>
+<script src="assets/zoom.js?v=20260608b"></script>
 <script src="assets/katex/katex.min.js"></script>
 <script src="assets/katex/auto-render.min.js"></script>
 <script src="assets/site.js"></script>

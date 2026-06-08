@@ -25,9 +25,12 @@
 <p class="dek">linalg→affine→scf→LLVM, StableHLO 진입, custom dialect — MLIR은 어떻게 쓰이는가.</p>
 <nav class="toc" aria-label="Table of contents"><h2>이 페이지</h2><ol><li><a href="#mlir은-결국-한-번에-안-내려간다">MLIR은 결국 "한 번에 안 내려간다"</a></li><li><a href="#한-dialect가-두-단계의-하강을-가진다">한 dialect가 두 단계의 하강을 가진다</a></li><li><a href="#4단계-추상화-계단">4단계 추상화 계단</a></li><li><a href="#입구는-어디인가-ml-프레임워크-그래프가-mlir로-들어오는-길">입구는 어디인가 — ML 프레임워크 그래프가 MLIR로 들어오는 길</a></li><li><a href="#예시-전형적인-npu-백엔드가-upstream-affine-pass를-재사용하는-방식">예시 — 전형적인 NPU 백엔드가 upstream affine pass를 재사용하는 방식</a></li><li><a href="#custom-dialect로-졸업하기-mlir의-진짜-강점">Custom dialect로 졸업하기 — MLIR의 진짜 강점</a></li></ol></nav>
 
-<figure class="diagram"><pre class="mermaid">flowchart TD
-  M["model&lt;br/&gt;ONNX·PyTorch"] --&gt; X["XLA"] --&gt; SH["stablehlo"] --&gt; L["linalg"]:::hi --&gt; A["affine"]:::hi --&gt; SCF["scf·arith·memref"]:::hi --&gt; LL["LLVM IR"] --&gt; HW["기계어 / 가속기"]
-  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;</pre><figcaption>baseline 파이프라인. 각 화살표가 한 번의 lowering이다.</figcaption></figure>
+<figure class="diagram"><div class="cy" data-h="560"></div><script type="application/json" class="cy-spec">{"rankDir":"TD","elements":[{"data":{"id":"M","label":"model\nONNX·PyTorch"}},{"data":{"id":"X","label":"XLA"}},{"data":{"id":"SH","label":"stablehlo"}},{"data":{"id":"L","label":"linalg"},"classes":"hi"},{"data":{"id":"A","label":"affine"},"classes":"hi"},{"data":{"id":"SCF","label":"scf·arith·memref"},"classes":"hi"},{"data":{"id":"LL","label":"LLVM IR"}},{"data":{"id":"HW","label":"기계어 / 가속기"}},{"data":{"source":"M","target":"X"}},{"data":{"source":"X","target":"SH"}},{"data":{"source":"SH","target":"L"}},{"data":{"source":"L","target":"A"}},{"data":{"source":"A","target":"SCF"}},{"data":{"source":"SCF","target":"LL"}},{"data":{"source":"LL","target":"HW"}}]}</script><figcaption>baseline 파이프라인. 각 화살표가 한 번의 lowering이다.</figcaption></figure>
+
+<section class="xla-pipeline">
+<figure class="diagram"><div class="cy" data-h="640"></div><script type="application/json" class="cy-spec">{"rankDir":"TD","elements":[{"data":{"id":"FE","label":"Frontend\nJAX · TF · PyTorch-XLA"}},{"data":{"id":"SH","label":"StableHLO\nportable exchange IR"}},{"data":{"id":"HLO","label":"HLO IR\n(XLA internal)"},"classes":"hi"},{"data":{"id":"TI","label":"target-independent passes\nCSE · generic fusion · buffer analysis"}},{"data":{"id":"TB","label":"backend-specific HLO passes\ntarget fusion · layout · lib pattern-match"}},{"data":{"id":"CG","label":"backend codegen"},"classes":"hi"},{"data":{"id":"CPU","label":"CPU\nLLVM IR → host"}},{"data":{"id":"GPU","label":"GPU\nLLVM NVPTX / Triton + cuBLAS·cuDNN"}},{"data":{"id":"TPU","label":"TPU\nMLIR pipeline → TPU ISA"}},{"data":{"id":"EX","label":"Executable\n(PjRtExecutable)"}},{"data":{"id":"RT","label":"PJRT runtime → device"}},{"data":{"source":"FE","target":"SH"}},{"data":{"source":"SH","target":"HLO"}},{"data":{"source":"HLO","target":"TI"}},{"data":{"source":"TI","target":"TB"}},{"data":{"source":"TB","target":"CG"}},{"data":{"source":"CG","target":"CPU","label":"CPU"}},{"data":{"source":"CG","target":"GPU","label":"GPU"}},{"data":{"source":"CG","target":"TPU","label":"TPU"}},{"data":{"source":"CPU","target":"EX"}},{"data":{"source":"GPU","target":"EX"}},{"data":{"source":"TPU","target":"EX"}},{"data":{"source":"EX","target":"RT"}}]}</script><figcaption>다른 스택 사례 — XLA 컴파일 파이프라인. 위 baseline의 <code>XLA</code> 노드를 펼친 모습이다.</figcaption></figure>
+<p><b>다른 스택의 같은 원리 — XLA 파이프라인.</b> baseline의 <code>XLA</code> 단계를 펼치면 XLA도 동일한 "점진적 하강" 구조를 따른다. 공식 단계는 ① <b>target-independent optimization</b>(CSE·일반 fusion·buffer analysis, 이때 StableHLO→HLO 변환) → ② <b>backend-specific optimization</b>(target fusion·layout, cuDNN GEMM/conv 같은 optimized-library 패턴 매칭) → ③ <b>code generation</b>(CPU·GPU는 LLVM IR을 거쳐 native, TPU는 별도 codegen). JAX는 이 파이프라인의 <i>frontend</i>로서 트레이싱 결과를 StableHLO로 떨궈 PJRT를 통해 XLA에 넘긴다. MLIR이 dialect별로 단계를 나눠 내려가는 발상과 같다.</p>
+</section>
 
 <h2 id="mlir은-결국-한-번에-안-내려간다">MLIR은 결국 "한 번에 안 내려간다"</h2>
 <p>앞 섹션까지 MLIR이 <em>무엇인지</em>(여러 dialect가 공존하는 IR 인프라)를 봤다면, 이번 섹션은 <em>실제로 어떻게 쓰이는지</em>다. 핵심 키워드는 <strong>progressive lowering(점진적 하강)</strong> 이다.</p>
@@ -35,9 +38,7 @@
 <p>비유하자면 ISA 설계에서 "한 명령으로 모든 걸 하는 CISC 거대 명령"을 만들지 않고, 마이크로옵(micro-op)으로 쪼개 단계적으로 실행하는 것과 같다. MLIR은 고수준 의미를 단번에 기계어로 떨어뜨리지 않고, <em>추상화 계단을 한 칸씩</em> 내려간다. 각 계단에서 그 계단에 맞는 분석·최적화를 끝낸 뒤 결과만 다음 계단으로 넘긴다 <sup class="cite"><a href="#ref-1">[1]</a></sup><sup class="cite"><a href="#ref-2">[2]</a></sup>.</p>
 <h2 id="한-dialect가-두-단계의-하강을-가진다">한 dialect가 두 단계의 하강을 가진다</h2>
 
-<figure class="diagram"><pre class="mermaid">flowchart TD
-  A1["affine.delinearize_index"] --&gt;|"내부 lowering&lt;br/&gt;--affine-expand-index-ops"| A2["affine.apply ×3&lt;br/&gt;(여전히 affine)"]
-  A2 --&gt;|"경계 졸업&lt;br/&gt;--lower-affine"| S["scf + arith + memref"]</pre><figcaption>한 dialect의 두 단계 추상화: 내부 lowering(같은 dialect) → 경계 졸업(다른 dialect).</figcaption></figure>
+<figure class="diagram"><div class="cy" data-h="330"></div><script type="application/json" class="cy-spec">{"rankDir":"TD","elements":[{"data":{"id":"A1","label":"affine.delinearize_index"}},{"data":{"id":"A2","label":"affine.apply ×3\n(여전히 affine)"}},{"data":{"id":"S","label":"scf + arith + memref"}},{"data":{"source":"A1","target":"A2","label":"내부 lowering\n--affine-expand-index-ops"}},{"data":{"source":"A2","target":"S","label":"경계 졸업\n--lower-affine"}}]}</script><figcaption>한 dialect의 두 단계 추상화: 내부 lowering(같은 dialect) → 경계 졸업(다른 dialect).</figcaption></figure>
 
 <p>progressive lowering을 정확히 이해하는 열쇠는, <strong>하나의 dialect가 두 종류의 "내려가기"를 가진다</strong>는 점이다 <sup class="cite"><a href="#ref-8">[8]</a></sup>.</p>
 <h3 id="1-내부-lowering-같은-dialect-안에서-더-기본적인-op으로">(1) 내부 lowering — 같은 dialect 안에서 더 기본적인 op으로</h3>
@@ -115,7 +116,11 @@
 </footer>
 <script src="assets/poly.js"></script>
 <script src="assets/viz-scenes.js"></script>
-<script src="assets/mermaid.min.js"></script>
+<script src="assets/cytoscape.min.js"></script>
+<script src="assets/dagre.min.js"></script>
+<script src="assets/cytoscape-dagre.min.js"></script>
+<script src="assets/cyto.js?v=20260608b"></script>
+<script src="assets/zoom.js?v=20260608b"></script>
 <script src="assets/katex/katex.min.js"></script>
 <script src="assets/katex/auto-render.min.js"></script>
 <script src="assets/site.js"></script>

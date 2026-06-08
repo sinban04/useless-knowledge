@@ -24,48 +24,7 @@
 <p class="dek">이 세미나는 크게 <strong>두 주제</strong>로 구성됩니다 — <strong>주제 1 · MLIR</strong>(왜 MLIR인가·설계 철학·파이프라인)과 <strong>주제 2 · Polyhedral Model & Affine</strong>(루프를 수학으로). 둘은 <code>affine</code> dialect를 통해 만나고, 마무리에서 <strong>ISA 경계</strong>로 종합됩니다.</p>
 <p class="paper-line"><strong>기반 논문</strong> · [1] <em>MLIR: A Compiler Infrastructure for the End of Moore's Law</em> (arXiv:2002.11054, 2020) · [2] <em>MLIR: Scaling Compiler Infrastructure for Domain Specific Computation</em> (CGO 2021)</p>
 <h2>주제 지도 — 두 주제와 그 연결</h2>
-<figure class="diagram graphmap"><pre class="mermaid">flowchart TD
-  subgraph G_mlir["주제 1 · MLIR"]
-    direction TB
-    p00["00 · 도입"]
-    p01["01 · 배경·두 논문"]
-    p02["02 · 핵심 개념"]
-    p03["03 · 설계 철학"]
-    p04["04 · Lowering·파이프라인"]
-  end
-  subgraph G_poly["주제 2 · Polyhedral"]
-    direction TB
-    p05["05 · Polyhedral"]
-    p06["06 · Affine 변환"]
-  end
-  subgraph G_synth["마무리 · 종합"]
-    direction TB
-    p07["07 · 종합·전망"]
-  end
-  p00 --&gt; p01
-  p01 --&gt; p02
-  p02 --&gt; p03
-  p03 --&gt; p04
-  p04 --&gt; p05
-  p05 --&gt; p06
-  p06 --&gt; p07
-  p00 -. "premature lowering → Progressivity" .-&gt; p03
-  p03 -. "철학 → 실천" .-&gt; p04
-  p02 -. "affine dialect → 폴리헤드럴" .-&gt; p05
-  p05 -. "정보 보존 = Progressivity" .-&gt; p03
-  p04 -. "linalg→affine 위계" .-&gt; p06
-  p04 -. "파이프라인 → ISA 경계" .-&gt; p07
-  p06 -. "custom target → ISA" .-&gt; p07
-  p07 -. "dialect 폭발 = 파편화 재발" .-&gt; p01
-  click p00 "00-intro.html" "도입"
-  click p01 "01-background.html" "배경·두 논문"
-  click p02 "02-concepts.html" "핵심 개념"
-  click p03 "03-philosophy.html" "설계 철학"
-  click p04 "04-lowering.html" "Lowering·파이프라인"
-  click p05 "05-polyhedral.html" "Polyhedral"
-  click p06 "06-affine.html" "Affine 변환"
-  click p07 "07-synthesis.html" "종합·전망"
-</pre><figcaption>두 묶음 = 두 주제 · 실선 = 읽기 흐름 · 점선 = 개념 연결 · 노드를 클릭하면 이동합니다.</figcaption></figure>
+<figure class="diagram graphmap"><div class="cy" data-h="560"></div><script type="application/json" class="cy-spec">{"rankDir":"TD","elements":[{"data":{"id":"G_mlir","label":"주제 1 · MLIR"}},{"data":{"id":"p00","label":"00 · 도입","parent":"G_mlir","href":"00-intro.html"}},{"data":{"id":"p01","label":"01 · 배경·두 논문","parent":"G_mlir","href":"01-background.html"}},{"data":{"id":"p02","label":"02 · 핵심 개념","parent":"G_mlir","href":"02-concepts.html"}},{"data":{"id":"p03","label":"03 · 설계 철학","parent":"G_mlir","href":"03-philosophy.html"}},{"data":{"id":"p04","label":"04 · Lowering·파이프라인","parent":"G_mlir","href":"04-lowering.html"}},{"data":{"id":"G_poly","label":"주제 2 · Polyhedral"}},{"data":{"id":"p05","label":"05 · Polyhedral","parent":"G_poly","href":"05-polyhedral.html"}},{"data":{"id":"p06","label":"06 · Affine 변환","parent":"G_poly","href":"06-affine.html"}},{"data":{"id":"G_synth","label":"마무리 · 종합"}},{"data":{"id":"p07","label":"07 · 종합·전망","parent":"G_synth","href":"07-synthesis.html"}},{"data":{"source":"p00","target":"p01"}},{"data":{"source":"p01","target":"p02"}},{"data":{"source":"p02","target":"p03"}},{"data":{"source":"p03","target":"p04"}},{"data":{"source":"p04","target":"p05"}},{"data":{"source":"p05","target":"p06"}},{"data":{"source":"p06","target":"p07"}},{"data":{"source":"p00","target":"p03","label":"premature lowering → Progressivity"},"classes":"dashed"},{"data":{"source":"p03","target":"p04","label":"철학 → 실천"},"classes":"dashed"},{"data":{"source":"p02","target":"p05","label":"affine dialect → 폴리헤드럴"},"classes":"dashed"},{"data":{"source":"p05","target":"p03","label":"정보 보존 = Progressivity"},"classes":"dashed"},{"data":{"source":"p04","target":"p06","label":"linalg→affine 위계"},"classes":"dashed"},{"data":{"source":"p04","target":"p07","label":"파이프라인 → ISA 경계"},"classes":"dashed"},{"data":{"source":"p06","target":"p07","label":"custom target → ISA"},"classes":"dashed"},{"data":{"source":"p07","target":"p01","label":"dialect 폭발 = 파편화 재발"},"classes":"dashed"}]}</script><figcaption>두 묶음 = 두 주제 · 실선 = 읽기 흐름 · 점선 = 개념 연결 · 노드를 클릭하면 이동합니다.</figcaption></figure>
 <section class="topic part-mlir"><div class="topichead"><span class="tlabel">주제 1</span><h2>MLIR</h2><p class="ttag">왜 MLIR인가 — 개념, Chris Lattner의 설계 철학, 그리고 현대 컴파일러 파이프라인.</p></div><ol class="reading-order"><li><a href="00-intro.html"><span class="on">00</span><span class="oh">도입</span><span class="od">소스코드가 기계어가 되기까지, 그리고 '컴파일러 동물원' 문제.</span></a></li>
 <li><a href="01-background.html"><span class="on">01</span><span class="oh">MLIR 탄생 배경</span><span class="od">DSA 황금기, 컴파일러 파편화, 그리고 '하나의 진정한 IR 인프라'.</span></a></li>
 <li><a href="02-concepts.html"><span class="on">02</span><span class="oh">MLIR 핵심 개념</span><span class="od">Operation · Dialect · Region/Block · SSA · Trait/Interface · TableGen.</span></a></li>
@@ -85,7 +44,11 @@
 </footer>
 <script src="assets/poly.js"></script>
 <script src="assets/viz-scenes.js"></script>
-<script src="assets/mermaid.min.js"></script>
+<script src="assets/cytoscape.min.js"></script>
+<script src="assets/dagre.min.js"></script>
+<script src="assets/cytoscape-dagre.min.js"></script>
+<script src="assets/cyto.js?v=20260608b"></script>
+<script src="assets/zoom.js?v=20260608b"></script>
 <script src="assets/katex/katex.min.js"></script>
 <script src="assets/katex/auto-render.min.js"></script>
 <script src="assets/site.js"></script>

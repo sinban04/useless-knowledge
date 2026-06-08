@@ -25,14 +25,7 @@
 <p class="dek">Parsimony · Traceability · Progressivity, 그리고 원칙들의 충돌.</p>
 <nav class="toc" aria-label="Table of contents"><h2>이 페이지</h2><ol><li><a href="#왜-원칙-부터-보는가">왜 "원칙"부터 보는가</a></li><li><a href="#원칙-1-parsimony-절약-occam의-면도날">원칙 1 — Parsimony (절약, Occam의 면도날)</a></li><li><a href="#원칙-2-traceability-추적가능성">원칙 2 — Traceability (추적가능성)</a></li><li><a href="#원칙-3-progressivity-점진성">원칙 3 — Progressivity (점진성)</a></li><li><a href="#원칙들의-충돌-그리고-저자들의-정직함">원칙들의 충돌 — 그리고 저자들의 정직함</a></li></ol></nav>
 
-<figure class="diagram"><pre class="mermaid">flowchart TD
-  P["Parsimony&lt;br/&gt;작은 코어 · 모든 것은 Op"]
-  T["Traceability&lt;br/&gt;retain · declare · verify"]
-  G["Progressivity&lt;br/&gt;premature lowering =&lt;br/&gt;만악의 근원"]:::hi
-  P &lt;--&gt;|"긴장"| G
-  P &lt;--&gt;|"공명"| T
-  T &lt;--&gt;|"긴장"| G
-  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;</pre><figcaption>세 원칙은 서로 공명하기도, 충돌하기도 한다 — 저자들이 직접 인정하는 절충.</figcaption></figure>
+<figure class="diagram"><div class="cy" data-h="330"></div><script type="application/json" class="cy-spec">{"rankDir":"TD","elements":[{"data":{"id":"P","label":"Parsimony\n작은 코어 · 모든 것은 Op"}},{"data":{"id":"T","label":"Traceability\nretain · declare · verify"}},{"data":{"id":"G","label":"Progressivity\npremature lowering =\n만악의 근원"},"classes":"hi"},{"data":{"source":"P","target":"G","label":"긴장"},"classes":"bi"},{"data":{"source":"P","target":"T","label":"공명"},"classes":"bi"},{"data":{"source":"T","target":"G","label":"긴장"},"classes":"bi"}]}</script><figcaption>세 원칙은 서로 공명하기도, 충돌하기도 한다 — 저자들이 직접 인정하는 절충.</figcaption></figure>
 
 <h2 id="왜-원칙-부터-보는가">왜 "원칙"부터 보는가</h2>
 <p>대부분의 컴파일러 책은 <em>기법</em>(SSA, register allocation, loop tiling 같은 구체 테크닉)을 가르친다. 그런데 MLIR 논문은 특이하게도 <em>기법</em>보다 <em>원칙</em>에서 출발한다. 저자들 — Chris Lattner(LLVM/Clang/Swift, 그리고 MLIR의 창시자) 외 — 은 "<em>the 'art' of compiler IR and abstraction design is not well understood</em>"(컴파일러 IR과 추상화를 설계하는 '기예'는 아직 잘 이해되지 않았다)라고 솔직히 인정하면서 <sup class="cite"><a href="#ref-2">[2]</a></sup>, 그 공백을 메우려고 <em>세 가지 설계 원칙</em>으로 모든 결정을 정당화한다.</p>
@@ -103,7 +96,11 @@
 </footer>
 <script src="assets/poly.js"></script>
 <script src="assets/viz-scenes.js"></script>
-<script src="assets/mermaid.min.js"></script>
+<script src="assets/cytoscape.min.js"></script>
+<script src="assets/dagre.min.js"></script>
+<script src="assets/cytoscape-dagre.min.js"></script>
+<script src="assets/cyto.js?v=20260608b"></script>
+<script src="assets/zoom.js?v=20260608b"></script>
 <script src="assets/katex/katex.min.js"></script>
 <script src="assets/katex/auto-render.min.js"></script>
 <script src="assets/site.js"></script>

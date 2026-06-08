@@ -60,6 +60,18 @@ body.report { max-width: 820px; }
 .report-page figure.diagram foreignObject { overflow: visible; }
 .report-page figure.diagram .nodeLabel { line-height: 1.4; white-space: normal; }
 
+/* ─── Cytoscape.js graphs (flowchart-style diagrams; replaces mermaid) ─── */
+.report-page figure.diagram .cy {
+  width: 100%; min-height: 180px;
+  border: 1px solid var(--rule); border-radius: 3px;
+  background: transparent;
+}
+.report-page figure.graphmap .cy { min-height: 460px; }
+.report-page figure.diagram .cy-err {
+  font-family: var(--mono-ui); font-size: 0.78rem; color: var(--accent);
+  padding: 1.1rem; text-align: center;
+}
+
 /* ─── external images ────────────────────────────────────────────────── */
 .report-page figure.img { margin: 2rem 0; text-align: center; }
 .report-page figure.img img { border: 1px solid var(--rule); border-radius: 3px; background: #fff; max-width: 100%; }

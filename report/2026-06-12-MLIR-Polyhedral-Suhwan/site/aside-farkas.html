@@ -57,15 +57,7 @@
 <p>$$c\,i-1 \equiv \lambda_0+\lambda_1(i-1) \;\Rightarrow\; \underbrace{c=\lambda_1}_{i\text{ 계수}},\quad \underbrace{-1=\lambda_0-\lambda_1}_{\text{상수}} \;\Rightarrow\; \lambda_0=c-1\ge 0 \;\Rightarrow\; \boxed{c\ge 1}$$</p>
 <p>매칭이 <strong>미지수 $c$ 에 대한 부등식 $c\ge 1$</strong> 을 뱉었다. 일반적으로는 <em>모든 의존성</em>에 대해 이런 식을 모아 $(c,\,d,\,\lambda\ge 0)$ 의 <strong>연립 선형 시스템</strong>을 만들고, 그걸 <strong>ILP/LP</strong> 가 푼다(여러 합법해 중 통신·지역성 비용이 최소인 것을 고른다). 이것이 Feautrier·Pluto 스케줄러의 엔진이다 <sup class="cite"><a href="#ref-6">[6]</a></sup><sup class="cite"><a href="#ref-4">[4]</a></sup>.</p>
 
-<figure class="diagram"><pre class="mermaid">flowchart TD
-  A["합법성 한 조각&lt;br/&gt;ψ(i) ≥ 0  (∀ i ∈ D)"] --&gt; B["Farkas로 전개&lt;br/&gt;ψ = λ0 + Σ λk·(제약 k)"]:::hi
-  B --&gt; C["i·N 계수를 좌·우변에서&lt;br/&gt;매칭 → i 소거"]
-  C --&gt; D["λ(와 미지 스케줄 계수)에&lt;br/&gt;대한 유한 선형식"]
-  D --&gt; E{"모든 λ ≥ 0 인&lt;br/&gt;해가 있나?"}
-  E --&gt;|"있음"| OK["ψ ≥ 0 증명&lt;br/&gt;= 스케줄 합법 (예제 1)"]:::hi
-  E --&gt;|"없음"| NO["반례 존재&lt;br/&gt;= 스케줄 불법 (예제 2)"]:::no
-  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;
-  classDef no fill:#f3f3f0,stroke:#999,color:#555;</pre></figure>
+<figure class="diagram"><div class="cy" data-h="560"></div><script type="application/json" class="cy-spec">{"rankDir":"TD","elements":[{"data":{"id":"A","label":"합법성 한 조각\nψ(i) ≥ 0  (∀ i ∈ D)"}},{"data":{"id":"B","label":"Farkas로 전개\nψ = λ0 + Σ λk·(제약 k)"},"classes":"hi"},{"data":{"id":"C","label":"i·N 계수를 좌·우변에서\n매칭 → i 소거"}},{"data":{"id":"D","label":"λ(와 미지 스케줄 계수)에\n대한 유한 선형식"}},{"data":{"id":"E","label":"모든 λ ≥ 0 인\n해가 있나?","shape":"diamond"}},{"data":{"id":"OK","label":"ψ ≥ 0 증명\n= 스케줄 합법 (예제 1)"},"classes":"hi"},{"data":{"id":"NO","label":"반례 존재\n= 스케줄 불법 (예제 2)"},"classes":"no"},{"data":{"source":"A","target":"B"}},{"data":{"source":"B","target":"C"}},{"data":{"source":"C","target":"D"}},{"data":{"source":"D","target":"E"}},{"data":{"source":"E","target":"OK","label":"있음"}},{"data":{"source":"E","target":"NO","label":"없음"}}]}</script></figure>
 
 <h2 id="스텐실은-왜-손으로-풀렸나-uniform-vs-farkas">스텐실은 왜 <em>손으로</em> 풀렸나 — uniform vs Farkas</h2>
 <p>세미나의 2D 스텐실은 의존성이 $\delta_1=(1,0),\ \delta_2=(0,1)$ 로 <strong>상수(uniform)</strong>다. 그러면 $\Theta\delta$ 도 상수라 $i$ 가 애초에 등장하지 않고, 위의 매칭 없이 눈으로 끝난다:</p>
@@ -85,7 +77,11 @@
 </footer>
 <script src="assets/poly.js"></script>
 <script src="assets/viz-scenes.js"></script>
-<script src="assets/mermaid.min.js"></script>
+<script src="assets/cytoscape.min.js"></script>
+<script src="assets/dagre.min.js"></script>
+<script src="assets/cytoscape-dagre.min.js"></script>
+<script src="assets/cyto.js?v=20260608b"></script>
+<script src="assets/zoom.js?v=20260608b"></script>
 <script src="assets/katex/katex.min.js"></script>
 <script src="assets/katex/auto-render.min.js"></script>
 <script src="assets/site.js"></script>

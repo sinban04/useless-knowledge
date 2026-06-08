@@ -26,14 +26,7 @@
 
 <div class="bridge part-synth"><div class="bk">두 주제의 종합</div><p>이 마무리는 <b>주제 1(MLIR)</b> 과 <b>주제 2(폴리헤드럴·affine)</b> 가 만나는 곳입니다 — MLIR의 정직한 한계, 그리고 'ISA 경계를 어디에 긋느냐'가 두 세계(컴파일러 ↔ 하드웨어)의 책임을 어떻게 가르는지.</p></div>
 
-<figure class="diagram"><pre class="mermaid">flowchart TD
-  subgraph pipe["MLIR lowering 단계 = ISA 경계 후보"]
-    direction TB
-    L["linalg"] --&gt; A["affine"] --&gt; S["scf"] --&gt; LL["LLVM"]
-  end
-  L -. "경계를 높게" .-&gt; HWc["HW가 의미를 통째 처리&lt;br/&gt;→ HW 복잡 · 컴파일러 단순"]:::hi
-  LL -. "경계를 낮게" .-&gt; SWc["컴파일러가 다 풀어 내림&lt;br/&gt;→ 컴파일러 복잡 · HW 단순"]:::hi
-  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;</pre><figcaption>발표자 견해: ISA 경계를 어느 추상 단계에 긋느냐가 컴파일러와 HW의 책임을 가른다.</figcaption></figure>
+<figure class="diagram"><div class="cy" data-h="540"></div><script type="application/json" class="cy-spec">{"rankDir":"TD","elements":[{"data":{"id":"pipe","label":"MLIR lowering 단계 = ISA 경계 후보"}},{"data":{"id":"L","label":"linalg","parent":"pipe"}},{"data":{"id":"A","label":"affine","parent":"pipe"}},{"data":{"id":"S","label":"scf","parent":"pipe"}},{"data":{"id":"LL","label":"LLVM","parent":"pipe"}},{"data":{"id":"HWc","label":"HW가 의미를 통째 처리\n→ HW 복잡 · 컴파일러 단순"},"classes":"hi"},{"data":{"id":"SWc","label":"컴파일러가 다 풀어 내림\n→ 컴파일러 복잡 · HW 단순"},"classes":"hi"},{"data":{"source":"L","target":"A"}},{"data":{"source":"A","target":"S"}},{"data":{"source":"S","target":"LL"}},{"data":{"source":"L","target":"HWc","label":"경계를 높게"},"classes":"dashed"},{"data":{"source":"LL","target":"SWc","label":"경계를 낮게"},"classes":"dashed"}]}</script><figcaption>발표자 견해: ISA 경계를 어느 추상 단계에 긋느냐가 컴파일러와 HW의 책임을 가른다.</figcaption></figure>
 
 
 <figure class="img"><img class="" src="../images/systolic-array.png" alt="2x2 output-stationary 시스톨릭 어레이의 데이터플로우 — 입력과 가중치가 MAC 처리요소 격자로 흘러들어가 부분합을 제자리에 누적"><figcaption>Output-stationary &lt;b&gt;시스톨릭 어레이&lt;/b&gt;(2×2): partial sum이 각 PE에 머무는 동안 피연산자가 흘러간다. 이런 dataflow를 ISA 경계의 어느 높이에 둘지가 곧 컴파일러와 하드웨어의 책임 분담을 결정한다.<div class="src">출처: <a href="https://commons.wikimedia.org/wiki/File:Output_Stationary_Systolic_Array_Example.png" target="_blank" rel="noopener">Wikimedia Commons · EMJzero</a> · CC0 1.0 (Public Domain)</div></figcaption></figure>
@@ -69,7 +62,11 @@
 </footer>
 <script src="assets/poly.js"></script>
 <script src="assets/viz-scenes.js"></script>
-<script src="assets/mermaid.min.js"></script>
+<script src="assets/cytoscape.min.js"></script>
+<script src="assets/dagre.min.js"></script>
+<script src="assets/cytoscape-dagre.min.js"></script>
+<script src="assets/cyto.js?v=20260608b"></script>
+<script src="assets/zoom.js?v=20260608b"></script>
 <script src="assets/katex/katex.min.js"></script>
 <script src="assets/katex/auto-render.min.js"></script>
 <script src="assets/site.js"></script>

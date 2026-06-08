@@ -27,17 +27,7 @@
 
 <div class="bridge part-mlir"><div class="bk">← 주제 1에서 이어집니다</div><p>주제 1에서 affine을 'MLIR의 한 dialect'로 만났습니다. 이제 그 dialect가 구현하는 <b>폴리헤드럴 모델</b>을 봅니다 — 왜 affine이 SCoP를 IR 문법으로 강제하는지가 여기서 풀립니다.</p></div>
 
-<figure class="diagram"><pre class="mermaid">flowchart TD
-  src["루프 소스"] --&gt; d["반복 공간&lt;br/&gt;(정수 다면체)"]
-  src --&gt; f["접근 함수"]
-  d --&gt; dep["의존성 정형화"]
-  f --&gt; dep
-  dep --&gt; q{"ILP 해 존재?"}
-  q --&gt;|"없음"| par["완전 병렬"]:::hi
-  q --&gt;|"있음"| sched["스케줄 θ 탐색&lt;br/&gt;(ILP)"]
-  sched --&gt; gen["코드 생성"]
-  par --&gt; gen
-  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;</pre><figcaption>폴리헤드럴 파이프라인: 루프를 다면체·아핀 함수로 옮겨 ILP로 최적 스케줄을 찾는다.</figcaption></figure>
+<figure class="diagram"><div class="cy" data-h="560"></div><script type="application/json" class="cy-spec">{"rankDir":"TD","elements":[{"data":{"id":"src","label":"루프 소스"}},{"data":{"id":"d","label":"반복 공간\n(정수 다면체)"}},{"data":{"id":"f","label":"접근 함수"}},{"data":{"id":"dep","label":"의존성 정형화"}},{"data":{"id":"q","label":"ILP 해 존재?","shape":"diamond"}},{"data":{"id":"par","label":"완전 병렬"},"classes":"hi"},{"data":{"id":"sched","label":"스케줄 θ 탐색\n(ILP)"}},{"data":{"id":"gen","label":"코드 생성"}},{"data":{"source":"src","target":"d"}},{"data":{"source":"src","target":"f"}},{"data":{"source":"d","target":"dep"}},{"data":{"source":"f","target":"dep"}},{"data":{"source":"dep","target":"q"}},{"data":{"source":"q","target":"par","label":"없음"}},{"data":{"source":"q","target":"sched","label":"있음"}},{"data":{"source":"sched","target":"gen"}},{"data":{"source":"par","target":"gen"}}]}</script><figcaption>폴리헤드럴 파이프라인: 루프를 다면체·아핀 함수로 옮겨 ILP로 최적 스케줄을 찾는다.</figcaption></figure>
 
 <h2 id="왜-루프를-수학-으로-보는가">왜 루프를 "수학"으로 보는가</h2>
 <p>먼저 용어부터 한 줄로 정리한다. <strong>AST(Abstract Syntax Tree)</strong> 는 소스 코드의 문법 구조를 그대로 옮긴 트리이고, <strong>CFG(Control Flow Graph)</strong> 는 기본 블록 사이의 분기·점프 흐름을 그린 그래프다. 전통적인 컴파일러는 이 두 표현 위에서 루프 최적화를 한다.</p>
@@ -49,8 +39,7 @@
 <hr>
 <h2 id="3개의-기둥-three-pillars">3개의 기둥 (Three Pillars)</h2>
 
-<figure class="diagram"><pre class="mermaid">flowchart TD
-  D["① 반복 공간&lt;br/&gt;A·i ≥ b"] --- S["② 의존성&lt;br/&gt;거리 벡터"] --- T["③ 스케줄 θ&lt;br/&gt;변환행렬"]</pre><figcaption>폴리헤드럴 모델의 세 기둥. 모든 변환이 스케줄 행렬 θ의 조작으로 통합된다.</figcaption></figure>
+<figure class="diagram"><div class="cy" data-h="330"></div><script type="application/json" class="cy-spec">{"rankDir":"TD","elements":[{"data":{"id":"D","label":"① 반복 공간\nA·i ≥ b"}},{"data":{"id":"S","label":"② 의존성\n거리 벡터"}},{"data":{"id":"T","label":"③ 스케줄 θ\n변환행렬"}},{"data":{"source":"D","target":"S"},"classes":"none"},{"data":{"source":"S","target":"T"},"classes":"none"}]}</script><figcaption>폴리헤드럴 모델의 세 기둥. 모든 변환이 스케줄 행렬 θ의 조작으로 통합된다.</figcaption></figure>
 
 
 <figure class="img"><img class="" src="../images/polyhedral-lattice.svg" alt="좌표 격자 위 정수 격자점 13개를 지나는 볼록 곡선"><figcaption>정수 격자 위의 &lt;b&gt;볼록 영역&lt;/b&gt;. 폴리헤드럴 모델에서 루프 반복 공간(iteration space)은 이처럼 ℤⁿ 위의 볼록 다면체(정수 격자점 집합)로 표현된다 — '다면체(polyhedron)'라는 이름의 유래.<div class="src">출처: <a href="https://commons.wikimedia.org/wiki/File:Convex_curve_through_13_grid_points.svg" target="_blank" rel="noopener">Wikimedia Commons · David Eppstein</a> · CC0 1.0 (Public Domain)</div></figcaption></figure>
@@ -200,7 +189,11 @@ LLVM / SPIR-V / ...</pre>
 </footer>
 <script src="assets/poly.js"></script>
 <script src="assets/viz-scenes.js"></script>
-<script src="assets/mermaid.min.js"></script>
+<script src="assets/cytoscape.min.js"></script>
+<script src="assets/dagre.min.js"></script>
+<script src="assets/cytoscape-dagre.min.js"></script>
+<script src="assets/cyto.js?v=20260608b"></script>
+<script src="assets/zoom.js?v=20260608b"></script>
 <script src="assets/katex/katex.min.js"></script>
 <script src="assets/katex/auto-render.min.js"></script>
 <script src="assets/site.js"></script>

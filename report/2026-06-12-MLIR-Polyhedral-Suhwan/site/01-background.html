@@ -24,9 +24,7 @@
 <p class="report-meta"><span class="chip pchip">주제 1 · MLIR</span> · <span class="chip">CH 01</span> · <time datetime="2026-06-12">2026-06-12</time></p>
 <p class="dek">DSA 황금기, 컴파일러 파편화, 그리고 '하나의 진정한 IR 인프라'.</p>
 
-<figure class="diagram"><pre class="mermaid">flowchart TD
-  M["무어의 법칙 둔화&lt;br/&gt;(DSA 황금기)"] --&gt; D["GPU · TPU · NPU&lt;br/&gt;도메인 특화 가속기 폭증"] --&gt; F["컴파일러 파편화&lt;br/&gt;N×M 중복"] --&gt; ML["MLIR&lt;br/&gt;하나의 IR 인프라"]:::hi
-  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;</pre><figcaption>무어의 법칙 둔화 → 도메인 특화 가속기 폭증 → 컴파일러 파편화 → MLIR이라는 공통 인프라.</figcaption></figure>
+<figure class="diagram"><div class="cy" data-h="400"></div><script type="application/json" class="cy-spec">{"rankDir":"TD","elements":[{"data":{"id":"M","label":"무어의 법칙 둔화\n(DSA 황금기)"}},{"data":{"id":"D","label":"GPU · TPU · NPU\n도메인 특화 가속기 폭증"}},{"data":{"id":"F","label":"컴파일러 파편화\nN×M 중복"}},{"data":{"id":"ML","label":"MLIR\n하나의 IR 인프라"},"classes":"hi"},{"data":{"source":"M","target":"D"}},{"data":{"source":"D","target":"F"}},{"data":{"source":"F","target":"ML"}}]}</script><figcaption>무어의 법칙 둔화 → 도메인 특화 가속기 폭증 → 컴파일러 파편화 → MLIR이라는 공통 인프라.</figcaption></figure>
 
 
 <figure class="img"><img class="" src="../images/moores-law.png" alt="1970년부터 2020년까지 마이크로프로세서 트랜지스터 수를 로그 스케일로 나타낸 그래프"><figcaption>마이크로프로세서 &lt;b&gt;트랜지스터 수&lt;/b&gt; 추이(1970–2020, 로그 스케일) — 약 2년마다 2배. 이 곡선이 꺾이며(무어의 법칙 둔화) 도메인 특화 가속기(DSA)의 황금기가 열렸다.<div class="src">출처: <a href="https://commons.wikimedia.org/wiki/File:Moore's_Law_Transistor_Count_1970-2020.png" target="_blank" rel="noopener">Our World in Data (Max Roser, Hannah Ritchie) via Wikimedia Commons</a> · CC BY 4.0</div></figcaption></figure>
@@ -67,7 +65,11 @@
 </footer>
 <script src="assets/poly.js"></script>
 <script src="assets/viz-scenes.js"></script>
-<script src="assets/mermaid.min.js"></script>
+<script src="assets/cytoscape.min.js"></script>
+<script src="assets/dagre.min.js"></script>
+<script src="assets/cytoscape-dagre.min.js"></script>
+<script src="assets/cyto.js?v=20260608b"></script>
+<script src="assets/zoom.js?v=20260608b"></script>
 <script src="assets/katex/katex.min.js"></script>
 <script src="assets/katex/auto-render.min.js"></script>
 <script src="assets/site.js"></script>

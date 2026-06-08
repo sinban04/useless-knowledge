@@ -34,16 +34,7 @@
 <p>$$D = \{\, \mathbf{i} \in \mathbb{Z}^n \ :\ A\,\mathbf{i} + \mathbf{b} \ge \mathbf{0} \,\}$$</p>
 <p>이라는 정수 다면체를 얻는다. 각 정수격자점이 루프 본문의 한 실행 인스턴스다.</p>
 
-<figure class="diagram"><pre class="mermaid">flowchart TD
-  src["중첩 루프 소스"] --&gt; q1{"모든 경계가 affine?"}
-  q1 --&gt;|"아니오"| no["SCoP 아님&lt;br/&gt;(보수적 분석)"]:::no
-  q1 --&gt;|"예"| q2{"모든 배열 첨자가 affine?"}
-  q2 --&gt;|"아니오"| no
-  q2 --&gt;|"예"| q3{"모든 분기 조건이 affine?&lt;br/&gt;부수효과 없음?"}
-  q3 --&gt;|"아니오"| no
-  q3 --&gt;|"예"| yes["SCoP&lt;br/&gt;→ 다면체 + 5객체 추출"]:::hi
-  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;
-  classDef no fill:#f3f3f0,stroke:#999,color:#555;</pre></figure>
+<figure class="diagram"><div class="cy" data-h="540"></div><script type="application/json" class="cy-spec">{"rankDir":"TD","elements":[{"data":{"id":"src","label":"중첩 루프 소스"}},{"data":{"id":"q1","label":"모든 경계가 affine?","shape":"diamond"}},{"data":{"id":"no","label":"SCoP 아님\n(보수적 분석)"},"classes":"no"},{"data":{"id":"q2","label":"모든 배열 첨자가 affine?","shape":"diamond"}},{"data":{"id":"q3","label":"모든 분기 조건이 affine?\n부수효과 없음?","shape":"diamond"}},{"data":{"id":"yes","label":"SCoP\n→ 다면체 + 5객체 추출"},"classes":"hi"},{"data":{"source":"src","target":"q1"}},{"data":{"source":"q1","target":"no","label":"아니오"}},{"data":{"source":"q1","target":"q2","label":"예"}},{"data":{"source":"q2","target":"no","label":"아니오"}},{"data":{"source":"q2","target":"q3","label":"예"}},{"data":{"source":"q3","target":"no","label":"아니오"}},{"data":{"source":"q3","target":"yes","label":"예"}}]}</script></figure>
 
 <h2 id="scop에서-추출하는-5객체">SCoP에서 추출하는 5객체</h2>
 <p>한 SCoP가 확정되면, 폴리헤드럴 표현은 다섯 가지 객체로 코드를 완전히 기술한다 <sup class="cite"><a href="#ref-4">[4]</a></sup><sup class="cite"><a href="#ref-6">[6]</a></sup>:</p>
@@ -77,7 +68,11 @@ for (i = <span class="num">0</span>; i &lt; N; i++)
 </footer>
 <script src="assets/poly.js"></script>
 <script src="assets/viz-scenes.js"></script>
-<script src="assets/mermaid.min.js"></script>
+<script src="assets/cytoscape.min.js"></script>
+<script src="assets/dagre.min.js"></script>
+<script src="assets/cytoscape-dagre.min.js"></script>
+<script src="assets/cyto.js?v=20260608b"></script>
+<script src="assets/zoom.js?v=20260608b"></script>
 <script src="assets/katex/katex.min.js"></script>
 <script src="assets/katex/auto-render.min.js"></script>
 <script src="assets/site.js"></script>
