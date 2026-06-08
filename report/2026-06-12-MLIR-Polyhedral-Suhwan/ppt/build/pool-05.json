@@ -1,0 +1,6 @@
+{
+  "mermaid": [
+    "flowchart TD\n  M[\"model<br/>ONNX·PyTorch\"] --> X[\"XLA\"] --> SH[\"stablehlo\"] --> L[\"linalg\"]:::hi --> A[\"affine\"]:::hi --> SCF[\"scf·arith·memref\"]:::hi --> LL[\"LLVM IR\"] --> HW[\"기계어 / 가속기\"]\n  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;",
+    "flowchart TD\n  A1[\"affine.delinearize_index\"] -->|\"내부 lowering<br/>--affine-expand-index-ops\"| A2[\"affine.apply ×3<br/>(여전히 affine)\"]\n  A2 -->|\"경계 졸업<br/>--lower-affine\"| S[\"scf + arith + memref\"]"
+  ]
+}

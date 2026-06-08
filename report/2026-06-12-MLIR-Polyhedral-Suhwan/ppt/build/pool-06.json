@@ -1,0 +1,8 @@
+{
+  "mermaid": [
+    "flowchart TD\n  src[\"루프 소스\"] --> d[\"반복 공간<br/>(정수 다면체)\"]\n  src --> f[\"접근 함수\"]\n  d --> dep[\"의존성 정형화\"]\n  f --> dep\n  dep --> q{\"ILP 해 존재?\"}\n  q -->|\"없음\"| par[\"완전 병렬\"]:::hi\n  q -->|\"있음\"| sched[\"스케줄 θ 탐색<br/>(ILP)\"]\n  sched --> gen[\"코드 생성\"]\n  par --> gen\n  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;",
+    "flowchart TD\n  D[\"① 반복 공간<br/>A·i ≥ b\"] --- S[\"② 의존성<br/>거리 벡터\"] --- T[\"③ 스케줄 θ<br/>변환행렬\"]",
+    "flowchart TD\n  src[\"중첩 루프 소스\"] --> q1{\"모든 경계가 affine?\"}\n  q1 -->|\"아니오\"| no[\"SCoP 아님<br/>(보수적 분석)\"]:::no\n  q1 -->|\"예\"| q2{\"모든 배열 첨자가 affine?\"}\n  q2 -->|\"아니오\"| no\n  q2 -->|\"예\"| q3{\"모든 분기 조건이 affine?<br/>부수효과 없음?\"}\n  q3 -->|\"아니오\"| no\n  q3 -->|\"예\"| yes[\"SCoP<br/>→ 다면체 + 5객체 추출\"]:::hi\n  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;\n  classDef no fill:#f3f3f0,stroke:#999,color:#555;",
+    "flowchart TD\n  A[\"합법성 한 조각<br/>ψ(i) ≥ 0  (∀ i ∈ D)\"] --> B[\"Farkas로 전개<br/>ψ = λ0 + Σ λk·(제약 k)\"]:::hi\n  B --> C[\"i·N 계수를 좌·우변에서<br/>매칭 → i 소거\"]\n  C --> D[\"λ(와 미지 스케줄 계수)에<br/>대한 유한 선형식\"]\n  D --> E{\"모든 λ ≥ 0 인<br/>해가 있나?\"}\n  E -->|\"있음\"| OK[\"ψ ≥ 0 증명<br/>= 스케줄 합법 (예제 1)\"]:::hi\n  E -->|\"없음\"| NO[\"반례 존재<br/>= 스케줄 불법 (예제 2)\"]:::no\n  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;\n  classDef no fill:#f3f3f0,stroke:#999,color:#555;"
+  ]
+}

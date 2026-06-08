@@ -1,0 +1,5 @@
+{
+  "mermaid": [
+    "flowchart TD\n  M[\"무어의 법칙 둔화<br/>(DSA 황금기)\"] --> D[\"GPU · TPU · NPU<br/>도메인 특화 가속기 폭증\"] --> F[\"컴파일러 파편화<br/>N×M 중복\"] --> ML[\"MLIR<br/>하나의 IR 인프라\"]:::hi\n  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;"
+  ]
+}

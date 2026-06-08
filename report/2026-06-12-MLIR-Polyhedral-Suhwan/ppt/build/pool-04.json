@@ -1,0 +1,5 @@
+{
+  "mermaid": [
+    "flowchart TD\n  P[\"Parsimony<br/>작은 코어 · 모든 것은 Op\"]\n  T[\"Traceability<br/>retain · declare · verify\"]\n  G[\"Progressivity<br/>premature lowering =<br/>만악의 근원\"]:::hi\n  P <-->|\"긴장\"| G\n  P <-->|\"공명\"| T\n  T <-->|\"긴장\"| G\n  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;"
+  ]
+}

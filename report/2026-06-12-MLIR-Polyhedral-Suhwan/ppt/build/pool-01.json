@@ -1,0 +1,6 @@
+{
+  "mermaid": [
+    "flowchart TD\n  S[\"소스 / 모델<br/>C · Swift · PyTorch · ONNX\"] --> I1[\"고수준 IR\"] --> I2[\"중간 IR\"] --> I3[\"저수준 IR\"] --> M[\"기계어<br/>x86 · GPU · NPU\"]",
+    "flowchart TD\n  subgraph zoo[\"컴파일러 동물원 — 각자 자기 IR\"]\n    direction TB\n    A[\"Swift IR\"]\n    B[\"Rust IR\"]\n    C[\"Julia IR\"]\n    D[\"TF graph\"]\n    E[\"PyTorch graph\"]\n  end"
+  ]
+}

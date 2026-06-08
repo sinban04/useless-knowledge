@@ -1,0 +1,239 @@
+[
+  {
+    "kind": "divider",
+    "part": "poly",
+    "num": "07",
+    "title": "Affine Dialect 변환 심화 — 스케줄을 바꾸면 병렬성이 생긴다",
+    "subtitle": "대표 루프 변환들을 애니메이션으로 따라가기"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "Affine 문법 60초 — 5개 op만 알면 다 읽힌다",
+    "lead": "Affine dialect는 루프 경계·배열 인덱스를 모두 <em>아핀식</em>(변수의 1차식 + 상수)으로 제한한다.",
+    "code": "```mlir\naffine.for %i = 0 to %N { ... }                       // 경계가 아핀식인 카운트 루프\naffine.if affine_set<(d0) : (d0 - 1 >= 0)> { ... }    // 조건이 integer_set인 분기\n%v = affine.load  %A[%i, %j] : memref<NxMxf32>        // 아핀 인덱스로 읽기\n     affine.store %v, %A[%i, %j] : memref<NxMxf32>    //       〃       쓰기\n%t = affine.apply affine_map<(d0,d1)->(d0+d1)>(%i,%j) // 좌표를 아핀식으로 재계산\naffine.parallel (%i,%j) = (0,0) to (%N,%M) { ... }    // 반복끼리 무의존성을 *선언*\n```",
+    "bullets": [
+      "<code>affine.parallel</code>은 \"이 반복들은 동시에 돌려도 안전\"이라는 <b>합법성 보증</b>을 IR에 박는다.",
+      "폴리헤드럴 세 기둥(반복공간 $D$ / 의존성 / 스케줄 $\\Theta$) ↔ <code>affine.for</code> 경계 / 의존성 분석 / <code>affine.apply</code>·루프 순서.",
+      "핵심: <b>문법 제약 자체가 분석을 가능하게 한다</b> — 인덱스를 임의 함수로 못 쓰니 \"두 접근이 겹치나?\"를 정수 부등식으로 <em>정확히(exact)</em> 푼다."
+    ],
+    "note": "보수적으로 \"혹시 겹칠지 모르니 포기\"하는 일반 컴파일러와 갈리는 지점.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "Affine pass ↔ 폴리헤드럴 변환 대응표",
+    "lead": "각 폴리헤드럴 변환은 하나의 <b>pass</b>(IR을 받아 변형하는 단위)로 제공된다.",
+    "table": {
+      "head": [
+        "Affine pass",
+        "폴리헤드럴 변환",
+        "한 줄 효과"
+      ],
+      "rows": [
+        [
+          "<code>affine-loop-tile</code>",
+          "Tiling",
+          "strip-mining으로 다면체 분할 → 워킹셋을 캐시에 가둠"
+        ],
+        [
+          "<code>affine-loop-fusion</code>",
+          "Fusion",
+          "두 다면체를 하나로 → producer-consumer 지역성↑"
+        ],
+        [
+          "<code>affine-parallelize</code>",
+          "(병렬 스케줄)",
+          "의존성 없는 루프를 <code>affine.parallel</code>로 승격"
+        ],
+        [
+          "<code>affine-super-vectorize</code>",
+          "(SIMD)",
+          "병렬 루프를 벡터 op로 묶음"
+        ],
+        [
+          "<code>affine-loop-coalescing</code>",
+          "(1D 평탄화)",
+          "N-D nest → 1-D, GPU 1-D thread index 친화"
+        ],
+        [
+          "(Interchange)",
+          "Interchange",
+          "스케줄 행렬의 행 교환 → stride/지역성 개선"
+        ]
+      ]
+    },
+    "bullets": [
+      "LLVM upstream에 in-tree affine pass가 15종 가까이 (<code>-normalize</code>·<code>-tile</code>·<code>-fusion</code>·<code>-unroll</code>·<code>-unroll-jam</code>·<code>-scalrep</code>·<code>-data-copy-generate</code>·<code>-pipeline-data-transfer</code>·<code>lower-affine</code> 등).",
+      "<b>예외 — Interchange:</b> standalone <code>affine-loop-interchange</code> pass는 없다. in-tree 유틸 <code>permuteLoops</code>(+ 테스트 pass <code>-test-loop-permutation</code>)가 그 역할.",
+      "이제 표의 변환들을 <b>애니메이션</b>과 함께 본다."
+    ],
+    "mermaid": "@0"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "① 루프 순서 교환 (Interchange)",
+    "lead": "스케줄 행렬에 치환행렬(permutation matrix)을 곱하면 루프 중첩 순서가 바뀐다.",
+    "bullets": [
+      "안쪽 루프가 메모리를 한 칸씩(stride 1, 인접 주소 차례로) 훑도록 순서를 고르면 캐시 히트가 급증.",
+      "행 우선 배열을 열 방향으로 훑던 루프를 뒤집어 <b>행 방향</b>으로 훑게 만드는 고전 변환.",
+      "변환 자체는 <b>스케줄 행렬의 행 두 개를 맞바꾸는 것</b>에 불과 — MLIR에선 <code>permuteLoops</code> 유틸이 수행."
+    ],
+    "note": "루프 순서를 바꾸면 메모리 접근 stride가 바뀌어 공간 지역성이 좋아진다.",
+    "noteKind": "info",
+    "scene": "02-interchange"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "② 타일링 (Tiling)",
+    "lead": "큰 루프를 strip-mine(작은 블록으로 쪼개기) + interchange의 조합으로 <em>타일</em> 단위 재배열.",
+    "bullets": [
+      "타일 하나의 워킹셋이 캐시/SRAM 안에 들어가면 DRAM 왕복이 줄어든다.",
+      "<code>affine-loop-tile</code> 옵션 <code>separate=true</code> → 타일 경계를 <code>affine.if</code>로 분리해 <b>full tile</b>(딱 떨어지는)과 <b>partial tile</b>(자투리)을 코드 레벨에서 갈라냄.",
+      "이는 폴리헤드럴의 <em>iteration domain peeling</em>을 MLIR이 first-class 문법(<code>affine.if</code> + integer_set)으로 표현한 것.",
+      "full 경로는 경계가 상수가 되어 뒤이은 unroll·vectorize의 <b>최적화 진입로</b>가 된다."
+    ],
+    "note": "타일링 = strip-mine + interchange. 한 타일의 데이터를 캐시에 가둬 재사용한다. \"자투리 처리\"라는 실무 골칫거리가 이론의 peeling과 그대로 맞아떨어진다.",
+    "noteKind": "info",
+    "scene": "04-tiling",
+    "image": {
+      "src": "assets/memory-hierarchy.svg",
+      "caption": "타일 워킹셋을 캐시 계층 안에 가두면 느린 DRAM 왕복이 줄어든다."
+    }
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "③ 융합 (Fusion)",
+    "lead": "한 루프가 만든 배열을 다음 루프가 곧장 소비할 때, 두 반복영역을 하나로 합친다.",
+    "bullets": [
+      "중간 버퍼가 사라지고(producer 결과를 바로 consumer가 씀) 지역성이 올라간다.",
+      "<code>affine-loop-fusion</code> 다음 <code>affine-scalrep</code>(스칼라 승격)을 이어 붙이면, 3단계 체인의 중간 배열이 레지스터로 승격되며 완전히 사라진다.",
+      "이는 폴리헤드럴의 <em>array contraction</em>(배열 축약) 자동화에 해당 — 고수준 dialect와 닿는 지점(뒤 의견 박스에서 다시)."
+    ],
+    "note": "융합 = 두 반복영역을 합쳐 중간 버퍼를 없애고 producer-consumer 지역성을 높인다.",
+    "noteKind": "info",
+    "scene": "03-fusion"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "★ 스큐잉 — 없던 병렬성을 만들어내기",
+    "lead": "의존성 벡터 $(1,0)$·$(0,1)$ 둘 다 걸린 2D 스텐실은 <code>i</code>도 <code>j</code>도 <em>그대로는</em> 병렬화 불가 — 어느 방향이든 옆 칸 결과를 기다린다.",
+    "math": [
+      "$$\\theta(i,j) = (i+j,\\; j), \\qquad \\theta = \\begin{bmatrix}1&1\\\\0&1\\end{bmatrix}$$"
+    ],
+    "bullets": [
+      "새 시간축 $t = i+j$(반대각선)를 도입하면 두 의존성이 <b>모두</b> $\\Delta t \\ge 1$로 ($1{+}0{=}1$, $0{+}1{=}1$) — 모든 의존성이 시간상 <em>앞으로만</em> 향한다.",
+      "같은 $t$ 값을 가진 점들(한 <b>wavefront</b>, 원래의 반대각선)끼리는 의존성이 전혀 없어 동시 실행 가능.",
+      "행렬식 1인 <b>unimodular</b> 변환이라 반복 점은 하나도 손실되지 않는다."
+    ],
+    "note": "$\\theta=\\begin{bmatrix}1&1\\\\0&1\\end{bmatrix}$로 격자를 기울이면 의존성이 모두 시간축으로 밀려, 같은 wavefront 안에서 병렬성이 솟아난다.",
+    "noteKind": "info",
+    "scene": "07-skewing"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "★ 스큐잉 — before / after MLIR (2D 스텐실)",
+    "lead": "의존성은 하나도 깨지 않고 <em>순서만</em> 바꿔 병렬성을 합성한 것이 스큐잉의 핵심.",
+    "code": "```mlir\n// Before — 두 루프 모두 loop-carried 의존성, 병렬 불가\naffine.for %i = 1 to 7 {\n  affine.for %j = 1 to 7 {\n    %n = affine.load %A[%i - 1, %j] : memref<8x8xf32>   // dep (1,0)\n    %w = affine.load %A[%i, %j - 1] : memref<8x8xf32>   // dep (0,1)\n    %s = arith.addf %n, %w : f32\n    %h = arith.mulf %s, %c : f32\n    affine.store %h, %A[%i, %j] : memref<8x8xf32>\n  }\n}\n```\n```mlir\n// After — θ(i,j)=(i+j, j) ; i = t - j. 바깥은 시간(순차), 안쪽은 병렬\naffine.for %t = 2 to 13 {\n  affine.parallel (%j) = (max(1, %t - 6)) to (min(7, %t)) {\n    %i = affine.apply affine_map<(t, j) -> (t - j)>(%t, %j)\n    %n = affine.load %A[%i - 1, %j] : memref<8x8xf32>\n    %w = affine.load %A[%i, %j - 1] : memref<8x8xf32>\n    %s = arith.addf %n, %w : f32\n    %h = arith.mulf %s, %c : f32\n    affine.store %h, %A[%i, %j] : memref<8x8xf32>\n  }\n}\n```",
+    "bullets": [
+      "바깥 <code>affine.for %t</code>는 wavefront를 시간 순으로 훑고, 안쪽 <code>affine.parallel (%j)</code>는 <code>max/min</code> 아핀 경계로 그 wavefront 폭만큼 펼쳐진다.",
+      "<code>%i = affine.apply (t - j)</code>로 원래 인덱스를 복원.",
+      "$6\\times6$ 예제(반복점 36, $t{=}2..12$로 wavefront 11개), 코어 6개 기준 <b>36개 순차 스텝 → 11 wavefront, 약 $3.3\\times$ 속도</b> (최대 wavefront 폭 6이 코어 6개에 딱 맞음)."
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "④ SIMD 벡터화",
+    "lead": "병렬화된 안쪽 루프의 연속 반복들을 벡터 폭 VL만큼 한 묶음으로.",
+    "bullets": [
+      "벡터 op 한 번 = VL개 반복을 한 번에 처리.",
+      "<code>affine-super-vectorize</code>는 target-independent한 n-D <b>가상 벡터</b>(virtual vector, 예 <code>vector&lt;4x4xf32&gt;</code>)로 표현.",
+      "실제 하드웨어 벡터폭은 <b>나중 lowering</b>에서 결정 — 추상화를 오래 들고 간다."
+    ],
+    "note": "병렬 안쪽 루프를 벡터폭 VL로 묶으면 한 벡터 op가 VL개 반복을 동시에 계산한다.",
+    "noteKind": "info",
+    "scene": "08-simd"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "⑤ 메모리 정렬 (Paging)",
+    "lead": "타일을 페이지 경계에 정렬하면 한 타일을 도는 동안 page fault·TLB miss가 줄어든다.",
+    "bullets": [
+      "가상메모리 관점의 타일링 — TLB(주소 변환 캐시) miss 감소.",
+      "캐시 지역성(타일링)에 더해 <b>주소 변환 지역성</b>까지 챙기는 한 수 더."
+    ],
+    "note": "타일을 페이지에 정렬하면 page fault·TLB miss가 줄어든다.",
+    "noteKind": "info",
+    "scene": "05-paging"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "⑥ 멀티코어 분배 (Multicore)",
+    "lead": "바깥 병렬 루프(또는 타일들)를 P개 코어에 <b>block</b> 또는 <b>cyclic</b>으로 나눠 준다.",
+    "bullets": [
+      "전체 완료 시간(makespan)이 줄고 speedup이 난다.",
+      "스큐잉으로 합성한 wavefront 병렬성을 실제 코어에 매핑하는 단계."
+    ],
+    "note": "바깥 병렬 루프/타일을 P코어에 block/cyclic 분배 → makespan 단축.",
+    "noteKind": "info",
+    "scene": "09-multicore"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "⑦ 소프트웨어 파이프라이닝 (Pipelining)",
+    "lead": "연속한 반복들의 단계(stage)를 II(initiation interval) 간격으로 겹쳐 발사한다.",
+    "bullets": [
+      "한 반복의 연산이 끝나기 전에 다음 반복을 시작 → 파이프라인을 채움 (<b>prologue → steady state → epilogue</b>).",
+      "<code>affine-pipeline-data-transfer</code>는 DMA 전송과 계산을 자동으로 겹친다.",
+      "핵심은 <code>affine.apply (d0)->(d0-1)</code> — 즉 <b>스케줄을 -1만큼 시프트</b>하는 한 줄 + double buffer. minimum modulo scheduling의 MLIR 표현."
+    ],
+    "note": "연속 반복의 스테이지를 II 간격으로 겹쳐 발사 — prologue/steady/epilogue.",
+    "noteKind": "info",
+    "scene": "10-pipeline"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "MLIR pass의 잘 드러나지 않는 두 성질",
+    "lead": "직접 들여다보지 않으면 놓치기 쉬운 두 가지 깊은 성질.",
+    "numbered": [
+      "<b>진입점 불변성(4중 byte-identical)</b> — 같은 unroll을 (1) wrapper pass, (2) CLI <code>mlir-opt --affine-loop-unroll</code>, (3) pipeline string, (4) C++ <code>PassManager.addPass</code> 어느 경로로 불러도 결과 IR이 <em>바이트 단위로 동일</em>. pass는 진입점이 아니라 <b>IR 변환 그 자체</b>로 정의된다(넷 다 같은 <code>loopUnrollByFactor</code> 호출).",
+      "<b>lower-affine의 Euclidean correction</b> — <code>--lower-affine</code>으로 affine을 떠날 때 affine <code>mod</code>는 arith의 순진한 나머지로 1:1 번역되지 않는다. affine <code>mod</code>는 음수에서도 항상 비음수인 <em>Euclidean</em> 의미라, <code>remsi</code> + <code>cmpi</code> + <code>addi</code> + <code>select</code>의 보정 시퀀스로 풀린다."
+    ],
+    "note": "같은 <code>mod</code>라도 dialect마다 의미가 미묘하게 다르다는 것을, 내려보내기 코드가 드러낸다.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "07 · Affine 변환",
+    "title": "어디까지 내려갈 것인가 — linalg vs affine",
+    "lead": "변환을 affine까지 내려서 할지, 더 높은 <code>linalg</code> dialect에 머물지의 트레이드오프.",
+    "bullets": [
+      "<b>linalg에 머물면:</b> matmul·conv 같은 연산의 <em>의미</em>가 그대로 보존돼 fusion이 싸고 직관적.",
+      "<b>affine까지 내려가면:</b> skewing·interchange·peeling 같은 극한 루프 변형이 가능 — 단, 한 번 내려가면 고수준 의미를 되살리기 어렵다(\"유리잔 깨면 다시 못 붙임\")."
+    ]
+  }
+]

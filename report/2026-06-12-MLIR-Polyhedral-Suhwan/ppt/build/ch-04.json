@@ -1,0 +1,178 @@
+[
+  {
+    "kind": "divider",
+    "part": "mlir",
+    "num": "04",
+    "title": "Chris Lattner의 설계 철학 — 세 원칙",
+    "subtitle": "Parsimony · Traceability · Progressivity, 그리고 충돌까지 함께 문서화한 정직함"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "04 · 설계 철학",
+    "title": "왜 \"기법\"이 아니라 \"원칙\"부터 보는가",
+    "lead": "대부분의 컴파일러 책은 <em>기법</em>(SSA · register allocation · loop tiling)을 가르친다. MLIR 논문은 특이하게 <b>원칙</b>에서 출발한다.",
+    "bullets": [
+      "저자들(Chris Lattner — LLVM/Clang/Swift, MLIR 창시자 — 외)은 추상화 설계가 아직 잘 이해되지 않은 영역임을 솔직히 인정한다 [2]",
+      "그 공백을 메우려 <b>세 가지 설계 원칙</b>으로 모든 결정을 정당화한다",
+      "MLIR은 <em>누구나 자기 dialect를 추가</em>하는 시스템 → 원칙은 코어 설계자만의 규약이 아니라 <b>모든 확장 작성자의 가이드라인</b>",
+      "<b>ISA 비유</b>: ISA를 한 번 잘 정의하면 그 위에 수많은 구현이 일관되게 올라온다 — 원칙이 곧 생태계의 합의 규약"
+    ],
+    "statement": "\"the 'art' of compiler IR and abstraction design is not well understood\" [2]",
+    "note": "세 원칙 = Parsimony(절약) · Traceability(추적가능성) · Progressivity(점진성). 서로 공명하기도, 충돌하기도 한다 — 그리고 저자들이 그 충돌을 직접 인정한다.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "04 · 설계 철학",
+    "title": "원칙 1 — Parsimony (절약, Occam의 면도날)",
+    "lead": "한 줄로: <b>\"코어는 최대한 작게, 나머지는 전부 <em>속성</em>으로 일반화하라.\"</b>",
+    "bullets": [
+      "전통 IR은 내장 개념이 많다 — function · module · instruction · phi · branch · switch · call · return, 각각 고유 타입·메서드",
+      "MLIR은 정반대 — <b>모든 것이 Op(Operation)</b>: 함수 <code>func.func</code> · 모듈 <code>builtin.module</code> · 상수 <code>arith.constant</code> · 호출 <code>func.call</code>",
+      "코어는 단 하나의 추상 <b>Operation</b>만 알면 된다. 나머지는 Op + attribute + region + trait의 조합",
+      "<b>RISC 비유</b>: 복잡한 CISC 명령 대신 소수의 단순 primitive로 모든 것을 조립"
+    ],
+    "statement": "\"Functions and Modules ... are not separate concepts in MLIR: they are implemented as Ops in the builtin dialect.\" [2]",
+    "note": "\"Apply Occam's razor to builtin semantics, concepts, and programming interface. Specify invariants once, but verify correctness throughout.\" [2]",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "04 · 설계 철학",
+    "title": "Parsimony의 핵심 기법 — \"inverting\"",
+    "lead": "코어가 작아도 일반 패스(DCE · CSE · canonicalization · inlining)는 작동해야 한다. 어떻게?",
+    "bullets": [
+      "Op이 \"나는 교환법칙 성립(<code>IsCommutative</code>)\" · \"부작용 없음(<code>NoSideEffects</code>)\"이라 <b>선언</b>하면, 일반 패스는 그 선언만 보고 자동 작동",
+      "<b>LLVM의 길</b>: <code>InstCombine</code>·<code>PeepholeOptimizer</code>가 <em>모든 opcode를 알아야</em> 했다 → 새 연산마다 거대 패스를 손봐야 해 유지보수가 악명 높음",
+      "<b>MLIR의 길</b>: Op이 자기 능력을 선언하고 패스는 그 선언만 본다 → 유지보수 부담이 거대 패스가 아니라 <em>각 Op으로 분산</em> [2]"
+    ],
+    "statement": "\"MLIR handles extensibility by inverting the common approach: since there are more Ops than passes, it is easier for Ops to know about passes.\" [2]",
+    "note": "효과: Op·Type·Attribute 모두 user-extensible / 암시적 타입 변환 없음(모든 변환이 명시적 Op) / whole-module use-def chain 없음 → 모듈 단위 병렬 컴파일 가능 / 패턴 재작성 도구조차 MLIR 자신의 dialect로 표현(도그푸딩) [2].",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "04 · 설계 철학",
+    "title": "원칙 2 — Traceability (추적가능성)",
+    "lead": "핵심 동사 셋: <b>retain / declare / verify</b> (보존 · 선언 · 검증).",
+    "bullets": [
+      "<b>(a) Retain</b> — 정보를 <em>복원</em>하지 말고 <em>보존</em>하라. 모든 Op에 <b>Location</b>(소스 line:col, AST 노드)을 붙여 변환 내내 전파",
+      "Location도 <em>attribute의 한 종류</em> → Traceability를 Parsimony의 메커니즘으로 구현, 두 원칙이 드물게 <b>공명</b>",
+      "<b>(b) Declare</b> — 변환을 명령형 코드가 아니라 <em>선언적 규칙</em>으로. 이름·입출력·속성·검증기를 TableGen(ODS)으로 선언 → C++ boilerplate 자동 생성",
+      "<b>(c) Verify</b> — 불변식을 한 번 선언하면 매 패스 뒤 verifier가 자동으로 <em>여러 곳에서</em> 검증"
+    ],
+    "statement": "\"Retain rather than recover information. Declare rules and properties ... rather than step wise imperative specification.\" [2]",
+    "note": "이 설계는 generic 로직과 Op-specific 로직을 분리해 후자를 Op 자체에 넣음으로써, LLVM의 InstCombine·PeepholeOptimizer류가 떠안던 유지보수·복잡도 부담을 줄인다 [2].",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "04 · 설계 철학",
+    "title": "Traceability의 동기 — WYSINWYX · Glassboxing",
+    "lead": "왜 추적가능성인가 — 디버깅을 넘어 <b>보안·안전</b>이 더 절실한 동기다.",
+    "bullets": [
+      "다단계 컴파일에서 \"최종 코드가 <em>왜</em> 이렇게 나왔나\"는 종종 불가해 → Traceability는 최종 IR에서 원본을 역추적 가능하게",
+      "<b>WYSINWYX</b> — \"What You See Is Not What You eXecute\": 소스의 보안 속성(상수 시간 비교 등)을 컴파일러 최적화가 깨버리는 실제 문제",
+      "Traceability는 이런 변환을 <em>감사(audit) 가능</em>하게 만들어 소프트웨어 인증을 돕는다 [2]",
+      "<b>Glassboxing</b>: OOP 캡슐화(blackbox, 숨김)와 정반대 — 내부 속성을 명시적으로 노출해 외부에서 <em>질의(query)</em> 가능"
+    ],
+    "note": "C++ 비유가 정확하다 — <code>std::is_trivially_copyable&lt;T&gt;</code> 같은 type trait처럼, Op이 <code>LoopLikeOpInterface</code>를 구현하면 LICM 패스가 그걸 질의해 자동 작동한다.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "04 · 설계 철학",
+    "title": "원칙 3 — Progressivity (점진성)",
+    "lead": "슬로건이자 한 줄: <b>\"고수준 의미를 너무 빨리 잃지 마라. <em>region 단위로</em>, <em>수요에 따라</em> 내려가라.\"</b>",
+    "statement": "Premature lowering is the root of all evil. — 조기 로워링은 모든 악의 근원이다 [2]",
+    "bullets": [
+      "고수준 정보(텐서 shape · 루프 중첩 · affine 의존성 · 메모리 layout)는 분석·최적화의 핵심 재료. 일찍 사라지면 후속 분석은 <em>역공학</em>해야 한다",
+      "역공학은 <b>fragile · expensive · invasive</b>(깨지기 쉽고 · 분석 코드 비대 · 모든 패스를 다시 손봐야 함) [2]",
+      "<b>실사례 Polly</b>: LLVM 폴리헤드럴 최적화기는 LLVM IR이 일찍 지운 SCoP(정적 제어 영역)을 <em>다시 검출</em>해야 한다 → Progressivity는 애초에 구조를 IR에 보존",
+      "<b>MLIR 해법</b>: region을 IR의 1급 시민으로 — <code>affine.for</code>는 region을 가진 Op, 루프 구조가 분석 결과가 아니라 <em>IR 그 자체</em>"
+    ],
+    "code": "```mlir\naffine.for %i = 0 to %N {\n  affine.for %j = 0 to %M {\n    %v = affine.load %A[%i, %j] : memref<?x?xf32>   // A[i][j]를 읽고\n    affine.store %v, %B[%i, %j] : memref<?x?xf32>   // B[i][j]에 쓴다\n  }\n}\n```",
+    "note": "LLVM의 CFG는 평평하다(함수 = 기본 블록 리스트, 루프는 별도 추출). MLIR은 LLVM이 정규화로 복잡성을 제어한 길을 의식적으로 포기하는 대신 고수준 구조 보존을 얻었다 — 의도적 trade-off [2].",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "04 · 설계 철학",
+    "title": "\"the most profound\" — dialect 혼합",
+    "lead": "저자들이 직접 <b>가장 심오한(most profound)</b> 특징이라 부른 것.",
+    "statement": "\"... it allows and encourages mixing operations from different dialects together within a single program.\" [2]",
+    "bullets": [
+      "서로 다른 dialect의 Op이 <b>한 프로그램 안에 공존</b> — <code>affine.for</code>(고수준 루프) · <code>arith.addf</code>(산술) · <code>llvm.call</code>(저수준 ABI)이 같은 함수에 섞인다",
+      "한 dialect는 다른 dialect의 의미를 <em>몰라도</em> (interface로 추상화된 한) 자기 변환을 적용한다",
+      "<b>부분 변환(partial conversion)</b>: 패턴이 매칭되는 Op만 내리고 나머지는 그대로 둔다"
+    ],
+    "note": "이것이 Progressivity가 실제로 \"수요에 따라 region을 내린다\"를 가능케 하는 메커니즘 — 다음 장(progressive lowering)의 토대다.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "04 · 설계 철학",
+    "title": "원칙들의 충돌 — OSI 7계층 비유",
+    "lead": "발표에서 가장 강조하고 싶은 대목 — 저자들은 §II에서 <b>원칙들이 서로 충돌한다</b>고 직접 인정한다.",
+    "bullets": [
+      "<b>OSI 7계층 비유</b>: 7계층은 <em>점진성(progressivity)</em>의 모범(각 계층이 다음을 추상화)이지만 <em>절약(parsimony)</em>과는 정반대 — 7개 계층의 어휘를 모두 알아야 한다",
+      "dialect를 늘릴수록 시스템 어휘가 늘어 parsimony가 깨지는 것과 똑같은 긴장"
+    ],
+    "mermaid": "@0",
+    "statement": "\"... layering ... aligns with the progressivity principle but breaks parsimony.\" [2]",
+    "note": "\"While these principles are well established, one of them is often implemented at the expense of another ... following these principles may hurt expressiveness and effectiveness.\" [2]",
+    "noteKind": "info",
+    "layout": "split"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "04 · 설계 철학",
+    "title": "충돌 표 — 그리고 저자들의 정직함",
+    "lead": "MLIR은 자신을 <em>완성된 답</em>이 아니라 <b>균형 잡힌 절충</b>, 더 나아가 <b>새 연구의 시작</b>으로 자리매김한다.",
+    "table": {
+      "head": [
+        "충돌 쌍",
+        "충돌의 본질",
+        "MLIR의 대처",
+        "근본 해소?"
+      ],
+      "rows": [
+        [
+          "Progressivity $\\leftrightarrow$ Parsimony",
+          "layer가 늘면 시스템 어휘가 늘어난다 (OSI 7계층 비유)",
+          "dialect는 opt-in, 일반 패스는 trait/interface로만 작동",
+          "부분만"
+        ],
+        [
+          "Traceability $\\leftrightarrow$ 최적화 공격성",
+          "최적화는 본질적으로 정보를 버린다 (DCE/CSE/folding)",
+          "Location은 항상 보존, 나머지는 dialect가 결정",
+          "트레이드오프"
+        ],
+        [
+          "Parsimony $\\leftrightarrow$ Expressiveness",
+          "코어가 작으면 사용자가 직접 많이 정의 → 비호환 난립 위험",
+          "공통 dialect 표준 제공 + 거버넌스",
+          "사회적 문제, 미해소"
+        ],
+        [
+          "Traceability $\\leftrightarrow$ Parsimony",
+          "추적 정보가 메타 필드를 늘린다",
+          "Location도 attribute 메커니즘에 흡수",
+          "공명 (해소)"
+        ]
+      ]
+    },
+    "note": "Parsimony $\\leftrightarrow$ Expressiveness에 대해 저자들은 \"순수 기술적 해결책은 없다(there is unlikely to be a purely technical solution)\"고 명시 [2] — 거버넌스·커뮤니티 표준화로 풀 영역이라는 인정. 파편화 문제가 한 단계 위에서 dialect 폭발로 재발할 수 있고 이를 막을 기술적 솔루션은 없다는 자기 인정 — 이것이 이 논문을 예외적으로 정직한 시스템 논문으로 만든다.",
+    "noteKind": "info"
+  }
+]

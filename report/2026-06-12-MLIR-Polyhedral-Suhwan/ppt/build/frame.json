@@ -1,0 +1,79 @@
+{
+  "cover": {
+    "kind": "cover",
+    "eyebrow": "Useless Engineers · Probe Lab Seminar",
+    "title": "MLIR · Polyhedral / Affine",
+    "subtitle": "다단계 IR 인프라, 그리고 루프를 수학으로 — 컴파일러와 하드웨어의 경계",
+    "tags": [
+      {
+        "k": "mlir",
+        "label": "MLIR"
+      },
+      {
+        "k": "poly",
+        "label": "Polyhedral · Affine"
+      },
+      {
+        "k": "synth",
+        "label": "ISA 경계"
+      }
+    ],
+    "meta": "발표자 <b style=\"color:#e8e3d8\">Suhwan</b> &nbsp;·&nbsp; 2026-06-12 &nbsp;·&nbsp; 심화 약 90분<br>청중: 컴퓨터 아키텍처 연구자 / HW 개발자 / 서버레벨 SW 엔지니어"
+  },
+  "agenda": [
+    {
+      "kind": "content",
+      "part": "mlir",
+      "kicker": "Agenda",
+      "title": "오늘의 흐름 — 두 주제가 affine에서 만난다",
+      "layout": "split",
+      "numbered": [
+        "<b>도입</b> — 왜 컴파일러는 여러 IR 단계를 거치는가",
+        "<b>탄생 배경</b> — Moore 법칙의 종말과 두 MLIR 논문",
+        "<b>핵심 개념</b> — 모든 것이 Operation · Dialect · Region",
+        "<b>설계 철학</b> — Parsimony · Traceability · Progressivity",
+        "<b>Progressive Lowering</b> — 추상화 계단을 한 칸씩",
+        "<b>Polyhedral 모델</b> — 루프를 수학으로 <span class=\"small\">(주제 2)</span>",
+        "<b>Affine 변환</b> — 스케줄을 바꾸면 병렬성이 생긴다",
+        "<b>종합</b> — 한계와 ISA 경계 = 책임 분담선"
+      ],
+      "note": "<b>주제 1 · MLIR</b>(01–05)과 <b>주제 2 · Polyhedral·Affine</b>(06–07)은 <em>affine dialect</em>에서 만나고, 마무리(08)에서 <em>ISA 경계</em>로 종합된다.",
+      "noteKind": "info"
+    }
+  ],
+  "closing": [
+    {
+      "kind": "content",
+      "part": "synth",
+      "kicker": "마무리 · 한 문장으로",
+      "title": "왜 MLIR인가",
+      "statement": "MLIR은 <em>하나의 진정한 IR</em>을 강요하지 않으면서 <em>하나의 진정한 IR 인프라</em>를 제공해, 소프트웨어와 하드웨어의 경계를 <em>고정된 한 점</em>이 아니라 <em>설계자가 고르는 눈금</em>으로 바꿔 놓았다.",
+      "note": "<b>아키텍트</b>에게 — progressive lowering 단계는 ISA 경계를 시험하는 눈금자. <b>HW 개발자</b>에게 — 경계를 높이면 HW가, 낮추면 컴파일러가 무거워진다. <b>서버 SW</b>에게 — dialect는 ISA 파편화와 같은 위험이니 공통 표준(linalg·affine)을 따르는 것이 툴체인을 지킨다.",
+      "noteKind": "info"
+    },
+    {
+      "kind": "content",
+      "part": "synth",
+      "kicker": "References",
+      "title": "참고문헌",
+      "bullets": [
+        "<span class=\"small\">[1] Lattner et al., <em>MLIR: A Compiler Infrastructure for the End of Moore's Law</em>, arXiv:2002.11054, 2020.</span>",
+        "<span class=\"small\">[2] Lattner et al., <em>MLIR: Scaling Compiler Infrastructure for Domain Specific Computation</em>, IEEE/ACM CGO 2021.</span>",
+        "<span class=\"small\">[3] Hennessy & Patterson, <em>A New Golden Age for Computer Architecture</em>, CACM 62(2), 2019.</span>",
+        "<span class=\"small\">[4] Bondhugula et al., <em>Pluto — A Practical Automatic Polyhedral Parallelizer</em>, PLDI 2008.</span>",
+        "<span class=\"small\">[5] Grosser et al., <em>Polly — Polyhedral Optimization in LLVM</em>, IMPACT 2012.</span>",
+        "<span class=\"small\">[6] Feautrier, <em>Some efficient solutions to the affine scheduling problem</em>, IJPP 1992.</span>",
+        "<span class=\"small\">[7] Allen & Kennedy, <em>Optimizing Compilers for Modern Architectures</em>, 2002.</span>",
+        "<span class=\"small\">[8] MLIR official documentation — mlir.llvm.org/docs.  [9] OpenXLA / StableHLO.  [10] LLVM Polly.</span>"
+      ],
+      "footer": "MLIR · Polyhedral / Affine — Suhwan · 2026-06-12"
+    },
+    {
+      "kind": "divider",
+      "part": "synth",
+      "num": "끝",
+      "title": "감사합니다",
+      "subtitle": "질문 환영 — 스크롤 멀티페이지 자료와 폴리헤드럴 애니메이션 10편은 같은 세미나의 site 덱에서 직접 만져볼 수 있습니다."
+    }
+  ]
+}

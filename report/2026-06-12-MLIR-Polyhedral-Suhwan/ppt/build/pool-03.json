@@ -1,0 +1,6 @@
+{
+  "mermaid": [
+    "flowchart TD\n  Op[\"Operation<br/>(함수·모듈·상수도 Op)\"] --> R[\"Region (0..n)\"] --> B[\"Block (terminator로 끝)\"] --> Op\n  Op -.-> attrs[\"+ operands · results · attributes<br/>· traits · location\"]",
+    "flowchart TD\n  subgraph hi[\"입구 (고수준)\"]\n    HL[\"stablehlo · tosa\"]\n  end\n  subgraph mid[\"중간\"]\n    MID[\"linalg · affine · scf<br/>arith · memref · vector\"]\n  end\n  subgraph lo[\"저수준\"]\n    LO[\"llvm\"]\n  end\n  hi --> mid --> lo"
+  ]
+}

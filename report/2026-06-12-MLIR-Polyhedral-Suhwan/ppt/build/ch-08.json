@@ -1,0 +1,124 @@
+[
+  {
+    "kind": "divider",
+    "part": "synth",
+    "num": "08",
+    "title": "종합 — 한계, ISA 경계, 그리고 컴파일러 vs 하드웨어",
+    "subtitle": "MLIR의 정직한 약점과, ISA 경계라는 책임 분담선"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "08 · 종합",
+    "title": "MLIR은 자기 한계를 숨기지 않는다",
+    "lead": "좋은 시스템 논문의 미덕 — <em>무엇이 안 되는지</em>를 솔직하게 적는 것. 논문 §II·§V.F·§V.G·§VII에 흩어진 8개를 모으면 [2]",
+    "table": {
+      "head": [
+        "#",
+        "한계 (limitation)",
+        "핵심"
+      ],
+      "rows": [
+        [
+          "1",
+          "추상화 설계가 아직 <b>\"art\"</b>",
+          "<em>\"the 'art' of … abstraction design is not well understood\"</em> — 좋은 dialect 판단 기준 미정, 과학적 가이드라인 없음 [§V.F]"
+        ],
+        [
+          "2",
+          "<b>Dialect 폭발</b>(proliferation) 위험",
+          "누구나 dialect 생성 = 비호환 dialect도 가능. fragmentation이 <em>한 층 위</em>에서 재발 — \"순수 기술적 해결책 없음\" [§II.B]"
+        ],
+        [
+          "3",
+          "<b>Pass 순서</b>·스케줄링 방법론 부재",
+          "레벨이 여럿 → 패스 순서 공간 폭발. optimal 순서 찾는 체계적 방법 없음, 대부분 heuristic"
+        ],
+        [
+          "4",
+          "<b>형식 의미·증명</b> 부재",
+          "dialect 간 conversion 정확성은 <em>개발자 책임</em>. verification <em>인프라</em>는 주지만 증명 자동화는 미제공"
+        ],
+        [
+          "5",
+          "<b>Compile-time / memory</b> 비용",
+          "여러 추상 레벨 동시 유지 → 메모리·변환 비용 (IR copying 감소로 일부 상쇄 반박 있음)"
+        ],
+        [
+          "6",
+          "<b>JIT · 정밀 GC</b> 미약",
+          "현재는 <b>AOT</b>(Ahead-of-Time) 중심. JIT·precise garbage collection 지원은 약함 [§V.G]"
+        ],
+        [
+          "7",
+          "<b>Parser·AST 없음</b>",
+          "<em>\"no general parser generator, no AST construction\"</em> — 소스→AST 프론트엔드는 별도 도구 몫 [§VI]"
+        ],
+        [
+          "8",
+          "<b>Out-of-tree dialect API</b> 불안정",
+          "mainline이 바뀌면 외부 dialect가 따라잡아야 함 — API가 fairly volatile"
+        ]
+      ]
+    },
+    "note": "청중을 위한 비유 — <b>dialect 폭발 = ISA 파편화와 똑같은 병.</b> 모두가 자기 명령어 확장을 마구 추가하면 \"공통 ISA\" 약속이 깨지고 툴체인이 분열한다. 저자들은 이를 알면서도 \"기술로는 못 막는다, 거버넌스·커뮤니티 표준화의 영역\"이라 적는다 [2 §II.B].",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "08 · 종합",
+    "title": "완성품이 아니라 \"연구 프로그램의 시작\"",
+    "lead": "이 한계 목록의 결론은 의외로 긍정적이다 — MLIR은 자기를 <em>도구</em>가 아니라 <b>새 연구 프로그램의 개시</b>로 자리매김한다",
+    "statement": "\"MLIR catalyzes new areas of research, as well as new approaches to teaching the art of compiler and IR design.\" [2 §VII]",
+    "bullets": [
+      "\"모든 추상화를 정답으로 정해 줬다\"가 아니라 → \"<em>무엇이 좋은 추상화인지 묻는 공통의 장</em>을 깔았으니 다음 세대가 답을 찾아라\"는 위임",
+      "한계 #1·#2가 미해결로 남는 것도 이 정체성과 일치 — 답을 다 줬다면 그건 연구 프로그램이 아니다"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "08 · 종합",
+    "title": "ISA 경계 = 책임 분담선",
+    "lead": "이 발표의 클라이맥스 — S4의 baseline 파이프라인을 다시 소환한다. 각 단계는 <em>서로 다른 추상 높이</em>를 가진다",
+    "code": "```\nmodel (ONNX / PyTorch)\n  → XLA / StableHLO        (프레임워크 그래프 수준)\n  → linalg                 (구조화된 텐서 연산: linalg.matmul 등)\n  → affine                 (명시적 loop nest: affine.for, affine.load/store)\n  → scf / 기본 MLIR        (구조적 제어 흐름)\n  → LLVM / backend MLIR    (저수준, 타겟 명령에 근접)\n```",
+    "bullets": [
+      "<b>ISA</b>(Instruction Set Architecture) = 하드웨어가 직접 해석하는 명령어 계약 — SW↔HW가 만나는 약속된 경계",
+      "위로 갈수록 \"<em>무엇을</em> 계산하는가\"(matmul 한 방), 아래로 갈수록 \"<em>어떻게</em> 계산하는가\"(루프·주소·레지스터)"
+    ],
+    "mermaid": "@0"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "08 · 종합",
+    "title": "경계를 높이면 HW가, 낮추면 컴파일러가 무거워진다",
+    "lead": "같은 \"AI 가속기\"라도 경계를 그은 <em>높이</em>가 제각각 — 경계의 높이가 곧 양쪽의 일감 배분",
+    "image": {
+      "src": "assets/systolic-array.png",
+      "caption": "Systolic array — GEMM 타일을 통째 받는 가속기. ISA 경계를 어느 추상 높이에 긋느냐가 HW와 컴파일러의 책임을 가른다"
+    },
+    "bullets": [
+      "경계를 <b>높은 쪽(고수준)</b>에 — 예: <code>linalg.matmul</code>을 HW가 직접 받으면 → HW가 행렬곱 의미를 통째 처리(<b>HW 복잡</b>), 컴파일러는 풀 일 적음(컴파일러 책임 ↓)",
+      "경계를 <b>낮은 쪽(저수준)</b>에 — 단순 <code>load/store/MAC</code>만 받으면 → HW는 단순, 컴파일러가 타일링·스케줄링·주소 계산까지 다 풀어 내림(<b>컴파일러 책임 ↑</b>)",
+      "<b>Gemmini</b> — RoCC custom 명령으로 GEMM 타일을 비교적 <em>높은</em> 수준에서 받음",
+      "<b>Snitch + RedMule</b>(RISC-V) — 더 일반적인 명령 수준 → 컴파일러가 많이 풀어 내려야 함",
+      "MLIR의 lowering 단계(<code>linalg → affine → scf → LLVM</code>) = 경계를 <em>어디든 그을 수 있는</em> 후보 지점 목록"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "08 · 종합",
+    "title": "마무리 — 왜 MLIR인가, 그리고 각자에게",
+    "statement": "MLIR이 중요한 이유 — <b>\"하나의 진정한 IR\"을 강요하지 않으면서 \"하나의 진정한 IR 인프라\"를 제공해</b>, SW와 HW의 경계를 <em>고정된 한 점</em>이 아니라 <em>설계자가 선택하는 눈금</em>으로 바꿔 놓았다 [1][2]",
+    "bullets": [
+      "<b>컴퓨터 아키텍트에게</b> — progressive lowering 단계는 당신이 ISA 경계를 시험해 볼 수 있는 <em>눈금자</em>다",
+      "<b>하드웨어 개발자에게</b> — 경계를 높이면 HW가 무거워지고 낮추면 컴파일러가 무거워진다. 그 트레이드오프를 의식하고 그어라",
+      "<b>서버레벨 SW 엔지니어에게</b> — dialect는 곧 ISA 파편화와 같은 위험을 안고 있으니, 공통 표준(<code>linalg</code>, <code>affine</code> 등)을 따르는 것이 장기적으로 당신의 툴체인을 지킨다 [2]"
+    ],
+    "note": "한 문장 요약 — MLIR은 \"정답 IR\"이 아니라 \"<em>경계를 옮길 수 있는 자\"</em>를 줬다. 그 자를 어디에 대고 선을 그을지는, 이제 당신의 설계 결정이다.",
+    "noteKind": "info"
+  }
+]

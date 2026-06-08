@@ -1,0 +1,122 @@
+[
+  {
+    "kind": "divider",
+    "part": "mlir",
+    "num": "03",
+    "title": "MLIR 핵심 개념 — 모든 것이 Operation이다",
+    "subtitle": "작은 코어 + 사용자가 확장하는 어휘(dialect)"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "03 · 핵심 개념",
+    "title": "모든 것이 Operation이다",
+    "lead": "코어는 단 하나의 추상만 안다 — <b>Operation</b>.",
+    "bullets": [
+      "함수도, 모듈도, 상수도, 루프도 전부 <b>Operation</b>이다.",
+      "ISA 비유: 명령어는 수백 개지만 디코더가 보는 1차 단위는 <em>하나의 instruction</em>.",
+      "코어는 \"이건 함수, 저건 명령어\"를 구분하지 않는다 — 전부 같은 구조체를 공유.",
+      "새 개념을 추가할 때 <b>코어를 건드릴 필요가 없다</b>.",
+      "요약: <b>작은 코어 + 사용자가 확장하는 어휘(dialect)</b>."
+    ],
+    "note": "논문은 이 철학을 <b>Parsimony</b>(절약, Occam의 면도날) — \"코어를 작게, 모든 것을 속성으로\" — 라 부른다.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "03 · 핵심 개념",
+    "title": "Operation의 구성요소",
+    "lead": "Op 하나는 \"입력 → 출력 + 부가정보\"를 담는 작은 상자.",
+    "bullets": [
+      "<b>opcode</b> — 무엇을 하는지 (예: <code>addf</code> = 부동소수점 덧셈)",
+      "<b>operands</b> — 입력으로 받는 값들 / <b>results</b> — 내보내는 값들",
+      "<b>attributes</b> — 컴파일 타임 상수 정보 (런타임 operands와 구분)",
+      "<b>regions</b> — 자기 안에 품는 하위 코드 블록 (중첩)",
+      "<b>traits</b> — 자기 능력 선언 / <b>location</b> — 원래 소스의 어디서 왔는지"
+    ],
+    "note": "함수도 Op, 모듈도 Op, 상수도 Op. 코어가 단순한 이유다.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "03 · 핵심 개념",
+    "title": "Dialect — 도메인별 어휘 묶음",
+    "lead": "코어가 \"문법\"이라면 dialect는 \"어휘집\". 같은 Operation 구조 위에 도메인마다 자기 단어를 정의.",
+    "bullets": [
+      "<b>Dialect</b> = 특정 도메인의 Op·Type·Attribute·Trait·Interface를 모은 네임스페이스 (user-extensible).",
+      "코드에서는 Op 이름의 <b>점-접두사</b>로 드러난다 — <code>affine.for</code>, <code>arith.addf</code> (점 앞=dialect, 점 뒤=Op).",
+      "<b>입구(고수준):</b> <code>stablehlo</code> · <code>tosa</code> — ML 프레임워크 그래프 진입.",
+      "<b>중간:</b> <code>linalg</code> · <code>affine</code> · <code>scf</code> · <code>arith</code> · <code>memref</code> · <code>func</code> · <code>vector</code> — 최적화가 벌어지는 층.",
+      "<b>저수준:</b> <code>llvm</code> — LLVM 백엔드로 넘어가 기계어가 됨.",
+      "큰 흐름: <b>고수준 의미 → 중간 루프 → 저수준 명령어</b>."
+    ],
+    "mermaid": "@1"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "03 · 핵심 개념",
+    "title": "Region & Block — 루프가 IR 그 자체다",
+    "lead": "<b>Region</b> = Op이 품는 Block들의 컨테이너. <b>Block</b> = Op 리스트 + 끝의 terminator.",
+    "bullets": [
+      "Op이 region을 품으면 Op 안에 또 Op들 → <b>중첩(nesting)</b>이 가능.",
+      "계층은 재귀적: <b>Operation → Region → Block → Operation</b>.",
+      "그래서 루프·구조적 제어 흐름이 <b>IR 그 자체로 명시</b>된다.",
+      "LLVM IR은 <b>flat CFG</b> — \"여기 루프 있다\"가 IR에 안 적혀 있어 그래프를 분석해 루프를 <em>recover</em>해야.",
+      "MLIR은 <code>affine.for</code>가 region에 루프 본문을 담아 루프 구조를 처음부터 박아둔다."
+    ],
+    "note": "논문: <b>\"Premature lowering is the root of all evil\"</b>(섣부른 하강은 모든 악의 근원, <em>Progressivity</em>). 너무 빨리 지운 고수준 의미의 복원은 fragile·expensive·invasive.",
+    "noteKind": "info",
+    "mermaid": "@0"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "03 · 핵심 개념",
+    "title": "Functional SSA + Block Arguments",
+    "lead": "<b>SSA</b>(정적 단일 배정) = 한 변수는 딱 한 번만 정의. 값의 출처가 유일해 분석이 쉽다.",
+    "bullets": [
+      "전통적 SSA는 합류 지점에서 $\\phi$(phi) 노드로 \"어느 경로에서 왔느냐\"를 표현.",
+      "MLIR은 $\\phi$를 없애고, terminator가 다음 블록(successor)의 <b>block argument</b>로 값을 직접 넘긴다.",
+      "블록도 함수처럼 <b>매개변수(block argument)</b>를 받고, 점프하는 terminator가 그 값을 채운다.",
+      "블록 간 점프를 \"인자를 넘기는 호출\"처럼 다룸 → 그래서 <em>functional</em> SSA.",
+      "$\\phi$의 암묵적 마법 대신 값의 출처가 인자 전달로 명시 → 더 읽기 쉽다."
+    ],
+    "note": "<b>strict type equality</b> 강제 — 암묵적 형변환 없음, 모든 변환은 명시적 Op으로만. Type system도 user-extensible.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "03 · 핵심 개념",
+    "title": "Traits / Interfaces — Op이 자기 능력을 선언한다",
+    "lead": "<b>Trait/Interface</b> = Op이 \"나는 이런 능력이 있다\"고 붙이는 꼬리표. 패스는 Op이 뭔지 몰라도 꼬리표만 본다.",
+    "bullets": [
+      "예: <code>IsCommutative</code>, <code>NoSideEffects</code>, <code>LoopLikeOpInterface</code>.",
+      "논문: <b>\"inverting the common approach\"</b> — 패스가 Op을 다 아는 게 아니라, Op이 능력을 declare하고 패스는 선언만 본다.",
+      "\"<em>Ops가 passes보다 많으니, Op이 pass를 아는 편이 더 쉽다</em>.\"",
+      "DCE·CSE·canonicalization·inlining 같은 <b>일반 패스가 dialect를 몰라도</b> 작동.",
+      "<b>Isolated-from-Above</b> = 위 스코프의 SSA 값을 못 끌어 쓰는 scope barrier (대표적으로 함수).",
+      "use-def chain이 경계를 못 넘어 → 모듈을 <b>멀티코어에서 동시 컴파일</b>. LLVM의 whole-module chain과 대비."
+    ],
+    "note": "TableGen <b>ODS</b>: Op을 선언적으로 기술하면 C++ boilerplate(검증·접근자·빌더)가 자동 생성 — 확장 비용을 낮춘다 (<em>Traceability</em>: retain·declare·verify).",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "mlir",
+    "kicker": "03 · 핵심 개념",
+    "title": "한 함수 안에 여러 dialect가 공존한다",
+    "lead": "논문이 직접 <b>\"the most profound\"</b>(가장 심오한)라 부르는 특성 — 한 프로그램 안에 서로 다른 dialect의 Op이 섞여 산다.",
+    "code": "```mlir\nfunc.func @add_arrays(%A: memref<8xf32>, %B: memref<8xf32>) {\n  affine.for %i = 0 to 8 {\n    %a = affine.load %A[%i] : memref<8xf32>\n    %b = affine.load %B[%i] : memref<8xf32>\n    %s = arith.addf %a, %b : f32\n    affine.store %s, %A[%i] : memref<8xf32>\n  }\n  func.return\n}\n```",
+    "bullets": [
+      "한 함수에 <code>func</code> · <code>affine</code> · <code>arith</code> · <code>memref</code>가 충돌 없이 공존 — 곧 $A[i] = A[i] + B[i]$를 8번.",
+      "<code>arith</code>는 <code>affine</code>이 뭔지 몰라도 덧셈 최적화를, <code>affine</code>은 <code>arith</code>를 몰라도 루프 변환을 적용.",
+      "각 dialect는 자기 일만 알고, <b>interface로 추상화된 한에서</b> 서로의 내부를 몰라도 협업."
+    ],
+    "note": "\"<em>...it allows and encourages mixing operations from different dialects together within a single program.</em>\" 이 \"어휘를 섞되 코어는 하나\"가 ML 프레임워크부터 가속기까지 하나의 인프라로 묶는 비결.",
+    "noteKind": "info"
+  }
+]

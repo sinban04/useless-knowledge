@@ -1,0 +1,5 @@
+{
+  "mermaid": [
+    "flowchart TD\n  subgraph loc[\"지역성\"]\n    direction TB\n    I[Interchange] --> Fu[Fusion] --> Ti[Tiling] --> Pa[Paging]\n  end\n  subgraph par[\"병렬성 ★\"]\n    Sk[\"Skewing<br/>없던 병렬성\"]:::hi\n  end\n  subgraph hw[\"하드웨어 매핑\"]\n    direction TB\n    Si[SIMD] --> Mc[Multicore] --> Pi[Pipeline]\n  end\n  loc --> par --> hw\n  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;"
+  ]
+}

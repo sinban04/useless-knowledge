@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="648" height="648">
+    <path fill="none" stroke="#FEC200" stroke-width="2" d="M72 0v648M144 0v648M216 0v648M288 0v648M360 0v648M432 0v648M504 0v648M576 0v648M0 576h648M0 504h648M0 432h648M0 360h648M0 288h648M0 216h648M0 144h648M0 72h648"/>
+    <path fill="none" stroke="#0081CD" stroke-width="3" d="M216 72c25.167-9.166 46.75-7.25 72 0 44.816 12.868 102.5 41.75 144 72 32.395 23.613 52.306 42.513 72 72 30.834 46.167 55.896 95.697 72 144 7.834 23.5 6.659 53.781 0 72-8.833 24.167-28.5 40.5-72 72-36.533 26.455-102.5 58.5-144 72-20.411 6.64-47.585 6.878-72 0-35.5-10-106-43.5-144-72-36.055-27.041-65.016-50.51-72-72-6.5-20-4-43 0-72 10.502-76.145 45-167.5 72-216 14.047-25.233 45.408-62.315 72-72z"/>
+    <circle fill="#BC1E47" stroke="#000" cx="72" cy="432" r="8"/>
+    <circle fill="#BC1E47" stroke="#000" cx="72" cy="360" r="8"/>
+    <circle fill="#BC1E47" stroke="#000" cx="144" cy="144" r="8"/>
+    <circle fill="#BC1E47" stroke="#000" cx="216" cy="72" r="8"/>
+    <circle fill="#BC1E47" stroke="#000" cx="288" cy="72" r="8"/>
+    <circle fill="#BC1E47" stroke="#000" cx="432" cy="144" r="8"/>
+    <circle fill="#BC1E47" stroke="#000" cx="504" cy="216" r="8"/>
+    <circle fill="#BC1E47" stroke="#000" cx="576" cy="360" r="8"/>
+    <circle fill="#BC1E47" stroke="#000" cx="576" cy="432" r="8"/>
+    <circle fill="#BC1E47" stroke="#000" cx="504" cy="504" r="8"/>
+    <circle fill="#BC1E47" stroke="#000" cx="360" cy="576" r="8"/>
+    <circle fill="#BC1E47" stroke="#000" cx="288" cy="576" r="8"/>
+    <circle fill="#BC1E47" stroke="#000" cx="144" cy="504" r="8"/>
+</svg>

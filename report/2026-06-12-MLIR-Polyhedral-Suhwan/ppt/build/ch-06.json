@@ -1,0 +1,275 @@
+[
+  {
+    "kind": "divider",
+    "part": "poly",
+    "num": "06",
+    "title": "Polyhedral 모델 심화 — 루프를 수학으로 보다",
+    "subtitle": "AST/CFG 위의 변환 하나씩 대신, 루프 전체를 하나의 정수 선형계획(ILP)으로"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "왜 루프를 \"수학\"으로 보는가",
+    "lead": "<b>AST</b>(문법 트리)·<b>CFG</b>(블록 흐름 그래프) 위에서 변환을 <em>하나씩</em> 적용하면 조합이 폭발하고, 의존성 분석이 <b>보수적</b>이라 기회를 놓친다.",
+    "bullets": [
+      "interchange·tiling·fusion을 어떤 <b>순서</b>로 적용하느냐에 따라 결과가 달라진다 → 조합 폭발.",
+      "\"혹시 같은 메모리를 건드릴 수도\" 의심이 들면 안전을 위해 최적화 포기 — 안전하지만 기회 상실.",
+      "폴리헤드럴은 발상을 뒤집어, <b>루프 최적화 전체를 하나의 정수 선형계획(ILP)</b>으로 치환한다 [4][6].",
+      "<b>정확한(exact) 의존성 분석</b>: \"혹시\"가 아니라 정수 부등식으로 충돌을 정확히 판별.",
+      "<b>최적 변환의 자동 탐색</b>: ILP solver가 모든 합법 변환 공간에서 최적해를 한 번에."
+    ],
+    "note": "하드웨어 비유: 전통 방식이 엔지니어가 손으로 회로를 하나씩 배치(place)하는 것이라면, 폴리헤드럴은 배치·배선을 수식으로 정의해 auto-placer에 던지는 것에 가깝다.",
+    "noteKind": "info",
+    "mermaid": "@0",
+    "layout": "split"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "전통 AST/CFG vs 폴리헤드럴 — 한눈 비교",
+    "lead": "둘 다 \"중첩 루프를 변환한다\"는 목표는 같지만, 변환을 다루는 <b>방식</b>이 정반대다.",
+    "table": {
+      "head": [
+        "전통 AST/CFG 기반",
+        "폴리헤드럴 모델"
+      ],
+      "rows": [
+        [
+          "변환을 하나씩 적용 → 조합 폭발",
+          "모든 것을 하나의 ILP 문제로 치환"
+        ],
+        [
+          "보수적 의존성 분석 (기회 놓침)",
+          "정확한(exact) 의존성 분석"
+        ],
+        [
+          "최적 조합 탐색 불가",
+          "ILP solver가 최적해 탐색"
+        ],
+        [
+          "변환 순서에 의존적",
+          "모든 변환을 하나의 행렬 연산으로 통합"
+        ]
+      ]
+    },
+    "note": "이 \"하나의 행렬 연산으로 통합\"이 뒤(스케줄 θ)에서 핵심이 된다 — interchange·skew·tiling이 결국 같은 행렬의 계수 조작이다.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "3개의 기둥 ① — Iteration Domain (반복 공간)",
+    "lead": "각 반복(iteration)을 <b>다차원 좌표점</b>으로 본다. <code>for i { for j {...} }</code> 의 반복 하나하나가 평면 위의 점 $(i,j)$. 루프 경계는 <b>affine 부등식의 집합</b>.",
+    "bullets": [
+      "본문 1회 실행 → 격자점 1개. $3\\times 3$ 루프면 점 9개 — <em>동적 실행</em>이 정적인 <em>점 집합</em>으로 굳는다.",
+      "루프 경계 → 다면체의 변. <code>0≤i&lt;N</code>, <code>0≤j&lt;N</code> 이 격자를 두른 부등식 $A\\mathbf{i}\\ge\\mathbf{b}$.",
+      "삼각형 ($0\\le j\\le i\\le N$) 같은 비직사각형도 affine 부등식의 conjunction으로 표현.",
+      "중첩 순서 → 점 방문 순서. 안쪽 $j$ 가 빨리 변하는 <b>사전식(lexicographic)</b> 순서가 곧 격자를 훑는 순서.",
+      "스케줄 $\\theta$ 를 바꾸면 <em>같은 점들을 다른 순서로</em> 훑게 된다 — 그것이 바로 루프 변환이다."
+    ],
+    "math": [
+      "D = \\{\\, \\mathbf{i} \\in \\mathbb{Z}^n \\mid A\\cdot\\mathbf{i} \\ge \\mathbf{b} \\,\\}"
+    ],
+    "scene": "01-iteration-space",
+    "note": "\"폴리헤드럴\"이라는 이름이 여기서 나온다 — 부등식이 정의하는 정수 좌표점 집합 = 정수 다면체(polyhedron).",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "3개의 기둥 ② — Dependence (의존성, 변환의 안전선)",
+    "lead": "두 반복이 <b>같은 메모리 셀</b>을 건드릴 때 의존성이 생긴다. 두 좌표의 차이가 <b>의존성 거리 벡터</b>다.",
+    "bullets": [
+      "<code>A[i][j] = A[i-1][j] + A[i][j-1]</code> → 거리 벡터 $(1,0)$ 과 $(0,1)$.",
+      "배열 접근을 affine 함수로 모델링하면 \"같은 셀에 접근하는가?\"를 정수 부등식으로 <b>정확히</b> 푼다.",
+      "<b>합법(legal) 변환의 조건</b>: 모든 의존성을 <em>시간상 앞으로</em> 유지 — src가 먼저, tgt가 나중.",
+      "새 스케줄 $S'$ 가 모든 의존성 쌍에서 <b>lexicographically positive(lex+)</b> 를 유지해야 한다 — <b>Allen–Kennedy criterion</b> [7]."
+    ],
+    "math": [
+      "\\forall (i_{src}, i_{tgt}) \\in R : \\quad S'(i_{tgt}) \\succ S'(i_{src})"
+    ],
+    "note": "직관: 변환을 아무리 해도 \"원인이 결과보다 먼저\"라는 시간 순서만 안 깨면 안전하다.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "3개의 기둥 ③ — Schedule θ (변환 = 행렬 계수 조작)",
+    "lead": "스케줄은 각 반복에 <b>실행 시각</b>을 부여하는 affine 사상. 기존 좌표 $[i,j]$ 를 변환행렬 $T$ 로 새 좌표 $[t_1,t_2]$ 에 매핑.",
+    "math": [
+      "\\begin{bmatrix} t_1 \\\\ t_2 \\end{bmatrix} = \\begin{bmatrix} a & b \\\\ d & e \\end{bmatrix} \\begin{bmatrix} i \\\\ j \\end{bmatrix} + \\begin{bmatrix} c \\\\ f \\end{bmatrix}",
+      "\\text{Interchange: } T = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}, \\qquad \\text{Skewing: } T = \\begin{bmatrix} 1 & 1 \\\\ 0 & 1 \\end{bmatrix}\\ (t_1 = i+j)"
+    ],
+    "bullets": [
+      "<b>핵심</b>: 서로 달라 보이는 모든 루프 변환이 사실은 <b>행렬 $T$ 의 계수를 바꾸는 한 가지 연산</b>.",
+      "Identity = 단위행렬, Interchange = 순서 교환, Skewing = 비틀기, Tiling = strip-mining ($t_1=\\lfloor i/B\\rfloor$, $t_2 = i\\bmod B$).",
+      "전통 컴파일러의 interchange·tiling·fusion 패스가 따로 + 순서 민감 → 폴리헤드럴은 <b>하나의 행렬 연산</b>으로 통합.",
+      "ILP solver가 푸는 것: Allen–Kennedy를 만족하며 병렬성·지역성을 극대화하는 $T$ 의 계수."
+    ],
+    "mermaid": "@1"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "Farkas Lemma — 무한을 유한으로",
+    "lead": "합법성 조건 $\\theta(tgt) - \\theta(src) \\ge 1$ 은 <b>반복 공간의 모든 점</b>에서 성립해야 한다. 그런데 점은 $N$ 에 따라 무한히 많다 — 하나씩 검사할 수 없다.",
+    "statement": "\"다면체의 모든 점에서 비음수인 affine 함수는, 그 다면체를 정의하는 경계 부등식들의 양수 배 합으로 표현할 수 있다.\"",
+    "bullets": [
+      "\"무한히 많은 점에서 부등식이 성립하는가?\" → \"유한한 개수의 $\\lambda$(람다) 계수가 존재하는가?\"로 환원.",
+      "유한 미지수 + 선형 제약 문제는 ILP solver(GLPK · CPLEX · ISL 등)가 <b>유한 시간</b>에 자동으로 푼다.",
+      "비유: 울타리 안 모든 위치(무한)의 고도를 일일이 측량하는 대신, 울타리 변(유한한 경계식) 몇 개의 가중합으로 지형을 표현해버리는 트릭."
+    ],
+    "mermaid": "@3"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "SCoP — 폴리헤드럴이 작동하는 코드 영역",
+    "lead": "이 모든 수학이 작동하려면 코드가 <b>SCoP(Static Control Part)</b> 안에 있어야 한다. 정의는 깔끔하다 — <b>5개 핵심 객체가 모두 affine</b>.",
+    "table": {
+      "head": [
+        "객체",
+        "의미",
+        "폴리헤드럴 표현"
+      ],
+      "rows": [
+        [
+          "<b>D</b> Iteration Domain",
+          "반복 공간",
+          "$\\{\\mathbf{i}\\in\\mathbb{Z}^n \\mid A\\mathbf{i}\\ge\\mathbf{b}\\}$"
+        ],
+        [
+          "<b>S</b> Schedule",
+          "실행 시각 사상",
+          "$T\\cdot\\mathbf{i} + \\textit{offset}$"
+        ],
+        [
+          "<b>F</b> Access Function",
+          "반복 → 메모리 셀",
+          "$A_F\\cdot\\mathbf{i} + b_F$"
+        ],
+        [
+          "<b>R</b> Dependence Relation",
+          "두 D 간 의존 관계",
+          "두 도메인 간 affine 관계"
+        ],
+        [
+          "<b>Stmt</b> Statement",
+          "원자 실행 단위",
+          "한 scalar op (load/arith/store)"
+        ]
+      ]
+    },
+    "note": "두 축으로 요약: (1) <b>선형성</b> — 경계·step·인덱스·if 조건이 모두 affine. (2) <b>atomicity</b> — 한 statement = 한 scalar op. <code>i*j</code>·<code>sqrt(i)</code>·<code>A[B[i]]</code>(간접 인덱싱)는 자동 분석 영역 밖.",
+    "noteKind": "info",
+    "mermaid": "@2"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "★ MLIR Affine의 결정적 차별점: SCoP를 문법으로 사전 강제",
+    "lead": "SCoP를 <b>언제 확보하느냐</b>가 시스템마다 다르다. MLIR은 \"정보를 잃은 뒤 복원\"하지 않고 \"애초에 보존\"한다.",
+    "table": {
+      "head": [
+        "시스템",
+        "SCoP 처리 방식"
+      ],
+      "rows": [
+        [
+          "<b>LLVM Polly</b>",
+          "LLVM IR을 받아 SCoP detector가 영역을 <em>사후 탐색</em> (휴리스틱) [5]"
+        ],
+        [
+          "<b>Pluto / CLooG</b>",
+          "C source에서 annotation 또는 자동 detect [4]"
+        ],
+        [
+          "<b>MLIR Affine</b>",
+          "<b>IR 문법 자체가 이미 SCoP를 보장 (사전 강제)</b> ★ [8]"
+        ]
+      ]
+    },
+    "code": "```mlir\naffine.for %i = 0 to %N step 1 {                 // 반복 공간 D를 문법이 강제\n  affine.for %j = 0 to #map(%i) {                // 경계도 affine_map만 허용\n    %v = affine.load %A[%i, %j] : memref<?x?xf32> // 접근 함수 F가 affine임을 강제\n  }\n}\n```",
+    "note": "Polly는 저수준 IR로 내려온 뒤 detection이 <em>실패</em>할 수 있다 [5]. MLIR Affine은 <code>affine.*</code> op만 쓰면 파싱/검증에서 비-affine을 거부 → <b>작성하는 순간 자동으로 SCoP 보장</b> [8]. Lattner의 progressivity 원칙과 직결 [1][2].",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "정점 — 의존성이 없으면 자동 병렬화 (증명으로)",
+    "lead": "행렬 덧셈 $C[i][j] = A[i][j] + B[i][j]$ 는 서로 다른 반복이 같은 셀을 건드리지 않는다 — 의존성이 없다. 폴리헤드럴은 이것을 ILP로 <b>증명</b>하고 모든 차원을 병렬화한다.",
+    "code": "```mlir\n// 의존성 없음을 확인한 뒤: 순차 루프를 병렬 루프로 승격\naffine.parallel (%i, %j) = (0, 0) to (%N, %M) {\n  %a = affine.load %A[%i, %j] : memref<?x?xf32>\n  %b = affine.load %B[%i, %j] : memref<?x?xf32>\n  %c = arith.addf %a, %b : f32\n  affine.store %c, %C[%i, %j] : memref<?x?xf32>\n  affine.yield\n}\n```",
+    "bullets": [
+      "의존성이 없음을 ILP가 <b>증명</b>하면 <code>affine.for</code>가 그대로 <code>affine.parallel</code>로 승격된다 — 병렬화가 \"추측\"이 아니라 \"증명\".",
+      "반대로 누적합 <code>a[i] = a[i-1] + b[i]</code> 는 $i'=i-1$ 의존성이 있어 \"병렬화 불가\"를 <b>자동 증명</b> — 억지 병렬화 오류를 막는다.",
+      "2D 스텐실처럼 대각선 의존성으로 막힌 경우엔 ILP가 skewing($t = i+j$)을 <em>스스로 찾아내</em> 부분 병렬성을 끌어낸다 (다음 슬라이드)."
+    ],
+    "scene": "06-parallel"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "affine loop을 수식으로 ① 정의 · ② 반복공간 $D$",
+    "lead": "세 기둥을 하나의 흐름으로: 정의 → 반복공간 $D$ → 접근/의존성. 예제는 2D 스텐실.",
+    "bullets": [
+      "<b>① 정의</b>: 모든 루프 경계·배열 첨자·if 조건이 $\\mathbf{i},\\mathbf{N}$ 의 <b>1차(affine) 식</b>이면 affine loop = SCoP [2][6].",
+      "<b>② 조건</b>: 경계 부등식을 모으면 정수 다면체 $D$ — 각 격자점이 한 실행 인스턴스."
+    ],
+    "math": [
+      "D = \\{\\, \\mathbf{i} \\in \\mathbb{Z}^n \\ :\\ A\\,\\mathbf{i} + \\mathbf{b} \\;\\ge\\; \\mathbf{0} \\,\\}",
+      "A = \\begin{bmatrix} 1 & 0 \\\\ -1 & 0 \\\\ 0 & 1 \\\\ 0 & -1 \\end{bmatrix}, \\qquad \\mathbf{b} = \\begin{bmatrix} -1 \\\\ N-1 \\\\ -1 \\\\ N-1 \\end{bmatrix}"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "affine loop을 수식으로 ③ 접근 함수 · 의존성",
+    "bullets": [
+      "<b>③ 수식화</b>: 접근 함수 $F(\\mathbf{i}) = A_F\\mathbf{i}+\\mathbf{f}$, 의존성 벡터 $\\delta = \\mathbf{i}'-\\mathbf{i}$. 스텐실은 $\\delta_1=(1,0),\\ \\delta_2=(0,1)$.",
+      "$D$ 와 $F$ 가 affine이면 의존성도 affine 관계 → <b>정수해 존재(Presburger feasibility)</b>로 <em>정확히</em> 판정 [4][5]."
+    ],
+    "math": [
+      "\\begin{aligned} A[i][j] \\;&:\\; F = I\\,\\mathbf{i} + (0,\\,0)^\\top \\\\ A[i-1][j] \\;&:\\; F = I\\,\\mathbf{i} + (-1,\\,0)^\\top \\\\ A[i][j-1] \\;&:\\; F = I\\,\\mathbf{i} + (0,\\,-1)^\\top \\end{aligned}"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "affine loop을 수식으로 ④ 스케줄 $\\theta$ · 합법성 (Allen–Kennedy)",
+    "lead": "스케줄 $\\theta$ 와 합법성으로 스텐실에 없던 병렬성을 합성. unimodular($\\det\\Theta=\\pm1$)라 격자점 보존 + 정수 가역.",
+    "bullets": [
+      "두 의존성 모두 첫 성분(시간 $t=i+j$)이 $\\ge 1$ → 서로 다른 시각으로 밀린다.",
+      "같은 $t$(한 wavefront) 안에서는 의존성이 사라져 <b>병렬</b>이 된다."
+    ],
+    "math": [
+      "\\mathbf{u} = \\theta(\\mathbf{i}) = \\Theta\\,\\mathbf{i}, \\qquad \\forall\\,\\delta : \\ \\Theta\\,\\delta \\;\\succ\\; \\mathbf{0} \\ \\ (\\text{lex-positive})",
+      "\\Theta\\,\\delta_1 = \\begin{bmatrix} 1 & 1 \\\\ 0 & 1 \\end{bmatrix}\\!\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} = \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} \\succ \\mathbf{0}, \\qquad \\Theta\\,\\delta_2 = \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix} \\succ \\mathbf{0}"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "⑤ 스큐잉 결과 → 웨이브프론트 병렬",
+    "bullets": [
+      "역변환 $t=i+j,\\ p=j \\Rightarrow i=t-p,\\ j=p$.",
+      "원래 $(N-1)^2$ 순차 스텝이 $2N-3$ 개 wavefront로 접힌다 — $6\\times6=36$ 점 → $11$ wavefront, $\\approx 3.3\\times$."
+    ],
+    "math": [
+      "t = i+j,\\quad p = j \\qquad\\Longrightarrow\\qquad i = t - p,\\quad j = p"
+    ],
+    "scene": "07-skewing"
+  }
+]

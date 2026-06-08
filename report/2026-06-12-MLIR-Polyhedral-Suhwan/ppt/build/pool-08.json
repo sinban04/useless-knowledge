@@ -1,0 +1,5 @@
+{
+  "mermaid": [
+    "flowchart TD\n  subgraph pipe[\"MLIR lowering 단계 = ISA 경계 후보\"]\n    direction TB\n    L[\"linalg\"] --> A[\"affine\"] --> S[\"scf\"] --> LL[\"LLVM\"]\n  end\n  L -. \"경계를 높게\" .-> HWc[\"HW가 의미를 통째 처리<br/>→ HW 복잡 · 컴파일러 단순\"]:::hi\n  LL -. \"경계를 낮게\" .-> SWc[\"컴파일러가 다 풀어 내림<br/>→ 컴파일러 복잡 · HW 단순\"]:::hi\n  classDef hi fill:#FBEFEA,stroke:#B5341F,stroke-width:1.5px,color:#7a2415;"
+  ]
+}
