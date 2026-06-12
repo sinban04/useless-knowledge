@@ -236,3 +236,6 @@ header .hdr-part { font-family: var(--mono-ui); font-size: 0.8125rem; color: var
 .report-page .vizbox .pv-caption     { order: 6; margin: 0; }   /* 단계 설명 */
 .report-page .vizbox .pv-codecard    { order: 7; }              /* 코드 — 맨 아래 */
 .report-page .vizbox pre.pv-code { font-size: 12px; }
+
+/* header: 우측 링크 묶음(발표 슬라이드 + 외부) */
+header .hdr-links { display: flex; gap: 1.1rem; align-items: baseline; }
