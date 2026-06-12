@@ -62,7 +62,7 @@
 
 <figure class="viz"><div class="vizbox" data-scene="03-fusion"><div class="vizph"><span class="vp-play">▶</span> 루프 융합 — 스크롤하면 자동 로드</div></div><figcaption><span><b>인터랙티브 애니메이션</b> · 융합 = 두 반복영역을 합쳐 중간 버퍼를 없애고 producer-consumer 지역성을 높인다. (▶ 재생 · 단계 조작)</span><a href="../viz/topics/03-fusion.html" target="_blank" rel="noopener">↗ 전체화면</a></figcaption></figure>
 
-<p><code>affine-loop-fusion</code> 다음에 <code>affine-scalrep</code>(스칼라 승격)을 이어 붙이면, 3단계 체인의 중간 배열이 레지스터로 승격되며 완전히 사라진다 — 폴리헤드럴의 <em>array contraction</em>(배열 축약) 자동화에 해당한다 <sup class="cite"><a href="#ref-8">[8]</a></sup>. 이 점이 고수준 dialect와 닿는 지점인데, 뒤의 의견 박스에서 다시 다룬다.</p>
+<p><code>affine-loop-fusion</code> 다음에 <code>affine-scalrep</code>(스칼라 승격)을 이어 붙이면, 3단계 체인의 중간 배열이 레지스터로 승격되며 완전히 사라진다 — 폴리헤드럴의 <em>array contraction</em>(배열 축약) 자동화에 해당한다 <sup class="cite"><a href="#ref-8">[8]</a></sup>. 이 점이 고수준 dialect와 닿는 지점인데, 뒤의 linalg vs affine 트레이드오프 절에서 다시 다룬다.</p>
 <h3 id="6-스큐잉-없던-병렬성을-만들어내기">6. ★ 스큐잉 — 없던 병렬성을 만들어내기</h3>
 <p>이번 섹션의 하이라이트다. 의존성 벡터가 <code>(1,0)</code>과 <code>(0,1)</code> 두 개 걸린 2D 스텐실은, <code>i</code> 루프도 <code>j</code> 루프도 <em>그대로는 병렬화할 수 없다</em> — 어느 방향으로 펼쳐도 옆 칸 결과를 기다려야 하기 때문이다.</p>
 <p>폴리헤드럴의 답은 <strong>스케줄 행렬을 바꾸는 것</strong> 하나뿐이다. 스큐(skew) 스케줄</p>
@@ -122,7 +122,7 @@
 <p>둘째, <strong>lower-affine의 Euclidean correction</strong>. affine 영역을 떠날 때(<code>--lower-affine</code>) affine의 <code>mod</code>는 arith dialect의 순진한 나머지로 1:1 번역되지 않는다. affine <code>mod</code>는 음수에서도 항상 비음수 결과를 보장하는 <em>Euclidean</em> 의미라서, lowering이 <code>remsi</code>(부호 있는 나머지) + <code>cmpi</code>(음수 검사) + <code>addi</code> + <code>select</code>의 보정 시퀀스로 풀어낸다 <sup class="cite"><a href="#ref-8">[8]</a></sup>. 같은 <code>mod</code>라도 dialect마다 의미가 미묘하게 다르다는 것을, 내려보내기 코드가 드러내 준다.</p>
 <h3 id="12-어디까지-내려갈-것인가">12. 어디까지 내려갈 것인가</h3>
 <p>마지막으로 실무 판단 하나. 변환을 affine까지 내려서 할지, 더 높은 linalg dialect에 머물지의 트레이드오프다.</p>
-<p>고수준 linalg에 머물면 matmul·conv 같은 연산의 <em>의미</em>가 보존돼 fusion이 싸고 직관적이다. 반면 affine까지 내려가면 skewing·interchange·peeling 같은 극한 루프 변형이 가능해지지만, 한 번 내려가면 고수준 의미를 되살리기 어렵다. 따라서 어느 레벨에 머물지는 타깃이 정한다 — 범용 가속기(GPU 등)는 의미를 오래 보존하는 linalg 중심이, 루프를 하드웨어 opcode 크기에 맞춰 극한으로 변형해야 하는 커스텀 가속기는 affine까지 내려가는 편이 유리하다.</p><section class="pagerefs"><h2>참고문헌</h2><p class="r" id="ref-1"><b>[1]</b> Lattner et al., "MLIR: A Compiler Infrastructure for the End of Moore's Law", arXiv:2002.11054, 2020.</p><p class="r" id="ref-8"><b>[8]</b> MLIR official documentation — https://mlir.llvm.org/docs/ .</p></section><div class="related"><div class="rl">연결된 주제 (graph)</div><div class="rgrid"><a class="rcard" href="04-lowering.html"><div class="rn">04 · Lowering·파이프라인</div><div class="rt">Progressive Lowering과 현대 컴파일러 파이프라인</div><div class="redge">↳ linalg→affine 위계</div></a></div></div><nav class="pager"><a class="prev" href="05-polyhedral.html"><div class="d">← 이전 · 05</div>Polyhedral</a><a class="next xpart part-synth" href="07-synthesis.html"><div class="d">마무리 · 종합 →</div>종합·전망</a></nav>
+<p>고수준 linalg에 머물면 matmul·conv 같은 연산의 <em>의미</em>가 보존돼 fusion이 싸고 직관적이다. 반면 affine까지 내려가면 skewing·interchange·peeling 같은 극한 루프 변형이 가능해지지만, 한 번 내려가면 고수준 의미를 되살리기 어렵다. 따라서 어느 레벨에 머물지는 타깃이 정한다 — 범용 가속기(GPU 등)는 의미를 오래 보존하는 linalg 중심이, 루프를 하드웨어 opcode 크기에 맞춰 극한으로 변형해야 하는 커스텀 가속기는 affine까지 내려가는 편이 유리하다.</p><p>이 스펙트럼 위에는 산업의 실측점도 하나 있다 — Triton은 <em>타일 단위는 사람이 쓰고 그 아래(메모리 coalescing·Tensor Core 매핑)는 컴파일러가 자동화</em>하는 중간 절충을 택했고, 그 수확(압도적 생산성)과 비용(H100에서도 통상 ~20% 성능 손실)을 Lattner가 정량적으로 채점한 바 있다 <sup class="cite"><a href="#ref-17">[17]</a></sup>. 자동화 vs 프로그래머 제어라는 이 트레이드오프의 산업 전개는 <a href="08-democratizing.html">에필로그(08)</a>에서 이어진다.</p><section class="pagerefs"><h2>참고문헌</h2><p class="r" id="ref-1"><b>[1]</b> Lattner et al., "MLIR: A Compiler Infrastructure for the End of Moore's Law", arXiv:2002.11054, 2020.</p><p class="r" id="ref-8"><b>[8]</b> MLIR official documentation — https://mlir.llvm.org/docs/ .</p><p class="r" id="ref-17"><b>[17]</b> C. Lattner, "What about Triton and Python eDSLs? — Part 7 (Democratizing AI Compute)", Modular blog, 2025-03-26. ⚠️ 기술 블로그 — 단 MLIR 회고는 창시자 1차 사료. <a href="https://www.modular.com/blog/democratizing-ai-compute-part-7-what-about-triton-and-python-edsls" target="_blank" rel="noopener">link</a></p></section><div class="related"><div class="rl">연결된 주제 (graph)</div><div class="rgrid"><a class="rcard" href="04-lowering.html"><div class="rn">04 · Lowering·파이프라인</div><div class="rt">Progressive Lowering과 현대 컴파일러 파이프라인</div><div class="redge">↳ linalg→affine 위계</div></a></div></div><nav class="pager"><a class="prev" href="05-polyhedral.html"><div class="d">← 이전 · 05</div>Polyhedral</a><a class="next xpart part-synth" href="07-synthesis.html"><div class="d">마무리 · 종합 →</div>종합·전망</a></nav>
 </article>
 </main>
 <footer>
@@ -134,8 +134,8 @@
 <script src="assets/cytoscape.min.js"></script>
 <script src="assets/dagre.min.js"></script>
 <script src="assets/cytoscape-dagre.min.js"></script>
-<script src="assets/cyto.js?v=20260608c"></script>
-<script src="assets/zoom.js?v=20260608b"></script>
+<script src="assets/cyto.js?v=20260611a"></script>
+<script src="assets/zoom.js?v=20260611d"></script>
 <script src="assets/katex/katex.min.js"></script>
 <script src="assets/katex/auto-render.min.js"></script>
 <script src="assets/site.js"></script>

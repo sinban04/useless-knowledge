@@ -62,7 +62,7 @@ LLVM IR은 대략 "벡터가 붙은 C(C with vectors)" 수준의 *단일 추상�
 
 정리하면, 도입의 메시지는 이렇다. 컴파일러가 여러 IR 단계를 거치는 데는 정당한 이유(분석·최적화·이식성, 그리고 premature lowering 회피)가 있다. 그런데 그 단계들을 *모두가 따로따로* 다시 만들면서, "하나의 IR로는 부족하다"는 옳은 직관이 "그러니 각자 자기 컴파일러 동물원을 짓자"는 잘못된 결과로 굳어졌다.
 
-여기서 자연스러운 질문이 나온다 — *하나의 진정한 IR(one true IR)* 은 없을지 몰라도, *하나의 진정한 IR 인프라(one true IR infrastructure)* 는 가능하지 않을까? 이 질문에 대한 답이 MLIR이고, 그 답의 구체적 형태(세 가지 설계 원칙, dialect, progressive lowering)는 다음 섹션부터 다룬다.
+여기서 자연스러운 질문이 나온다 — *하나의 진정한 IR(one true IR)* 은 없을지 몰라도, *하나의 진정한 IR 인프라(one true IR infrastructure)* 는 가능하지 않을까? 이 질문에 대한 답이 MLIR이고, 그 답의 구체적 형태(세 가지 설계 원칙, dialect, progressive lowering)는 다음 섹션부터 다룬다. 그리고 그 답이 5년 뒤 실전에서 얼마나 들어맞았는지는, 답을 만든 본인(Chris Lattner)의 2025년 회고와 함께 마지막 9장(에필로그)에서 다시 확인한다 [18].
 
 ### 오늘 발표 흐름(Agenda)
 
@@ -72,6 +72,7 @@ LLVM IR은 대략 "벡터가 붙은 C(C with vectors)" 수준의 *단일 추상�
 4. **Affine·Polyhedral** — 루프 둥지를 수학으로 다루기 (인터랙티브 애니메이션과 함께)
 5. **실제 활용** — StableHLO 등 ML 프레임워크 진입, 가속기 백엔드, 산업 채택
 6. **정리·논의** — MLIR이 연 것, 그리고 남은 과제
+7. **에필로그** — 창시자의 2025년 회고: Democratizing AI Compute
 
 ---
 

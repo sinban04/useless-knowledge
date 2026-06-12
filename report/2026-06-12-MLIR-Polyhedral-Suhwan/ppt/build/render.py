@@ -81,6 +81,18 @@ def r_statement(s):
 
 VISUAL_KEYS = ['mermaid', 'scene', 'image', 'table', 'code']
 
+def _code_lines(s):
+    c = s.get('code') or ''
+    return len([l for l in c.split('\n') if not l.strip().startswith('```')])
+
+def _demote_short_code(present, s):
+    """짧은 코드(<=7줄)는 다른 비주얼과 동행할 때 '비주얼'로 치지 않는다 —
+    한 줄짜리 코드가 '(계속)' 슬라이드로 추방돼 빈 화면에 떠 있는 것을 막는다.
+    (이 경우 코드는 text_html 흐름 안에서 렌더된다.)"""
+    if 'code' in present and len(present) > 1 and _code_lines(s) <= 5:
+        return [k for k in present if k != 'code']
+    return present
+
 def visual_html(s):
     if s.get('mermaid'): return r_mermaid(s['mermaid'])
     if s.get('scene'):   return r_scene(s['scene'])
@@ -96,6 +108,8 @@ def text_html(s, include_lead=True):
     if s.get('bullets'):   out.append(r_bullets(s['bullets']))
     if s.get('numbered'):  out.append(r_numbered(s['numbered']))
     if s.get('math'):      out.append(r_math(s['math']))
+    if s.get('code') and _code_lines(s) <= 5 and any(s.get(k) for k in VISUAL_KEYS if k != 'code'):
+        out.append(r_code(s['code']))   # 짧은 코드는 본문 흐름에 (visual_html은 첫 비주얼만 렌더)
     if s.get('note'):      out.append(r_note(s['note'], s.get('noteKind')))
     return ''.join(out)
 
@@ -119,13 +133,15 @@ def render_content(s):
     kicker = f'<div class="kicker">{s["kicker"]}</div>' if s.get('kicker') else ''
     title = f'<h2 class="s">{s["title"]}</h2>' if s.get('title') else ''
     has_visual = any(s.get(k) for k in VISUAL_KEYS)
+    has_text = any(s.get(k) for k in ('lead', 'bullets', 'numbered', 'note', 'math', 'statement'))
+    vizonly = ' vizonly' if (has_visual and not has_text) else ''
     if s.get('layout') == 'split' and has_visual:
         body = (f'<div class="cols c2"><div class="col">{text_html(s)}</div>'
                 f'<div class="col fig-col">{visual_html(s)}</div></div>')
     else:
         body = text_html(s) + visual_html(s)
     foot = f'<div class="foot"><span>{s.get("footer","MLIR · Polyhedral / Affine — Suhwan")}</span><span class="pg"></span></div>'
-    return (f'<section class="slide" data-part="{part}">{kicker}{title}'
+    return (f'<section class="slide{vizonly}" data-part="{part}">{kicker}{title}'
             f'<div class="body"><div class="bodyinner">{body}</div></div>{foot}</section>')
 
 def render_cover(s):
@@ -147,7 +163,7 @@ def _cont(s, key):
 
 def _split_multi(s):
     """비주얼 ≥2면 첫 슬라이드=텍스트+비주얼1, 나머지 비주얼은 각자 '(계속)' 슬라이드."""
-    present = [k for k in VISUAL_KEYS if s.get(k)]
+    present = _demote_short_code([k for k in VISUAL_KEYS if s.get(k)], s)
     if len(present) <= 1:
         return [s]
     first = dict(s)
@@ -162,10 +178,10 @@ def split_visuals(s):
     if s.get('kind', 'content') != 'content':
         return [s]
     s = dict(s)
-    present = [k for k in VISUAL_KEYS if s.get(k)]
+    present = _demote_short_code([k for k in VISUAL_KEYS if s.get(k)], s)
     if 'scene' in present and 'image' in present:
         s.pop('image', None)
-        present = [k for k in VISUAL_KEYS if s.get(k)]
+        present = _demote_short_code([k for k in VISUAL_KEYS if s.get(k)], s)
     has_text = any(s.get(k) for k in ('lead', 'bullets', 'numbered', 'note', 'math', 'statement'))
     if 'scene' in present:
         others = [k for k in present if k != 'scene']
@@ -205,7 +221,7 @@ frame = load('frame.json') or {}
 slides = []
 slides.append(frame['cover'])
 slides.extend(frame.get('agenda', []))
-for n in range(1, 9):
+for n in range(1, 11):
     ch = load(f'ch-{n:02d}.json')
     if ch is None:
         raise SystemExit(f'missing ch-{n:02d}.json')

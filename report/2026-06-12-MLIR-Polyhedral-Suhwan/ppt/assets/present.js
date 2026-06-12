@@ -41,11 +41,13 @@
     + "#prtools .zl{color:#cfc9bd;font-size:12px;min-width:40px;text-align:center}"
     + "#prtools .zl.hide{display:none}"
     + "figure.diagram,figure.fig{position:relative}"
-    + ".figzoom{position:absolute;top:8px;right:8px;z-index:5;width:28px;height:28px;border-radius:7px;"
-    + "border:1px solid rgba(0,0,0,.18);background:rgba(255,255,255,.88);color:#333;cursor:pointer;"
-    + "font-size:14px;line-height:26px;text-align:center;padding:0;opacity:0;transition:opacity .12s}"
-    + "figure:hover .figzoom{opacity:1}"
-    + "body.figfocus .figzoom{opacity:0}"
+    + ".figtools{position:absolute;top:8px;right:8px;z-index:5;display:flex;gap:6px;opacity:0;transition:opacity .12s}"
+    + "figure:hover .figtools{opacity:1}"
+    + "body.figfocus .figtools{opacity:0}"
+    + ".figtools button{width:28px;height:28px;border-radius:7px;border:1px solid rgba(0,0,0,.18);"
+    + "background:rgba(255,255,255,.9);color:#333;cursor:pointer;font-size:14px;line-height:26px;text-align:center;padding:0}"
+    + ".figtools button:hover{background:#fff}"
+    + ".figtools .ffull{background:rgba(255,255,255,.66);color:#777;font-size:13px}"
     + "#figfocus{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;"
     + "overflow:hidden;touch-action:none;user-select:none;background:rgba(12,12,15,.84);cursor:zoom-out}"
     + "#figfocus.on{display:flex}"
@@ -172,6 +174,9 @@
   function foReset() { fs = 1; fx = 0; fy = 0; foApply(); }
   function openFocus(fig) {
     if (focused) closeFocus();
+    // entering fullscreen → clear any in-box zoom so the overlay starts clean
+    fig.__zstep = 0;
+    var im = fig.querySelector("img, svg"); if (im && im.__zoomReset) im.__zoomReset();
     focused = fig; foHome = fig.parentNode; foNext = fig.nextSibling;
     var c = figCy(fig); if (c) { foCyCss = c.style.cssText; c.style.width = "90vw"; c.style.height = "86vh"; }
     fs = 1; fx = 0; fy = 0; fig.style.transformOrigin = "0 0"; fig.style.transform = "";
@@ -188,9 +193,24 @@
     if (foNext && foNext.parentNode === foHome) foHome.insertBefore(fig, foNext); else if (foHome) foHome.appendChild(fig);
     fo.classList.remove("on"); document.body.classList.remove("figfocus");
     focused = null; foHome = null; foNext = null; foCyCss = null;
+    var im = fig.querySelector("img, svg"); if (im && im.__zoomReset) im.__zoomReset();   // clear any leftover in-box transform
+    fig.__zstep = 0;
     requestAnimationFrame(function () { refitCy(fig); });   // restore graph to slide-size
   }
   function toggleFocus(fig) { if (focused === fig) closeFocus(); else openFocus(fig); }
+  // ---- DEFAULT: in-box zoom (graph = cytoscape native, image = zoom.js) — stays inside the figure box ----
+  function inboxMedia(fig) {
+    var c = fig.querySelector(".cy"); if (c && c.__zoomStep) return c;        // cytoscape graph
+    var m = fig.querySelector("img, svg"); if (m && m.__zoomStep) return m;   // image / svg via zoom.js
+    return null;
+  }
+  function inboxZoom(fig) {
+    var m = inboxMedia(fig);
+    if (!m) { toggleFocus(fig); return; }                 // no in-box engine loaded → fall back to fullscreen
+    fig.__zstep = (fig.__zstep || 0) + 1;
+    if (fig.__zstep > 3) { fig.__zstep = 0; if (m.__zoomReset) m.__zoomReset(); }   // cycle: 3 steps in, then back to fit
+    else m.__zoomStep(1.6);
+  }
   // focus-overlay zoom(wheel)+pan(drag) for image figures; graphs keep cytoscape's own zoom/pan.
   // capture phase + stopPropagation so the inner img/canvas handlers don't double-handle.
   // NOTE: close only on a genuine backdrop click (down+up on the backdrop, no drag) — never via the
@@ -226,15 +246,32 @@
   fo.addEventListener("pointercancel", foEndDrag, { capture: true });
   fo.addEventListener("dragstart", function (e) { e.preventDefault(); }, { capture: true });   // kill native image drag (else pan stalls)
   fo.addEventListener("dblclick", function (e) { if (focused && !foIsGraph() && e.target !== fo) { e.stopPropagation(); foReset(); } }, { capture: true });
-  (function () {                                            // inject an enlarge button onto every figure
+  (function () {                                            // inject enlarge buttons onto every figure
     var figs = document.querySelectorAll("figure.diagram, figure.fig");
     for (var i = 0; i < figs.length; i++) {
       (function (fig) {
         if (fig.__figbtn) return; fig.__figbtn = true;
-        var b = document.createElement("button"); b.className = "figzoom"; b.type = "button";
-        b.title = "그림만 확대 (다시 누르거나 Esc로 닫기)"; b.innerHTML = "&#128269;";
-        b.addEventListener("click", function (e) { e.stopPropagation(); e.preventDefault(); toggleFocus(fig); });
-        fig.appendChild(b);
+        var tools = document.createElement("div"); tools.className = "figtools";
+        // primary (default, ALL figures): in-box zoom — content scales inside the figure box
+        var zin = document.createElement("button"); zin.type = "button"; zin.className = "fzin";
+        zin.title = "박스 안에서 확대 (클릭=한 단계 확대 · 한 바퀴 돌면 원래대로 · 휠/드래그·더블클릭도 가능)";
+        zin.innerHTML = "&#128269;";   // 🔍
+        zin.addEventListener("click", function (e) { e.stopPropagation(); e.preventDefault(); inboxZoom(fig); });
+        tools.appendChild(zin);
+        // GLOBAL RULE: diagrams (figure.diagram, vector cytoscape) get NO full-screen overlay —
+        // box-contained zoom only. The ⛶ full-viewport button is added for RASTER IMAGES
+        // (figure.fig) only, where pixel detail can warrant full-screen.
+        if (fig.classList.contains("fig")) {
+          var full = document.createElement("button"); full.type = "button"; full.className = "ffull";
+          full.title = "전체화면으로 크게 보기 (다시 누르거나 Esc로 닫기)";
+          full.innerHTML = "&#9974;";    // ⛶
+          full.addEventListener("click", function (e) { e.stopPropagation(); e.preventDefault(); toggleFocus(fig); });
+          tools.appendChild(full);
+        }
+        fig.appendChild(tools);
+        // double-click anywhere on the figure resets the in-box step counter (media itself
+        // also resets via cyto.js/zoom.js dblclick handlers)
+        fig.addEventListener("dblclick", function () { fig.__zstep = 0; });
       })(figs[i]);
     }
   })();

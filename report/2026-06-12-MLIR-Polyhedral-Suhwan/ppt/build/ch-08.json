@@ -105,7 +105,8 @@
       "<b>Gemmini</b> — RoCC custom 명령으로 GEMM 타일을 비교적 <em>높은</em> 수준에서 받음",
       "<b>Snitch + RedMule</b>(RISC-V) — 더 일반적인 명령 수준 → 컴파일러가 많이 풀어 내려야 함",
       "MLIR의 lowering 단계(<code>linalg → affine → scf → LLVM</code>) = 경계를 <em>어디든 그을 수 있는</em> 후보 지점 목록"
-    ]
+    ],
+    "layout": "split"
   },
   {
     "kind": "content",

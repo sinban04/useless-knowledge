@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>별도 자료 · Democratizing AI Compute 시리즈 정리 · MLIR 세미나</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/uk-style.css">
+<link rel="stylesheet" href="assets/uk-report.css">
+<link rel="stylesheet" href="assets/viz.css">
+<link rel="stylesheet" href="assets/katex/katex.min.css">
+<link rel="stylesheet" href="assets/seminar.css">
+</head>
+<body class="report part-synth" id="top" data-page="series-digest">
+<header>
+<a class="wordmark" href="index.html">← MLIR 세미나</a>
+<span class="hdr-part">별도 자료</span><a class="github-link" href="index.html">[ 전체 지도 ◇ ]</a></header>
+<main>
+<article class="report-page">
+<div class="partband"><span class="pb-label">별도 자료</span><span class="pb-name">세미나 본문과 독립</span></div>
+<h1>Democratizing AI Compute — 시리즈 정리</h1>
+<p class="report-meta"><span class="chip pchip">별도 자료</span> · <span class="chip">세 축 정리</span> · <time datetime="2026-06-12">2026-06-12</time></p>
+<p class="dek">Lattner의 11편 시리즈를 세미나 본문과 별개로 그 자체만 정리한다 — 기술의 흐름 / 실패와 교훈 / 의미.</p>
+
+<div class="bridge part-synth"><div class="bk">이 페이지는 무엇인가</div><p>이 문서는 Chris Lattner가 Modular 블로그에 2025년 1–6월 연재한 11편 시리즈 <strong>"Democratizing AI Compute"</strong> <sup class="cite"><a href="#ref-11">[11]</a></sup>–<sup class="cite"><a href="#ref-21">[21]</a></sup>를, 세미나 본문과 <strong>독립적으로</strong> 시리즈 그 자체만 정리한 것이다. (세미나 개념에 얹어 읽는 통합판은 <a href="08-democratizing.html">08 · 에필로그</a>에 따로 있다.) 정리의 축은 셋 — <strong>① 기술의 흐름, ② 기술의 실패와 교훈, ③ 기술의 의미</strong>.</p><p style="margin-top:.6em">⚠️ <strong>출처 신뢰도.</strong> 동료심사 논문이 아닌 기술 블로그이며 저자는 Modular라는 이해당사자다. 시장·경쟁사 주장과 자사 서술(<sup class="cite"><a href="#ref-20">[20]</a></sup><sup class="cite"><a href="#ref-21">[21]</a></sup>)은 그 관점을 감안해 읽을 것. 단, CUDA·OpenCL·MLIR 탄생·설계 회고는 창시자 1차 사료 성격.</p></div>
+
+<nav class="toc" aria-label="Table of contents"><h2>이 페이지</h2><ol><li><a href="#한눈에-시리즈의-한-줄-논지">한눈에 — 시리즈의 한 줄 논지</a></li><li><a href="#1-기술의-흐름">1. 기술의 흐름</a></li><li><a href="#2-기술의-실패와-교훈">2. 기술의 실패와 교훈</a></li><li><a href="#3-기술의-의미">3. 기술의 의미</a></li><li><a href="#맺음-세-축의-한-줄-요약">맺음 — 세 축의 한 줄 요약</a></li></ol></nav>
+
+<h2 id="한눈에-시리즈의-한-줄-논지">한눈에 — 시리즈의 한 줄 논지</h2>
+<blockquote><p>AI 컴퓨트의 병목은 하드웨어가 아니라 <strong>소프트웨어</strong>다. CUDA는 기술이 우월해서가 아니라 <em>전략·생태계·모멘텀</em>으로 이겼고, 그것을 깨려던 모든 대안(OpenCL·TVM·XLA·Triton·MLIR)은 기술이 부족해서가 아니라 <em>시스템적(조직·인센티브·거버넌스) 이유</em>로 실패했다. 따라서 'AI compute의 민주화' — <em>누가 무엇을 만들 수 있는가</em>를 다시 여는 일 — 는 기술 하나를 더 만드는 것으로는 풀리지 않는다.</p></blockquote>
+<p>시리즈가 던지는 6개 질문 <sup class="cite"><a href="#ref-11">[11]</a></sup>: ① CUDA란 정확히 무엇인가 ② 왜 성공했는가 ③ 그래서 좋은 물건인가 ④ 다른 하드웨어 제조사는 왜 비슷한 AI 소프트웨어를 못 만드는가 ⑤ Triton·OpenCL 같은 기존 기술은 왜 이 문제를 못 풀었는가 ⑥ 산업은 어떻게 전진해야 하는가.</p>
+
+<h2 id="1-기술의-흐름">1. 기술의 흐름</h2>
+<p>GPU가 그래픽 전용 칩에서 AI 컴퓨트의 심장으로, 그리고 그 위의 소프트웨어 스택이 어떻게 쌓이고 갈라졌는지의 연대기다.</p>
+
+<figure class="diagram"><div class="cy" data-h="560"></div><script type="application/json" class="cy-spec">{"rankDir":"TB","elements":[{"data":{"id":"g0","label":"fixed-function GPU\n(~2000) — 그래픽 전용"}},{"data":{"id":"g1","label":"programmable shaders (2001)\nGeForce3 · BrookGPU"}},{"data":{"id":"g2","label":"CUDA (2006)\n범용 GPU 프로그래밍 플랫폼"}},{"data":{"id":"g3","label":"딥러닝 점화\nAlexNet 2012 · cuDNN 2014 · TF 2015 · PyTorch 2016"}},{"data":{"id":"alt","label":"CUDA 대안의 계보 (추상화의 진자 운동)"}},{"data":{"id":"a1","label":"OpenCL/SYCL/oneAPI (2008~)\nC++ portable 모델","parent":"alt"}},{"data":{"id":"a2","label":"TVM · XLA (2016~)\n2세대 컴파일러 (fusion 자동화)","parent":"alt"}},{"data":{"id":"a3","label":"Triton · eDSL (2020~)\nblock 단위 · 사람에게 제어 환원","parent":"alt"}},{"data":{"id":"a4","label":"MLIR (2018)\n컴파일러 인프라 (dialect)","parent":"alt"}},{"data":{"id":"g4","label":"GenAI 재구축 (2022~)\nModular: Mojo / MAX / Mammoth"}},{"data":{"source":"g0","target":"g1"}},{"data":{"source":"g1","target":"g2"}},{"data":{"source":"g2","target":"g3"}},{"data":{"source":"g3","target":"alt","label":"CUDA를 깨려는 시도"},"classes":"dashed"},{"data":{"source":"alt","target":"g4","label":"모두 좌초 → 재구축"},"classes":"dashed"}]}</script><figcaption>GPU 컴퓨팅의 계보 — fixed-function에서 CUDA 플랫폼으로, 그리고 대안들의 진자 운동(사람↔컴파일러↔eDSL)을 거쳐 GenAI 재구축까지.</figcaption></figure>
+
+<h3 id="11-gpu-컴퓨팅의-탄생">1.1 GPU 컴퓨팅의 탄생 (2001–2006)</h3>
+<ul>
+<li><strong>~2001년 이전</strong>: GPU는 고정기능(fixed-function) 그래픽 전용. 프로그래밍 대상이 아니었다.</li>
+<li><strong>2001 — GeForce3</strong>: 최초의 programmable shaders(Shader Model 1.0). "코드를 올린다"는 개념의 출발. Stanford <strong>BrookGPU</strong>가 CPU 연산의 GPU offload 모델을 개념화 <sup class="cite"><a href="#ref-12">[12]</a></sup>.</li>
+<li><strong>2006 — CUDA</strong>: NVIDIA가 최초의 범용 GPU 프로그래밍 플랫폼 출시. (Part 4는 "CUDA가 2007년, 딥러닝 이전에 설계됐다"고 적는다 <sup class="cite"><a href="#ref-14">[14]</a></sup> — 뒤의 '노후 추상화' 논의의 근거.)</li>
+</ul>
+
+<h3 id="12-cuda-언어에서-플랫폼으로">1.2 CUDA, '언어'에서 '플랫폼'으로 (2006–2014)</h3>
+<p>CUDA는 흔한 오해와 달리 언어나 프레임워크가 아니라 <strong>계층형 플랫폼</strong>이다.</p>
+<blockquote><p>"<em>[CUDA] is a huge, layered Platform — a collection of technologies, software libraries, and low-level optimizations that together form a massive parallel computing ecosystem.</em>" <sup class="cite"><a href="#ref-12">[12]</a></sup></p></blockquote>
+<figure class="diagram"><div class="cy" data-h="420"></div><script type="application/json" class="cy-spec">{"rankDir":"TB","elements":[{"data":{"id":"cuda","label":"The CUDA Platform (아래→위)"}},{"data":{"id":"c1","label":"TensorRT-LLM · Triton Serving — 턴키 수직 솔루션","parent":"cuda"}},{"data":{"id":"c2","label":"cuDNN · cuBLAS · cuFFT — closed-source 고성능 라이브러리(2014~)","parent":"cuda"}},{"data":{"id":"c3","label":"CUDA C++ — 병렬 프로그래밍 모델(극저수준)","parent":"cuda"}},{"data":{"id":"c4","label":"PTX — 가상 어셈블리(최하위 지원 인터페이스)","parent":"cuda"}},{"data":{"id":"c5","label":"NVIDIA driver — CPU↔GPU 중개","parent":"cuda"}},{"data":{"source":"c1","target":"c2"}},{"data":{"source":"c2","target":"c3"}},{"data":{"source":"c3","target":"c4"}},{"data":{"source":"c4","target":"c5"}}]}</script><figcaption>CUDA 플랫폼의 5개 계층. 저자는 "The CUDA Platform"이라 부르길 권한다 — Java 생태계나 OS에 가까운 규모이기 때문 <sup>[12]</sup>.</figcaption></figure>
+<p>그리고 이 닫힌 계단에는 처음부터 균열이 있다 — <strong>성능 이식성(performance portability)의 부재</strong>:</p>
+<blockquote><p>"<em>Most kernels written for generation N will 'keep working' on generation N+1, but often the performance is quite bad — far from the peak of what N+1 generation can deliver.</em>" <sup class="cite"><a href="#ref-12">[12]</a></sup></p></blockquote>
+<p>세대가 바뀌면 누군가 커널을 다시 써야 한다. NVIDIA의 답이 cuDNN — <em>그 재작성 부담을 벤더가 사람 손으로 흡수</em>하는 것이었다. 이 "사람이 흡수하느냐, 컴파일러가 흡수하느냐"가 이후 모든 대안의 분기점이 된다.</p>
+
+<h3 id="13-딥러닝이-점화한-수요">1.3 딥러닝이 점화한 수요 (2012–2016)</h3>
+<ul>
+<li><strong>2012 — AlexNet</strong>: GeForce GTX 580 2장으로 학습. GPU가 딥러닝에 <em>더 빠른</em> 게 아니라 <em>필수</em>임을 입증. custom CUDA kernel이 현대 딥러닝을 점화 <sup class="cite"><a href="#ref-13">[13]</a></sup>.</li>
+<li><strong>2014 — cuDNN</strong>: 프레임워크가 저수준을 몰라도 되게 함. TensorFlow(2015)·PyTorch(2016)의 탄생을 가능케 함.</li>
+<li><strong>NVIDIA의 결정적 수</strong>: 프레임워크 튜닝 부담을 자사가 직접 떠안아(cuDNN·TensorRT 공격적 최적화) 프레임워크를 자사 하드웨어에 묶었다(hardware/software co-design) <sup class="cite"><a href="#ref-13">[13]</a></sup>.</li>
+</ul>
+
+<h3 id="14-대안들의-계보">1.4 대안들의 계보 (2008–2018)</h3>
+<p>CUDA를 깨려는 시도는 추상화 높이가 제각각인 여러 층에서 나왔다.</p>
+<div class="tablewrap"><table><thead><tr><th>시기</th><th>대안</th><th>접근 층위</th><th>한 줄 정체성</th></tr></thead><tbody>
+<tr><td>2008</td><td><strong>OpenCL</strong> / 이후 SYCL·oneAPI</td><td>C++ 기반 portable GPU 모델</td><td>위원회(Khronos) 표준 <sup>[15]</sup></td></tr>
+<tr><td>1세대</td><td><strong>hand-written CUDA kernels</strong></td><td>사람이 직접 작성</td><td>확장 불가 <sup>[16]</sup></td></tr>
+<tr><td>2016~</td><td><strong>TVM</strong>(UW) · <strong>XLA</strong>(Google)</td><td>2세대 AI 컴파일러 (fusion 자동화)</td><td>고정 op set <sup>[16]</sup></td></tr>
+<tr><td>2018</td><td><strong>MLIR</strong>(Google)</td><td>컴파일러 인프라 (여러 컴파일러를 만드는 틀)</td><td>dialect <sup>[18]</sup></td></tr>
+<tr><td>2020~</td><td><strong>Triton</strong>(OpenAI) · Pallas · cuTile</td><td>Python eDSL (block 단위)</td><td>생산성 <sup>[17]</sup></td></tr>
+</tbody></table></div>
+<p>흐름의 핵심은 <em>추상화의 진자 운동</em>이다 — 사람이 다 짜던 1세대 → 컴파일러가 다 푸는 2세대(TVM·XLA) → 사람에게 제어를 일부 돌려주는 eDSL(Triton). 그리고 이 모든 것의 하부 인프라로 MLIR이 깔렸다(Triton·OpenXLA가 MLIR 기반).</p>
+
+<h3 id="15-genai-시대와-재구축">1.5 GenAI 시대와 재구축 (2022–)</h3>
+<p>ChatGPT(2022 말) 이후 컴퓨트 수요·비용 압박이 극대화됐고, 2025년 초 <strong>DeepSeek</strong>가 <em>더 나은 하드웨어 활용만으로 고가 GPU 수요를 극적으로 줄일 수 있음</em>을 보이며 통념을 흔들었다 <sup class="cite"><a href="#ref-11">[11]</a></sup>. 같은 해 Lattner는 자신이 2022년 창업한 <strong>Modular</strong>의 스택(Mojo → MAX → Mammoth)을 "pre-GenAI 시대에 설계된 CUDA·OpenCL을 넘어, GenAI를 위해 처음부터 다시 지은" 답으로 제시한다 <sup class="cite"><a href="#ref-21">[21]</a></sup>.</p>
+
+<h2 id="2-기술의-실패와-교훈">2. 기술의 실패와 교훈</h2>
+<p>시리즈의 가장 큰 부피는 <em>부검</em>이다. 각 대안이 왜 죽었는지, 그리고 거기서 무엇을 배워야 하는지.</p>
+
+<h3 id="21-opencl">2.1 OpenCL — 위원회의 속도, "PDF로는 표준이 안 된다" <sup class="cite"><a href="#ref-15">[15]</a></sup></h3>
+<p>Lattner 본인이 2008년 Apple에서 OpenCL 구현을 이끈 당사자다(Clang의 첫 production 사용처). 실패 원인: <strong>open coopetition</strong>(협력해야 할 벤더가 동시에 경쟁자 → 위원회 합의가 늘 하드웨어보다 늦음), <strong>reference implementation 부재</strong>(spec/PDF만 기여 → 벤더별 fork·확장 패치워크 → portability 자체가 분열로 붕괴), <strong>정량적 결정타</strong>(Tensor Core 표준 지원 부재로 CUDA 대비 5–10배 느림), <strong>전략적 무력화</strong>(NVIDIA가 자사 OpenCL을 형식만 유지·TensorCore 차단).</p>
+<blockquote><p>"<em>For GenAI, where compute costs are already astronomical, a 5x to 10x slowdown isn't just inconvenient — it's a complete dealbreaker.</em>" <sup class="cite"><a href="#ref-15">[15]</a></sup></p></blockquote>
+<p><strong>교훈 (7가지)</strong>: ① PDF 사양이 아니라 <em>동작하는 reference implementation</em>이 호환성을 정의 ② 강한 리더십·비전 ③ 업계 1위 하드웨어에서 최고 성능 ④ AI 속도에 맞춘 빠른 진화 ⑤ developer love ⑥ 열린 커뮤니티 ⑦ 분열 회피.</p>
+<blockquote><p>"<em>A working, adoptable, and scalable implementation should define compatibility — not a PDF.</em>" <sup class="cite"><a href="#ref-15">[15]</a></sup></p></blockquote>
+
+<h3 id="22-tvm-xla">2.2 TVM·XLA — 고정 연산자 집합의 배신 <sup class="cite"><a href="#ref-16">[16]</a></sup></h3>
+<p>2세대 AI 컴파일러의 존재 이유는 <strong>연산자 폭발</strong>이었다 — 조합을 손으로 못 쓰니 kernel fusion(matmul+ReLU 한 커널로 → 메모리 왕복 제거, 때로 2배)을 자동화하자는 것. 그러나: NVIDIA GPU를 CUDA 라이브러리 호출 없이는 못 풀었고, XLA는 하드웨어를 <em>과도하게 추상화</em>해 GenAI의 세밀한 제어 요구를 못 따라갔다(TPU 위에서조차 Pallas로 우회). 인센티브 불일치까지.</p>
+<blockquote><p>"<em>XLA abstracted away too much of the hardware. This worked for early AI models, but GenAI demands fine-grained control over accelerators — something XLA simply wasn't built to provide.</em>" <sup class="cite"><a href="#ref-16">[16]</a></sup></p></blockquote>
+<blockquote><p>"<em>Google engineers might want to build a great general-purpose AI compiler, but their paychecks are tied to making TPUs go brrr.</em>" <sup class="cite"><a href="#ref-16">[16]</a></sup></p></blockquote>
+<p><strong>교훈</strong>: "<em>They failed in the exact way CUDA alternatives were supposed to succeed!</em>" <sup class="cite"><a href="#ref-16">[16]</a></sup> 차세대 위시리스트 3 — ① 완전한 프로그래머빌리티 ② AI 복잡성에 대한 지렛대 ③ 대규모 응용 지원.</p>
+
+<h3 id="23-triton-edsl">2.3 Triton·Python eDSL — 생산성의 값 <sup class="cite"><a href="#ref-17">[17]</a></sup></h3>
+<p>Triton(OpenAI)은 <strong>block 단위 프로그래밍</strong>으로 커널 작성 접근성을 극적으로 높였다(<code>tl.dot</code> 한 줄로 Tensor Core, PyTorch 통합). 개발자 사랑은 채점표 만점. 하지만 비용은 성능·이식성·거버넌스·툴링이다.</p>
+<blockquote><p>"<em>a 20% difference is untenable in GenAI: at scale it is the difference between a $1B cloud bill and an $800M one!</em>" <sup class="cite"><a href="#ref-17">[17]</a></sup></p></blockquote>
+<ul>
+<li>이식성 실패 — A100→H100 재작성, 타 벤더 GPU 사실상 불가.</li>
+<li>거버넌스 — "<em>Triton is open source, but OpenAI owns its roadmap.</em>" <sup class="cite"><a href="#ref-17">[17]</a></sup></li>
+<li>툴링 격차 — Nsight 비호환, "<em>guessing what the compiler did</em>".</li>
+<li>eDSL 난립(Pallas·CUTLASS Python·cuTile) — "<em>We need fewer tools that work better — not an ever-growing list of tradeoffs.</em>" <sup class="cite"><a href="#ref-17">[17]</a></sup></li>
+</ul>
+
+<h3 id="24-mlir">2.4 MLIR — "인프라로는 이겼고, 민주화에는 실패했다" <sup class="cite"><a href="#ref-18">[18]</a></sup></h3>
+<p>2018년 Jeff Dean의 제안으로 Google에서 태어났다. 창립 질문은 "algebraic simplification부터 polyhedral analysis까지 모든 최적화를 지원하는 통합 표현을 만들 수 있는가". dialect 돌파구로 "<em>a framework for building many compilers</em>"가 됐고 OpenXLA·Triton·CUDA 일부·양자컴퓨팅·CIRCT까지 침투 — <strong>인프라로서는 대성공</strong>. 그러나 end-to-end AI 스택의 통일에는 실패했다. 원인은 기술이 아니라 거버넌스(AI dialect 조기 upstream·약한 거버넌스, 개발자 분산, 사유 스택 난립). end-to-end 경쟁의 승자: <strong>"nobody"</strong>.</p>
+<blockquote><p>"<em>We got 'many things fast' at the expense of getting 'something great at each level,' and then fell prey to Hyrum's Law.</em>" <sup class="cite"><a href="#ref-18">[18]</a></sup></p></blockquote>
+<p><strong>교훈</strong>: ① 토대가 굳기 전의 조기 스케일링은 영구적 문제를 남긴다 ② 똑똑한 엔지니어가 제각각 달리면 나중에 배를 조종할 수 없다 ③ 작은 팀이 비전 정렬에 최적, 정체성 확립 후에야 커뮤니티 확장이 의미 있다.</p>
+
+<h3 id="25-hw-companies">2.5 하드웨어 회사들 — 구조의 덫 <sup class="cite"><a href="#ref-19">[19]</a></sup></h3>
+<p>왜 <em>어떤 하드웨어 회사도</em> CUDA에 맞설 SW를 못 만드나 — 무능이 아니라 구조다: <strong>P&amp;L 구조</strong>(칩이 제품, SW는 overhead → demo-driven culture), <strong>조합 폭발</strong>, <strong>비대칭</strong>(경쟁 상대는 CUDA가 아니라 NVIDIA에 최적화하는 산업 전체 = software gravity well), <strong>whale-chasing</strong>(플랫폼 대신 consulting shop → tech debt의 haunted forest).</p>
+<blockquote><p>"<em>In the CPU era … build a backend for LLVM and your chip inherited an ecosystem — Linux, browsers, compiled applications all worked. AI has no such luxury. There's no central compiler or OS.</em>" <sup class="cite"><a href="#ref-19">[19]</a></sup></p></blockquote>
+
+<h3 id="26-공통-패턴">2.6 공통 패턴 — 스코어카드와 시스템 실패 모델</h3>
+<p>시리즈는 모든 대안을 <strong>7개 기준</strong>(2.1의 교훈)으로 채점한다. 거의 모두가 ③(업계 리더 하드웨어 최고 성능)과 ⑦(분열 회피)에서 떨어졌다. Part 10은 이 패턴을 <strong>Lippitt-Knoster 복합 변화 관리 모델</strong>로 일반화한다 — Vision·Consensus·Skills·Incentives·Resources·Action Plan 6요소 중 하나라도 빠지면 예측 가능하게 실패한다.</p>
+<blockquote><p>"<em>The patterns are real — and the failures weren't technical, they were systemic.</em>" <sup class="cite"><a href="#ref-20">[20]</a></sup></p></blockquote>
+
+<h2 id="3-기술의-의미">3. 기술의 의미</h2>
+
+<h3 id="31-cuda가-이긴-진짜-이유">3.1 CUDA가 이긴 진짜 이유 — 전략이지 성능이 아니다 <sup class="cite"><a href="#ref-13">[13]</a></sup></h3>
+<blockquote><p>"<em>CUDA's success isn't really about performance — it's about strategy, ecosystem, and momentum.</em>" <sup class="cite"><a href="#ref-13">[13]</a></sup></p></blockquote>
+<p>세대 간 호환 단일 제품 라인, 프레임워크 튜닝 부담의 직접 인수, GenAI 시대의 "CUDA에 최적화하거나 뒤처지거나" 강제 — 이 <em>자기강화 사이클</em>이 해자를 만들었다. 그러나 같은 힘이 비효율과 혁신 장벽이라는 <em>늪</em>이 되어간다(Jim Keller: "CUDA's a swamp, not a moat" <sup class="cite"><a href="#ref-14">[14]</a></sup>). CUDA는 "누구에게 좋은가"에 따라 답이 갈리는 <strong>축복이자 짐</strong>이다.</p>
+
+<h3 id="32-민주화란-무엇인가">3.2 "민주화"란 무엇인가 <sup class="cite"><a href="#ref-21">[21]</a></sup></h3>
+<p>'민주화'는 단순히 <em>더 많은 디바이스에서 돌리기</em>가 아니라 <strong>누가(who) 무엇을(what) 어떻게(how) 만들 수 있는가를 다시 짜는 것</strong> — 게이트키퍼(칩 벤더·컴파일러 구루)를 없애고 진입장벽을 낮추는 것이다.</p>
+<blockquote><p>"<em>Success in AI isn't just about how powerful your hardware is, it's about how many people can use it.</em>" <sup class="cite"><a href="#ref-21">[21]</a></sup></p></blockquote>
+
+<h3 id="33-mlir의-의미">3.3 MLIR의 의미 — "컴파일러를 만드는 틀" <sup class="cite"><a href="#ref-18">[18]</a></sup></h3>
+<p>단일 경직 IR을 강요하는 대신 도메인별 dialect로 여러 추상화 수준이 공존·변환하게 한 것 — 이것이 MLIR의 의미이자, 오늘날 적과 아군이 <em>모두 그 위에 서 있는</em> 이유다. 다만 그 의미는 양날이다: 같은 확장 자유가 AI 영역에서 표준 부재·dialect 난립을 낳았다. 인프라의 승리와 솔루션의 실패가 한 시스템 안에 공존한다.</p>
+
+<h3 id="34-자동화-vs-프로그래머-제어">3.4 성능 이식성, 그리고 자동화 vs 프로그래머 제어</h3>
+<p>세대·벤더가 바뀔 때 커널을 <em>누가 다시 쓰는가</em> — 답은 세 갈래: <strong>벤더가 사람 손으로</strong>(cuDNN, lock-in의 원천), <strong>컴파일러가 자동으로</strong>(TVM/XLA, 이론은 아름답지만 hand-tuned를 못 이김), <strong>사람이 프로그래밍하되 도구가 받쳐준다</strong>(Triton·Mojo). 주목할 것은 시리즈의 최종 베팅(Modular)이 자동 "magic compiler"가 아니라 <strong>사람이 쓴 hand-optimized 커널 + 전 층 programmability("No black boxes")</strong> <sup class="cite"><a href="#ref-21">[21]</a></sup>로 기울었다는 점 — 컴파일러 자동화의 야망이 산업 현실에서 한 발 물러선 기록이다.</p>
+
+<h3 id="35-산업의-의미">3.5 산업의 의미 — 사라진 수렴점, 그리고 컨소시엄 <sup class="cite"><a href="#ref-19">[19]</a></sup><sup class="cite"><a href="#ref-21">[21]</a></sup></h3>
+<p>CPU 시대의 LLVM IR 같은 <em>중심 수렴점</em>이 AI엔 없다 — 이것이 MLIR이 노린 빈자리였고, 동시에 단일 벤더로는 메울 수 없는 자리다. 하드웨어 다양성은 <em>문제(problem)가 아니라 현대 AI 우주의 기반(foundation)</em>이어야 하며, 민주화는 한 회사에 너무 큰 mission이라 <strong>산업 컨소시엄</strong>으로 풀어야 한다는 것이 시리즈의 산업적 메시지다. (성과·제품 주장은 이해당사자의 자기 서술임을 감안할 것 ⚠️.)</p>
+
+<h2 id="맺음-세-축의-한-줄-요약">맺음 — 세 축의 한 줄 요약</h2>
+<div class="tablewrap"><table><thead><tr><th>축</th><th>한 줄</th></tr></thead><tbody>
+<tr><td><strong>흐름</strong></td><td>fixed-function GPU → CUDA 플랫폼(닫힌 계단) → 딥러닝 점화 → 대안의 진자 운동(사람↔컴파일러↔eDSL) → MLIR 인프라 → GenAI 재구축.</td></tr>
+<tr><td><strong>실패와 교훈</strong></td><td>모든 대안이 <em>기술이 아니라 시스템(인센티브·거버넌스·생태계)</em> 때문에 실패 — reference implementation·강한 리더십·업계 1위 HW 성능·분열 회피가 없으면 못 이긴다.</td></tr>
+<tr><td><strong>의미</strong></td><td>CUDA는 전략으로 이겼고, '민주화'는 <em>누가 무엇을 만드는가</em>의 문제이며, MLIR은 인프라 전쟁엔 이겼지만 그 위의 통일은 컴파일러 자동화가 아니라 programmability·거버넌스·컨소시엄의 문제로 남았다.</td></tr>
+</tbody></table></div>
+<section class="pagerefs"><h2>참고문헌</h2><p class="r"><b>⚠️</b> [11]–[21]은 동료심사 논문이 아닌 기술 블로그(Modular)이며 저자는 이해당사자다 — 시장·경쟁사 주장은 권위 채널 교차검증을 권한다. 단, CUDA·OpenCL·MLIR 탄생·설계 회고는 창시자 1차 사료 성격. 시리즈 허브: <a href="https://www.modular.com/democratizing-ai-compute" target="_blank" rel="noopener">modular.com/democratizing-ai-compute</a></p><p class="r" id="ref-11"><b>[11]</b> C. Lattner, "DeepSeek's Impact on AI (Part 1)", Modular blog, 2025-01-30. <a href="https://www.modular.com/blog/democratizing-compute-part-1-deepseeks-impact-on-ai" target="_blank" rel="noopener">link</a></p><p class="r" id="ref-12"><b>[12]</b> C. Lattner, "What exactly is 'CUDA'? (Part 2)", 2025-02-05. <a href="https://www.modular.com/blog/democratizing-compute-part-2-what-exactly-is-cuda" target="_blank" rel="noopener">link</a></p><p class="r" id="ref-13"><b>[13]</b> C. Lattner, "How did CUDA succeed? (Part 3)", 2025-02-12. <a href="https://www.modular.com/blog/democratizing-ai-compute-part-3-how-did-cuda-succeed" target="_blank" rel="noopener">link</a></p><p class="r" id="ref-14"><b>[14]</b> C. Lattner, "CUDA is the incumbent, but is it any good? (Part 4)", 2025-02-20. <a href="https://www.modular.com/blog/democratizing-ai-compute-part-4-cuda-is-the-incumbent-but-is-it-any-good" target="_blank" rel="noopener">link</a></p><p class="r" id="ref-15"><b>[15]</b> C. Lattner, "What about OpenCL and CUDA C++ alternatives? (Part 5)", 2025-03-05. <a href="https://www.modular.com/blog/democratizing-ai-compute-part-5-what-about-cuda-c-alternatives" target="_blank" rel="noopener">link</a></p><p class="r" id="ref-16"><b>[16]</b> C. Lattner, "What about TVM, XLA, and AI compilers? (Part 6)", 2025-03-12. <a href="https://www.modular.com/blog/democratizing-ai-compute-part-6-what-about-ai-compilers" target="_blank" rel="noopener">link</a></p><p class="r" id="ref-17"><b>[17]</b> C. Lattner, "What about Triton and Python eDSLs? (Part 7)", 2025-03-26. <a href="https://www.modular.com/blog/democratizing-ai-compute-part-7-what-about-triton-and-python-edsls" target="_blank" rel="noopener">link</a></p><p class="r" id="ref-18"><b>[18]</b> C. Lattner, "What about the MLIR compiler infrastructure? (Part 8)", 2025-04-08. <a href="https://www.modular.com/blog/democratizing-ai-compute-part-8-what-about-the-mlir-compiler-infrastructure" target="_blank" rel="noopener">link</a></p><p class="r" id="ref-19"><b>[19]</b> C. Lattner, "Why do HW companies struggle to build AI software? (Part 9)", 2025-04-22. <a href="https://www.modular.com/blog/democratizing-ai-compute-part-9-why-do-hw-companies-struggle-to-build-ai-software" target="_blank" rel="noopener">link</a></p><p class="r" id="ref-20"><b>[20]</b> C. Lattner, "Modular's bet to break out of the Matrix (Part 10)", 2025-05. <a href="https://www.modular.com/blog/modulars-bet-to-break-out-of-the-matrix-democratizing-ai-compute-part-10" target="_blank" rel="noopener">link</a></p><p class="r" id="ref-21"><b>[21]</b> C. Lattner, "How is Modular Democratizing AI Compute? (Part 11)", 2025-06-20. <a href="https://www.modular.com/blog/how-is-modular-democratizing-ai-compute" target="_blank" rel="noopener">link</a></p></section><div class="related"><div class="rl">연결된 자료</div><div class="rgrid"><a class="rcard" href="08-democratizing.html"><div class="rn">08 · 에필로그 (통합판)</div><div class="rt">같은 시리즈를 세미나 본문에 얹어 읽기</div><div class="redge">↳ 이쪽은 단독 다이제스트</div></a><a class="rcard" href="index.html"><div class="rn">◇ 전체 지도</div><div class="rt">MLIR · Polyhedral / Affine 세미나</div><div class="redge">↳ 본문 8챕터 + 에필로그</div></a></div></div><nav class="pager"><a class="prev" href="index.html"><div class="d">← 돌아가기</div>전체 지도로</a><a class="next" href="08-democratizing.html"><div class="d">통합판 →</div>08 · 에필로그</a></nav>
+</article>
+</main>
+<footer>
+<span class="contributors">MLIR · Polyhedral / Affine 세미나 · 2026-06-12 · 발표 Suhwan · 별도 자료</span>
+<a href="index.html">전체 지도 ↩</a>
+</footer>
+<script src="assets/poly.js"></script>
+<script src="assets/viz-scenes.js"></script>
+<script src="assets/cytoscape.min.js"></script>
+<script src="assets/dagre.min.js"></script>
+<script src="assets/cytoscape-dagre.min.js"></script>
+<script src="assets/cyto.js?v=20260611a"></script>
+<script src="assets/zoom.js?v=20260611d"></script>
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/auto-render.min.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

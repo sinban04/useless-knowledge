@@ -1,0 +1,214 @@
+[
+  {
+    "kind": "divider",
+    "part": "synth",
+    "num": "09",
+    "title": "에필로그 — 창시자의 2025년 회고",
+    "subtitle": "Democratizing AI Compute (Modular blog, 2025 · 11편) — 논문의 '원칙'을 5년 뒤 본인이 '채점'한다"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "09 · 에필로그",
+    "title": "같은 사람이 쓴 두 개의 텍스트",
+    "lead": "본문의 기반은 2020–21년 논문 [1][2] — 그 1저자 Chris Lattner가 2022년 Modular를 창업하고, 2025년 1–6월 11편의 시리즈를 연재했다 [11]–[21]",
+    "bullets": [
+      "논문 = <b>원칙</b>(무엇을, 왜 만들려 했는가) · 시리즈 = <b>채점표</b>(5년 뒤 어떻게 됐는가)",
+      "Part 8 [18] — 창시자가 자기 시스템(MLIR)의 성공과 실패를 공개 채점하는, 컴파일러 역사에서 드문 <b>1차 회고 사료</b>",
+      "03(설계 철학)에서 본 '원칙의 한계까지 문서화하는 정직함'의 <em>5년 후 속편</em>",
+      "시리즈의 6개 질문: ① CUDA란 무엇 ② 왜 이겼나 ③ 좋은 물건인가 ④ 타 HW 제조사는 왜 못 만드나 ⑤ 기존 대안은 왜 실패했나 ⑥ 어떻게 전진하나"
+    ],
+    "note": "⚠️ <b>출처 신뢰도</b> — 동료심사 논문이 아닌 기술 블로그이고 저자는 이해당사자(Modular). 시장·경쟁사 주장은 그 관점을 감안해 읽을 것. 단 MLIR 탄생·설계 회고는 창시자 본인 증언이라는 점에서 1차 사료 성격.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "09 · 에필로그",
+    "title": "CUDA의 실체 — 언어가 아니라 계층 플랫폼",
+    "lead": "\"[CUDA] is a huge, layered Platform\" [12] — Java 생태계나 OS에 가까운 규모. 그리고 이 그림은 <em>산업이 손으로 굳혀 놓은 progressive lowering</em>이다",
+    "mermaid": "flowchart TD\n  subgraph CUDA[\"The CUDA Platform — 닫힌 계단\"]\n    c1[\"TensorRT-LLM · Triton Serving (턴키)\"]\n    c2[\"cuDNN · cuBLAS (closed-source 라이브러리)\"]\n    c3[\"CUDA C++\"]\n    c4[\"PTX — 가상 어셈블리\"]\n    c5[\"NVIDIA driver\"]\n    c1 --> c2\n    c2 --> c3\n    c3 --> c4\n    c4 --> c5\n  end\n  subgraph M[\"MLIR lowering — 열린 계단\"]\n    m1[\"StableHLO\"]\n    m2[\"linalg\"]\n    m3[\"affine\"]\n    m4[\"scf\"]\n    m5[\"LLVM\"]\n    m1 --> m2\n    m2 --> m3\n    m3 --> m4\n    m4 --> m5\n  end\n  c2 -. \"같은 다층 구조 — 닫힌 라이브러리 vs 열린 IR\" .-> m2",
+    "note": "차이는 통치 방식 하나 — MLIR은 각 층의 계약을 <em>열린 IR</em>로 명시(glassboxing), CUDA는 각 층을 <em>닫힌 라이브러리 경계</em>로 굳혔다. 그리고 닫힌 계단의 균열: \"<em>kernels written for generation N will 'keep working' on generation N+1, but … far from the peak</em>\" [12] — 그 재작성을 사람(cuDNN)이 흡수하느냐, 컴파일러(polyhedral·affine)가 흡수하느냐가 이 장의 대립축.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "09 · 에필로그",
+    "title": "CUDA는 왜 이겼나 — 전략·생태계·모멘텀",
+    "statement": "\"CUDA's success isn't really about performance — it's about strategy, ecosystem, and momentum.\" [12]",
+    "bullets": [
+      "<b>단일 제품 라인</b> — 게이밍 GPU install base가 개발자 유입 통로 (저가 데스크톱에서 배워 데이터센터로) [13]",
+      "<b>튜닝 부담 직접 인수</b> — TensorFlow·PyTorch의 저수준 최적화를 cuDNN·TensorRT가 떠안아 프레임워크를 자사 HW에 결박 (HW/SW co-design) [13]",
+      "<b>GenAI 이후</b> — \"CUDA에 최적화하거나 뒤처지거나\"를 산업 전체에 강제",
+      "자기강화 사이클: GenAI 수요 → 최대 install base → CUDA 타깃 연구 → 세대마다 재작성 → 더 깊은 의존 [13]"
+    ],
+    "note": "Part 4 [14]의 관점별 채점 — 프레임워크 사용자에겐 성숙한 생태계 + 버전 지옥, 성능 엔지니어에겐 2007년산 노후 추상화, 이식성엔 장애물, NVIDIA 자신에겐 기술부채. 결론: \"a blessing and a burden\".",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "09 · 에필로그",
+    "title": "축복이자 짐 — PTX 경계의 균열",
+    "lead": "08(종합)의 ISA 경계 논의에 보태는 <b>1급 실증 사례</b> — '안정적 가상 ISA'로 통하던 PTX가 흔들렸다",
+    "bullets": [
+      "Tensor Core 시대의 peak 성능은 CUDA C++로 부족 → FlashAttention-3·DeepSeek는 <b>PTX로 직접 하강</b> [14]",
+      "그런데 <b>Blackwell이 Hopper PTX 일부 호환을 파기</b> [14] — 깨진 것은 sm_90a 전용 wgmma 계열, tcgen05로 대체(이 특정은 NVIDIA 호환성 가이드 기준). PTX 베팅 사용자들은 차세대에서 재작성",
+      "경계는 <em>기능 호환</em>을 지켜도 <em>성능 호환</em>은 못 지킨다 (세대 N→N+1 peak 손실)",
+      "진화 압력이 충분히 세지면 <em>기능 호환마저</em> 흔들린다"
+    ],
+    "note": "08의 명제 '경계의 높이 = 일감 배분'에 <b>시간축</b>이 더해진다 — 경계는 한 번 긋고 끝나는 선이 아니라, <em>하드웨어의 진화 속도를 견디도록</em> 그어야 하는 선이다.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "09 · 에필로그 · 실패 박물관 ①",
+    "title": "OpenCL — PDF로는 표준이 안 된다",
+    "lead": "Lattner 본인이 2008년 Apple에서 OpenCL 구현을 이끈 당사자 — 그 실패 부검 [15]",
+    "bullets": [
+      "<b>Open coopetition</b> — 협력해야 할 벤더들이 동시에 경쟁자. 위원회(Khronos) 합의는 항상 하드웨어보다 늦다",
+      "<b>Reference implementation 부재</b> — spec(PDF)만 기여, 벤더별 fork·확장의 패치워크 → portability 자체가 분열로 붕괴",
+      "<b>Tensor Core 표준화 부재</b> → CUDA 대비 <b>5–10x</b> slowdown — GenAI에선 \"complete dealbreaker\" [15]",
+      "교훈: \"<em>A working, adoptable, and scalable implementation should define compatibility — not a PDF.</em>\" [15] → LLVM·MLIR이 단일 코드베이스 + 강한 리더십으로 가는 이유"
+    ],
+    "note": "ISA 경계 논의의 음화(陰畵) — 추상화 경계가 HW의 핵심 유닛(Tensor Core)을 표현하지 못하면, 그 경계 위의 모든 것이 죽는다.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "09 · 에필로그 · 실패 박물관 ②",
+    "title": "TVM·XLA — 고정 연산자 집합의 배신",
+    "statement": "\"XLA abstracted away too much of the hardware. … GenAI demands fine-grained control over accelerators — something XLA simply wasn't built to provide.\" [16]",
+    "bullets": [
+      "존재 이유 = <b>연산자 폭발</b> — 수천 op × datatype × HW 조합을 손으로 못 쓰니 kernel fusion(matmul+ReLU, 때로 2배)을 자동화 [16]",
+      "그러나 고정 op set(HLO)은 GenAI(FlashAttention류, float8, HW 밀착 통신) 앞에서 경직 — TPU 위에서조차 Pallas로 XLA 우회 [16]",
+      "<b>premature abstraction</b> — premature lowering(04)의 거울상: 너무 높은 추상화로 한 번에 점프해 저수준 제어 상실",
+      "인센티브: \"<em>their paychecks are tied to making TPUs go brrr</em>\" [16] · TVM은 벤더 fork 난립으로 파편화",
+      "\"<em>They failed in the exact way CUDA alternatives were supposed to succeed!</em>\" [16]"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "09 · 에필로그 · 실패 박물관 ③",
+    "title": "Triton — 생산성과 20%의 값",
+    "statement": "\"a 20% difference is untenable in GenAI: at scale it is the difference between a $1B cloud bill and an $800M one!\" [17]",
+    "bullets": [
+      "<b>Block 단위 프로그래밍</b> — 스레드 단위 사고를 버림. <code>tl.dot</code> 한 줄로 Tensor Core, PyTorch와 매끄러운 통합 — developer love 만점 [17]",
+      "비용: H100에서도 통상 <b>~20% 성능 손실</b> · A100→H100 재작성 필요 · 타 벤더 GPU 사실상 불가",
+      "툴링 격차 — Nsight 비호환, \"<em>guessing what the compiler did</em>\" [17] (Traceability 부재)",
+      "그리고 <b>Triton 자체가 MLIR 기반</b> — Python AST → Triton IR → TritonGPU IR → LLVM/PTX (모두 MLIR dialect)"
+    ],
+    "note": "07(Affine 변환)의 '어디까지 내려갈 것인가' 스펙트럼 위의 실측점 — <em>타일은 사람이, 그 아래(coalescing·Tensor Core 매핑)는 컴파일러가</em>. polyhedral 완전 자동화와 cuDNN 완전 수작업의 중간 절충.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "09 · 에필로그 · MLIR 회고",
+    "title": "★ MLIR 회고 ① 탄생 — 화이트보드의 질문",
+    "statement": "\"Could we build a unified representation that could support every AI framework, every hardware backend, and every kind of optimization — from algebraic simplification to polyhedral analysis?\" [18]",
+    "bullets": [
+      "2018년 — TF·PyTorch·JAX·Glow·ONNX·XLA·TVM이 각자 'AI graph'와 op를 재발명, 다수 프레임워크에 SSA조차 부재 [18]",
+      "Jeff Dean(compiler PhD)이 1:1에서 새 컴파일러 제안 → Lattner와 동료 4명의 며칠간 화이트보딩 [18]",
+      "<b>polyhedral analysis가 day-one 설계 목표</b> — affine dialect(06–07)는 나중에 얹힌 액세서리가 아니라 창립 질문의 일부",
+      "\"<em>MLIR wasn't just another compiler: It was a framework for building many compilers.</em>\" [18]"
+    ],
+    "note": "02(배경)에서 본 채택 증거(16개 대학·14개 기업·26+ dialect)의 후일담 — OpenXLA·Triton·CUDA 일부·양자컴퓨팅·CIRCT까지. <b>컴파일러 인프라 전쟁에서 MLIR은 이겼다.</b>",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "09 · 에필로그 · MLIR 회고",
+    "title": "★ MLIR 회고 ② 채점 — 인프라 승리, 민주화 실패",
+    "lead": "\"인프라로는 이겼고, AI compute 민주화에는 실패했다\" — 원인은 기술이 아니라 <b>거버넌스</b> [18]",
+    "bullets": [
+      "AI dialect들(arith·linalg·tensor)이 코어가 굳기 전, '원칙 있는 no'를 말할 거버넌스 없이 <b>조기 upstream</b> — TF/OpenXLA 편향, PyTorch·GenAI 1급 지원 부재",
+      "초기 개발자들이 경쟁 HW 회사로 흩어져 공유 dialect 위에 <em>사유 스택</em> — \"OpenCL/Khronos 위원회의 재림\" [18]",
+      "end-to-end MLIR AI 스택 경쟁의 승자: <b>\"nobody\"</b> [18]",
+      "\"<em>We got 'many things fast' at the expense of getting 'something great at each level,' and then fell prey to Hyrum's Law.</em>\" [18]",
+      "<b>08 한계표 #2의 예언이 실현</b> — 2021년 \"기술로는 못 막는다\"(논문 §II.B)를 2025년 같은 저자가 \"실제로 일어났다\"로 확정. 후속: MLIR Area Team·charter로 Core와 AI dialect 거버넌스 분리 진행 중"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "09 · 에필로그",
+    "title": "왜 HW 회사들은 실패하나 — 보이지 않는 매트릭스",
+    "statement": "\"In the CPU era … build a backend for LLVM and your chip inherited an ecosystem. AI has no such luxury. There's no central compiler or OS.\" [19]",
+    "bullets": [
+      "<b>P&L 구조</b> — 칩이 제품, SW는 overhead → \"칩 런칭 → 커널 몇 개 → 벤치마크 → keynote\"의 demo-driven culture [19]",
+      "<b>조합 폭발</b> — \"<em>models × quantization formats × batch sizes × inference/training × cloud/edge × framework-of-the-week</em>\" [19]",
+      "<b>비대칭</b> — 경쟁 상대는 CUDA가 아니라 <em>NVIDIA에 최적화하는 산업 전체</em> (software gravity well)",
+      "<b>Whale-chasing</b> — 대형 고객 특수 요구에 끌려 플랫폼 대신 consulting shop으로"
+    ],
+    "note": "08 ISA 경계 논의의 산업 버전 — NVIDIA는 경계(PTX) <em>위의 전 층</em>(라이브러리·프레임워크 연동·서빙)을 자기가 소유함으로써 해자를 쌓았다. 경계를 어디에 긋느냐만이 아니라 <b>경계 위층을 누가 채우느냐</b>가 승부였다.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "09 · 에필로그",
+    "title": "창시자의 다음 베팅 — Modular (요약)",
+    "lead": "\"<em>the failures weren't technical, they were systemic</em>\" [20] — 그래서 두 번째 시도는 기술이 아니라 조직 설계부터",
+    "bullets": [
+      "\"<em>consensus kills research</em>\" — OpenCL·MLIR에서 배운 교훈으로 <b>3년+ 비공개 R&D</b> 후 공개 [20]",
+      "스택: <b>Mojo</b>(Python 문법 시스템 언어) → <b>MAX</b>(GenAI 서빙) → <b>Mammoth</b>(멀티벤더 클러스터 오케스트레이션) [21]",
+      "주목할 설계 선택 — 성능을 <em>자동 최적화 컴파일러</em>가 아니라 <b>사람이 쓴 hand-optimized 커널 + 전 층 programmability(\"No black boxes\")</b>로 [21]",
+      "06 polyhedral의 '컴파일러가 스케줄을 자동 합성한다'는 야망과 <b>정확히 반대 방향</b>의 베팅 — MLIR 최대 production 사용자의 손에서 자동화 vs 제어 축이 후자로 기울었다"
+    ],
+    "note": "⚠️ Parts 10–11의 성과 주장은 이해당사자의 자기 채점 — 그 관점을 감안하고 읽을 것. 시리즈는 Part 11(2025-06)에서 멈춰 있고, 예고된 후속편('Mojo: Tackling xPU Programmability')은 2026-06 현재 미게시.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "09 · 에필로그 · 재접속",
+    "title": "다시, ISA 경계로 — 에필로그가 본문에 보태는 것",
+    "table": {
+      "head": [
+        "시리즈의 사실",
+        "본문의 개념",
+        "보태지는 것"
+      ],
+      "rows": [
+        [
+          "PTX 비이식성 + Blackwell의 Hopper PTX 파기 [12][14]",
+          "08 ISA 경계 = 책임 분담선",
+          "경계에는 <b>시간축</b>이 있다 — 진화 속도를 견디게 그어야"
+        ],
+        [
+          "OpenCL의 Tensor Core 부재 → 5–10x [15]",
+          "ISA 경계의 음화",
+          "경계가 HW 핵심 유닛을 못 담으면 경계 위 전부가 죽는다"
+        ],
+        [
+          "XLA 과추상화 — 고정 op set [16]",
+          "04 Progressivity",
+          "premature lowering의 거울상 — <b>premature abstraction</b>"
+        ],
+        [
+          "Triton의 절충과 ~20% [17]",
+          "07 '어디까지 내려갈 것인가'",
+          "스펙트럼의 실측점 — 타일은 사람, 아래는 컴파일러"
+        ],
+        [
+          "MLIR 자기 채점 — 승자는 nobody [18]",
+          "08 한계 #1·#2",
+          "2021 예언의 2025 실현 — 거버넌스가 기술을 결정"
+        ],
+        [
+          "\"no central compiler or OS\" [19]",
+          "01 one true IR infrastructure",
+          "인프라는 수렴했으나 그 위 <em>스택</em>은 여전히 파편"
+        ]
+      ]
+    },
+    "note": "01의 질문 회수 — <em>one true IR infrastructure는 가능한가?</em> 2025년의 답: <b>인프라는 가능했다</b>(적과 아군이 모두 MLIR 위에 서 있다). 그러나 그 위의 민주화는 인센티브·거버넌스의 문제로 남았다 — ISA 경계가 기술 선택이자 <b>비즈니스의 책임 분담선</b>인 이유. 경계를 긋는 자가 아니라, <em>경계 위층을 채우는 자</em>가 이겨 왔다.",
+    "noteKind": "info"
+  }
+]

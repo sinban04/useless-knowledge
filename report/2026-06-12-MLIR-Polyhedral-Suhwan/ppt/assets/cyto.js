@@ -207,6 +207,13 @@
       refit();
     };
     box.__refit = refit;
+    // in-box (in-place) zoom API for the figure toolbar's "확대" button — zoom about the
+    // container center, clamped to cytoscape's min/max. Pairs with __zoomReset (= refit).
+    box.__zoomStep = function (factor) {
+      var lvl = Math.min(cy.maxZoom(), Math.max(cy.minZoom(), cy.zoom() * factor));
+      cy.zoom({ level: lvl, renderedPosition: { x: box.clientWidth / 2, y: box.clientHeight / 2 } });
+    };
+    box.__zoomReset = refit;
     // double-click resets pan/zoom to fit (in-place zoom default per global convention)
     box.addEventListener("dblclick", function () { refit(); });
     refit();

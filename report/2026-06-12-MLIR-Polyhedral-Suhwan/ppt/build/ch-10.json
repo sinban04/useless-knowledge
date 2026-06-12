@@ -1,0 +1,210 @@
+[
+  {
+    "kind": "divider",
+    "part": "synth",
+    "num": "별도 자료",
+    "title": "Democratizing AI Compute — 시리즈 단독 정리",
+    "subtitle": "세미나 본문과 독립 · Lattner 11편을 세 축으로: 기술의 흐름 / 실패와 교훈 / 의미"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "별도 자료 · 한눈에",
+    "title": "시리즈의 한 줄 논지",
+    "statement": "AI 컴퓨트의 병목은 하드웨어가 아니라 <b>소프트웨어</b>다. CUDA는 기술이 우월해서가 아니라 <em>전략·생태계·모멘텀</em>으로 이겼고, 대안들(OpenCL·TVM·XLA·Triton·MLIR)은 기술이 부족해서가 아니라 <em>시스템적(조직·인센티브·거버넌스) 이유</em>로 실패했다.",
+    "bullets": [
+      "그래서 'AI compute의 민주화'(누가 무엇을 만들 수 있는가)는 기술 하나를 더 만드는 것으로는 풀리지 않는다",
+      "시리즈의 6개 질문: ① CUDA란 무엇 ② 왜 이겼나 ③ 좋은가 ④ 타 HW는 왜 못 만드나 ⑤ 기존 대안은 왜 실패 ⑥ 어떻게 전진"
+    ],
+    "note": "⚠️ 동료심사 논문이 아닌 기술 블로그(이해당사자 Modular). 시장·경쟁사·자사 주장은 교차검증 권고. 단 CUDA·OpenCL·MLIR 탄생·설계 회고는 창시자 1차 사료.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "별도 자료 · ① 기술의 흐름",
+    "title": "GPU 컴퓨팅의 계보 — 진자 운동",
+    "lead": "GPU가 그래픽 전용 칩에서 AI 컴퓨트의 심장으로, 그 위 SW 스택이 어떻게 쌓이고 갈라졌는가",
+    "mermaid": "flowchart TD\n  g0[\"fixed-function GPU (~2000) — 그래픽 전용\"]\n  g1[\"programmable shaders 2001 · BrookGPU\"]\n  g2[\"CUDA 2006 — 범용 GPU 플랫폼\"]\n  g3[\"딥러닝 점화: AlexNet 2012 · cuDNN 2014 · TF 2015 · PyTorch 2016\"]\n  subgraph ALT[\"CUDA 대안의 계보 — 추상화의 진자 운동\"]\n    a1[\"OpenCL/SYCL/oneAPI 2008~ (C++ portable)\"]\n    a2[\"TVM · XLA 2016~ (2세대 컴파일러)\"]\n    a3[\"Triton · eDSL 2020~ (block 단위)\"]\n    a4[\"MLIR 2018 (컴파일러 인프라)\"]\n  end\n  g4[\"GenAI 재구축 2022~ : Modular Mojo/MAX/Mammoth\"]\n  g0 --> g1\n  g1 --> g2\n  g2 --> g3\n  g3 -. \"CUDA를 깨려는 시도\" .-> ALT\n  ALT -. \"모두 좌초 → 재구축\" .-> g4",
+    "note": "흐름의 핵심은 <b>추상화의 진자 운동</b> — 사람이 다 짜던 1세대 → 컴파일러가 다 푸는 2세대(TVM·XLA) → 사람에게 제어를 일부 돌려주는 eDSL(Triton). 그 하부 인프라로 MLIR이 깔렸다.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "별도 자료 · ① 기술의 흐름",
+    "title": "CUDA, '언어'가 아니라 '계층 플랫폼'",
+    "lead": "\"[CUDA] is a huge, layered Platform\" [12] — Java 생태계나 OS에 가까운 규모",
+    "mermaid": "flowchart TD\n  c1[\"TensorRT-LLM · Triton Serving — 턴키 수직\"]\n  c2[\"cuDNN · cuBLAS · cuFFT — closed-source 라이브러리\"]\n  c3[\"CUDA C++ — 병렬 프로그래밍 모델\"]\n  c4[\"PTX — 가상 어셈블리\"]\n  c5[\"NVIDIA driver\"]\n  c1 --> c2\n  c2 --> c3\n  c3 --> c4\n  c4 --> c5",
+    "note": "닫힌 계단의 균열 = <b>성능 이식성 부재</b>: \"<em>kernels written for generation N … keep working on N+1, but … far from the peak</em>\" [12]. NVIDIA의 답 cuDNN은 그 재작성을 <em>벤더가 사람 손으로</em> 흡수 — '사람이 흡수하느냐, 컴파일러가 흡수하느냐'가 모든 대안의 분기점.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "별도 자료 · ① 기술의 흐름",
+    "title": "딥러닝 점화와 대안의 계보",
+    "lead": "AlexNet(2012, GTX 580×2)이 GPU를 <em>필수</em>로 만들고, cuDNN(2014)→TF(2015)·PyTorch(2016)가 수요를 폭발시켰다 [13]",
+    "table": {
+      "head": [
+        "시기",
+        "대안",
+        "접근 층위",
+        "정체성"
+      ],
+      "rows": [
+        [
+          "2008",
+          "<b>OpenCL</b>/SYCL·oneAPI",
+          "C++ portable GPU 모델",
+          "위원회(Khronos) 표준 [15]"
+        ],
+        [
+          "1세대",
+          "hand-written CUDA kernels",
+          "사람이 직접 작성",
+          "확장 불가 [16]"
+        ],
+        [
+          "2016~",
+          "<b>TVM</b>·<b>XLA</b>",
+          "2세대 컴파일러(fusion 자동화)",
+          "고정 op set [16]"
+        ],
+        [
+          "2018",
+          "<b>MLIR</b>",
+          "컴파일러 인프라",
+          "dialect [18]"
+        ],
+        [
+          "2020~",
+          "<b>Triton</b>·Pallas·cuTile",
+          "Python eDSL(block 단위)",
+          "생산성 [17]"
+        ]
+      ]
+    },
+    "note": "NVIDIA의 결정적 수 — 프레임워크 튜닝 부담을 자사가 직접 떠안아(cuDNN·TensorRT) 프레임워크를 자사 HW에 묶었다(hardware/software co-design).",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "별도 자료 · ② 실패와 교훈",
+    "title": "OpenCL — 위원회의 속도, PDF로는 표준이 안 된다",
+    "statement": "\"A working, adoptable, and scalable implementation should define compatibility — not a PDF.\" [15]",
+    "bullets": [
+      "<b>open coopetition</b> — 협력해야 할 벤더가 동시에 경쟁자 → 위원회 합의가 늘 HW보다 늦다",
+      "<b>reference implementation 부재</b> — spec(PDF)만 기여 → 벤더 fork·확장 패치워크 → portability 자체가 분열로 붕괴",
+      "<b>정량적 결정타</b> — Tensor Core 표준 지원 부재로 CUDA 대비 5–10배 느림 → GenAI에선 \"complete dealbreaker\" [15]",
+      "<b>교훈 7</b> — reference impl · 강한 리더십 · 1위 HW 최고 성능 · 빠른 진화 · developer love · 열린 커뮤니티 · 분열 회피"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "별도 자료 · ② 실패와 교훈",
+    "title": "TVM·XLA — 고정 연산자 집합의 배신",
+    "statement": "\"They failed in the exact way CUDA alternatives were supposed to succeed!\" [16]",
+    "bullets": [
+      "존재 이유 = <b>연산자 폭발</b> → kernel fusion 자동화(matmul+ReLU, 때로 2배). TVM=autotuning, XLA=대규모 분산학습 성취",
+      "그러나 NVIDIA GPU를 CUDA 라이브러리 없이는 못 풀었고, XLA는 HW를 <em>과도하게 추상화</em> → GenAI의 세밀한 제어 요구 못 따라감(TPU 위에서도 Pallas로 우회)",
+      "인센티브 불일치 — \"<em>their paychecks are tied to making TPUs go brrr</em>\" [16]",
+      "<b>교훈</b> — 차세대 위시리스트 3: 완전한 programmability · AI 복잡성에 대한 지렛대 · 대규모 응용 지원"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "별도 자료 · ② 실패와 교훈",
+    "title": "Triton·eDSL — 생산성의 값",
+    "statement": "\"a 20% difference is untenable in GenAI: at scale it is the difference between a $1B cloud bill and an $800M one!\" [17]",
+    "bullets": [
+      "<b>block 단위 프로그래밍</b>으로 접근성 극대화(tl.dot 한 줄로 Tensor Core, PyTorch 통합) — developer love 만점",
+      "비용: H100에서도 ~20% 손실 · A100→H100 재작성 · 타 벤더 GPU 사실상 불가(이식성 실패)",
+      "거버넌스 — \"<em>Triton is open source, but OpenAI owns its roadmap</em>\" [17] · 툴링 격차(Nsight 비호환, 'guessing what the compiler did')",
+      "<b>교훈</b> — eDSL 난립(Pallas·cuTile)은 통합이 아니라 파편화. \"<em>We need fewer tools that work better</em>\" [17]"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "별도 자료 · ② 실패와 교훈",
+    "title": "MLIR — 인프라는 이겼지만, 민주화는 실패",
+    "statement": "\"We got 'many things fast' at the expense of getting 'something great at each level,' and then fell prey to Hyrum's Law.\" [18]",
+    "bullets": [
+      "2018년 Jeff Dean 제안으로 탄생. dialect 돌파구로 \"<em>a framework for building many compilers</em>\" → OpenXLA·Triton·CUDA 일부·양자·CIRCT까지 (<b>인프라 대성공</b>)",
+      "그러나 end-to-end AI 스택 통일엔 실패 — 원인은 기술이 아니라 <b>거버넌스</b>(AI dialect 조기 upstream·약한 거버넌스, 개발자 분산, 사유 스택 난립)",
+      "end-to-end 경쟁의 승자: <b>\"nobody\"</b> [18]",
+      "<b>교훈</b> — 조기 스케일링은 영구적 문제를 남긴다 · 제각각 달리면 배를 조종할 수 없다 · 작은 팀이 비전 정렬에 최적"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "별도 자료 · ② 실패와 교훈",
+    "title": "HW 회사의 구조적 덫 + 공통 패턴",
+    "statement": "\"In the CPU era … build a backend for LLVM and your chip inherited an ecosystem. AI has no such luxury. There's no central compiler or OS.\" [19]",
+    "bullets": [
+      "<b>구조의 덫</b> — P&amp;L(칩이 제품, SW는 overhead → demo-driven culture) · 조합 폭발 · 비대칭(경쟁 상대는 CUDA가 아니라 NVIDIA에 최적화하는 산업 전체) · whale-chasing(→ tech debt의 haunted forest)",
+      "<b>공통 패턴</b> — 시리즈 7기준 스코어카드: 거의 모두가 '1위 HW 최고 성능'과 '분열 회피'에서 탈락",
+      "Part 10의 일반화 — <b>Lippitt-Knoster 모델</b>(Vision·Consensus·Skills·Incentives·Resources·Action Plan 중 하나만 빠져도 예측 가능하게 실패)"
+    ],
+    "note": "시리즈 전체의 결론 한 문장 — \"<em>The patterns are real — and the failures weren't technical, they were systemic.</em>\" [20]",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "별도 자료 · ③ 기술의 의미",
+    "title": "CUDA 승리의 의미 + '민주화'란 무엇인가",
+    "statement": "\"CUDA's success isn't really about performance — it's about strategy, ecosystem, and momentum.\" [13]",
+    "bullets": [
+      "세대 간 호환 단일 제품 라인 + 프레임워크 튜닝 부담 직접 인수 + GenAI 시대 'CUDA에 최적화하거나 뒤처지거나' → <b>자기강화 사이클</b>이 해자",
+      "그러나 같은 힘이 비효율·혁신 장벽이라는 <em>늪</em>으로 (Jim Keller: \"swamp, not a moat\" [14]) — CUDA는 <b>축복이자 짐</b>",
+      "<b>'민주화' = 누가(who) 무엇을(what) 어떻게(how) 만들 수 있는가를 다시 짜는 것</b> — 게이트키퍼 제거, 진입장벽 인하",
+      "\"<em>Success in AI … is about how many people can use it</em>\" [21]"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "별도 자료 · ③ 기술의 의미",
+    "title": "MLIR의 의미 · 자동화 vs 제어 · 산업",
+    "bullets": [
+      "<b>MLIR의 의미</b> — 단일 경직 IR이 아니라 dialect로 여러 추상화 수준 공존. 적과 아군이 모두 그 위에. 단 같은 자유가 표준 부재·난립을 낳은 양날",
+      "<b>자동화 vs 프로그래머 제어</b> — 커널을 누가 다시 쓰나: 벤더 손(cuDNN, lock-in) / 컴파일러 자동(TVM·XLA, hand-tuned 못 이김) / 사람+도구(Triton·Mojo)",
+      "시리즈 최종 베팅(Modular)은 'magic compiler'가 아니라 <b>사람이 쓴 hand-optimized 커널 + 'No black boxes'</b> [21] — 컴파일러 자동화 야망이 한 발 물러선 기록",
+      "<b>산업의 의미</b> — CPU 시대 LLVM IR 같은 <em>수렴점</em>이 AI엔 없다 [19] → 단일 벤더로 못 메움 → <b>산업 컨소시엄</b>으로(HW 다양성은 problem이 아니라 foundation [21])"
+    ]
+  },
+  {
+    "kind": "content",
+    "part": "synth",
+    "kicker": "별도 자료 · 맺음",
+    "title": "세 축의 한 줄 요약",
+    "table": {
+      "head": [
+        "축",
+        "한 줄"
+      ],
+      "rows": [
+        [
+          "<b>흐름</b>",
+          "fixed-function GPU → CUDA 플랫폼(닫힌 계단) → 딥러닝 점화 → 대안의 진자 운동 → MLIR 인프라 → GenAI 재구축"
+        ],
+        [
+          "<b>실패와 교훈</b>",
+          "모두 <em>기술이 아니라 시스템(인센티브·거버넌스·생태계)</em> 때문에 실패 — reference impl·강한 리더십·1위 HW 성능·분열 회피가 없으면 못 이긴다"
+        ],
+        [
+          "<b>의미</b>",
+          "CUDA는 전략으로 이겼고, '민주화'는 누가 무엇을 만드는가의 문제이며, MLIR은 인프라엔 이겼지만 그 위 통일은 programmability·거버넌스·컨소시엄의 문제로 남았다"
+        ]
+      ]
+    },
+    "note": "이 별도 자료는 세미나 본문과 독립 — 같은 시리즈를 세미나 개념(progressive lowering·ISA 경계)에 얹어 읽는 통합판은 09 에필로그(site: 08-democratizing)에 있다.",
+    "noteKind": "info"
+  }
+]

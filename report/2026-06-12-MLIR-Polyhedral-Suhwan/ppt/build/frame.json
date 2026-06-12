@@ -18,7 +18,7 @@
         "label": "ISA 경계"
       }
     ],
-    "meta": "발표자 <b style=\"color:#e8e3d8\">Suhwan</b> &nbsp;·&nbsp; 2026-06-12 &nbsp;·&nbsp; 심화 약 90분<br>청중: 컴퓨터 아키텍처 연구자 / HW 개발자 / 서버레벨 SW 엔지니어"
+    "meta": "발표자 <b style=\"color:#e8e3d8\">Suhwan</b> &nbsp;·&nbsp; 2026-06-12 &nbsp;·&nbsp; 심화 약 100분<br>청중: 컴퓨터 아키텍처 연구자 / HW 개발자 / 서버레벨 SW 엔지니어"
   },
   "agenda": [
     {
@@ -35,9 +35,10 @@
         "<b>Progressive Lowering</b> — 추상화 계단을 한 칸씩",
         "<b>Polyhedral 모델</b> — 루프를 수학으로 <span class=\"small\">(주제 2)</span>",
         "<b>Affine 변환</b> — 스케줄을 바꾸면 병렬성이 생긴다",
-        "<b>종합</b> — 한계와 ISA 경계 = 책임 분담선"
+        "<b>종합</b> — 한계와 ISA 경계 = 책임 분담선",
+        "<b>에필로그</b> — 창시자의 2025년 회고 <span class=\"small\">(Democratizing AI Compute)</span>"
       ],
-      "note": "<b>주제 1 · MLIR</b>(01–05)과 <b>주제 2 · Polyhedral·Affine</b>(06–07)은 <em>affine dialect</em>에서 만나고, 마무리(08)에서 <em>ISA 경계</em>로 종합된다.",
+      "note": "<b>주제 1 · MLIR</b>(01–05)과 <b>주제 2 · Polyhedral·Affine</b>(06–07)은 <em>affine dialect</em>에서 만나고, 마무리(08)에서 <em>ISA 경계</em>로 종합된다. 에필로그(09)는 Lattner의 2025년 회고를 그 위에 얹는다. 끝에 <b>별도 자료</b>(10) — 같은 시리즈를 세미나와 독립적으로 정리한 단독 다이제스트 — 가 부록으로 붙는다.",
       "noteKind": "info"
     }
   ],
@@ -64,7 +65,9 @@
         "<span class=\"small\">[5] Grosser et al., <em>Polly — Polyhedral Optimization in LLVM</em>, IMPACT 2012.</span>",
         "<span class=\"small\">[6] Feautrier, <em>Some efficient solutions to the affine scheduling problem</em>, IJPP 1992.</span>",
         "<span class=\"small\">[7] Allen & Kennedy, <em>Optimizing Compilers for Modern Architectures</em>, 2002.</span>",
-        "<span class=\"small\">[8] MLIR official documentation — mlir.llvm.org/docs.  [9] OpenXLA / StableHLO.  [10] LLVM Polly.</span>"
+        "<span class=\"small\">[8] MLIR official documentation — mlir.llvm.org/docs.  [9] OpenXLA / StableHLO.  [10] LLVM Polly.</span>",
+        "<span class=\"small\">[11]–[21] C. Lattner, <em>Democratizing AI Compute</em> 시리즈 (Parts 1–11), Modular blog, 2025 — modular.com/democratizing-ai-compute. ⚠️ 기술 블로그(이해당사자), 단 MLIR 회고는 창시자 1차 사료.</span>",
+        "<span class=\"small\">[22] Aho·Lam·Sethi·Ullman, <em>Compilers: Principles, Techniques, and Tools</em> 2/e, Ch.11 (Optimizing for Parallelism and Locality), 2006.</span>"
       ],
       "footer": "MLIR · Polyhedral / Affine — Suhwan · 2026-06-12"
     },

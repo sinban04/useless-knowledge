@@ -77,7 +77,7 @@ LLVM upstream에는 in-tree affine pass가 15종 가까이 있다(`affine-loop-n
 
 *융합 = 두 반복영역을 합쳐 중간 버퍼를 없애고 producer-consumer 지역성을 높인다.*
 
-`affine-loop-fusion` 다음에 `affine-scalrep`(스칼라 승격)을 이어 붙이면, 3단계 체인의 중간 배열이 레지스터로 승격되며 완전히 사라진다 — 폴리헤드럴의 *array contraction*(배열 축약) 자동화에 해당한다 [8]. 이 점이 고수준 dialect와 닿는 지점인데, 뒤의 의견 박스에서 다시 다룬다.
+`affine-loop-fusion` 다음에 `affine-scalrep`(스칼라 승격)을 이어 붙이면, 3단계 체인의 중간 배열이 레지스터로 승격되며 완전히 사라진다 — 폴리헤드럴의 *array contraction*(배열 축약) 자동화에 해당한다 [8]. 이 점이 고수준 dialect와 닿는 지점인데, 뒤의 linalg vs affine 트레이드오프 절에서 다시 다룬다.
 
 ### 6. ★ 스큐잉 — 없던 병렬성을 만들어내기
 
@@ -188,6 +188,8 @@ MLIR `affine-super-vectorize`는 target-independent한 n-D 가상 벡터(virtual
 마지막으로 실무 판단 하나. 변환을 affine까지 내려서 할지, 더 높은 linalg dialect에 머물지의 트레이드오프다.
 
 고수준 linalg에 머물면 matmul·conv 같은 연산의 *의미*가 보존돼 fusion이 싸고 직관적이다. 반면 affine까지 내려가면 skewing·interchange·peeling 같은 극한 루프 변형이 가능해지지만, 한 번 내려가면 고수준 의미를 되살리기 어렵다. 따라서 어느 레벨에 머물지는 타깃이 정한다 — 범용 가속기(GPU 등)는 의미를 오래 보존하는 linalg 중심이, 루프를 하드웨어 opcode 크기에 맞춰 극한으로 변형해야 하는 커스텀 가속기는 affine까지 내려가는 편이 유리하다.
+
+이 스펙트럼 위에는 산업의 실측점도 하나 있다 — Triton은 *타일 단위는 사람이 쓰고 그 아래(메모리 coalescing·Tensor Core 매핑)는 컴파일러가 자동화*하는 중간 절충을 택했고, 그 수확(압도적 생산성)과 비용(H100에서도 통상 ~20% 성능 손실)을 Lattner가 정량적으로 채점한 바 있다 [17]. 자동화 vs 프로그래머 제어라는 이 트레이드오프의 산업 전개는 9장(에필로그)에서 이어진다.
 
 ---
 

@@ -1,6 +1,6 @@
 # 8. 종합 — 한계, ISA 경계, 그리고 컴파일러 vs 하드웨어
 
-[← 이전](07_affine_transforms.md) | [목차](README.md)
+[← 이전](07_affine_transforms.md) | [목차](README.md) | [다음 →](09_epilogue.md)
 
 ---
 
@@ -24,6 +24,8 @@
 | 8 | Out-of-tree dialect API 불안정 | mainline이 바뀌면 외부 dialect가 따라잡아야 함. API가 fairly volatile |
 
 여기서 청중(하드웨어·시스템 쪽)이 직관적으로 받아들일 비유 하나. **dialect 폭발은 ISA 파편화와 똑같은 병이다.** 모두가 자기 명령어 확장을 마구 추가하면, 결국 "공통 ISA"라는 약속이 깨지고 툴체인이 분열한다. MLIR이 컴파일러 파편화를 풀려고 dialect라는 *확장 메커니즘*을 줬는데, 그 메커니즘 자체가 *남용되면* 같은 파편화가 한 층 위에서 다시 생긴다. 저자들은 이걸 알면서도 "기술로는 못 막는다, 거버넌스·커뮤니티 표준화의 영역이다"라고 적는다 — 이 정직함이 이 논문을 예외적으로 신뢰할 만한 시스템 논문으로 만든다 [2 §II.B].
+
+덧붙일 사실 — 이 예언은 4년 뒤 채점됐다. 2025년 Lattner 본인이 "Democratizing AI Compute" 시리즈에서, AI dialect 생태계의 파편화가 실제로 일어났으며 그 원인이 기술이 아니라 거버넌스였음을 직접 확인한다 [18]. 상세는 9장(에필로그)에서.
 
 ### 2. 그래서 MLIR은 "완성품"이 아니라 "연구 프로그램의 시작"
 
@@ -56,6 +58,8 @@ progressive lowering의 각 단계(linalg → affine → scf → LLVM)는 ISA �
 
 각자에게 남기는 한 줄. 컴퓨터 아키텍트에게 — progressive lowering 단계는 당신이 ISA 경계를 시험해 볼 수 있는 눈금자다. 하드웨어 개발자에게 — 경계를 높이면 HW가 무거워지고 낮추면 컴파일러가 무거워진다, 그 트레이드오프를 의식하고 그어라. 서버레벨 소프트웨어 엔지니어에게 — dialect는 곧 ISA 파편화와 같은 위험을 안고 있으니, 공통 표준(linalg, affine 등)을 따르는 것이 장기적으로 당신의 툴체인을 지킨다 [2].
 
+이 경계 논의의 산업 증거 — PTX 경계의 균열(Blackwell의 Hopper PTX 파기)과 NVIDIA의 "경계 위층 소유" 전략 — 는 9장(에필로그)에서 이어진다 [12][14][19].
+
 ---
 
-[← 이전](07_affine_transforms.md) | [목차](README.md)
+[← 이전](07_affine_transforms.md) | [목차](README.md) | [다음 →](09_epilogue.md)

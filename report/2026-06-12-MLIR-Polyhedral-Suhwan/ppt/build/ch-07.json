@@ -117,7 +117,7 @@
     "bullets": [
       "중간 버퍼가 사라지고(producer 결과를 바로 consumer가 씀) 지역성이 올라간다.",
       "<code>affine-loop-fusion</code> 다음 <code>affine-scalrep</code>(스칼라 승격)을 이어 붙이면, 3단계 체인의 중간 배열이 레지스터로 승격되며 완전히 사라진다.",
-      "이는 폴리헤드럴의 <em>array contraction</em>(배열 축약) 자동화에 해당 — 고수준 dialect와 닿는 지점(뒤 의견 박스에서 다시)."
+      "이는 폴리헤드럴의 <em>array contraction</em>(배열 축약) 자동화에 해당 — 고수준 dialect와 닿는 지점(뒤 linalg vs affine 트레이드오프 슬라이드에서 다시)."
     ],
     "note": "융합 = 두 반복영역을 합쳐 중간 버퍼를 없애고 producer-consumer 지역성을 높인다.",
     "noteKind": "info",

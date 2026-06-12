@@ -93,7 +93,12 @@
       "\\forall (i_{src}, i_{tgt}) \\in R : \\quad S'(i_{tgt}) \\succ S'(i_{src})"
     ],
     "note": "직관: 변환을 아무리 해도 \"원인이 결과보다 먼저\"라는 시간 순서만 안 깨면 안전하다.",
-    "noteKind": "info"
+    "noteKind": "info",
+    "image": {
+      "src": "assets/poly-deps.svg",
+      "caption": "의존성 = 좌표의 차이(거리 벡터 δ). 스텐실의 δ₁=(1,0)·δ₂=(0,1) 패턴이 모든 격자점에서 반복된다"
+    },
+    "layout": "split"
   },
   {
     "kind": "content",
@@ -103,7 +108,8 @@
     "lead": "스케줄은 각 반복에 <b>실행 시각</b>을 부여하는 affine 사상. 기존 좌표 $[i,j]$ 를 변환행렬 $T$ 로 새 좌표 $[t_1,t_2]$ 에 매핑.",
     "math": [
       "\\begin{bmatrix} t_1 \\\\ t_2 \\end{bmatrix} = \\begin{bmatrix} a & b \\\\ d & e \\end{bmatrix} \\begin{bmatrix} i \\\\ j \\end{bmatrix} + \\begin{bmatrix} c \\\\ f \\end{bmatrix}",
-      "\\text{Interchange: } T = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}, \\qquad \\text{Skewing: } T = \\begin{bmatrix} 1 & 1 \\\\ 0 & 1 \\end{bmatrix}\\ (t_1 = i+j)"
+      "\\text{Interchange: } T = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}",
+      "\\text{Skewing: } T = \\begin{bmatrix} 1 & 1 \\\\ 0 & 1 \\end{bmatrix}\\ \\ (t_1 = i+j)"
     ],
     "bullets": [
       "<b>핵심</b>: 서로 달라 보이는 모든 루프 변환이 사실은 <b>행렬 $T$ 의 계수를 바꾸는 한 가지 연산</b>.",
@@ -111,7 +117,8 @@
       "전통 컴파일러의 interchange·tiling·fusion 패스가 따로 + 순서 민감 → 폴리헤드럴은 <b>하나의 행렬 연산</b>으로 통합.",
       "ILP solver가 푸는 것: Allen–Kennedy를 만족하며 병렬성·지역성을 극대화하는 $T$ 의 계수."
     ],
-    "mermaid": "@1"
+    "mermaid": "@1",
+    "layout": "split"
   },
   {
     "kind": "content",
@@ -123,7 +130,8 @@
     "bullets": [
       "\"무한히 많은 점에서 부등식이 성립하는가?\" → \"유한한 개수의 $\\lambda$(람다) 계수가 존재하는가?\"로 환원.",
       "유한 미지수 + 선형 제약 문제는 ILP solver(GLPK · CPLEX · ISL 등)가 <b>유한 시간</b>에 자동으로 푼다.",
-      "비유: 울타리 안 모든 위치(무한)의 고도를 일일이 측량하는 대신, 울타리 변(유한한 경계식) 몇 개의 가중합으로 지형을 표현해버리는 트릭."
+      "비유: 울타리 안 모든 위치(무한)의 고도를 일일이 측량하는 대신, 울타리 변(유한한 경계식) 몇 개의 가중합으로 지형을 표현해버리는 트릭.",
+      "정직한 한계 — 정수해 탐색(ILP)은 일반적으로 <b>NP-complete</b> [22]. 실전 도구(ISL·Pluto)는 다면체 구조를 활용해 실용 시간에 푼다"
     ],
     "mermaid": "@3"
   },
@@ -228,7 +236,32 @@
     "math": [
       "D = \\{\\, \\mathbf{i} \\in \\mathbb{Z}^n \\ :\\ A\\,\\mathbf{i} + \\mathbf{b} \\;\\ge\\; \\mathbf{0} \\,\\}",
       "A = \\begin{bmatrix} 1 & 0 \\\\ -1 & 0 \\\\ 0 & 1 \\\\ 0 & -1 \\end{bmatrix}, \\qquad \\mathbf{b} = \\begin{bmatrix} -1 \\\\ N-1 \\\\ -1 \\\\ N-1 \\end{bmatrix}"
-    ]
+    ],
+    "image": {
+      "src": "assets/poly-iterspace.svg",
+      "caption": "반복 공간 D — 격자점 1개 = 본문 1회 실행, 루프 경계 = 다면체의 변(affine 부등식)"
+    },
+    "layout": "split"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "반복공간 $D$ — 비직사각형(삼각형) 예제",
+    "lead": "경계에 <em>루프 변수가 들어가도</em>(<code>j=i</code>부터 시작) affine이면 그대로 다면체다 — <code>for (i=0; i&le;5; i++) for (j=i; j&le;7; j++) Z[j,i]=0;</code> [22]",
+    "math": [
+      "D=\\left\\{(i,j)\\in\\mathbb{Z}^2 \\,:\\, 0\\le i\\le 5,\\ \\, i\\le j\\le 7\\right\\}",
+      "B\\,\\mathbf{i}+\\mathbf{b} = \\begin{bmatrix} 1 & 0 \\\\ -1 & 0 \\\\ -1 & 1 \\\\ 0 & -1 \\end{bmatrix}\\!\\begin{bmatrix} i \\\\ j \\end{bmatrix} + \\begin{bmatrix} 0 \\\\ 5 \\\\ 0 \\\\ 7 \\end{bmatrix} \\;\\ge\\; \\mathbf{0}"
+    ],
+    "bullets": [
+      "셋째 행 $-i+j\\ge 0$ 이 대각 경계 <b>$j\\ge i$</b> — 직사각형이 아니어도 부등식 하나가 추가될 뿐",
+      "스텐실의 정사각 $D$와 똑같은 틀: 의존성·스케줄·타일링이 <em>그대로 적용</em>된다"
+    ],
+    "image": {
+      "src": "assets/poly-triangle.svg",
+      "caption": "삼각형 반복공간 — 대각 경계 j≥i 가 부등식 행 하나로 들어간다 (Dragon Book ch.11 예제) [22]"
+    },
+    "layout": "split"
   },
   {
     "kind": "content",
@@ -242,6 +275,49 @@
     "math": [
       "\\begin{aligned} A[i][j] \\;&:\\; F = I\\,\\mathbf{i} + (0,\\,0)^\\top \\\\ A[i-1][j] \\;&:\\; F = I\\,\\mathbf{i} + (-1,\\,0)^\\top \\\\ A[i][j-1] \\;&:\\; F = I\\,\\mathbf{i} + (0,\\,-1)^\\top \\end{aligned}"
     ]
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
+    "title": "접근 함수 $F$ — 행렬·벡터 표현 사례",
+    "lead": "어떤 배열 접근이든 affine이면 $F(\\mathbf{i})=A_F\\,\\mathbf{i}+\\mathbf{f}$ 한 틀로 적힌다 — 2중 루프 $(i,j)$ 기준 [22]",
+    "table": {
+      "head": [
+        "접근",
+        "$A_F\\,\\mathbf{i}+\\mathbf{f}$",
+        "읽는 법"
+      ],
+      "rows": [
+        [
+          "<code>X[i-1]</code>",
+          "$[\\,1\\ \\ 0\\,]\\,\\mathbf{i}+[-1]$",
+          "1차원 — $i$만 쓰고 상수 $-1$"
+        ],
+        [
+          "<code>Y[i, j]</code>",
+          "$\\begin{bmatrix}1&0\\\\0&1\\end{bmatrix}\\mathbf{i}+\\begin{bmatrix}0\\\\0\\end{bmatrix}$",
+          "항등 — 반복과 셀이 1:1"
+        ],
+        [
+          "<code>Y[j, j+1]</code>",
+          "$\\begin{bmatrix}0&1\\\\0&1\\end{bmatrix}\\mathbf{i}+\\begin{bmatrix}0\\\\1\\end{bmatrix}$",
+          "rank 1 — $i$ 가 달라도 같은 셀 (재사용!)"
+        ],
+        [
+          "<code>Y[1, 2]</code>",
+          "$\\begin{bmatrix}0&0\\\\0&0\\end{bmatrix}\\mathbf{i}+\\begin{bmatrix}1\\\\2\\end{bmatrix}$",
+          "rank 0 — 모든 반복이 같은 셀"
+        ],
+        [
+          "<code>Z[1, i, 2i+j]</code>",
+          "$\\begin{bmatrix}0&0\\\\1&0\\\\2&1\\end{bmatrix}\\mathbf{i}+\\begin{bmatrix}1\\\\0\\\\0\\end{bmatrix}$",
+          "3차원 배열도 행만 늘어난다"
+        ]
+      ]
+    },
+    "note": "반례 — <code>A[i*i, i*j]</code> 는 affine이 아니라서 이 틀에 안 들어간다 → 폴리헤드럴 분석 대상 밖 [22]. (step이 1이 아닌 루프는 정규화로 흡수: <code>for(i=2;i&le;100;i+=3)</code> → <code>for(t=0;t&le;32;t++), i=3t+2</code>.)",
+    "noteKind": "info"
   },
   {
     "kind": "content",
@@ -262,6 +338,16 @@
     "kind": "content",
     "part": "poly",
     "kicker": "06 · Polyhedral 모델",
+    "title": "스큐잉 $\\Theta$ 의 기하 — wavefront 좌표 변환",
+    "image": {
+      "src": "assets/poly-wavefront.svg",
+      "caption": "스큐잉 Θ가 의존성을 전부 +t 방향으로 — 같은 t(한 wavefront)는 병렬"
+    }
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델",
     "title": "⑤ 스큐잉 결과 → 웨이브프론트 병렬",
     "bullets": [
       "역변환 $t=i+j,\\ p=j \\Rightarrow i=t-p,\\ j=p$.",
@@ -270,6 +356,31 @@
     "math": [
       "t = i+j,\\quad p = j \\qquad\\Longrightarrow\\qquad i = t - p,\\quad j = p"
     ],
-    "scene": "07-skewing"
+    "scene": "07-skewing",
+    "note": "일반화(타일링 정리) — 합법성 제약의 <b>서로 독립인 해가 $k$개</b> 존재하면 루프를 $k$-deep <em>fully permutable</em> nest로 만들 수 있고, 그러면 $k$차원 타일링(블로킹)이 가능하다 [22]. 스큐잉+웨이브프론트는 그 $k{=}2$ 사례.",
+    "noteKind": "info"
+  },
+  {
+    "kind": "content",
+    "part": "poly",
+    "kicker": "06 · Polyhedral 모델 · 확장",
+    "title": "시간 분할의 쌍둥이 — 공간 분할 (프로세서 매핑)",
+    "lead": "스케줄 $\\theta$ 가 \"<em>언제</em> 실행하나\"라면, 같은 affine 틀로 \"<em>어디서(어느 프로세서에서)</em> 실행하나\"도 정할 수 있다 — $p(\\mathbf{i})=C\\,\\mathbf{i}+c$ [22]",
+    "math": [
+      "\\forall(\\mathbf{i}_1,\\mathbf{i}_2)\\in R:\\quad C_1\\mathbf{i}_1+c_1 \\;=\\; C_2\\mathbf{i}_2+c_2"
+    ],
+    "bullets": [
+      "시간 분할(스케줄)의 합법성은 $\\theta(\\mathbf{i}_2)\\succ\\theta(\\mathbf{i}_1)$ (순서 보존) — 공간 분할은 <b>등식</b>: 의존 쌍을 같은 $p$ 에",
+      "예제(그림): <code>s&#8321;: X[i,j]+=Y[i-1,j]</code> · <code>s&#8322;: Y[i,j]+=X[i,j-1]</code> → ILP가 $p_{s_1}=i{-}j{-}1,\\ p_{s_2}=i{-}j$ 를 찾아낸다",
+      "결과: 모든 의존 사슬이 한 밴드 안 → <b>프로세서 간 통신 0</b>, 밴드끼리 완전 병렬",
+      "등식을 $\\le$ 로 풀면 time-partition(파이프라이닝) — 시간·공간·파이프라인이 전부 <em>같은 affine 제약의 변형</em>이다 [22]"
+    ],
+    "image": {
+      "src": "assets/poly-spacemap.svg",
+      "caption": "affine 공간 분할 — 의존 사슬(계단)이 통째로 한 프로세서 밴드에 들어간다 (Dragon Book ch.11) [22]"
+    },
+    "note": "MLIR 관점 — <code>affine.parallel</code> 의 분산 실행·프로세서 배정의 이론적 원형. 본 세미나가 다룬 스케줄 $\\theta$ 와 합치면 \"누가·언제\"가 모두 affine 사상 하나씩으로 결정된다.",
+    "noteKind": "info",
+    "layout": "split"
   }
 ]

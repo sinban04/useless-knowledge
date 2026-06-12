@@ -35,7 +35,7 @@ body{background:#1b1d24; font-family:var(--sans); color:var(--ink);
 h1.s{font-size:38px; line-height:1.12; font-weight:800; letter-spacing:-.01em; color:var(--ink)}
 h2.s{font-size:31px; line-height:1.15; font-weight:800; letter-spacing:-.01em; color:var(--ink); margin-bottom:4px}
 .sub{font-size:18px; color:var(--muted); margin-top:12px; line-height:1.5; max-width:62ch}
-.body{margin-top:14px; font-size:18px; line-height:1.6; color:var(--ink2); flex:1; min-height:0; overflow:hidden;
+.body{margin-top:14px; font-size:18px; line-height:1.6; color:var(--ink2); flex:1; min-height:0; overflow:hidden; display:flex; align-items:center;
   display:flex; flex-direction:column; justify-content:center}
 .bodyinner{width:100%; transform-origin:center center}   /* fit-to-fill: 넘치면 통째로 scale */
 .body.center{justify-content:center}
@@ -117,7 +117,16 @@ figure.diagram{margin:4px 0; width:100%}   /* flex fig-col(align-items:center)�
 figure.diagram .cy{width:100%; height:320px; background:none}
 .col.fig-col figure.diagram .cy{height:360px}
 figure.diagram .cy-err{font-family:var(--mono); font-size:13px; color:var(--accent); text-align:center; padding:1rem}
+/* viz-only 슬라이드(텍스트 없음): 비주얼이 빈 화면에 떠 보이지 않게 가용 높이를 채운다 */
+.slide.vizonly figure.diagram .cy{height:505px}
+.slide.vizonly .fig img{max-height:520px}
+.slide.vizonly pre.codeblock{font-size:17.5px; line-height:1.7}
+.slide.vizonly table{margin-left:auto; margin-right:auto}
 pre.mermaid{margin:4px 0; text-align:center; background:none; line-height:initial}  /* fallback: 비-그래프 */
+/* 애니메이션 위젯은 자연 높이가 커서 fit-to-fill로 0.6~0.8x 축소된다 — 내부 글자를 키워 보상 */
+.vizbox .pv-caption{font-size:18px}
+.vizbox .pv-codecard pre{font-size:15px}
+.vizbox .pv-caption code{font-size:15px}
 
 /* animation box */
 /* 높이 제약 없음 — vizbox 가 자연 높이(canvas+aux+controls, ~850px)를 갖게 둬야
@@ -164,7 +173,8 @@ pre.mermaid{margin:4px 0; text-align:center; background:none; line-height:initia
 <script src="assets/cytoscape.min.js"></script>
 <script src="assets/dagre.min.js"></script>
 <script src="assets/cytoscape-dagre.min.js"></script>
-<script src="assets/cyto.js?v=20260608c"></script>
+<script src="assets/cyto.js?v=20260611a"></script>
+<script src="assets/zoom.js?v=20260611d"></script>
 <script src="assets/katex/katex.min.js"></script>
 <script src="assets/katex/auto-render.min.js"></script>
 <script src="assets/poly.js"></script>
@@ -273,6 +283,6 @@ pre.mermaid{margin:4px 0; text-align:center; background:none; line-height:initia
   if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(function(){ fitSlide(slides[cur]); }); }
 })();
 </script>
-<script src="assets/present.js?v=20260608f"></script>
+<script src="assets/present.js?v=20260611b"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@
 
 ## 왜 "원칙"부터 보는가
 
-대부분의 컴파일러 책은 *기법*(SSA, register allocation, loop tiling 같은 구체 테크닉)을 가르친다. 그런데 MLIR 논문은 특이하게도 *기법*보다 *원칙*에서 출발한다. 저자들 — Chris Lattner(LLVM/Clang/Swift, 그리고 MLIR의 창시자) 외 — 은 "*the 'art' of compiler IR and abstraction design is not well understood*"(컴파일러 IR과 추상화를 설계하는 '기예'는 아직 잘 이해되지 않았다)라고 솔직히 인정하면서 [2], 그 공백을 메우려고 *세 가지 설계 원칙*으로 모든 결정을 정당화한다.
+대부분의 컴파일러 책은 *기법*(SSA, register allocation, loop tiling 같은 구체 테크닉)을 가르친다. 그런데 MLIR 논문은 특이하게도 *기법*보다 *원칙*에서 출발한다. 저자들 — Chris Lattner(LLVM/Clang/Swift, 그리고 MLIR의 창시자) 외 — 은 "*the 'art' of compiler IR and abstraction design is not well understood*"(컴파일러 IR과 추상화를 설계하는 '기예'는 아직 잘 이해되지 않았다)라고 솔직히 인정하면서 [2], 그 공백을 메우려고 *세 가지 설계 원칙*으로 모든 결정을 정당화한다. 인물의 아크는 이 논문에서 끝나지 않는다 — Lattner는 이후 2022년 Modular를 창업했고, 2025년 "Democratizing AI Compute" 시리즈 [11]–[21]에서 이 원칙들의 실전 성적을 본인이 직접 채점한다. 그 회고는 9장(에필로그)에서 다룬다.
 
 > 용어 한 줄 정의 — **IR(Intermediate Representation, 중간 표현)**: 소스 코드와 기계어 사이에서 컴파일러가 다루는 프로그램의 내부 형태. **Dialect(다이얼렉트)**: 특정 도메인(예: 텐서 연산, 루프, GPU)에 맞춘 연산(Op)·타입의 묶음, 일종의 "방언". **Lowering(로워링)**: 고수준 표현을 더 저수준 표현으로 한 단계 내리는 변환.
 
@@ -132,6 +132,8 @@ affine.for %i = 0 to %N {
 > "*MLIR catalyzes new areas of research, as well as new approaches to teaching the art of compiler and IR design.*" [2]
 
 세 원칙은 *지향점*이고 현실은 트레이드오프다. 풀려던 fragmentation 문제가 *한 단계 위에서 dialect 폭발로 재발*할 수 있으며 이를 막을 기술적 솔루션은 없다는 자기 인정 — 바로 이 점이 이 논문을 *예외적으로 정직한 시스템 논문*으로 만든다. 이것이 Chris Lattner 류 설계 철학의 정수다: 원칙을 세우되, 그 원칙의 한계까지 함께 문서화한다.
+
+그리고 그 한계 문서화는 예언이 됐다 — "기술로는 못 막는다"던 dialect 파편화가 실제로 어떻게 전개됐는지, 같은 저자의 2025년 회고 [18]가 9장(에필로그)에서 답한다.
 
 ---
 
