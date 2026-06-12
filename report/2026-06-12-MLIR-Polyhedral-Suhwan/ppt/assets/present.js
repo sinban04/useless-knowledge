@@ -92,7 +92,8 @@
     if (interactive(e.target)) return;            // graph/figure keep their own zoom
     e.preventDefault();
     var r = stage.getBoundingClientRect();
-    var cx = e.clientX - r.left, cy = e.clientY - r.top;
+    // rect는 transform 적용 후 좌표 — 점화식은 비변환 원점 기준이라 +zx/+zy 로 되돌린다 (안 하면 줌 초점이 표류)
+    var cx = e.clientX - r.left + zx, cy = e.clientY - r.top + zy;
     var f = e.deltaY < 0 ? 1.12 : 1 / 1.12;
     var ns = Math.min(6, Math.max(1, zs * f));
     zx = cx - (cx - zx) * (ns / zs); zy = cy - (cy - zy) * (ns / zs); zs = ns;
@@ -219,7 +220,7 @@
     if (!focused || foIsGraph()) return;
     e.preventDefault(); e.stopPropagation();
     var r = focused.getBoundingClientRect();
-    var cx = e.clientX - r.left, cy = e.clientY - r.top;
+    var cx = e.clientX - r.left + fx, cy = e.clientY - r.top + fy;   // 비변환 원점 보정 (stage zoom과 동일)
     var f = e.deltaY < 0 ? 1.12 : 1 / 1.12;
     var ns = Math.min(8, Math.max(1, fs * f));
     fx = cx - (cx - fx) * (ns / fs); fy = cy - (cy - fy) * (ns / fs); fs = ns;
