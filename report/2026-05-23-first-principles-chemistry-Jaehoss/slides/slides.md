@@ -4,7 +4,7 @@ theme: default
 paginate: true
 size: 16:9
 header: '원자에서 재료까지 — 하나의 퍼텐셜 우물로 읽는 화학 · Jaehoss'
-footer: '2026-06-12 · Probe Lab Seminar'
+footer: '2026-05-23 · Probe Lab Seminar'
 style: |
   section {
     font-family: 'Noto Sans KR', 'Noto Sans CJK KR', 'Noto Sans', sans-serif;
@@ -43,7 +43,7 @@ style: |
 
 *옥텟 규칙 없이, 두 원리만으로*
 
-**Jaehoss** · 2026-06-12 · Probe Lab Seminar
+**Jaehoss** · 2026-05-23 · Probe Lab Seminar
 
 <!--
 오늘 두 시간 동안 화학을 봅니다. 시험용 옥텟 규칙·가전자 8개 외우기가 아니라, 다이아몬드는 왜 단단하고 소금은 왜 깨지며 구리는 왜 늘어나고 물은 왜 0/100도에서 상전이하는지를 단 두 원리로 푸는 first-principles 세미나입니다. 핵심 약속: 결합 네 종류는 모양만 다른 같은 퍼텐셜 우물 하나다.
