@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🧬 How the Immune System Works — Recherche</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+
+    <!-- ===== Hero ===== -->
+    <div class="hero">
+      <div class="hero-eyebrow">🧬 Recherche · Biology · Immunology</div>
+      <h1 class="hero-title">How the Immune System Works</h1>
+      <p class="hero-lede">A layered decision system for finding danger, containing it fast, learning its molecular signature, and remembering it — without attacking the self. Built around four cells with four different logics of recognition: <strong>macrophages, B cells, T cells, and NK cells</strong>.</p>
+      <div class="hero-meta">
+        <span>📖 12 chapters</span>
+        <span>🎞️ 7 interactive animations</span>
+        <span>🔬 Mechanism-first, from first principles</span>
+        <span>📅 2026-04-30</span>
+      </div>
+      <div class="hero-actions">
+        <a class="btn primary" href="01-introduction.html">▶ Start reading</a>
+        <a class="btn ghost" href="../00-table-of-contents.md">📄 Markdown book</a>
+      </div>
+    </div>
+
+    <!-- ===== The escalation pipeline (static flow chart) ===== -->
+    <div class="section">
+      <div class="section-title"><span class="count">🧭</span>The escalation pipeline — breach to memory</div>
+      <p class="section-subtitle">Each chapter zooms into one station of this sequence. Read it left to right.</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--text-light)"><div class="step-n">STAGE 0</div><div class="step-t">Barrier</div><div class="step-d">Skin, mucus, acid, and microbiota keep most microbes out.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">STAGE 1</div><div class="step-t">Innate sensing</div><div class="step-d">PRRs and complement recognize conserved danger patterns.</div></div>
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">STAGE 2</div><div class="step-t">Inflammation</div><div class="step-d">Cytokines and chemokines recruit cells and change the tissue.</div></div>
+        <div class="flow-step" style="--c:var(--primary)"><div class="step-n">STAGE 3</div><div class="step-t">Antigen presentation</div><div class="step-d">Dendritic cells carry peptide evidence to lymph nodes.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">STAGE 4</div><div class="step-t">Clonal expansion</div><div class="step-d">Rare matching B and T cells are selected and cloned.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">STAGE 5</div><div class="step-t">Effectors</div><div class="step-d">Antibodies, CD8 killing, and activated macrophages clear it.</div></div>
+        <div class="flow-step" style="--c:var(--primary)"><div class="step-n">STAGE 6</div><div class="step-t">Memory</div><div class="step-d">Long-lived B and T cells make the next response faster.</div></div>
+      </div>
+      <p style="color:var(--text-muted);font-size:13.5px;margin:12px 0 0">Broad innate sensing (left) <strong>gates</strong> narrow clonal expansion (right): the speed of stages 0–2 buys time and decides whether the precise but slower adaptive stages 3–6 fire at all.</p>
+    </div>
+
+    <!-- ===== Central thesis ===== -->
+    <div class="alert key">
+      <span class="alert-head">The one idea to keep</span>
+      The best mental model is <strong>not</strong> "innate vs adaptive" or "weak vs strong." It is <strong>broad danger-sensing gates narrow clonal expansion</strong>: fast innate cells decide <em>whether</em> a precise, slow, and potentially dangerous adaptive response should be unleashed at all.
+    </div>
+
+    <!-- ===== Orientation stats ===== -->
+    <div class="stat-grid">
+      <div class="stat-card macro">
+        <div class="stat-label">Speed of innate sensing</div>
+        <div class="stat-value">minutes</div>
+        <div class="stat-sub">Germline receptors, no clone needed</div>
+      </div>
+      <div class="stat-card tcell">
+        <div class="stat-label">First adaptive response</div>
+        <div class="stat-value">days</div>
+        <div class="stat-sub">Rare matching clone must be found & expanded</div>
+      </div>
+      <div class="stat-card bcell">
+        <div class="stat-label">Antibody repertoire</div>
+        <div class="stat-value">&gt;10¹¹</div>
+        <div class="stat-sub">Built by V(D)J recombination before exposure</div>
+      </div>
+      <div class="stat-card nk">
+        <div class="stat-label">NK decision rule</div>
+        <div class="stat-value">analog</div>
+        <div class="stat-sub">Activating vs inhibitory balance, not on/off</div>
+      </div>
+    </div>
+
+    <!-- ===== The four logics ===== -->
+    <div class="section">
+      <div class="section-title"><span class="count">4</span>Four cells, four logics of recognition</div>
+      <p class="section-subtitle">Each cell asks a different question. They do not duplicate one another — they cover each other's blind spots.</p>
+      <div class="role-grid">
+        <div class="role-card macro">
+          <div class="role-emoji">🍽️</div>
+          <div class="role-tag">Innate sentinel</div>
+          <div class="role-name">Macrophage</div>
+          <ul>
+            <li>"Is there something to eat, alarm about, or repair?"</li>
+            <li>Pattern receptors, Fc &amp; complement receptors</li>
+            <li>Phagocytosis · cytokines · antigen display · repair</li>
+          </ul>
+        </div>
+        <div class="role-card bcell">
+          <div class="role-emoji">🏹</div>
+          <div class="role-tag">Adaptive · humoral</div>
+          <div class="role-name">B cell</div>
+          <ul>
+            <li>"Does my antibody-shaped receptor bind this target?"</li>
+            <li>Unique BCR made by gene rearrangement</li>
+            <li>Antibodies · plasma cells · memory B cells</li>
+          </ul>
+        </div>
+        <div class="role-card tcell">
+          <div class="role-emoji">🎯</div>
+          <div class="role-tag">Adaptive · cellular</div>
+          <div class="role-name">T cell</div>
+          <ul>
+            <li>"Is this displayed peptide dangerous, in the right context?"</li>
+            <li>Reads peptide–MHC, never free antigen</li>
+            <li>CD8 killing · CD4 help · regulation</li>
+          </ul>
+        </div>
+        <div class="role-card nk">
+          <div class="role-emoji">⚖️</div>
+          <div class="role-tag">Innate lymphocyte</div>
+          <div class="role-name">NK cell</div>
+          <ul>
+            <li>"Does this cell look stressed or missing normal self?"</li>
+            <li>Balance of activating &amp; inhibitory receptors</li>
+            <li>Missing-self killing · IFN-γ · ADCC</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Chapter map ===== -->
+    <div class="section">
+      <div class="section-title"><span class="count">📖</span>Chapters</div>
+      <p class="section-subtitle">Each chapter stands alone; mechanism pages include interactive animations where motion clarifies the biology.</p>
+      <div class="card-grid">
+        <a class="nav-card" href="01-introduction.html" style="--c:var(--primary)"><div class="nc-n">01 · 🧭 FOUNDATIONS</div><div class="nc-t">Introduction</div><div class="nc-d">The immune system as a layered recognition, response, and memory architecture.</div></a>
+        <a class="nav-card" href="02-innate-recognition-inflammation.html" style="--c:var(--innate)"><div class="nc-n">02 · 🚨 INNATE</div><div class="nc-t">Recognition &amp; Inflammation</div><div class="nc-d">Barriers, pattern-recognition receptors, the complement cascade, cytokines, chemokines, inflammation.</div></a>
+        <a class="nav-card" href="03-macrophages.html" style="--c:var(--macro)"><div class="nc-n">03 · 🍽️ INNATE</div><div class="nc-t">Macrophages</div><div class="nc-d">Sentinel, phagocyte, cytokine broadcaster, antigen presenter, and repair cell.</div></a>
+        <a class="nav-card" href="04-antigen-presentation.html" style="--c:var(--primary)"><div class="nc-n">04 · 🪪 THE BRIDGE</div><div class="nc-t">Antigen Presentation</div><div class="nc-d">MHC I vs II structure, the two loading pathways, dendritic cells, lymph nodes, three-signal activation.</div></a>
+        <a class="nav-card" href="05-b-cells-antibodies.html" style="--c:var(--bcell)"><div class="nc-n">05 · 🏹 ADAPTIVE</div><div class="nc-t">B Cells &amp; Antibodies</div><div class="nc-d">BCRs, clonal selection, germinal centers, class switching, affinity maturation, antibody functions.</div></a>
+        <a class="nav-card" href="06-t-cells.html" style="--c:var(--tcell)"><div class="nc-n">06 · 🎯 ADAPTIVE</div><div class="nc-t">T Cells</div><div class="nc-d">CD4/CD8, thymic selection, helper subsets, cytotoxic killing, regulatory control.</div></a>
+        <a class="nav-card" href="07-t-cell-immunotherapy.html" style="--c:var(--tcell)"><div class="nc-n">07 · 💉 IMMUNOTHERAPY</div><div class="nc-t">T-Cell Immunotherapy</div><div class="nc-d">Checkpoint blockade of exhausted cells, CAR-T engineering, and bispecific T-cell engagers (BiTEs).</div></a>
+        <a class="nav-card" href="08-nk-cells.html" style="--c:var(--nk)"><div class="nc-n">08 · ⚖️ INNATE LYMPHOCYTE</div><div class="nc-t">NK Cells</div><div class="nc-d">Missing-self and induced-self recognition, antibody-dependent killing, early antiviral defense.</div></a>
+        <a class="nav-card" href="09-immune-response-timeline.html" style="--c:var(--primary)"><div class="nc-n">09 · ⏱️ DYNAMICS</div><div class="nc-t">Response Timeline</div><div class="nc-d">Worked timelines for bacterial infection, viral infection, and vaccination.</div></a>
+        <a class="nav-card" href="10-memory-tolerance-failure.html" style="--c:var(--primary)"><div class="nc-n">10 · 🧠 DYNAMICS</div><div class="nc-t">Memory, Tolerance &amp; Failure</div><div class="nc-d">Immunological memory, tolerance, autoimmunity, allergy, immunodeficiency, cancer evasion.</div></a>
+        <a class="nav-card" href="11-system-synthesis.html" style="--c:var(--primary)"><div class="nc-n">11 · 🧩 DYNAMICS</div><div class="nc-t">System Synthesis</div><div class="nc-d">A compact mental model: tag, eat, display, decide, clone, kill, coat, calm down, remember.</div></a>
+        <a class="nav-card" href="12-vdj-recombination-germinal-centers.html" style="--c:var(--bcell)"><div class="nc-n">12 · 🧬 ADAPTIVE</div><div class="nc-t">V(D)J &amp; Germinal Centers</div><div class="nc-d">RAG cutting, junctional diversity, receptor checkpoints, AID, dark-zone mutation, light-zone selection.</div></a>
+      </div>
+    </div>
+
+    <!-- ===== Reading paths ===== -->
+    <div class="section">
+      <div class="section-title"><span class="count">🧭</span>Reading paths</div>
+      <div class="paths">
+        <div class="path"><div class="path-goal">Shortest answer</div><div class="path-seq">01 → 11</div></div>
+        <div class="path"><div class="path-goal">MHC I/II answer</div><div class="path-seq">04 → 06</div></div>
+        <div class="path"><div class="path-goal">Innate immunity first</div><div class="path-seq">02 → 03 → 08</div></div>
+        <div class="path"><div class="path-goal">B cells &amp; antibodies</div><div class="path-seq">04 → 12 → 05 → 09 → 10</div></div>
+        <div class="path"><div class="path-goal">T cells</div><div class="path-seq">04 → 12 → 06 → 07 → 09 → 10</div></div>
+        <div class="path"><div class="path-goal">Full read</div><div class="path-seq">01 → 02 → … → 11 → 12 → sources</div></div>
+      </div>
+    </div>
+
+    <footer>
+      <p>🧬 <strong>How the Immune System Works</strong> — multi-page HTML companion · <a href="../00-table-of-contents.md">Markdown book</a> · <a href="sources.html">Sources &amp; figures</a></p>
+      <p style="margin-top:8px;">Recherche · <a href="https://github.com/sinban04/recherche">sinban04/recherche</a> · report 2026-04-30-immune-system-cells</p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>

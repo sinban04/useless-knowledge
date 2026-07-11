@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🎯 T Cells — How the Immune System Works</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> · Adaptive Immunity · Chapter 06</div>
+      <h1 class="page-title">🎯 T Cells</h1>
+      <p class="page-subtitle">T cells do not read free antigen — they read the surfaces of host cells. By inspecting peptide displayed on MHC, a T cell asks one precise question: "What is this cell making inside, and should I act on it?"</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Core idea</span>
+      A T cell is a <strong>peptide-MHC reader</strong> built for cell-associated information. Its randomly generated receptor is forged in the thymus to be useful but not self-reactive, then armed in the periphery only when an antigen-presenting cell delivers three signals at once. CD8 T cells turn that reading into <strong>controlled killing</strong> of infected cells; CD4 T cells turn it into <strong>licensing signals</strong> that steer macrophages, B cells, and the rest of the response.
+    </div>
+
+    <!-- ===== Signature animation ===== -->
+    <figure class="anim" data-anim="ctl-killing"
+      data-caption="A CD8 cytotoxic T cell killing an infected cell, in four beats: scan &amp; dock onto a specific peptide–MHC I, form the immunological synapse, release perforin/granzyme, and trigger clean apoptosis before detaching to kill again. Sources: NCBI Bookshelf, Immunobiology (T cell–mediated cytotoxicity); Doherty &amp; Zinkernagel, MHC restriction. Use play/pause or drag the scrubber to step through each phase."></figure>
+
+    <div class="section">
+      <div class="section-title"><span class="count">1</span>What a T cell recognizes</div>
+      <p>A <strong>T cell</strong> is an adaptive lymphocyte whose receptor (the <strong>TCR</strong>) recognizes antigen only when the antigen is displayed as a short peptide bound inside an <strong>MHC</strong> molecule on another cell's surface. This requirement is called <strong>MHC restriction</strong> — proven by Doherty and Zinkernagel, who showed a T cell only kills an infected target if they share the same MHC allele.</p>
+      <p>The TCR itself is a two-chain (αβ) receptor that contacts <em>both</em> the protruding residues of the peptide and the walls of the MHC groove. It carries no signaling tail of its own; the associated <strong>CD3</strong> complex (with its ITAM motifs) transmits the signal inward. A <strong>coreceptor</strong> — CD8 or CD4 — clamps onto an invariant part of the MHC molecule and recruits the kinase <strong>Lck</strong>, sharply lowering the activation threshold.</p>
+      <table>
+        <thead><tr><th>T-cell type</th><th>Coreceptor</th><th>MHC recognized</th><th>Main role</th></tr></thead>
+        <tbody>
+          <tr><td>CD8 T cell</td><td>CD8 (binds MHC I α3 domain)</td><td>MHC class I (on nearly all nucleated cells)</td><td>Kill infected or abnormal host cells</td></tr>
+          <tr><td>CD4 T cell</td><td>CD4 (binds MHC II β2 domain)</td><td>MHC class II (on professional APCs)</td><td>Help macrophages, B cells, and other immune cells</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>Why this design matters.</strong> An antibody can grip the outside of a virus particle. But a CD8 T cell can tell that a host cell is <em>internally</em> producing viral protein, because fragments of that protein are displayed on its MHC I. T cells are therefore the specialists for cell-associated, internal information. See <a href="04-antigen-presentation.html">antigen presentation (chapter 04)</a> for how peptides reach MHC I versus MHC II.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">2</span>Peptide-MHC and TCR binding</div>
+      <p>Section 1 named the parts — the αβ TCR, the CD3 signaling module, and the CD8/CD4 coreceptor. This section zooms into the event itself: <em>how</em> those parts read a peptide-MHC (<strong>pMHC</strong>) surface, why the bond is deliberately weak, and how a fleeting contact becomes a decision. Almost everything later in this chapter — thymic selection thresholds, the three-signal interlock, cytotoxic targeting — is downstream of this one binding event.</p>
+
+      <h3>The TCR reads a composite surface with six loops</h3>
+      <p>The business end of the TCR is its pair of variable domains, Vα and Vβ. Each contributes three <strong>complementarity-determining region (CDR)</strong> loops — six in all — split between the fixed MHC frame and the variable peptide.</p>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--macro)">
+          <h4>CDR1 &amp; CDR2 — germline → read the MHC</h4>
+          <p>Fixed by whichever V gene segment rearranged. They sit over the two α-helices that form the <strong>walls of the MHC groove</strong>. Being inherited rather than junctionally scrambled, they give TCRs a built-in tendency to bind MHC at all — a structural basis for both MHC restriction and alloreactivity.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--innate)">
+          <h4>CDR3α &amp; CDR3β — hypervariable → read the peptide</h4>
+          <p>Assembled at the V(D)J junctions where diversity peaks. They fall over the <strong>center of the groove</strong> and directly read the few peptide side chains that bulge upward out of it.</p>
+        </div>
+      </div>
+      <p>The TCR docks in a conserved, roughly <strong>diagonal</strong> orientation across the pMHC — not square-on — so the germline loops reliably find the MHC helices while the two CDR3 loops meet over the middle of the peptide. It judges a <strong>composite surface</strong>: a fixed MHC "frame" plus a variable peptide "message."</p>
+      <div class="draw-figure">
+        <div class="draw-title">TCR footprint on peptide-MHC</div>
+        <p class="draw-subtitle">Top-down view: the TCR docks diagonally so its germline loops touch the MHC frame while its most variable loops read the peptide center.</p>
+        <div class="draw-band macro">
+          <div class="draw-label">MHC groove wall</div>
+          <div class="draw-row">
+            <span class="draw-node tcell">CDR1α / CDR2α<br>MHC contact</span>
+            <span class="draw-arrow">↘</span>
+            <span class="draw-node innate">peptide<br>upward residues</span>
+            <span class="draw-arrow">↙</span>
+            <span class="draw-node tcell">CDR1β / CDR2β<br>MHC contact</span>
+          </div>
+          <div class="draw-row">
+            <span class="draw-node tcell">CDR3α</span>
+            <span class="draw-node tcell">CDR3β</span>
+          </div>
+          <div class="draw-label">MHC groove wall</div>
+        </div>
+        <div class="draw-caption">Anchor residues point down into MHC pockets and are mostly hidden from the TCR. The central peptide residues point up; CDR3α and CDR3β are positioned to inspect those variable protrusions.</div>
+      </div>
+      <div class="alert info">
+        <strong>The anchors are invisible to the TCR.</strong> The peptide's anchor residues bury into the MHC pockets (see <a href="04-antigen-presentation.html">antigen presentation, chapter 04</a>) — they are its grip on the shelf. What the TCR grades is the handful of upward-pointing residues and the MHC surface framing them.
+      </div>
+      <div class="alert key">
+        <span class="alert-head">Is CDR recognition like double locks?</span>
+        Close, but not exactly. It is more like a <strong>two-part barcode reader</strong>: CDR1/CDR2 check the MHC frame, while CDR3 checks the peptide message sitting in that frame. Both surfaces matter because the TCR recognizes one combined object, <strong>peptide-MHC</strong>. This prevents a T cell from reacting to free peptide alone and explains why the same peptide on the wrong MHC can look different to the TCR.
+      </div>
+
+      <h3>A weak, fast, tunable bond — on purpose</h3>
+      <p>Antibodies bind tightly (dissociation constants in the nanomolar-to-picomolar range). The TCR-pMHC bond is, by contrast, strikingly loose and short-lived.</p>
+      <table>
+        <thead><tr><th>Property</th><th>Antibody-antigen</th><th>TCR-pMHC</th></tr></thead>
+        <tbody>
+          <tr><td>Affinity (K<sub>d</sub>)</td><td>nM–pM (tight)</td><td>≈ 1–100 µM (weak)</td></tr>
+          <tr><td>Bond half-life</td><td>minutes to hours</td><td>often seconds or less</td></tr>
+          <tr><td>What is read</td><td>a surface epitope</td><td>peptide <em>plus</em> the self-MHC frame</td></tr>
+          <tr><td>Effect of binding</td><td>neutralize, opsonize, fix complement</td><td><em>trigger a signal</em>, then let go</td></tr>
+        </tbody>
+      </table>
+      <p>That looseness looks like a defect until you see what it buys:</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">SENSITIVITY</div><div class="step-t">Serial engagement</div><div class="step-d">Because each bond is brief, one pMHC can trigger many TCRs in turn — a few hundred copies of the right peptide can activate the cell.</div></div>
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">DISCRIMINATION</div><div class="step-t">Kinetic proofreading</div><div class="step-d">Signaling takes a timed chain of steps; a bond that breaks too soon resets it. Only long-enough (agonist) bonds finish the ladder — so dwell time, not affinity, predicts activation.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">FORCE</div><div class="step-t">Catch bonds</div><div class="step-d">CD8/CD4 stabilize the complex and deliver Lck. Under the pull of a migrating cell, agonist bonds <em>lengthen</em> while self-bonds slip — the TCR as a mechanosensor.</div></div>
+      </div>
+      <p>A longer-lived TCR-pMHC bond usually means this peptide-MHC is a better <strong>agonist</strong> for that TCR. It does <em>not</em> automatically mean "kill this cell" in every context. In a mature CD8 effector cell, a good match on MHC I can trigger killing. In a naive T cell, the same bond is only <strong>Signal 1</strong>; the cell still needs costimulation and cytokine context before it expands. In the thymus, strong binding to self peptide-MHC is interpreted as danger and causes deletion rather than immunity.</p>
+
+      <h3>From bond to signal: the handoff</h3>
+      <p>The TCR has no enzymatic tail, so recognition and signaling are physically coupled but chemically separate. The peptide is <strong>not handed over</strong> to CD3. Instead, the TCR binds peptide-MHC outside the cell, and the CD3/co-receptor machinery attached to the same membrane complex converts that binding event into phosphorylation inside the T cell.</p>
+      <table>
+        <thead><tr><th>Part</th><th>What it binds</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><strong>TCR αβ</strong></td><td>Peptide-MHC composite surface</td><td>Recognition head; decides specificity, but has almost no intracellular signaling capacity</td></tr>
+          <tr><td><strong>CD3 γε / δε + ζζ</strong></td><td>Does not bind peptide-MHC directly; is assembled with the TCR</td><td>Signal-transduction module; its cytoplasmic <strong>ITAMs</strong> become phosphorylated and recruit ZAP-70</td></tr>
+          <tr><td><strong>CD4 or CD8</strong></td><td>Invariant MHC domains: CD4 binds MHC II; CD8 binds MHC I</td><td>Co-receptor; stabilizes the correct class interaction and brings <strong>Lck</strong> next to CD3 ITAMs</td></tr>
+          <tr><td><strong>Lck</strong></td><td>Associated with CD4/CD8 cytoplasmic tails</td><td>Src-family tyrosine kinase; adds phosphate groups to CD3/ζ ITAMs and helps activate ZAP-70</td></tr>
+        </tbody>
+      </table>
+      <div class="draw-figure">
+        <div class="draw-title">From binding to transcription</div>
+        <div class="draw-row">
+          <span class="draw-node macro">peptide-MHC<br>binds TCR</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node nk">CD4/CD8<br>brings Lck</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node innate">CD3 ITAMs<br>phosphorylated</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node nk">ZAP-70</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">LAT signalosome</span>
+        </div>
+        <div class="draw-grid three">
+          <div class="draw-panel tcell"><h4>Ca2+ / calcineurin</h4><p>Activates NFAT.</p></div>
+          <div class="draw-panel innate"><h4>DAG / Ras</h4><p>Activates MAPK and AP-1.</p></div>
+          <div class="draw-panel nk"><h4>PKC-θ</h4><p>Activates NF-κB.</p></div>
+        </div>
+        <div class="draw-caption">The TCR has no signaling tail of its own. CD3 and the co-receptor supply the relay; CD28 costimulation decides whether the transcriptional program becomes productive IL-2, proliferation, and differentiation.</div>
+      </div>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">1</div><div class="step-t">Dock</div><div class="step-d">TCR binds peptide-MHC; CD4 or CD8 binds the invariant MHC domain beside it.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">2</div><div class="step-t">Place Lck</div><div class="step-d">The co-receptor brings Lck into the same microcluster as CD3 and the ζ chain.</div></div>
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">3</div><div class="step-t">Phosphorylate ITAMs</div><div class="step-d">Lck phosphorylates tyrosines in CD3/ζ ITAMs, creating docking sites.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">4</div><div class="step-t">Recruit ZAP-70</div><div class="step-d">ZAP-70 binds phosphorylated ITAMs through SH2 domains and is activated by Lck.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">5</div><div class="step-t">Build LAT/SLP-76</div><div class="step-d">ZAP-70 phosphorylates scaffold proteins that assemble PLCγ1, Ras/MAPK, and other signaling enzymes.</div></div>
+        <div class="flow-step" style="--c:var(--safe)"><div class="step-n">6</div><div class="step-t">Turn on genes</div><div class="step-d">NFAT, AP-1, and NF-κB enter the nucleus; with CD28 costimulation they support IL-2 and proliferation.</div></div>
+      </div>
+      <div class="alert key">
+        <span class="alert-head">Why weakness is the point</span>
+        Kinetic proofreading lives in the ITAM → ZAP-70 relay: it is a timer the bond must outlast. A weak, fast bond lets the cell <em>test</em> thousands of pMHC per minute and commit only to the ones that dwell long enough — high sensitivity and high specificity from the same loose grip. Weakness is therefore not needed to "pass the peptide to CD3"; CD3 never takes the peptide. Weakness is needed for fast scanning, serial engagement, and timed discrimination.
+      </div>
+
+      <h3>Specificity versus cross-reactivity</h3>
+      <p>A person carries on the order of 10<sup>7</sup>–10<sup>8</sup> distinct TCRs, but the space of possible 9-residue peptides is astronomically larger (20<sup>9</sup> is roughly half a trillion). The repertoire cannot hold a private receptor for every peptide, so <strong>each TCR must be cross-reactive</strong>: by keying on a few peptide residues plus the MHC frame, one TCR can recognize on the order of a million different peptides. Cross-reactivity is not sloppiness — it is how a finite repertoire covers a near-infinite antigenic world; thymic negative selection (section 3) keeps it bounded by deleting clones that bind <em>self</em> pMHC too well.</p>
+      <div class="alert warn">
+        <span class="alert-head">Alloreactivity: why transplants are rejected</span>
+        The same germline affinity for MHC makes TCRs <strong>alloreactive</strong> — an unusually large fraction of T cells (roughly 1–10%) respond directly to a <em>foreign</em> MHC allele presenting ordinary peptides, far above the frequency for any single conventional antigen. That is the immunological engine of transplant rejection, the phenomenon that gave the "histocompatibility" complex its name. See <a href="04-antigen-presentation.html">chapter 04</a>.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">3</span>T cells are made dangerous, then screened in the thymus</div>
+      <p>T cells originate from bone-marrow progenitors but mature in the <strong>thymus</strong>. Each developing thymocyte rearranges its TCR genes <em>randomly</em> (V(D)J recombination; see <a href="12-vdj-recombination-germinal-centers.html">chapter 12</a>), so the starting repertoire contains receptors for pathogens never seen — and, inevitably, receptors that bind self. The thymus runs two sequential tests to keep the useful ones and remove the dangerous ones.</p>
+      <div class="draw-figure">
+        <div class="draw-title">Thymic selection is a two-threshold filter</div>
+        <div class="draw-row">
+          <span class="draw-node tcell">double-positive<br>thymocyte<br>CD4+ CD8+</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node innate">positive selection<br>weak self-MHC binding</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node nk">negative selection<br>strong self binding dies</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node safe">naive CD4 or CD8<br>exported</span>
+        </div>
+        <div class="draw-grid">
+          <div class="draw-panel innate"><h4>Too weak</h4><p>Cannot read this body's MHC. Dies by neglect.</p></div>
+          <div class="draw-panel tcell"><h4>Weak to moderate</h4><p>Useful MHC reader. Survives and commits to CD4 or CD8 lineage.</p></div>
+          <div class="draw-panel nk"><h4>Too strong</h4><p>Dangerously self-reactive. Deleted or diverted to Treg fate.</p></div>
+        </div>
+        <div class="draw-caption">Positive selection asks "can this TCR read self-MHC at all?" Negative selection asks "does it bind self too strongly?" Most thymocytes fail one of these tests.</div>
+      </div>
+      <p>The two tests answer different questions:</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">TEST 1</div><div class="step-t">Positive selection</div><div class="step-d">"Can this receptor work with <em>this body's</em> MHC?" Weak self-MHC binding rescues the cell from death by neglect and fixes its CD4-vs-CD8 fate.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">TEST 2</div><div class="step-t">Negative selection</div><div class="step-d">"Is this receptor dangerously self-reactive?" Strong self-binding triggers clonal deletion (central tolerance).</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">RESULT</div><div class="step-t">Useful, mostly safe</div><div class="step-d">A repertoire restricted to self-MHC, purged of the most overtly autoreactive clones. Most thymocytes fail both tests and die.</div></div>
+      </div>
+      <div class="alert warn">
+        <span class="alert-head">AIRE solves the "tissue antigen" problem</span>
+        Negative selection can only delete a clone against self-proteins the thymus actually shows. The transcription factor <strong>AIRE</strong> (autoimmune regulator) lets medullary thymic epithelial cells ectopically express thousands of tissue-restricted genes — insulin, thyroid proteins, retinal antigens — so that thymocytes reactive to peripheral organs can be removed centrally. Loss of AIRE causes the multi-organ autoimmune syndrome APECED, proving central tolerance is incomplete without it. Because screening is never perfect, <strong>peripheral tolerance</strong> (anergy, Tregs, ignorance) is also required later. See <a href="09-immune-response-timeline.html">the response timeline (chapter 09)</a> and tolerance mechanisms in <a href="10-memory-tolerance-failure.html">chapter 10</a>.
+      </div>
+      <h3>What if the thymus shrinks, is absent, or is removed early?</h3>
+      <p>The thymus does not simply become useless after childhood. It <strong>involutes</strong> with age — functional thymic epithelial tissue is progressively replaced by fat and stromal tissue — so the output of brand-new naive T cells falls. Adults maintain many T cells through long cell lifespan, memory pools, and peripheral homeostatic proliferation, but those routes preserve or expand existing clones; they do not generate the same breadth of new TCR diversity that a young thymus can.</p>
+      <table>
+        <thead><tr><th>Situation</th><th>Expected immune consequence</th><th>Autoimmunity risk?</th></tr></thead>
+        <tbody>
+          <tr><td>Normal aging thymus</td><td>Lower naive T-cell output, more reliance on existing naive/memory clones, narrower new-response capacity</td><td>Can contribute to immune dysregulation with age, but is not by itself a single-cause autoimmune disease</td></tr>
+          <tr><td>Partial thymic hypoplasia, as in many 22q11.2 / DiGeorge cases</td><td>Variable T-cell lymphopenia; many patients have partial, not absent, T-cell production</td><td>Yes, risk is increased because central tolerance and lymphocyte homeostasis can be abnormal</td></tr>
+          <tr><td>Complete congenital athymia</td><td>Severe T-cell immunodeficiency unless treated with specialized immune reconstitution such as thymus tissue implantation or transplant approaches</td><td>Immune deficiency dominates; defective selection can also permit immune dysregulation</td></tr>
+          <tr><td>Thymectomy in infancy or early childhood</td><td>Studies report long-term reduction in naive T cells and TCR diversity, especially when removal occurs before the peripheral T-cell pool is mature</td><td>Not inevitable, but some cohorts show increased immune dysregulation or autoimmune associations</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>The age distinction matters.</strong> Losing thymic function in an adult is usually less catastrophic than being born without a thymus, because the adult already has a stocked peripheral T-cell compartment. Losing it very early is more serious because the immune system has not yet built enough diverse, self-tolerant T cells.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">4</span>Naive T-cell activation: the three-signal model</div>
+      <p>A naive T cell is deliberately hard to switch on. It usually needs <strong>three independent pieces of information</strong> from an antigen-presenting cell — typically a dendritic cell that has migrated from infected tissue to a lymph node. Requiring all three is a safety interlock: antigen alone, without evidence of danger, leads not to activation but to <strong>anergy</strong> or deletion.</p>
+      <table>
+        <thead><tr><th>Signal</th><th>Molecules</th><th>Meaning</th><th>Consequence if missing</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Signal 1</strong> — antigen</td><td>TCR + CD4/CD8 reads peptide-MHC</td><td>Specific antigen recognition</td><td>No activation at all</td></tr>
+          <tr><td><strong>Signal 2</strong> — costimulation</td><td>CD28 on T cell binds B7 (CD80/CD86) on APC</td><td>The APC has sensed real danger (PRRs fired)</td><td>Anergy, deletion, or a weak/abortive response</td></tr>
+          <tr><td><strong>Signal 3</strong> — cytokines</td><td>e.g. IL-12, IL-4, IL-6/TGF-β, type I IFN</td><td>The <em>type</em> of threat and tissue context</td><td>Wrong or incomplete differentiation</td></tr>
+        </tbody>
+      </table>
+      <p>When all three arrive, the T cell makes the growth factor <strong>IL-2</strong> and its high-affinity receptor, then proliferates and differentiates into effector cells. This burst is <strong>clonal expansion</strong> — Burnet's clonal selection principle in action.</p>
+      <div class="draw-figure">
+        <div class="draw-title">Clonal expansion after three signals</div>
+        <div class="draw-row">
+          <span class="draw-node tcell">rare naive T cell<br>matching TCR</span>
+          <span class="draw-arrow">+</span>
+          <span class="draw-node macro">Signal 1<br>peptide-MHC</span>
+          <span class="draw-arrow">+</span>
+          <span class="draw-node innate">Signal 2<br>CD28-B7</span>
+          <span class="draw-arrow">+</span>
+          <span class="draw-node bcell">Signal 3<br>cytokines</span>
+        </div>
+        <div class="draw-row">
+          <span class="draw-node nk">IL-2 loop</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">proliferation</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node safe">many effector cells<br>same specificity</span>
+        </div>
+        <div class="draw-caption">The first adaptive response takes days because the system must find a rare clone, verify context, and expand it into a useful population.</div>
+      </div>
+      <p>The first response takes days because the rare matching clone must be located, fully activated, and expanded from one cell into a useful army. A memory response is faster because the matching population is already larger and functionally primed. See <a href="09-immune-response-timeline.html">the timeline (chapter 09)</a>.</p>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Activation_of_T_and_B_cells.png" alt="Diagram showing an antigen-presenting cell activating a T cell, which in turn helps activate a B cell" loading="lazy">
+        <figcaption>An antigen-presenting cell delivers peptide-MHC plus costimulation to a T cell, which then helps activate antigen-specific B cells. Source: <a href="https://commons.wikimedia.org/wiki/File:Activation_of_T_and_B_cells.png">Wikimedia Commons</a> (author Immcarle105), <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</figcaption>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">5</span>CD8 cytotoxic T cells: killing infected cells</div>
+      <p>A <strong>CD8 cytotoxic T lymphocyte (CTL)</strong> kills host cells that display a matching peptide on MHC I — the surveillance system for viruses and other cytosolic pathogens. Because almost every nucleated cell expresses MHC I and continuously samples its own cytosolic proteins, a virus that hijacks a cell to make viral protein cannot hide: fragments appear on MHC I and flag the cell for death. The animation at the top of this page plays out the four beats below.</p>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/CTL_killing_strategies.png" alt="Diagram of cytotoxic T lymphocyte killing strategies including perforin and granzyme delivery and Fas-FasL apoptosis signaling" loading="lazy">
+        <figcaption>CTL killing strategies: focused granule delivery and death-receptor signaling both route the target into apoptosis. Source: <a href="https://commons.wikimedia.org/wiki/File:CTL_killing_strategies.png">Wikimedia Commons</a>, סתו כסלו, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</figcaption>
+      </div>
+      <div class="draw-figure">
+        <div class="draw-title">CTL killing is focused and reusable</div>
+        <div class="draw-row">
+          <span class="draw-node tcell">scan<br>TCR + CD8</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node innate">match<br>peptide-MHC I</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">synapse<br>LFA-1 / ICAM-1</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node nk">perforin + granzyme<br>or Fas-FasL</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node safe">apoptosis<br>detach and reload</span>
+        </div>
+        <div class="draw-caption">The lethal molecules are delivered into a tight synapse, so the target cell receives the hit while neighboring cells are spared. The CTL can detach and kill again.</div>
+      </div>
+      <p>Two design points are worth singling out:</p>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--nk)">
+          <h4>Perforin / granzyme route</h4>
+          <p>Pre-formed lytic granules deliver <strong>perforin</strong> (forms pores / aids delivery) and <strong>granzyme B</strong> (a protease that activates the caspase cascade). The granules are released only into the tightly sealed synapse, so neighboring healthy cells are spared.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--tcell)">
+          <h4>Fas–FasL route</h4>
+          <p><strong>FasL</strong> on the CTL engages the death receptor <strong>Fas (CD95)</strong> on the target, triggering caspase-8 directly. A second, granule-independent path to the same end: controlled apoptosis.</p>
+        </div>
+      </div>
+      <div class="alert info">
+        <strong>Apoptosis, not rupture, is the point.</strong> Killing by apoptosis packages the infected cell's contents (including its still-replicating virus) into membrane-bound fragments cleared by phagocytes — limiting spread and inflammation. Sacrificing one host cell stops it from being a pathogen factory.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">6</span>CD4 helper T cells: one recognition event, many strategies</div>
+      <p><strong>CD4 T cells</strong> rarely kill directly. Instead they read peptide-MHC II on professional APCs and then differentiate — guided by Signal 3 cytokines — into <strong>helper subsets</strong>, each running a master transcription factor and a signature cytokine output. The subset chosen determines whether "T-cell activation" means macrophage activation, antibody maturation, neutrophil recruitment, anti-parasite defense, or suppression.</p>
+      <table>
+        <thead><tr><th>Subset</th><th>Polarizing cytokine</th><th>Master TF</th><th>Signature outputs</th><th>Main use</th></tr></thead>
+        <tbody>
+          <tr><td>TH1</td><td>IL-12 (intracellular microbes)</td><td>T-bet</td><td>IFN-γ</td><td>Activate macrophages; cell-mediated immunity</td></tr>
+          <tr><td>TH2</td><td>IL-4 (helminth settings)</td><td>GATA3</td><td>IL-4, IL-5, IL-13</td><td>Eosinophils, IgE, barrier responses</td></tr>
+          <tr><td>TH17</td><td>IL-6, IL-23, TGF-β</td><td>RORγt</td><td>IL-17, IL-22</td><td>Neutrophil recruitment; mucosal/barrier defense</td></tr>
+          <tr><td>Tfh (follicular helper)</td><td>IL-6, IL-21 in follicles</td><td>Bcl-6</td><td>CD40L, IL-21</td><td>B-cell class switching &amp; affinity maturation</td></tr>
+          <tr><td>Treg (regulatory)</td><td>TGF-β, IL-2 (tolerogenic)</td><td>FOXP3</td><td>IL-10, TGF-β</td><td>Restrain immune responses</td></tr>
+        </tbody>
+      </table>
+      <div class="alert warn">
+        <span class="alert-head">Subsets are axes, not rigid boxes</span>
+        Real T-cell states are plastic and tissue-shaped; a cell can shift its program as the cytokine environment changes. The subset model is still valuable because it explains how a single recognition event can lead to opposite outcomes — from licensing a macrophage to kill, to suppressing the whole response.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">7</span>The TH1 loop: licensing macrophages to finish the kill</div>
+      <p>Some pathogens (notably mycobacteria) survive <em>inside</em> macrophage vesicles. The macrophage can ingest them but cannot complete the kill on its own — it needs a license from a <strong>TH1</strong> cell. This is a reciprocal handshake: the macrophage shows the antigen, the TH1 cell verifies it and sends back two activating signals.</p>
+      <div class="draw-figure">
+        <div class="draw-title">TH1 licenses a macrophage that is stuck</div>
+        <div class="draw-row">
+          <span class="draw-node macro">macrophage<br>contains microbe</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node macro">MHC II<br>microbial peptide</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">TH1 recognizes</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node innate">IFN-γ + CD40L</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node nk">ROS, NO,<br>phagolysosome maturation</span>
+        </div>
+        <div class="draw-caption">The macrophage presents evidence of the microbe; the TH1 cell verifies the peptide-MHC II and sends back IFN-γ plus CD40L to strengthen killing.</div>
+      </div>
+      <p>When the kill still cannot be finished, activated macrophages and T cells wall the pathogen off inside a <strong>granuloma</strong>. Containment protects the host, but chronic containment damages tissue — the same double-edged logic seen with macrophages. See the matching loop from the macrophage side in <a href="03-macrophages.html">chapter 03</a>.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">8</span>The Tfh loop: licensing B cells in the germinal center</div>
+      <p><strong>T follicular helper (Tfh)</strong> cells are essential for high-quality antibody responses to most protein antigens. The handshake mirrors the macrophage loop, but the help drives antibody quality instead of microbicidal killing.</p>
+      <div class="alert info">
+        <strong>Split the helper loops.</strong> A CD4 helper T cell can recognize peptide-MHC II on a macrophage and activate that macrophage; that is mainly the TH1 loop above. For B-cell activation, the key APC is the <strong>B cell itself</strong>: it captures native antigen with its BCR, presents peptide-MHC II, and receives Tfh permission signals. The helper T cell does not transfer antigen from macrophage to B cell.
+      </div>
+      <div class="draw-figure">
+        <div class="draw-title">Tfh licenses the B cell in a linked-recognition loop</div>
+        <div class="draw-row">
+          <span class="draw-node macro">dendritic cell primes<br>CD4 T cell</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">Tfh program</span>
+        </div>
+        <div class="draw-row">
+          <span class="draw-node bcell">BCR captures<br>native antigen</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node bcell">B cell presents<br>peptide-MHC II</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">Tfh recognizes</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node innate">CD40L + IL-21</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node safe">class switch<br>GC selection<br>memory</span>
+        </div>
+        <div class="draw-caption">The B cell and T cell do not need to bind the same epitope, but their epitopes must come from the same captured antigenic object. That linked-recognition rule reduces accidental help to unrelated B cells.</div>
+      </div>
+      <p>This is <strong>linked recognition</strong>. The BCR may bind a surface shape on a virus coat, while the Tfh cell may recognize a peptide from a different protein inside the same virus particle. That is allowed because the B cell captured the whole linked object and processed it. What is not allowed is unrelated help: a Tfh cell specific for one antigen should not fully activate a B cell that captured an unrelated self molecule.</p>
+      <p>Without T-cell help, many antibody responses remain lower-affinity, less durable, or restricted in class. This is why defects in <strong>CD40L–CD40</strong> signaling impair class-switched antibody production (hyper-IgM syndrome). See <a href="05-b-cells-antibodies.html">B cells &amp; antibodies (chapter 05)</a> and <a href="12-vdj-recombination-germinal-centers.html">V(D)J &amp; germinal centers (chapter 12)</a>.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">9</span>Regulatory T cells keep the system from overshooting</div>
+      <p>A <strong>regulatory T cell (Treg)</strong>, defined by the master transcription factor <strong>FOXP3</strong>, actively restrains immune activation. Tregs are central to <strong>peripheral tolerance</strong>: they suppress other T cells, sequester IL-2, dampen dendritic-cell costimulation (e.g. via CTLA-4 stripping B7 from APCs), and secrete anti-inflammatory IL-10 and TGF-β to keep responses proportional.</p>
+      <p>This is not optional bookkeeping. Every infection carries collateral-damage risk, and every random receptor-generation event carries self-reactivity risk. Tregs are a key mechanism that keeps immune recognition from tipping into autoimmune disease — loss-of-function FOXP3 mutations cause the fatal multi-organ autoimmunity of IPEX. See tolerance and its failures in <a href="10-memory-tolerance-failure.html">chapter 10</a>.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Summary</span>
+      T cells inspect peptide-MHC displays rather than free antigen — through a deliberately weak, short-lived TCR bond whose <em>dwell time</em>, not its affinity, decides whether a signal fires (kinetic proofreading) — after a thymic apprenticeship (positive selection for MHC literacy, negative selection plus AIRE for self-tolerance) and a three-signal activation interlock. <strong>CD8 CTLs</strong> kill infected cells presenting matching peptide on MHC I, using the perforin/granzyme and Fas–FasL apoptosis routes inside a tightly focused synapse. <strong>CD4 helpers</strong> convert one recognition event into many strategies — TH1 licensing of macrophages, Tfh licensing of B cells, TH2/TH17 barrier programs, and Treg suppression. T cells are powerful because they fuse clonal specificity with cellular effector and licensing functions; they are dangerous enough that thymic and peripheral tolerance are not luxuries but requirements. How this biology becomes medicine — checkpoint blockade of exhausted cells, CAR-T engineering, and bispecific T-cell engagers — is the subject of <a href="07-t-cell-immunotherapy.html">chapter 07</a>.
+    </div>
+
+    <div class="chap-nav">
+      <a href="05-b-cells-antibodies.html">← 05 · B Cells &amp; Antibodies</a>
+      <a href="../06-t-cells.md">Markdown source</a>
+      <a href="07-t-cell-immunotherapy.html">07 · T-Cell Immunotherapy →</a>
+    </div>
+
+    <footer>
+      <p>🎯 T Cells · Chapter 06 · <a href="index.html">Report home</a> · <a href="sources.html">Sources</a></p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🪪 Antigen Presentation — How the Immune System Works</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> · The Bridge · Chapter 04</div>
+      <h1 class="page-title">🪪 Antigen Presentation</h1>
+      <p class="page-subtitle">How hidden molecular information — including what a cell is secretly making inside — gets carved into short peptides, clamped into an MHC groove, and displayed at the surface as an ID badge that T cells can read.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Core idea</span>
+      A T cell never sees a whole pathogen. It sees a short <strong>peptide</strong> held in the groove of a host <strong>MHC</strong> molecule. Antigen presentation is the machinery that converts proteins — from the cytosol or from swallowed cargo — into surface-displayed peptide-MHC complexes. Two parallel assembly lines feed two MHC classes that route to two T-cell fates: <span class="hl-dim">class&nbsp;I</span> reports "what I am making inside" to killer <strong>CD8</strong> T cells; class&nbsp;II reports "what I have engulfed" to helper <strong>CD4</strong> T cells.
+    </div>
+
+    <!-- ===== Static two-lane overview (the two assembly lines at a glance) ===== -->
+    <div class="compare-2">
+      <div class="compare-col" style="border-left:4px solid var(--tcell)">
+        <h4 style="margin-top:0">Class I · endogenous → CD8</h4>
+        <p style="margin:0 0 6px;color:var(--text-muted)"><em>reports "what I'm making inside"</em></p>
+        <div class="mono-diagram" style="margin:6px 0 0">cytosolic / viral protein
+   <span class="hl-dim">|</span>
+<span class="hl-tcell">PROTEASOME</span> shreds -> peptides
+   <span class="hl-dim">|</span>
+<span class="hl-tcell">TAP</span> pumps peptides into the ER
+   <span class="hl-dim">|</span>
+load empty MHC I + b2m
+   <span class="hl-dim">|</span>
+surface -> <span class="hl-tcell">CD8 T cell -> KILL</span></div>
+      </div>
+      <div class="compare-col" style="border-left:4px solid var(--bcell)">
+        <h4 style="margin-top:0">Class II · exogenous → CD4</h4>
+        <p style="margin:0 0 6px;color:var(--text-muted)"><em>reports "what I have engulfed"</em></p>
+        <div class="mono-diagram" style="margin:6px 0 0">engulfed extracellular protein
+   <span class="hl-dim">|</span>
+endosome + lysosome (<span class="hl-bcell">cathepsins</span>)
+   <span class="hl-dim">|</span>
+MHC II made, groove plugged (<span class="hl-bcell">Ii</span>)
+   <span class="hl-dim">|</span>
+CLIP swapped out by <span class="hl-bcell">HLA-DM</span>
+   <span class="hl-dim">|</span>
+surface -> <span class="hl-bcell">CD4 T cell -> HELP</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">1</span>Why antigen presentation exists</div>
+      <p>A <strong>T cell</strong> cannot usually recognize a whole bacterium, viral particle, or toxin floating in tissue. T cells recognize short peptide fragments displayed on host molecules called <strong>major histocompatibility complex (MHC)</strong> proteins.</p>
+      <p>That solves a deep problem: many important pathogens live <em>inside</em> cells. Antibodies can bind extracellular targets, but they cannot inspect the cytosol of an infected cell. MHC molecules solve this by sampling proteins from cellular compartments and displaying peptide fragments at the cell surface — making every nucleated cell a kind of molecular billboard.</p>
+      <div class="mono-diagram">inside a cell
+   proteins are degraded into peptides
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+peptides load onto <span class="hl-macro">MHC</span> molecules
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+peptide-MHC complexes appear on cell surface
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-tcell">T cells</span> inspect the display</div>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Activation_of_T_and_B_cells.png" alt="Diagram of antigen presentation and costimulation activating T and B cells, showing APC peptide-MHC display, CD28/B7 costimulation, helper T-cell activation, and CD40/CD40L B-cell help" loading="lazy">
+        <figcaption>Antigen presentation and costimulation link APC context, helper T-cell activation, B-cell help, CD28/B7 signaling, and CD40/CD40L licensing. Source: <a href="https://commons.wikimedia.org/wiki/File:Activation_of_T_and_B_cells.png">Wikimedia Commons</a>, Immcarle105, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</figcaption>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">2</span>MHC class I versus class II</div>
+      <p>The two major MHC classes sample different compartments and talk to different T-cell types. This single split organizes the rest of cell-mediated immunity.</p>
+      <table>
+        <thead><tr><th>Feature</th><th>MHC class I</th><th>MHC class II</th></tr></thead>
+        <tbody>
+          <tr><td>Expressed on</td><td>Most nucleated cells</td><td>Professional APCs: dendritic cells, macrophages, B cells</td></tr>
+          <tr><td>Peptide source</td><td>Cytosolic proteins</td><td>Proteins taken into vesicles</td></tr>
+          <tr><td>Typical peptide length</td><td>Shorter, often 8–10 amino acids</td><td>Longer, often 13–25 amino acids</td></tr>
+          <tr><td>T-cell partner</td><td>CD8 T cells</td><td>CD4 T cells</td></tr>
+          <tr><td>Main message</td><td>"This is what is being made inside me"</td><td>"This is what I have engulfed or bound"</td></tr>
+          <tr><td>Typical response</td><td>Cytotoxic killing of an infected or abnormal cell</td><td>Help, macrophage activation, B-cell help, cytokine direction</td></tr>
+        </tbody>
+      </table>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/MHC_expression.svg" alt="Overview diagram of MHC class I and class II expression and HLA gene origin" loading="lazy">
+        <figcaption>MHC expression overview: class I is broadly expressed, while class II is concentrated on professional antigen-presenting cells. Source: <a href="https://commons.wikimedia.org/wiki/File:MHC_expression.svg">Wikimedia Commons</a>, Zionlion77 derived from Atropos235 MHC class I/II diagrams, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</figcaption>
+      </div>
+      <table>
+        <thead><tr><th>Cell type</th><th>MHC I</th><th>MHC II</th><th>Why that pattern makes sense</th></tr></thead>
+        <tbody>
+          <tr><td>Epithelial cell, liver cell, neuron, muscle cell</td><td>Yes</td><td>Usually no</td><td>Any nucleated cell can be infected by a virus and must report cytosolic peptides to CD8 cells</td></tr>
+          <tr><td>Dendritic cell</td><td>Yes</td><td>Yes</td><td>Best at priming naive T cells; can also cross-present extracellular antigen on MHC I</td></tr>
+          <tr><td>Macrophage</td><td>Yes</td><td>Yes</td><td>Presents engulfed material to CD4 TH1 cells and receives macrophage-activation help</td></tr>
+          <tr><td>B cell</td><td>Yes</td><td>Yes</td><td>Presents BCR-captured antigen on MHC II to helper T cells</td></tr>
+          <tr><td>Red blood cell</td><td>No</td><td>No</td><td>Mature human red cells lack a nucleus and do not run normal protein-synthesis/display machinery</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>The split is not perfect.</strong> Dendritic cells can perform <strong>cross-presentation</strong>, routing extracellular material onto MHC&nbsp;I to activate CD8 T cells. That exception is crucial for antiviral and antitumor responses, because a naive CD8 T cell usually needs professional priming by a dendritic cell before it can kill infected tissue cells. More in section&nbsp;5.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">3</span>The molecules themselves: MHC structure</div>
+      <p>Sections 1 and 2 described what MHC <em>does</em>. The structure explains <em>why</em> it behaves that way. In humans, MHC molecules are also called <strong>HLA (human leukocyte antigen)</strong>, encoded by a dense, extraordinarily variable gene cluster on chromosome 6. Both classes do the same basic job — clamp a peptide in a surface groove so a T cell can read it — but they are assembled from different parts, and that difference decides everything downstream.</p>
+
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--tcell)">
+          <h4>MHC class I → CD8</h4>
+          <p>One long <strong>alpha (heavy) chain</strong> (domains alpha-1, alpha-2, alpha-3) plus a small, separate, invariant partner, <strong>beta-2 microglobulin</strong>. The groove sits on top, built from alpha-1 + alpha-2, and is <strong>closed at both ends</strong> like a sealed bun — capping peptide length at roughly 8–10 amino acids. The membrane-proximal <strong>alpha-3</strong> domain is where the <strong>CD8</strong> co-receptor docks, tying class I to cytotoxic T cells.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--bcell)">
+          <h4>MHC class II → CD4</h4>
+          <p>Two similar-sized chains, <strong>alpha and beta</strong>, both crossing the membrane. The groove is built from alpha-1 + beta-1 and is <strong>open at both ends</strong>, so a longer peptide threads through with its ends hanging out — roughly 13–25 amino acids. The <strong>CD4</strong> co-receptor docks on the <strong>beta-2</strong> domain, tying class II to helper T cells.</p>
+        </div>
+      </div>
+
+      <div class="compare-2">
+        <div class="figure">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/MHC_Class_1.svg" alt="Schematic representation of an MHC class I molecule with alpha domains, beta-2 microglobulin, and peptide-binding groove" loading="lazy">
+          <figcaption>MHC class I: one heavy alpha chain plus beta-2 microglobulin; alpha-1/alpha-2 form a closed peptide-binding groove. Source: <a href="https://commons.wikimedia.org/wiki/File:MHC_Class_1.svg">Wikimedia Commons</a>, Atropos235, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</figcaption>
+        </div>
+        <div class="figure">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/MHC_Class_2.svg" alt="Schematic representation of an MHC class II molecule with alpha and beta chains and an open peptide-binding groove" loading="lazy">
+          <figcaption>MHC class II: alpha and beta chains together form an open groove that can bind longer peptides. Source: <a href="https://commons.wikimedia.org/wiki/File:MHC_Class_2.svg">Wikimedia Commons</a>, Atropos235, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</figcaption>
+        </div>
+      </div>
+
+      <div class="mono-diagram">   <span class="hl-tcell">MHC class I</span>                          <span class="hl-bcell">MHC class II</span>
+   peptide ~8-10 aa (ends capped)       peptide ~13-25 aa (ends open)
+
+      [ peptide ]                          [ == peptide == ]
+   +-------------+                      +-------------------+
+   |  a1     a2  |  <span class="hl-dim"><- closed groove</span>    |  a1           b1  |  <span class="hl-dim"><- open groove</span>
+   +-------------+                      +-------------------+
+   |     a3      |                      |   a2     |   b2   |
+   +------+------+                      +----------+--------+
+   | b2m  |  <span class="hl-dim"><- beta-2 microglobulin</span>    |  alpha   |  beta  |
+   +------+                             +----------+--------+
+   ====== membrane ======               ======== membrane ========
+         <span class="hl-dim">|</span>                                        <span class="hl-dim">|</span>
+   <span class="hl-tcell">CD8</span> binds a3 domain                      <span class="hl-bcell">CD4</span> binds b2 domain</div>
+
+      <div class="alert key">
+        <span class="alert-head">The "rule of 8"</span>
+        MHC&nbsp;<strong>I</strong> partners with CD<strong>8</strong> (1&nbsp;×&nbsp;8&nbsp;=&nbsp;8); MHC&nbsp;<strong>II</strong> partners with CD<strong>4</strong> (2&nbsp;×&nbsp;4&nbsp;=&nbsp;8). The co-receptor binds an <em>invariant</em> MHC domain (alpha-3 for class I, beta-2 for class II), so it behaves like a hardwired switch: class I recognition routes toward killing, class II recognition routes toward help.
+      </div>
+
+      <table>
+        <thead><tr><th>Structural feature</th><th>MHC class I</th><th>MHC class II</th></tr></thead>
+        <tbody>
+          <tr><td>Chains</td><td>1 heavy (alpha) chain + beta-2 microglobulin</td><td>alpha chain + beta chain</td></tr>
+          <tr><td>Groove formed by</td><td>alpha-1 + alpha-2</td><td>alpha-1 + beta-1</td></tr>
+          <tr><td>Groove ends</td><td>Closed</td><td>Open</td></tr>
+          <tr><td>Peptide length</td><td>About 8 to 10 amino acids</td><td>About 13 to 25 amino acids</td></tr>
+          <tr><td>Co-receptor</td><td>CD8 (binds alpha-3)</td><td>CD4 (binds beta-2)</td></tr>
+          <tr class="table-key"><td>Human gene names (HLA)</td><td>HLA-A, HLA-B, HLA-C</td><td>HLA-DP, HLA-DQ, HLA-DR</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Anchor residues — why a groove is selective without being rigid</h3>
+      <p>A single MHC allele presents thousands of different peptides, yet it is far from indiscriminate. The groove floor carries deep <strong>pockets</strong> (conventionally labeled A through F) that grip the side chains of specific <strong>anchor residues</strong> in the peptide. For many class I alleles, peptide position 2 and the C-terminal residue are the dominant anchors; their side chains plug into the B and F pockets while the rest of the peptide bulges upward where the T-cell receptor reads it. Each allele therefore enforces a <strong>binding motif</strong> — a loose sequence rule rather than a single sequence — which is why the HLA locus being so polymorphic lets a population collectively present almost any pathogen's peptides.</p>
+
+      <div class="alert info">
+        <strong>MHC restriction.</strong> A T-cell receptor never sees a free peptide. It sees the <strong>combined shape of peptide plus MHC</strong>, so a given T cell recognizes its peptide only when displayed on a particular MHC molecule (shown by Zinkernagel and Doherty, Nobel Prize 1996). Because the HLA genes are the most polymorphic in the human genome, almost everyone's MHC molecules differ slightly — which is precisely why donor and recipient MHC must be matched for transplants, and why the system was named for <em>histocompatibility</em> long before its peptide-display role was understood.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">4</span>How peptides get loaded: the two pathways</div>
+      <p>The structural split has a matching split in <em>machinery</em>. Each class is fed by its own assembly line, differing in where the peptide comes from and where the loading happens. The two-lane summary above orients you; the step-by-step diagrams below name every station.</p>
+
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/MHC_Endogenous_and_Exogenous_Pathways.png" alt="Diagram contrasting the MHC class I endogenous pathway (proteasome and TAP into the ER) with the MHC class II exogenous pathway (endosome and lysosome processing of engulfed protein)" loading="lazy">
+        <figcaption>The endogenous (MHC class I) and exogenous (MHC class II) antigen-processing pathways. Class I samples cytosolic proteins through the proteasome and the TAP transporter into the ER; class II samples endocytosed proteins in the lysosomal compartment. Source: <a href="https://commons.wikimedia.org/wiki/File:MHC_Endogenous_and_Exogenous_Pathways.png">Wikimedia Commons</a>, author credited on Commons as סתו כסלו, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</figcaption>
+      </div>
+
+      <h3>Class I: the endogenous (cytosolic) pathway</h3>
+      <p>This reports on what the cell is making right now — including viral proteins built by a hijacked cell.</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">STEP 1</div><div class="step-t">Tag</div><div class="step-d">Cytosolic proteins (including viral) are tagged with <strong>ubiquitin</strong> for disposal.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">STEP 2</div><div class="step-t">Shred</div><div class="step-d">The <strong>proteasome</strong> chops them into short peptides; the immunoproteasome tunes the cut sites for presentation.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">STEP 3</div><div class="step-t">Import</div><div class="step-d"><strong>TAP</strong> (transporter associated with antigen processing) pumps peptides from cytosol into the endoplasmic reticulum (ER).</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">STEP 4</div><div class="step-t">Load</div><div class="step-d">The ER <strong>peptide-loading complex</strong> (tapasin, calreticulin, ERp57) holds an empty MHC I + beta-2 microglobulin; <strong>ERAP</strong> trims peptides to length, and a good-fit peptide is locked in.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">STEP 5</div><div class="step-t">Ship</div><div class="step-d">Loaded MHC I travels ER → Golgi → cell surface.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">STEP 6</div><div class="step-t">Inspect</div><div class="step-d">A <strong>CD8</strong> T cell reads it — and kills the cell if the peptide looks foreign.</div></div>
+      </div>
+      <div class="mono-diagram">cytosolic proteins (including viral) tagged with <span class="hl-innate">ubiquitin</span>
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-tcell">PROTEASOME</span> shreds them into short peptides
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-tcell">TAP</span> transporter pumps peptides into the endoplasmic reticulum (ER)
+   (TAP = transporter associated with antigen processing)
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+ER peptide-loading complex (<span class="hl-tcell">tapasin, calreticulin, ERp57</span>)
+   holds an empty <span class="hl-tcell">MHC I</span> + beta-2 microglobulin and loads a good-fit peptide;
+   <span class="hl-tcell">ERAP</span> trims peptides to the right length
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+loaded MHC I travels ER -> Golgi -> cell surface
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-tcell">CD8 T cell</span> inspects -> kills the cell if the peptide looks foreign</div>
+
+      <h3>Class II: the exogenous (endocytic) pathway</h3>
+      <p>This reports on material the APC swallowed from outside.</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">STEP 1</div><div class="step-t">Engulf</div><div class="step-d">The APC engulfs extracellular material into an endosome.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">STEP 2</div><div class="step-t">Digest</div><div class="step-d">The endosome fuses with a lysosome; acidic <strong>cathepsin</strong> proteases chop cargo into peptides.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">STEP 3</div><div class="step-t">Plug</div><div class="step-d">In parallel in the ER, MHC II is made with its groove plugged by the <strong>invariant chain (Ii / CD74)</strong>, which blocks premature loading and routes MHC II to the endosome.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">STEP 4</div><div class="step-t">Trim</div><div class="step-d">Proteases trim the invariant chain down to a small remnant called <strong>CLIP</strong>, still sitting in the groove.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">STEP 5</div><div class="step-t">Swap</div><div class="step-d"><strong>HLA-DM</strong> catalyzes the exchange: CLIP out, real antigenic peptide in. (HLA-DO can fine-tune DM in some cells.)</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">STEP 6</div><div class="step-t">Inspect</div><div class="step-d">Loaded MHC II reaches the surface; a <strong>CD4</strong> helper T cell reads it and provides help.</div></div>
+      </div>
+      <div class="mono-diagram">APC engulfs extracellular material -> endosome
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+endosome fuses with lysosome; <span class="hl-bcell">cathepsin</span> proteases chop cargo into peptides
+
+   <span class="hl-dim">-- in parallel, in the ER --</span>
+<span class="hl-bcell">MHC II</span> is made with its groove PLUGGED by the INVARIANT CHAIN (Ii / CD74),
+   which blocks premature loading and routes MHC II to the endosome
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+proteases trim the invariant chain down to a small remnant called <span class="hl-innate">CLIP</span>,
+   still sitting in the groove
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-bcell">HLA-DM</span> catalyzes the swap: CLIP out, real antigenic peptide in
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+loaded MHC II -> cell surface
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-bcell">CD4 helper T cell</span> inspects -> provides help, activates macrophages, helps B cells</div>
+
+      <p>The two lines reach the same goal from opposite sources:</p>
+      <div class="mono-diagram"><span class="hl-tcell">MHC I:</span>  protein from INSIDE  -> proteasome -> TAP -> ER -> surface -> <span class="hl-tcell">CD8</span>   (endogenous)
+<span class="hl-bcell">MHC II:</span> protein from OUTSIDE -> lysosome -> CLIP / HLA-DM swap -> surface -> <span class="hl-bcell">CD4</span>   (exogenous)</div>
+
+      <p>Two consequences are worth holding onto:</p>
+      <div class="alert info">
+        <strong>The invariant chain is a "do not load yet" cap.</strong> MHC II is born in the same ER that is full of class I peptides; without the plug it would grab the wrong cargo. The cell physically blocks the groove until MHC II reaches the right compartment — clean traffic control against cross-contamination. (HLA-DM then acts as a peptide "editor," favoring high-affinity peptides that survive once DM lets go.)
+      </div>
+      <div class="alert warn">
+        <span class="alert-head">MHC I is read by two surveillance systems at once</span>
+        It is both a billboard for CD8 T cells and a "self" inhibitory signal that holds <strong>NK cells</strong> back. A virus or tumor that lowers MHC I to dodge CD8 killers simultaneously removes the NK brake, so NK cells destroy it for the very absence that hid it — the missing-self logic covered in <a href="08-nk-cells.html">NK cells (chapter 08)</a> and the third loop in the <a href="01-introduction.html">introduction</a>.
+      </div>
+      <div class="alert key">
+        <span class="alert-head">Cross-presentation breaks the rule</span>
+        Dendritic cells can route some <em>exogenous</em> antigen into the <em>class I</em> pathway, so they can prime CD8 killers against viruses and tumors that never infected the dendritic cell itself — the bridge that makes antitumor and antiviral CD8 immunity possible.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">5</span>Professional antigen-presenting cells</div>
+      <p>Three cell types are especially important as <strong>professional antigen-presenting cells (APCs)</strong> — they express MHC II plus the costimulatory molecules needed to actually activate T cells, not just display peptide.</p>
+      <table>
+        <thead><tr><th>APC</th><th>Specialty</th></tr></thead>
+        <tbody>
+          <tr><td>Dendritic cell</td><td>Best at activating naive T cells in lymph nodes; the main cross-presenter</td></tr>
+          <tr><td>Macrophage</td><td>Presents engulfed material to already-primed CD4 T cells and receives activation signals back</td></tr>
+          <tr><td>B cell</td><td>Presents antigen it bound through its B-cell receptor to helper T cells</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Dendritic cells</strong> deserve special attention even though this report focuses on macrophages, B cells, T cells, and NK cells. They are the bridge from local infection to adaptive activation. A typical dendritic cell looks <strong>stellate</strong>: a central cell body with long, thin, branching membrane processes. Those "dendrites" increase surface area for sampling tissue and making contact with T cells. They are not neurons; the name is about shape.</p>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Antigen_presentation_by_dendritic_cell.jpg" alt="Dendritic cell presenting antigen to a T cell, showing dendritic projections and contact with a lymphocyte" loading="lazy">
+        <figcaption>A dendritic cell presenting antigen to a T cell. Notice the branched, probing shape: dendritic cells are built to sample tissue and make many cell contacts. Source: <a href="https://commons.wikimedia.org/wiki/File:Antigen_presentation_by_dendritic_cell.jpg">Wikimedia Commons</a>, Suraj at Malayalam Wikipedia, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</figcaption>
+      </div>
+      <div class="draw-figure">
+        <div class="draw-title">How a dendritic cell works</div>
+        <div class="draw-row">
+          <span class="draw-node macro">immature DC<br>samples tissue</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node innate">PRR signal<br>danger sensed</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">mature DC<br>B7 high, CCR7 high</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node bcell">lymph node<br>naive T-cell scan</span>
+        </div>
+        <div class="draw-caption">Immature dendritic cells are tissue samplers. After danger sensing, they become migratory instructors: they travel through lymphatics to the draining lymph node, show peptide on MHC I and II, and provide costimulation. This is why they are the main activators of naive T cells.</div>
+      </div>
+      <div class="alert info">
+        <strong>Dendritic cell versus follicular dendritic cell.</strong> A classical dendritic cell is a bone-marrow-derived APC that presents peptide-MHC to T cells. A <strong>follicular dendritic cell (FDC)</strong> is a stromal cell in B-cell follicles that holds intact antigen for B cells in germinal centers. The similar names hide different jobs.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">6</span>Lymph nodes are matching engines</div>
+      <p>The frequency of a naive T cell specific for any one peptide-MHC complex is low. A lymph node solves this search problem by organizing traffic: dendritic cells bring antigen from tissues, naive T cells continuously circulate through, and chemokines plus adhesion molecules put them in the same zone.</p>
+      <div class="mono-diagram">many naive <span class="hl-tcell">T cells</span> enter lymph node
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+each scans many <span class="hl-tcell">dendritic cells</span>
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+rare matching <span class="hl-tcell">TCR</span> binds peptide-MHC
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+activation if costimulation and cytokine context agree</div>
+      <p>This is a biological search index. Tissue infection becomes antigen plus context in a draining lymph node.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">7</span>The three-signal model</div>
+      <p>Naive T-cell activation is often summarized as three signals. All three must agree before recognition becomes immunity.</p>
+      <table>
+        <thead><tr><th>Signal</th><th>Molecular example</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Signal 1</td><td>TCR binds peptide-MHC</td><td>Specific recognition</td></tr>
+          <tr><td>Signal 2</td><td>CD28 on T cell binds B7 / CD80 / CD86 on APC</td><td>Permission: the APC sensed danger</td></tr>
+          <tr><td>Signal 3</td><td>Cytokines such as IL-12, type I interferon, IL-4, IL-6, TGF-beta</td><td>Instruction: what kind of effector cell to become</td></tr>
+        </tbody>
+      </table>
+      <div class="alert warn">
+        <span class="alert-head">Signal 1 without Signal 2 is dangerous on purpose</span>
+        Recognition without sufficient costimulation can lead to <strong>anergy</strong>, deletion, or tolerance rather than immunity. That is a feature, not a bug. T-cell receptors are generated by random DNA rearrangement, so some will recognize self; the system therefore asks not only "does this T cell bind?" but also "is this antigen being presented by an <em>activated</em> APC in the right context?" See <a href="10-memory-tolerance-failure.html">tolerance (chapter 10)</a>.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">8</span>Antigen presentation gives context to B cells too</div>
+      <p>B cells recognize native antigen through their B-cell receptor. But for many protein antigens, full B-cell activation needs T-cell help. The B cell internalizes the antigen it bound, processes it, and presents peptide fragments on MHC II. A <strong>T follicular helper cell</strong> that recognizes the same antigenic source provides <strong>CD40L</strong> and cytokines.</p>
+      <div class="mono-diagram"><span class="hl-bcell">BCR</span> binds protein antigen
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-bcell">B cell</span> internalizes and processes antigen
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+peptide displayed on <span class="hl-bcell">MHC II</span>
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-tcell">T follicular helper cell</span> recognizes peptide-MHC II
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-tcell">CD40L</span> + cytokines drive class switching and germinal-center response</div>
+      <p>This is called <strong>linked recognition</strong>. The B cell and T cell do not need to recognize the same epitope, but their epitopes must come from the same captured antigenic object — a constraint that helps prevent unrelated bystander B cells from receiving dangerous help. See <a href="05-b-cells-antibodies.html">B cells &amp; antibodies (chapter 05)</a> and <a href="06-t-cells.html">T cells (chapter 06)</a>.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Summary</span>
+      Antigen presentation converts hidden molecular information into a surface display that T cells can inspect. MHC&nbsp;I samples cytosolic proteins for CD8 T cells; MHC&nbsp;II samples vesicular proteins for CD4 T cells. Structurally, class I is a heavy chain plus beta-2 microglobulin with a closed groove (CD8, about 8–10 amino acids), while class II is an alpha-beta pair with an open groove (CD4, about 13–25 amino acids), and the two are fed by separate machinery: the proteasome-TAP-ER route loads class I, while the invariant-chain and HLA-DM route loads class II in the endosomal compartment. Dendritic cells activate naive T cells, macrophages present to effector CD4 T cells, and B cells present captured antigen to helper T cells. Specificity alone is not enough; costimulation and cytokine context decide whether recognition becomes immunity.
+    </div>
+
+    <div class="chap-nav">
+      <a href="03-macrophages.html">← 03 · Macrophages</a>
+      <a href="../04-antigen-presentation.md">Markdown source</a>
+      <a href="05-b-cells-antibodies.html">05 · B Cells &amp; Antibodies →</a>
+    </div>
+
+    <footer>
+      <p>🪪 Antigen Presentation · Chapter 04 · <a href="index.html">Report home</a> · <a href="sources.html">Sources</a></p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>

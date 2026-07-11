@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>💉 T-Cell Immunotherapy — How the Immune System Works</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> · Immunotherapy · Chapter 07</div>
+      <h1 class="page-title">💉 T-Cell Immunotherapy</h1>
+      <p class="page-subtitle">Turning the T-cell biology of chapter 6 into medicine: unleash exhausted cells with checkpoint blockade, engineer new specificity into a patient's cells with CAR-T, or redirect any T cell off-the-shelf with a bispecific engager.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Core idea</span>
+      Three strategies dominate T-cell-based cancer therapy, each exploiting a feature of the biology in <a href="06-t-cells.html">chapter 06</a>: <strong>checkpoint blockade</strong> releases the brakes on <em>exhausted</em> T cells (section 1); <strong>CAR-T cells</strong> install a synthetic, MHC-independent receptor into a patient's own T cells (section 2); and <strong>bispecific T-cell engagers</strong> are soluble drugs that clamp any T cell onto a tumor cell (section 3). All three co-opt one idea from chapter 6 — a T cell is a licensed killer whose specificity and activation can be redirected.
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">1</span>T-cell exhaustion and checkpoint blockade</div>
+      <p>Chapter 6 described T cells that <em>win</em>: they recognize, expand, kill or help, then contract into memory. But some fights never end. In <strong>chronic viral infection</strong> (HIV, hepatitis B and C; the LCMV clone-13 model in mice) and in <strong>cancer</strong>, antigen and inflammation persist for months or years. A CD8 T cell stimulated <em>without resolution</em> neither stays a fully armed effector nor becomes resting memory — it drifts into a distinct, progressively dysfunctional state called <strong>T-cell exhaustion</strong>.</p>
+
+      <h3>Exhaustion is a programmed state, not simple fatigue</h3>
+      <p>An exhausted T cell is transcriptionally, epigenetically, and metabolically distinct — a differentiation fate in its own right, driven by the master transcription factor <strong>TOX</strong> and locked in by a remodeled, largely fixed chromatin landscape. Its functions decay in a <strong>defined hierarchy</strong>, and it steadily raises multiple <strong>inhibitory receptors</strong> ("checkpoints").</p>
+      <div class="mono-diagram"><span class="hl-macro">ACUTE</span> infection (antigen cleared)
+   naive -&gt; effector (kills, proliferates) -&gt; contraction -&gt; resting <span class="hl-macro">MEMORY</span>
+
+<span class="hl-nk">CHRONIC</span> infection / cancer (antigen persists)
+   naive -&gt; effector -&gt; ...persistent TCR signaling + inflammation...
+                              <span class="hl-dim">|</span>
+                              <span class="hl-dim">v</span>
+                         <span class="hl-nk">EXHAUSTION</span>  (<span class="hl-tcell">TOX</span>-driven program)
+
+   functions lost in order:  IL-2 &amp; high proliferation   (first)
+                             TNF-α
+                             IFN-γ &amp; cytotoxicity          (last, partial)
+                             -&gt; severe: physical deletion
+   inhibitory receptors up:  <span class="hl-innate">PD-1, CTLA-4, LAG-3, TIM-3, TIGIT, 2B4, CD160</span>
+                             (more co-expressed = deeper exhaustion)</div>
+      <div class="alert key">
+        <span class="alert-head">Why the body would build this</span>
+        Exhaustion looks like failure, but it is better read as a <strong>controlled compromise</strong>. When a pathogen or tumor cannot be cleared, unleashing cytotoxic T cells indefinitely would destroy healthy tissue (immunopathology). Exhaustion tunes the response <em>down</em> to a low-grade, partially functional level — enough to keep some control while limiting collateral damage. It is another <strong>peripheral-tolerance brake</strong>, cell-intrinsic this time, complementing the external suppression that regulatory T cells provide (chapter 6).
+      </div>
+
+      <h3>Not anergy, senescence, or memory</h3>
+      <p>These hyporesponsive states are easily confused, but they arise differently and mean different things.</p>
+      <table>
+        <thead><tr><th>State</th><th>When it arises</th><th>Antigen dependence</th><th>Reversible?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Anergy</strong></td><td>At priming — Signal 1 without Signal 2 (chapter 6)</td><td>Induced in naive cells</td><td>Partly — by restoring costimulation</td></tr>
+          <tr><td><strong>Exhaustion</strong></td><td>In effector cells under <em>chronic</em> antigen</td><td>Requires ongoing antigen</td><td>Partially — by checkpoint blockade</td></tr>
+          <tr><td><strong>Senescence</strong></td><td>Replicative / age-related arrest</td><td>Antigen-independent</td><td>No — permanent proliferative arrest</td></tr>
+          <tr><td><strong>Memory</strong></td><td>After antigen clears</td><td>Rests at low antigen, self-renews</td><td>N/A — the healthy outcome</td></tr>
+        </tbody>
+      </table>
+
+      <h3>The exhausted pool is heterogeneous — and that is what makes therapy work</h3>
+      <p>A key modern refinement: exhausted CD8 T cells split into a small self-renewing <strong>progenitor (stem-like)</strong> subset and a large <strong>terminally exhausted</strong> subset. Checkpoint therapy acts mainly on the former.</p>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--tcell)">
+          <h4>Progenitor / stem-like (TCF1+)</h4>
+          <p>PD-1 intermediate; lives in lymphoid niches; self-renews and is long-lived. This is the cell that <strong>responds to PD-1 blockade</strong>, dividing to replenish effectors — the source of the proliferative burst after therapy.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--nk)">
+          <h4>Terminally exhausted (TCF1−, TIM-3+)</h4>
+          <p>PD-1 high; does the actual killing but is short-lived and most dysfunctional. Expanded <em>from</em> the progenitor pool; poorly reinvigorated on its own.</p>
+        </div>
+      </div>
+
+      <h3>Releasing the brakes: checkpoint blockade</h3>
+      <p>The inhibitory receptors that mark exhaustion are also its therapeutic handles. When <strong>PD-1</strong> on the T cell engages <strong>PD-L1</strong> on a tumor or infected cell, it recruits the phosphatase <strong>SHP-2</strong>, which dephosphorylates TCR- and CD28-proximal signaling and damps activation. <strong>CTLA-4</strong> raises the activation threshold by outcompeting CD28 for B7. Antibodies that block PD-1/PD-L1 or CTLA-4 — the basis of modern cancer immunotherapy, recognized by the <strong>2018 Nobel Prize</strong> (Allison and Honjo) — partially <strong>reinvigorate</strong> exhausted T cells by relieving this inhibition.</p>
+      <div class="alert warn">
+        <span class="alert-head">Reinvigoration is only partial</span>
+        Checkpoint blockade does not erase the exhaustion-associated <strong>epigenetic scar</strong>, so responses can wane and combinations are often needed. Exhaustion appears as an immune-evasion route in <a href="10-memory-tolerance-failure.html">chapter 10</a>; the drugs themselves are detailed in the companion report on <a href="https://github.com/sinban04/recherche/blob/main/reports/2026-06-07-pd1-pdl1-checkpoint-drugs/html/index.html">PD-1/PD-L1 checkpoint therapy</a>.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">2</span>Engineering new specificity: CAR-T cells</div>
+      <p>Chapter 6 established one rule for every natural recognition event: a T cell sees antigen only as peptide displayed on MHC (<strong>MHC restriction</strong>). That rule is also a weakness tumors exploit — cancers routinely lower MHC I to hide from CD8 T cells (the missing-self problem in <a href="08-nk-cells.html">chapter 08</a>), and a T cell whose target is never presented is blind to it. <strong>Chimeric antigen receptor (CAR) T-cell therapy</strong> rewrites the rule: it re-engineers a patient's own T cells to recognize a native surface molecule <em>directly</em> — the way an antibody does — with no peptide processing and no MHC required.</p>
+      <div class="alert key">
+        <span class="alert-head">The core trick: recognition without MHC</span>
+        A normal TCR reads peptide <em>plus</em> MHC. A CAR reads a whole surface antigen like an antibody — so it still works on tumor cells that have shut down MHC I, and it can be aimed at any target for which a binding antibody exists. Recognition is decoupled from antigen presentation entirely.
+      </div>
+
+      <h3>A CAR is a chimera of antibody and T-cell signaling parts</h3>
+      <p>The receptor fuses the antigen-binding half of an antibody to the activation machinery of a T cell in one synthetic protein.</p>
+      <div class="mono-diagram">        [ <span class="hl-bcell">scFv</span> ]        antibody VH+VL: binds a NATIVE surface antigen (e.g. <span class="hl-bcell">CD19</span>)
+           <span class="hl-dim">|</span>            antibody-like specificity, MHC-independent
+        [ hinge ]        spacer for reach / flexibility
+   ======[ TM ]======   transmembrane anchor
+        [ <span class="hl-innate">costim</span> ]       Signal 2 built in: CD28 or 4-1BB
+        [ <span class="hl-tcell">CD3-ζ</span> ]      Signal 1: the ITAM signaling tail of the TCR complex</div>
+      <p>The genius is that one molecule supplies both <strong>Signal 1</strong> (CD3ζ ITAMs) and <strong>Signal 2</strong> (the costimulatory domain), collapsing the carefully gated three-signal activation model of chapter 6 into an engineered receptor that fires on antigen contact alone.</p>
+      <table>
+        <thead><tr><th>Generation</th><th>Endodomain</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td>1st</td><td>CD3ζ only</td><td>Recognizes and kills, but persists poorly</td></tr>
+          <tr><td>2nd</td><td>one costim (CD28 <em>or</em> 4-1BB) + CD3ζ</td><td>Clinical standard; strong expansion and persistence</td></tr>
+          <tr><td>3rd</td><td>two costim (CD28 + 4-1BB) + CD3ζ</td><td>More signaling; benefit still being defined</td></tr>
+          <tr><td>4th ("armored" / TRUCKs)</td><td>2nd-gen + an added payload such as a cytokine</td><td>Reshapes the local tumor environment</td></tr>
+        </tbody>
+      </table>
+      <p>Even the costimulatory choice matters: <strong>CD28</strong> CARs act fast and intensely but are shorter-lived, while <strong>4-1BB</strong> CARs expand more slowly, persist longer, and resist exhaustion better — a direct echo of the exhaustion biology in section 1.</p>
+
+      <h3>Making a CAR-T product is a bespoke manufacturing loop</h3>
+      <p>Most approved CAR-T is <strong>autologous</strong> — built from the patient's own cells.</p>
+      <div class="mono-diagram">1. <span class="hl-tcell">LEUKAPHERESIS</span>          collect the patient's T cells from blood
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+2. ACTIVATE + <span class="hl-innate">TRANSDUCE</span>       anti-CD3/CD28 activation; insert the CAR gene
+        <span class="hl-dim">|</span>                 (lentivirus / retrovirus, or transposon / CRISPR knock-in)
+        <span class="hl-dim">v</span>
+3. EXPAND                 grow to clinical numbers ex vivo (days to weeks)
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+4. <span class="hl-nk">LYMPHODEPLETE</span>          fludarabine / cyclophosphamide frees cytokines and space
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+5. INFUSE                 return the engineered T cells to the patient
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+6. IN VIVO                CAR-T cells <span class="hl-tcell">expand, kill antigen-positive cells, and persist</span></div>
+      <p>It is powerful but slow, costly, and one-patient-at-a-time. <strong>Allogeneic ("off-the-shelf")</strong> CAR-T, gene-edited to avoid graft-versus-host disease and rejection, is an active effort to industrialize it.</p>
+
+      <h3>What works — and why B-cell cancers came first</h3>
+      <p>CAR-T's landmark successes are in <strong>B-cell malignancies</strong>: <strong>CD19</strong>-directed products (tisagenlecleucel, axicabtagene ciloleucel) drive deep, durable remissions in refractory B-cell acute lymphoblastic leukemia and large B-cell lymphoma, and <strong>BCMA</strong>-directed CARs do the same in multiple myeloma. CD19 was the ideal first target because it marks the entire B-cell lineage uniformly, so the unavoidable <strong>on-target, off-tumor</strong> cost — loss of healthy B cells (B-cell aplasia) — is survivable and managed with immunoglobulin replacement.</p>
+
+      <h3>The hard problems — why CAR-T is not yet a universal cure</h3>
+      <ul>
+        <li><strong>Cytokine release syndrome (CRS).</strong> Massive CAR-T activation floods the body with cytokines (<strong>IL-6</strong> central) → high fever and hypotension; treated by blocking the IL-6 receptor with <strong>tocilizumab</strong>, plus steroids if needed.</li>
+        <li><strong>Neurotoxicity (ICANS).</strong> A distinct, usually reversible encephalopathy.</li>
+        <li><strong>On-target, off-tumor toxicity.</strong> If the target antigen sits on any vital normal tissue, the CAR attacks it — which is why truly tumor-restricted surface antigens are scarce.</li>
+        <li><strong>Antigen escape.</strong> Tumors relapse by losing the target (e.g. CD19-negative relapse).</li>
+        <li><strong>Solid tumors remain hard.</strong> CAR-T cells traffic poorly into solid tumors, face an immunosuppressive microenvironment and heterogeneous antigens, and are driven toward the <strong>exhaustion</strong> state of section 1 by constant ("tonic") CAR signaling.</li>
+      </ul>
+      <div class="alert info">
+        CAR-T and the checkpoint blockade of section 1 are the two pillars of T-cell cancer immunotherapy — one <em>installs</em> new specificity, the other <em>unleashes</em> existing cells — and they are increasingly combined. Both are developed further in the companion reports on <a href="https://github.com/sinban04/recherche/blob/main/reports/2026-03-20-anti-cancer-medication/html/index.html">anti-cancer medication</a> and <a href="https://github.com/sinban04/recherche/blob/main/reports/2026-06-07-pd1-pdl1-checkpoint-drugs/html/index.html">PD-1/PD-L1 checkpoint therapy</a>.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">3</span>Off-the-shelf redirection: bispecific T-cell engagers (BiTEs)</div>
+      <p>CAR-T (section 2) rebuilds a patient's T cells one at a time. A <strong>bispecific T-cell engager (BiTE)</strong> reaches the same goal — MHC-independent redirection of T cells against a tumor — but as an <em>off-the-shelf drug</em> rather than a living cell. It is a single recombinant protein that grabs a T cell with one hand and a tumor cell with the other, forcing them together until the T cell kills.</p>
+
+      <h3>Structure: two antibody arms fused into one protein</h3>
+      <p>The canonical BiTE is two <strong>scFv</strong> fragments (each a VH+VL, exactly as in a CAR's binding head) joined by a flexible linker into a single small polypeptide of roughly 55 kDa. One arm binds <strong>CD3</strong> on the T cell; the other binds a <strong>tumor surface antigen</strong> (for example CD19). Classic BiTEs carry <strong>no Fc region</strong>, which keeps them small — and, as we will see, very short-lived.</p>
+      <div class="mono-diagram">   T cell                                      tumor cell
+   [ <span class="hl-tcell">CD3</span> ]===<span class="hl-tcell">&lt;anti-CD3 scFv&gt;</span>--linker--<span class="hl-bcell">&lt;anti-CD19 scFv&gt;</span>===[ <span class="hl-bcell">CD19</span> ]
+       \__________________  BiTE  __________________/
+                     forces the two cells together
+                              <span class="hl-dim">|</span>
+                              <span class="hl-dim">v</span>
+       cytolytic synapse -&gt; <span class="hl-nk">perforin/granzyme -&gt; tumor apoptosis</span></div>
+
+      <h3>Mechanism: forced proximity, polyclonal killing</h3>
+      <p>By crosslinking CD3 to the tumor antigen, a BiTE assembles the same cytolytic immune synapse a CD8 T cell uses in chapter 6 — perforin and granzyme flow, and the tumor cell dies by apoptosis. Two features distinguish it:</p>
+      <ul>
+        <li><strong>It is polyclonal.</strong> The anti-CD3 arm engages <em>any</em> T cell through its CD3 complex, regardless of that cell's own TCR specificity — turning the patient's entire T-cell pool into potential killers of one tumor antigen, no matter what those cells were "born" to recognize.</li>
+        <li><strong>It delivers Signal 1 without Signal 2.</strong> Activation is driven by high-avidity crosslinking at the forced synapse, not by classic costimulation (chapter 6). This works, but the missing costimulation is one reason redirected T cells can tire — echoing the exhaustion of section 1.</li>
+      </ul>
+      <p>Like a natural CTL, one redirected T cell can serially kill many targets.</p>
+
+      <h3>The signature drug — and its awkward pharmacology</h3>
+      <p><strong>Blinatumomab</strong> (anti-CD19 × anti-CD3), approved in 2014, was the first-in-class BiTE and transformed treatment of relapsed or refractory B-cell acute lymphoblastic leukemia.</p>
+      <div class="alert warn">
+        <span class="alert-head">Why it runs on a pump</span>
+        The Fc-less BiTE has a serum half-life of only about <strong>two hours</strong>, so blinatumomab must be given by <strong>continuous intravenous infusion</strong> — a wearable pump running for weeks. Removing that limitation is the main driver behind half-life-extended and Fc-bearing bispecific formats.
+      </div>
+
+      <h3>CAR-T versus BiTE — two routes to the same redirection</h3>
+      <table>
+        <thead><tr><th>Feature</th><th>CAR-T (section 2)</th><th>BiTE</th></tr></thead>
+        <tbody>
+          <tr><td>What it is</td><td>living, engineered T cells</td><td>soluble antibody-derived protein drug</td></tr>
+          <tr><td>Where specificity lives</td><td>a receptor built into the cell</td><td>one scFv arm of the drug</td></tr>
+          <tr><td>Which T cells act</td><td>the engineered clones</td><td>any/all T cells (polyclonal), via CD3</td></tr>
+          <tr><td>MHC-dependent?</td><td>No</td><td>No</td></tr>
+          <tr><td>Manufacturing</td><td>autologous, bespoke, weeks</td><td>off-the-shelf, standardized</td></tr>
+          <tr><td>Persistence</td><td>months to years</td><td>transient — needs continuous infusion</td></tr>
+          <tr><td>Costimulation</td><td>built in (CD28 / 4-1BB)</td><td>none in the canonical format</td></tr>
+          <tr><td>Turning it off</td><td>hard (living cells persist)</td><td>easy — stop the infusion, drug clears fast</td></tr>
+          <tr><td>Signature drug</td><td>tisagenlecleucel (CD19)</td><td>blinatumomab (CD19 × CD3)</td></tr>
+        </tbody>
+      </table>
+      <p>Because the mechanism is the same — forced, massive T-cell activation — BiTEs share CAR-T's toxicities: <strong>cytokine release syndrome</strong> and <strong>neurotoxicity</strong> (mitigated by step-up dosing), and <strong>on-target, off-tumor</strong> effects such as B-cell aplasia for CD19.</p>
+
+      <h3>The class is broadening — including back toward MHC</h3>
+      <p>T-cell engagers now extend well beyond CD19: <strong>BCMA × CD3</strong> engagers (teclistamab) treat multiple myeloma. Most striking is <strong>tebentafusp</strong>, approved for uveal melanoma: instead of an antibody scFv, its tumor-targeting arm is an affinity-enhanced <strong>T-cell receptor</strong> that recognizes a gp100 <strong>peptide-MHC</strong> complex, fused to an anti-CD3 arm. It deliberately <em>re-introduces</em> the MHC restriction of chapter 6 — the price of reaching an intracellular-derived antigen that a surface-binding antibody could never see.</p>
+      <div class="alert info">
+        BiTEs sit alongside CAR-T and checkpoint blockade as antibody-format immunotherapies. The antibody engineering behind them is developed in the companion reports on <a href="https://github.com/sinban04/recherche/blob/main/reports/2026-06-07-antibody-drug-conjugates/html/index.html">antibody-drug conjugates</a> and <a href="https://github.com/sinban04/recherche/blob/main/reports/2026-03-20-anti-cancer-medication/html/index.html">anti-cancer medication</a>; the scFv arms come from the antibody biology of <a href="05-b-cells-antibodies.html">chapter 05</a>.
+      </div>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Summary</span>
+      T-cell immunotherapy turns the biology of chapter 6 into three clinical strategies. <strong>Checkpoint blockade</strong> (anti-PD-1/PD-L1, anti-CTLA-4) releases the brakes on <em>exhausted</em> T cells, expanding a stem-like progenitor pool — but only partially, because an epigenetic scar remains. <strong>CAR-T cells</strong> install a synthetic, MHC-independent receptor into a patient's own T cells, curing some B-cell malignancies (CD19, BCMA) at the cost of cytokine release syndrome, antigen escape, and stubborn resistance in solid tumors. <strong>Bispecific T-cell engagers</strong> achieve the same redirection as an off-the-shelf drug by clamping any T cell to a tumor antigen through CD3, trading CAR-T's persistence for easy reversibility. Together they have made the T cell one of the most powerful platforms in cancer medicine — each still limited by the same forces the rest of this report describes: antigen escape, tolerance, exhaustion, and the difficulty of telling tumor from self.
+    </div>
+
+    <div class="chap-nav">
+      <a href="06-t-cells.html">← 06 · T Cells</a>
+      <a href="../07-t-cell-immunotherapy.md">Markdown source</a>
+      <a href="08-nk-cells.html">08 · NK Cells →</a>
+    </div>
+
+    <footer>
+      <p>💉 T-Cell Immunotherapy · Chapter 07 · <a href="index.html">Report home</a> · <a href="sources.html">Sources</a></p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>

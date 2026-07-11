@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🚨 Recognition &amp; Inflammation — How the Immune System Works</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> · Innate Immunity · Chapter 02</div>
+      <h1 class="page-title">🚨 Recognition &amp; Inflammation</h1>
+      <p class="page-subtitle">How the body detects "something is wrong" before any antibody exists — pattern-recognition receptors, the complement cascade, and inflammation as a controlled tissue program that gates everything adaptive immunity does next.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Core idea</span>
+      Innate immunity does not wait to learn a pathogen. It reads <strong>conserved molecular patterns</strong> — microbial structures the body could never have evolved, and host molecules that should never be loose in tissue — through germline-encoded receptors and soluble cascades. Detection is instantly converted into two outputs: <strong>tag-and-kill</strong> (opsonization, the membrane attack complex) and <strong>broadcast</strong> (cytokines, chemokines, inflammation) that decides whether adaptive B and T cells are licensed to respond.
+    </div>
+
+    <!-- ===== Signature animation ===== -->
+    <figure class="anim" data-anim="complement"
+      data-caption="The complement cascade in four beats: a C3 convertase assembles on the microbial surface, C3b opsonin coats the target as an 'eat me' tag, C3a/C5a anaphylatoxins float off to recruit phagocytes, and a C5b–C9 membrane attack complex punches the membrane. Sources: NCBI Bookshelf, Immunobiology (The Complement System and Innate Immunity). Drag the scrubber or replay to step through any phase."></figure>
+
+    <div class="section">
+      <div class="section-title"><span class="count">1</span>Innate immunity starts before cells arrive</div>
+      <p><strong>Innate immunity</strong> is the set of inherited defenses that operate without waiting for a new B-cell or T-cell clone to expand. It begins with physical and chemical barriers — the response is already in place before any infection occurs.</p>
+      <table>
+        <thead><tr><th>Barrier</th><th>Defensive role</th></tr></thead>
+        <tbody>
+          <tr><td>Skin</td><td>Dry, keratinized surface that blocks entry</td></tr>
+          <tr><td>Mucus</td><td>Traps particles and microbes</td></tr>
+          <tr><td>Cilia</td><td>Moves mucus out of airways</td></tr>
+          <tr><td>Stomach acid</td><td>Kills many swallowed microbes</td></tr>
+          <tr><td>Antimicrobial peptides</td><td>Defensins and cathelicidins punch holes in microbial membranes</td></tr>
+          <tr><td>Normal microbiota</td><td>Competes with pathogens for space and nutrients</td></tr>
+        </tbody>
+      </table>
+      <p>Once a microbe crosses a barrier, the immune system needs a fast way to decide whether tissue has been invaded. That decision is made by cells and soluble proteins that recognize patterns common to microbes or damaged host cells — not the identity of any one strain.</p>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Innate_Immune_cells.svg" alt="Illustration of innate immune cell types including mast cells, natural killer cells, monocytes, macrophages, dendritic cells, neutrophils, eosinophils, and basophils" loading="lazy">
+        <figcaption>Innate immunity uses multiple cell families rather than one generic first responder: mast cells, NK cells, monocytes, macrophages, dendritic cells, neutrophils, eosinophils, and basophils. Source: <a href="https://commons.wikimedia.org/wiki/File:Innate_Immune_cells.svg">Wikimedia Commons</a>, Fred the Oyster; license: <a href="https://creativecommons.org/publicdomain/mark/1.0/">Public domain</a>.</figcaption>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">2</span>Pattern recognition: PAMPs and DAMPs</div>
+      <p>A <strong>pathogen-associated molecular pattern (PAMP)</strong> is a conserved microbial feature that host cells can recognize. A <strong>damage-associated molecular pattern (DAMP)</strong> is a host-derived signal that appears when tissue is injured or cells die abnormally. The genius of using <em>patterns</em> is that the receptors are germline-encoded — fixed in the DNA — so the response is instant, but limited to molecular signatures that microbes cannot easily abandon.</p>
+      <table>
+        <thead><tr><th>Signal</th><th>Example</th><th>Why it suggests danger</th></tr></thead>
+        <tbody>
+          <tr><td>PAMP</td><td>Lipopolysaccharide (LPS) from Gram-negative bacteria</td><td>Mammalian cells do not make LPS</td></tr>
+          <tr><td>PAMP</td><td>Flagellin</td><td>Indicates motile bacteria</td></tr>
+          <tr><td>PAMP</td><td>Double-stranded RNA</td><td>Often indicates viral replication</td></tr>
+          <tr><td>PAMP</td><td>Unmethylated CpG DNA</td><td>Common in microbial DNA, rare in host DNA</td></tr>
+          <tr><td>DAMP</td><td>Extracellular ATP</td><td>ATP belongs mostly inside healthy cells</td></tr>
+          <tr><td>DAMP</td><td>Uric acid crystals</td><td>Can appear after cell damage</td></tr>
+          <tr><td>DAMP</td><td>Nuclear or mitochondrial contents outside cells</td><td>Misplaced intracellular material signals injury</td></tr>
+        </tbody>
+      </table>
+      <p>Cells detect these patterns with <strong>pattern-recognition receptors (PRRs)</strong>. A macrophage does not need to know the exact bacterial strain to respond to LPS; it only needs to recognize that LPS is a microbial surface pattern. This gives innate immunity speed — and a limitation: pathogens that hide conserved patterns, live inside host cells, or mimic host surfaces can evade broad detection.</p>
+
+      <h3>The PRR families — one sensor set per compartment</h3>
+      <p>PRRs are not one receptor but several structurally distinct families, each watching a different cellular compartment. The location of the sensor is itself a clue: nucleic acids in the cytosol almost always mean an intruder, because the cell's own DNA stays in the nucleus and its RNA is processed and capped.</p>
+      <table>
+        <thead><tr><th>PRR family</th><th>Where it sits</th><th>Ligand class it reads</th><th>What that signals</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Toll-like receptors (TLRs)</strong> — surface (TLR4, TLR5, TLR2/1/6)</td><td>Plasma membrane</td><td>LPS (TLR4 + MD-2/CD14), flagellin (TLR5), lipopeptides (TLR2 heterodimers)</td><td>Extracellular bacteria / fungi at the cell surface</td></tr>
+          <tr><td><strong>Toll-like receptors (TLRs)</strong> — endosomal (TLR3, 7, 8, 9)</td><td>Endosome membrane</td><td>dsRNA (TLR3), ssRNA (TLR7/8), unmethylated CpG DNA (TLR9)</td><td>Nucleic acids of engulfed viruses / bacteria</td></tr>
+          <tr><td><strong>NOD-like receptors (NLRs)</strong></td><td>Cytosol</td><td>Bacterial peptidoglycan fragments (NOD1/NOD2); danger signals that trigger the <strong>inflammasome</strong> (NLRP3)</td><td>Cytosolic invasion or sterile damage</td></tr>
+          <tr><td><strong>RIG-I-like receptors (RLRs)</strong></td><td>Cytosol</td><td>Viral RNA — RIG-I reads short 5′-triphosphate RNA, MDA5 reads long dsRNA</td><td>Active viral replication in the cytosol</td></tr>
+          <tr><td><strong>cGAS–STING</strong></td><td>Cytosol</td><td>Cytosolic double-stranded DNA — cGAS makes the second messenger cGAMP, which activates STING</td><td>DNA virus, intracellular bacterium, or leaked self DNA</td></tr>
+          <tr><td><strong>C-type lectin receptors (CLRs)</strong> &amp; soluble lectins</td><td>Surface / secreted</td><td>Microbial carbohydrates (mannose, β-glucan); mannose-binding lectin in plasma</td><td>Fungal and bacterial sugar coats</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>The inflammasome is a two-signal device.</strong> Signal 1 (a TLR firing) primes the cell to transcribe pro-IL-1β. Signal 2 (a DAMP such as extracellular ATP or crystals sensed by NLRP3) assembles the inflammasome, which activates <strong>caspase-1</strong>. Caspase-1 cleaves pro-IL-1β into mature, secreted IL-1β and can trigger <strong>pyroptosis</strong> — an inflammatory cell death that dumps alarm signals. This is why DAMPs and PAMPs together produce a much louder response than either alone.
+      </div>
+      <p>Most surface and endosomal TLRs converge on the adaptors MyD88 (and TRIF for TLR3/TLR4), which leads — through IRAK and TRAF6 kinases — to activation of the master inflammatory transcription factor <strong>NF-κB</strong>. The cytosolic nucleic-acid sensors (RLRs, cGAS–STING) route instead toward <strong>type I interferon</strong> (IFN-α/β) genes, the antiviral program.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">3</span>Complement: soluble pattern recognition in blood</div>
+      <p>The <strong>complement system</strong> is a cascade of about thirty plasma proteins, made mostly by the liver and circulating as inactive precursors. When triggered, each component cleaves the next, so a small initiating event amplifies into a large surface coating — the same proteolytic-amplification logic as blood clotting. It marks microbes for destruction through three converging routes.</p>
+      <table>
+        <thead><tr><th>Pathway</th><th>Trigger</th><th>Initiator molecules</th><th>Typical meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Alternative</td><td>Spontaneous C3 "tickover" stabilized on a microbial surface</td><td>C3(H₂O), Factor B, Factor D, properdin</td><td>A surface lacks host complement regulators</td></tr>
+          <tr><td>Lectin</td><td>Mannose-binding lectin (MBL) or ficolins bind microbial carbohydrates</td><td>MBL + MASP-1/MASP-2 proteases</td><td>A microbial sugar pattern is exposed</td></tr>
+          <tr><td>Classical</td><td>Antibody (IgM/IgG) or C-reactive protein bound to a surface</td><td>C1q–C1r–C1s complex</td><td>Adaptive or acute-phase recognition has tagged the target</td></tr>
+        </tbody>
+      </table>
+      <p>All three routes converge on cleavage of <strong>C3</strong>, the system's hub. <strong>C3</strong> is a very abundant blood protein with a hidden reactive group. When C3 is cut, the large fragment, <strong>C3b</strong>, exposes that group and can stick covalently to nearby surfaces. If that surface is a bacterium, C3b becomes an "eat me" coat. If the surface is a host cell, regulatory proteins usually remove it immediately.</p>
+
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Complement_pathway.svg" alt="Overview of the classical, lectin, and alternative complement pathways converging on C3 convertase, C5 convertase, and membrane attack complex formation" loading="lazy">
+        <figcaption>The complement pathways are three recognition routes that converge on C3 cleavage, then on C5 cleavage and terminal membrane-attack-complex formation. Source: <a href="https://commons.wikimedia.org/wiki/File:Complement_pathway.svg">Wikimedia Commons</a>, Perhelion, public-domain dedication.</figcaption>
+      </div>
+
+      <div class="draw-figure">
+        <div class="draw-title">Complement is three tripwires feeding one amplifier</div>
+        <p class="draw-subtitle">They are not "mines" in the explosive sense. They are surface tests: each pathway asks whether this surface has a microbial pattern, antibody tag, or missing host protection. If yes, it builds the same kind of enzyme on that surface.</p>
+        <div class="draw-grid three">
+          <div class="draw-panel innate">
+            <h4>Alternative pathway</h4>
+            <p>Always samples surfaces through low-level C3 tickover. Host cells shut it down; microbial surfaces let it amplify.</p>
+          </div>
+          <div class="draw-panel macro">
+            <h4>Lectin pathway</h4>
+            <p>MBL or ficolins bind repeated microbial sugars, then MASP enzymes cut C4 and C2.</p>
+          </div>
+          <div class="draw-panel bcell">
+            <h4>Classical pathway</h4>
+            <p>C1q binds antibody Fc or CRP already attached to a surface, then C1r/C1s cut C4 and C2.</p>
+          </div>
+        </div>
+        <div class="draw-row">
+          <span class="draw-node innate">C3 convertase<br>C3bBb or C4b2a</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node bcell">C3 → C3a + C3b</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node macro">C3b coating<br>amplifies locally</span>
+        </div>
+        <div class="draw-row">
+          <span class="draw-node nk">C3a / C5a<br>recruit cells</span>
+          <span class="draw-arrow">+</span>
+          <span class="draw-node tcell">C5 convertase<br>cuts C5</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node dark">C5b + C6-C9<br>MAC pore</span>
+        </div>
+        <div class="draw-caption">Key: a <strong>convertase</strong> is simply an enzyme that converts one complement component into fragments. C3 convertase cuts C3; C5 convertase cuts C5. The pathway names describe how the surface was first detected, not three separate weapons.</div>
+      </div>
+
+      <p>A <strong>C3 convertase</strong> is therefore the critical machine. The classical and lectin pathways build <strong>C4b2a</strong>; the alternative pathway builds <strong>C3bBb</strong>. The names are ugly but the idea is simple: a protein complex stuck on the target surface repeatedly cuts soluble C3 from the blood. Every new C3b molecule that lands nearby can help build more alternative-pathway convertase, so C3 is the system's amplification loop.</p>
+
+      <div class="alert warn">
+        <span class="alert-head">"Tickover" means a slow, automatic test — not a tickle</span>
+        In blood, a tiny fraction of C3 spontaneously hydrolyzes all the time. That is called <strong>C3 tickover</strong>. It creates C3(H2O), which can start the alternative pathway. On host cells, Factor H, Factor I, CD55, and related regulators dismantle the reaction. On a microbial surface with no host regulators, deposited C3b persists, recruits Factor B and Factor D, and turns into a surface C3 convertase. So the alternative pathway is like a continuously armed surface test: "prove you are host, or the coating will grow."
+      </div>
+
+      <table>
+        <thead><tr><th>Name</th><th>What it is</th><th>Plain-English role</th></tr></thead>
+        <tbody>
+          <tr><td><strong>C3</strong></td><td>Central soluble complement protein</td><td>The hub that gets split into inflammatory C3a and sticky C3b opsonin</td></tr>
+          <tr><td><strong>C3a</strong></td><td>Small cleavage fragment</td><td>Alarm signal; contributes to inflammation</td></tr>
+          <tr><td><strong>C3b</strong></td><td>Large sticky cleavage fragment</td><td>Coats target surfaces; helps phagocytes grip; helps build more convertase</td></tr>
+          <tr><td><strong>Factor B / D</strong></td><td>Alternative-pathway proteins</td><td>Join and cut C3b to form the alternative C3 convertase, C3bBb</td></tr>
+          <tr><td><strong>Properdin</strong></td><td>Convertase stabilizer</td><td>Helps the alternative convertase stay assembled on microbial surfaces</td></tr>
+          <tr><td><strong>C5</strong></td><td>Downstream complement protein</td><td>Gets split when enough C3b has accumulated, escalating from coating to pore formation</td></tr>
+          <tr><td><strong>C5a</strong></td><td>Small C5 fragment</td><td>Very strong neutrophil chemoattractant and activator</td></tr>
+          <tr><td><strong>C5b</strong></td><td>Large C5 fragment</td><td>Starter scaffold for the terminal membrane attack complex</td></tr>
+          <tr><td><strong>C6, C7, C8</strong></td><td>Terminal pathway proteins</td><td>Bind C5b and insert the growing complex into the membrane</td></tr>
+          <tr><td><strong>C9</strong></td><td>Pore-forming terminal protein</td><td>Polymerizes into the ring of the MAC pore</td></tr>
+          <tr><td><strong>CD55 / CD59 / Factor H</strong></td><td>Host regulators</td><td>Break convertases or block MAC formation so normal cells are spared</td></tr>
+        </tbody>
+      </table>
+
+      <p>The main products do three different jobs, and they map directly onto the animation above:</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">PRODUCT 1</div><div class="step-t">C3b — opsonin</div><div class="step-d">C3b binds covalently to the microbial surface as an "eat me" tag. Phagocyte complement receptors <strong>CR1</strong> (binds C3b) and <strong>CR3</strong> (binds iC3b) grip it, dramatically improving engulfment.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">PRODUCT 2</div><div class="step-t">C3a &amp; C5a — anaphylatoxins</div><div class="step-d">Small fragments diffuse away, trigger mast-cell degranulation, raise vascular permeability, and form a chemotactic gradient that pulls neutrophils and monocytes toward the target. C5a is the most potent.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">PRODUCT 3</div><div class="step-t">C5b–C9 — MAC</div><div class="step-d">C5b nucleates C6, C7, C8, and many C9 molecules into a ring-shaped pore — the <strong>membrane attack complex</strong> — that lyses some Gram-negative bacteria directly.</div></div>
+      </div>
+      <p>An <strong>opsonin</strong> is a molecular "eat me" tag that helps phagocytes bind and engulf a target. Complement embodies a recurring immune principle: <strong>recognition and killing are separable</strong>. A protein tag marks the target; a macrophage or neutrophil executes the cleanup. The terminal pathway adds a direct-kill option, but even there the logic is surface-local: C5b starts the C6-C9 pore only where complement has already been amplified.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">4</span>Inflammation is a controlled tissue program</div>
+      <p><strong>Inflammation</strong> is not just swelling. It is a coordinated tissue state that changes blood vessels, endothelial adhesion, local chemistry, and cell recruitment. When PRRs fire, the macrophage's NF-κB program switches on a coordinated set of secreted signals.</p>
+      <div class="mono-diagram"><span class="hl-macro">macrophage</span> detects microbe (PRR -> NF-kB)
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">+--></span> <span class="hl-innate">TNF-alpha, IL-1, IL-6</span>
+        <span class="hl-dim">|</span>       -> endothelial activation, fever, acute-phase response
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">+--></span> <span class="hl-innate">chemokines</span>
+        <span class="hl-dim">|</span>       -> neutrophils and monocytes follow gradient
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">+--></span> prostaglandins and other mediators
+                -> pain, vascular changes</div>
+      <p>The classic signs are heat, pain, redness, and swelling. Mechanistically, they reflect vasodilation, vascular leak, endothelial activation, leukocyte entry, and nerve sensitization. The local goal is to concentrate plasma proteins and immune cells at the site where they are needed.</p>
+
+      <h3>The NF-κB cytokine program</h3>
+      <p>NF-κB normally sits inactive in the cytoplasm bound to its inhibitor IκB. PRR signaling activates the IKK kinase, which phosphorylates IκB for degradation; freed NF-κB enters the nucleus and switches on the inflammatory gene set below.</p>
+      <table>
+        <thead><tr><th>Cytokine</th><th>Main effect</th></tr></thead>
+        <tbody>
+          <tr><td>TNF-α</td><td>Activates endothelium, supports local containment; <strong>drives systemic shock if released body-wide</strong></td></tr>
+          <tr><td>IL-1 (β)</td><td>Inflammation, fever, endothelial activation — matured by the inflammasome/caspase-1</td></tr>
+          <tr><td>IL-6</td><td>Acute-phase protein production by the liver (CRP, MBL), lymphocyte differentiation</td></tr>
+          <tr><td>IL-12</td><td>Pushes NK and TH1 cells toward IFN-γ</td></tr>
+          <tr><td>Type I interferon (IFN-α/β)</td><td>Antiviral state in neighboring cells — driven by RLR / cGAS–STING sensing</td></tr>
+          <tr><td>Chemokines (e.g. CXCL8)</td><td>Recruit neutrophils, monocytes, and lymphocytes along gradients</td></tr>
+        </tbody>
+      </table>
+      <p>Inflammation becomes dangerous when it spreads systemically or fails to resolve. The same TNF-α that helps contain local infection can contribute to shock when released throughout the body — the core of septic shock.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">5</span>Chemokines turn tissue into a map</div>
+      <p><strong>Chemokines</strong> are cytokines specialized for cell movement. They form gradients that tell leukocytes where to go. A neutrophil leaving the bloodstream does not know the pathogen's identity; it follows adhesion signals and chemokine gradients created by infected tissue and resident immune cells.</p>
+      <div class="mono-diagram">infected tissue
+   high <span class="hl-innate">chemokine</span> concentration
+      <span class="hl-dim">^</span>
+      <span class="hl-dim">|</span>
+neutrophils crawl from blood toward signal
+      <span class="hl-dim">|</span>
+      <span class="hl-dim">v</span>
+blood vessel with activated endothelium</div>
+      <p>The crawl is a defined sequence — the <strong>leukocyte adhesion cascade</strong>: <em>rolling</em> (selectins make the neutrophil tumble along the vessel wall) → <em>activation</em> (chemokines signal the cell to firm up) → <em>firm arrest</em> (integrins lock onto endothelial ICAM-1) → <em>transmigration</em> (the cell squeezes between endothelial cells into tissue). This matters because the immune system is spatial. A lymphocyte clone that recognizes an antigen is useless if it never meets the antigen; an antibody is useless if it cannot reach the infected compartment. Chemokines and adhesion molecules give immune responses location.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">6</span>Innate signals gate adaptive immunity</div>
+      <p>Adaptive immunity is powerful enough to damage the host. Therefore a receptor match alone is not always enough. A naive T cell generally needs antigen <strong>plus costimulation plus cytokine context</strong>. A B cell that binds antigen often needs T-cell help. Dendritic cells become effective activators only after they sense microbial or inflammatory signals.</p>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--warn)">
+          <h4>Antigen without danger context</h4>
+          <p>A self protein or food protein binds a lymphocyte receptor, but no PRR fired and no costimulation appears. Outcome: <strong>tolerance, deletion, anergy, or a weak response</strong>. The system declines to escalate.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--macro)">
+          <h4>Antigen with innate danger context</h4>
+          <p>PRR signaling matures the dendritic cell — it upregulates the costimulatory molecules B7 (CD80/CD86) and migrates to lymph nodes. Outcome: <strong>costimulation, cytokines, lymphocyte expansion</strong>.</p>
+        </div>
+      </div>
+      <p>This is the logic that prevents the immune system from treating every harmless self protein or food protein as an emergency. It also explains why vaccines use <strong>adjuvants</strong>: an antigen teaches specificity, while an adjuvant supplies the innate danger context (often by triggering PRRs) that licenses a real response. See <a href="04-antigen-presentation.html">antigen presentation (chapter 04)</a> and <a href="06-t-cells.html">T cells (chapter 06)</a> for the downstream steps.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">7</span>What is interferon?</div>
+      <p><strong>Interferons (IFNs)</strong> are cytokines that warn cells about infection, especially viral infection. The name comes from the original observation that a virus-infected cell can release a factor that "interferes" with viral replication in neighboring cells. Interferon is not the kill shot; it is the broadcast that changes nearby cells into a harder place for viruses to replicate.</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">SENSE</div><div class="step-t">Viral nucleic acid</div><div class="step-d">RIG-I / MDA5 detects viral RNA; cGAS-STING detects cytosolic DNA.</div></div>
+        <div class="flow-step" style="--c:var(--primary)"><div class="step-n">TRANSCRIBE</div><div class="step-t">IRF program</div><div class="step-d">Interferon-regulatory factors switch on IFN-α / IFN-β genes.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">BROADCAST</div><div class="step-t">Type I IFN</div><div class="step-d">The infected cell warns neighbors and immune cells.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">DEFEND</div><div class="step-t">ISGs + MHC I</div><div class="step-d">Neighboring cells induce antiviral genes, slow viral replication, and display more MHC I.</div></div>
+      </div>
+      <table>
+        <thead><tr><th>Interferon family</th><th>Main examples</th><th>Main source</th><th>Main job</th></tr></thead>
+        <tbody>
+          <tr><td>Type I</td><td>IFN-α, IFN-β</td><td>Virus-infected cells, plasmacytoid dendritic cells</td><td>Antiviral state in neighboring cells; higher MHC I expression; NK/CD8 support</td></tr>
+          <tr><td>Type II</td><td>IFN-γ</td><td>NK cells, TH1 CD4 cells, CD8 T cells</td><td>Macrophage activation, stronger antigen presentation, cell-mediated immunity</td></tr>
+          <tr><td>Type III</td><td>IFN-λ</td><td>Epithelial and immune cells, especially at barriers</td><td>Mucosal antiviral protection with more localized effects</td></tr>
+        </tbody>
+      </table>
+      <p>The type I interferon program induces hundreds of <strong>interferon-stimulated genes (ISGs)</strong>. Some block viral RNA translation, some degrade viral nucleic acids, some slow protein synthesis, and some make antigen presentation more visible by increasing MHC I. That is why the viral timeline starts with infected cells producing interferon before the adaptive response has expanded.</p>
+      <div class="alert info">
+        <strong>Do not collapse all interferons into one signal.</strong> Type I interferon mainly spreads an antiviral state. <strong>IFN-γ</strong> is more of a macrophage-licensing and cell-mediated-immunity cytokine: NK cells and TH1 cells release it to make macrophages more microbicidal and improve antigen-presentation machinery.
+      </div>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Summary</span>
+      Innate immunity uses inherited receptors, soluble cascades, and tissue-level programs to detect broad danger patterns. PRR families — surface and endosomal TLRs, cytosolic NLRs and the inflammasome, RIG-I-like RNA sensors, and cGAS–STING for cytosolic DNA — each watch a compartment and route through NF-κB or type I interferon. Complement's three pathways converge on a C3 convertase that produces C3b (opsonization), C3a/C5a (inflammation and chemotaxis), and the C5b–C9 membrane attack complex. Cytokines and chemokines recruit help and turn tissue into a map. These signals do more than buy time: they determine whether adaptive B and T cells should be activated at all.
+    </div>
+
+    <div class="chap-nav">
+      <a href="01-introduction.html">← 01 · Introduction</a>
+      <a href="../02-innate-recognition-inflammation.md">Markdown source</a>
+      <a href="03-macrophages.html">03 · Macrophages →</a>
+    </div>
+
+    <footer>
+      <p>🚨 Recognition &amp; Inflammation · Chapter 02 · <a href="index.html">Report home</a> · <a href="sources.html">Sources</a></p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>

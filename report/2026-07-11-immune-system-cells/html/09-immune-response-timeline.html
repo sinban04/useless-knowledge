@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>⏱️ Response Timeline — How the Immune System Works</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> · Dynamics · Chapter 09</div>
+      <h1 class="page-title">⏱️ Response Timeline</h1>
+      <p class="page-subtitle">The immune system is easier to understand as a sequence than as a cell list. Different mechanisms dominate at different times — and the order in which they fire is itself a design feature.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Core idea</span>
+      A defense is not a single weapon but a <strong>scheduled cascade</strong>. Fast, broad, pre-built innate mechanisms buy time in <em>minutes to hours</em>; slow, narrow, newly built adaptive mechanisms arrive in <em>days</em> and leave behind memory. The system escalates deliberately because its strongest weapons — cytotoxic killing and high-titer antibody — cause collateral damage if fired before the threat is confirmed.
+    </div>
+
+    <!-- ===== Signature animation ===== -->
+    <figure class="anim" data-anim="response-timeline"
+      data-caption="Five overlapping response waves plotted against time: innate macrophages and complement peak in minutes, neutrophils and NK cells in hours, then T-cell and antibody responses crest only after days of clonal expansion. Drag the scrubber (or press replay) to sweep the playhead from minutes to week-plus and watch which arm dominates each phase. Sources: NCBI Bookshelf, Immunobiology; Immunological Memory (NBK27158)."></figure>
+
+    <div class="section">
+      <div class="section-title"><span class="count">1</span>Why timelines matter</div>
+      <p>The same infection looks like a different disease depending on when you sample it. Early symptoms are mostly innate inflammation; later improvement often coincides with adaptive control. Reading the immune system as a clock — not a roster of cells — explains why both a fast, generic response and a slow, specific one are necessary.</p>
+      <p>The canonical ordering, from the source chapter:</p>
+      <div class="mono-diagram"><span class="hl-dim">minutes</span>
+   <span class="hl-macro">barriers, complement, resident macrophages, mast cells</span>
+
+<span class="hl-dim">hours</span>
+   <span class="hl-innate">inflammation, cytokines, chemokines, neutrophil recruitment</span>, <span class="hl-nk">NK activation</span>
+
+<span class="hl-dim">days</span>
+   dendritic-cell migration, <span class="hl-tcell">naive T-cell activation</span>, <span class="hl-bcell">B-cell activation</span>, clonal expansion
+
+<span class="hl-dim">week and beyond</span>
+   <span class="hl-bcell">antibodies improve</span>, <span class="hl-tcell">effector T cells peak</span>, memory forms, inflammation resolves</div>
+      <p>The exact timing varies by tissue, dose, pathogen, prior immunity, age, and host condition. The <strong>sequence</strong> is still the durable lesson: pre-built defenses act instantly because no new genes or clones are needed, while adaptive defenses lag because the rare lymphocyte clone that matches the antigen must first be found and then multiplied roughly a thousandfold.</p>
+      <div class="alert info">
+        <strong>Two clocks, two reasons.</strong> Innate cells carry <strong>germline-encoded</strong> receptors (PRRs such as Toll-like receptors and NLRs) that are ready at birth, so recognition is immediate. Adaptive cells carry <strong>somatically rearranged</strong> receptors (BCR/TCR) unique to each clone, so the matching clone is vanishingly rare until expansion. Speed and specificity trade off — which is exactly why the body keeps both. See <a href="02-innate-recognition-inflammation.html">recognition (chapter 02)</a> and <a href="04-antigen-presentation.html">antigen presentation (chapter 04)</a>.
+      </div>
+      <h3>The whole system in one figure</h3>
+      <div class="draw-figure">
+        <div class="draw-title">One-map view of immune defense</div>
+        <div class="draw-row">
+          <span class="draw-node innate">pathogen or damaged cell</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node macro">barriers · complement<br>macrophages</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node macro">containment<br>inflammation</span>
+        </div>
+        <div class="draw-row">
+          <span class="draw-node innate">antigen + danger</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node macro">dendritic cell</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">lymph node<br>T-cell priming</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node bcell">B-cell help<br>antibody</span>
+        </div>
+        <div class="draw-row">
+          <span class="draw-node bcell">antibody</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node innate">neutralize<br>opsonize</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node nk">NK ADCC</span>
+          <span class="draw-arrow">+</span>
+          <span class="draw-node tcell">CD8 killing</span>
+        </div>
+        <div class="draw-row">
+          <span class="draw-node safe">resolution</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node bcell">plasma cells<br>memory B</span>
+          <span class="draw-arrow">+</span>
+          <span class="draw-node tcell">memory T cells</span>
+        </div>
+        <div class="draw-caption">Innate sensing starts the loop; dendritic cells carry antigen and context to lymph nodes; adaptive products return as antibody and effector T cells; macrophages resolve damage; memory changes the starting point next time.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">2</span>Scenario A — a bacterial splinter wound</div>
+      <p>Bacteria enter the skin through a splinter. This is the classic <strong>extracellular bacterial</strong> problem: the pathogen lives outside cells, so phagocytes, complement, and antibody are the relevant tools.</p>
+
+      <h3>Minutes to hours — containment</h3>
+      <p>Damaged keratinocytes release <strong>DAMPs</strong> (damage-associated molecular patterns: ATP, uric acid, HMGB1, mitochondrial DNA). Resident macrophages and tissue mast cells sense both these danger signals and bacterial <strong>PAMPs</strong> (LPS via TLR4, lipopeptides via TLR2). In parallel, the <strong>alternative</strong> and <strong>lectin</strong> complement pathways deposit C3b directly on bacterial surfaces within seconds, no antibody required.</p>
+      <div class="mono-diagram"><span class="hl-dim">skin breach</span>
+        |
+        v
+<span class="hl-macro">resident macrophage</span> + mast cell detect PAMPs/DAMPs
+        |
+        +--> <span class="hl-macro">phagocytosis</span> (FcγR / CR3 grip opsonized bacteria)
+        +--> <span class="hl-innate">TNF-α, IL-1β, IL-6</span>  (NF-κB + inflammasome)
+        +--> <span class="hl-innate">CXCL8 / chemokines</span>  (recruitment gradient)
+        +--> histamine (mast cell) --> vasodilation, leak
+        |
+        v
+<span class="hl-innate">neutrophils</span> roll, arrest on activated endothelium, extravasate
+        |
+        v
+complement <span class="hl-innate">C3a / C5a</span> sharpen the gradient; <span class="hl-innate">C5b-9</span> punches membrane pores</div>
+      <p>The first goal is purely <strong>containment</strong>: keep microbes local, flood the site with phagocytes, and stop bloodstream spread. The four cardinal signs of inflammation — redness, heat, swelling, pain (<em>rubor, calor, tumor, dolor</em>) — are the visible side effects of vasodilation, plasma-protein leak, and nerve sensitization by bradykinin and prostaglandins.</p>
+
+      <h3>Hours to day 1 — the neutrophil surge</h3>
+      <p>Neutrophils are the most numerous early responders. They phagocytose opsonized bacteria, release antimicrobial granules, and extrude <strong>NETs</strong> (neutrophil extracellular traps — webs of chromatin studded with enzymes) to snare bacteria. Pus is largely spent neutrophils. They are short-lived by design: a cell that floods tissue with oxidants and proteases must self-destruct quickly.</p>
+      <div class="alert info">
+        <strong>What is a neutrophil?</strong> A neutrophil is a short-lived <strong>myeloid granulocyte</strong> made in the bone marrow and released into blood. It is not a lymphocyte. It has a segmented multi-lobed nucleus and many granules, so it is also called a <strong>polymorphonuclear leukocyte</strong> or PMN.
+      </div>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">BIRTH</div><div class="step-t">Bone marrow</div><div class="step-d">Granulopoiesis produces neutrophils, which enter blood as fast-response phagocytes.</div></div>
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">CALL</div><div class="step-t">Chemotaxis</div><div class="step-d">CXCL8, C5a, and bacterial products guide neutrophils to the inflamed tissue.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">ENTRY</div><div class="step-t">Rolling to diapedesis</div><div class="step-d">Selectins and integrins let the neutrophil roll, arrest, and squeeze through endothelium.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">GRIP</div><div class="step-t">Fc and complement receptors</div><div class="step-d">Fc receptors bind IgG; complement receptors bind C3b/iC3b on opsonized microbes.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">KILL</div><div class="step-t">Phagosome, burst, granules, NETs</div><div class="step-d">The neutrophil engulfs and digests microbes, then usually dies and is cleared by macrophages.</div></div>
+      </div>
+
+      <h3>Days — adaptive reinforcement</h3>
+      <p>Antigen-loaded dendritic cells migrate to the draining lymph node. Naive T cells scan peptide–MHC displays; the rare matching clone is licensed and expands. B cells whose BCRs bind bacterial antigen internalize it, present it on MHC II, and receive help from follicular helper T cells. For an extracellular pathogen, the decisive output is <strong>antibody</strong>: IgM first, then class-switched IgG, which opsonizes bacteria (FcγR-mediated phagocytosis), activates the classical complement pathway, and neutralizes toxins.</p>
+
+      <h3>Resolution</h3>
+      <p>Once bacteria are cleared, neutrophils die by apoptosis and macrophages engulf them — <strong>efferocytosis</strong> — which is actively anti-inflammatory and switches macrophages toward a repair (M2-like) program. Lipid mediators shift from pro-inflammatory prostaglandins/leukotrienes to <strong>specialized pro-resolving mediators</strong> (resolvins, lipoxins, protectins). Inflammatory signals fall, repair signals rise, and a fraction of the responding B and T cells persist as memory. See <a href="03-macrophages.html">macrophages (chapter 03)</a> and <a href="05-b-cells-antibodies.html">antibodies (chapter 05)</a>.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">3</span>Scenario B — a viral respiratory infection</div>
+      <p>Viruses replicate <em>inside</em> host cells. Antibody can neutralize free virions between cells, but once the genome is intracellular, antibody is blind to it — so the system needs an arm that inspects what each cell is making. That arm reads peptides on MHC I.</p>
+
+      <h3>Early phase — the interferon firewall</h3>
+      <p>Infected epithelial cells and dendritic cells sense viral nucleic acids: cytosolic double-stranded RNA via <strong>RIG-I/MDA5</strong> and endosomal RNA via <strong>TLR3/7/8</strong>; foreign DNA via the <strong>cGAS–STING</strong> pathway. The shared output is <strong>type I interferon</strong> (IFN-α/β), which signals neighboring cells through JAK–STAT to switch on hundreds of interferon-stimulated genes — degrading viral RNA, blocking translation, and raising the alarm before the virus arrives.</p>
+      <div class="mono-diagram"><span class="hl-dim">virus enters epithelial cell</span>
+        |
+        v
+viral RNA/DNA sensed (RIG-I/MDA5, TLR3/7/8, cGAS-STING)
+        |
+        +--> <span class="hl-innate">type I interferon (IFN-α/β)</span> --> antiviral state in neighbors
+        +--> <span class="hl-innate">inflammatory cytokines</span> (IL-6, IL-1, IL-12, IL-18)
+        |
+        v
+<span class="hl-nk">NK cells</span> kill stressed or MHC-low cells
+   (IFN-α/β + IL-12/IL-18 raise NK cytotoxicity and IFN-γ output)</div>
+      <p>Type I interferon also activates NK cells. Many viruses downregulate MHC I to hide infected-cell peptides from CD8 T cells — but that very loss removes the inhibitory signal NK cells depend on, tripping the <strong>missing-self</strong> alarm. NK cells thus contain spread for the first few days, before virus-specific CD8 T cells are numerous. See <a href="08-nk-cells.html">NK cells (chapter 08)</a>.</p>
+
+      <h3>Adaptive phase — three labors divided</h3>
+      <p>In the lymph node, dendritic cells present viral peptides on both MHC I (via <strong>cross-presentation</strong>, so CD8 cells can be primed against a virus that never infected the DC) and MHC II. CD8 T cells expand into cytotoxic T lymphocytes; CD4 helper cells (Th1 and Tfh) license dendritic cells, sustain CD8 responses, and drive B-cell antibody production. The work splits cleanly by where the virus is:</p>
+      <div class="mono-diagram"><span class="hl-bcell">free virus outside cells</span>
+   -> antibody neutralization (blocks receptor binding / entry)
+
+<span class="hl-tcell">infected cells producing viral proteins</span>
+   -> MHC I display of viral peptides
+   -> CD8 T-cell killing (perforin + granzyme; Fas–FasL)
+
+<span class="hl-nk">MHC-low / stressed infected cells</span>
+   -> NK-cell killing (missing-self + stress ligands)</div>
+      <p>The two cytotoxic routes are complementary, not redundant: CD8 T cells require MHC I to act, so viruses that hide MHC I escape them — and walk straight into the NK cells that punish MHC-I loss. Both kill via the same machinery (perforin pores let granzyme proteases enter and trigger apoptosis).</p>
+      <h3>Does antibody automatically recruit NK cells?</h3>
+      <p>Not always. Antibody can recruit several effector systems, and which one dominates depends on what the antibody is stuck to.</p>
+      <table>
+        <thead><tr><th>Antibody-coated target</th><th>Main partner</th><th>Typical result</th></tr></thead>
+        <tbody>
+          <tr><td>Free virus or toxin</td><td>Antibody itself</td><td>Neutralization: blocks entry or active site</td></tr>
+          <tr><td>Bacterium or fungal particle</td><td>Neutrophil, macrophage, complement</td><td>Opsonization and phagocytosis; complement inflammation</td></tr>
+          <tr><td>Infected host cell with viral proteins on its surface</td><td>NK cell via CD16</td><td>ADCC: NK releases perforin/granzyme into the antibody-coated cell</td></tr>
+          <tr><td>Tumor cell coated by therapeutic IgG</td><td>NK cell, macrophage, complement</td><td>ADCC or antibody-dependent phagocytosis, depending on antibody and tissue</td></tr>
+        </tbody>
+      </table>
+      <div class="alert key">
+        <span class="alert-head">NK cells kill cells, not loose antigen</span>
+        In ADCC, the Fab arms bind antigen on a <strong>target-cell surface</strong> and the Fc stems point outward. NK-cell <strong>CD16 / FcγRIIIa</strong> binds those Fc stems and triggers a focused cytotoxic synapse. For antibody-coated microbes, neutrophils and macrophages are usually the cleaner fit because they can engulf the particle.
+      </div>
+
+      <h3>Memory</h3>
+      <p>After clearance, memory B cells, long-lived plasma cells in the bone marrow, central- and effector-memory CD4 cells, and memory CD8 cells (including lung-resident memory) remain. On re-exposure, pre-existing mucosal antibody may block infection at the airway surface entirely, and memory T cells respond in hours rather than days. See <a href="10-memory-tolerance-failure.html">memory (chapter 10)</a>.</p>
+      <p>T-cell memory is real, but it looks different from B-cell memory. A memory B response can leave antibody already floating in serum. A memory T cell does not secrete a soluble receptor. Instead, the body keeps more antigen-specific T cells than before, in a primed state: <strong>central memory T cells</strong> refill the response from lymph nodes, <strong>effector memory T cells</strong> patrol blood and tissues, and <strong>tissue-resident memory T cells</strong> stay at barrier sites such as lung, gut, and skin. Memory CD8 cells also survive by homeostatic cytokines such as IL-7 and IL-15 and can regain killing function faster than naive CD8 cells.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">4</span>Scenario C — vaccination</div>
+      <p>A vaccine tries to teach adaptive immunity without causing the full disease. It deliberately feeds the natural sequence two things — antigen <em>plus</em> innate context — so that memory forms while the pathogen burden stays at zero.</p>
+      <table>
+        <thead><tr><th>Ingredient</th><th>Role</th><th>Molecular handle</th></tr></thead>
+        <tbody>
+          <tr><td>Antigen</td><td>Teaches BCR/TCR specificity</td><td>Protein, polysaccharide, mRNA-encoded spike, or attenuated organism</td></tr>
+          <tr><td>Innate stimulus / adjuvant</td><td>Tells APCs the antigen matters</td><td>Alum (NLRP3 inflammasome), MPL (TLR4), CpG (TLR9), lipid-nanoparticle ionizable lipid</td></tr>
+          <tr><td>Delivery route &amp; formulation</td><td>Shapes tissue location and immune bias</td><td>Intramuscular, intranasal, depot vs. rapid; antigen size and stability</td></tr>
+          <tr><td>Booster schedule</td><td>Expands and improves memory</td><td>Re-entry into germinal centers; affinity maturation; isotype switching</td></tr>
+        </tbody>
+      </table>
+      <p>For a protein-antigen vaccine, the staged path mirrors a real infection — minus the pathogen:</p>
+      <div class="mono-diagram"><span class="hl-dim">antigen + adjuvant enter tissue</span>
+        |
+        v
+<span class="hl-macro">dendritic cells</span> capture antigen and sense adjuvant context (PRR firing)
+        |
+        v   (migrate to draining lymph node, upregulate MHC + CD80/86)
+        |
+<span class="hl-tcell">naive T cells</span> activate: signal 1 (peptide-MHC) + signal 2 (costim) + signal 3 (cytokine)
+        |
+        v
+<span class="hl-bcell">B cells</span> bind antigen, present to and receive <span class="hl-tcell">Tfh help</span> (CD40L + IL-21)
+        |
+        v
+germinal centers run somatic hypermutation --> <span class="hl-bcell">higher-affinity antibody</span>
+        |
+        v
+<span class="hl-bcell">long-lived plasma cells</span> + <span class="hl-bcell">memory B</span> / <span class="hl-tcell">memory T</span> cells persist</div>
+      <p>Success depends on far more than antigen identity. An antigen delivered with no adjuvant is often ignored or even tolerized, because without <strong>signal 2</strong> (costimulation) and <strong>signal 3</strong> (instructive cytokines) the dendritic cell never tells the T cell the antigen is dangerous. The adjuvant supplies the artificial "danger" that the absent pathogen would otherwise provide.</p>
+      <div class="alert warn">
+        <span class="alert-head">Why boosters work</span>
+        A second dose re-enters memory B cells into germinal centers, where another round of somatic hypermutation and selection raises antibody affinity and broadens the response. This is the deliberate use of the <em>secondary</em> response curve — faster onset, higher titer — covered in <a href="10-memory-tolerance-failure.html">chapter 10</a>.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">5</span>Where the four highlighted cells fit</div>
+      <p>The animation plots overlapping curves; this table reads the same data as a grid — which of the four spotlight cells dominates in each window. It is approximate: secondary responses move faster because memory cells and antibody already exist.</p>
+      <table>
+        <thead><tr><th>Time</th><th><span class="tag macro">Macrophage</span></th><th><span class="tag bcell">B cell</span></th><th><span class="tag tcell">T cell</span></th><th><span class="tag nk">NK cell</span></th></tr></thead>
+        <tbody>
+          <tr><td>Minutes–hours</td><td>Senses, eats, releases cytokines</td><td>Usually not yet dominant</td><td>Usually not yet dominant except tissue-resident memory</td><td>Responds to cytokines and abnormal cells</td></tr>
+          <tr><td>Day 1–3</td><td>Recruits cells, presents antigen, contains damage</td><td>Antigen binding and early activation may begin</td><td>Dendritic-cell priming begins</td><td>Early cytotoxicity and IFN-γ</td></tr>
+          <tr><td>Day 4–7</td><td>Receives T-cell help, clears debris</td><td>Clonal expansion, early antibody</td><td>Effector differentiation and expansion</td><td>Continues support, may decline as T cells dominate</td></tr>
+          <tr><td>Week+</td><td>Resolution and repair</td><td>Germinal centers, plasma cells, memory</td><td>Effector peak, contraction, memory</td><td>Surveillance and tissue-specific roles</td></tr>
+        </tbody>
+      </table>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--macro)">
+          <h4>Why innate peaks first</h4>
+          <p>Macrophages, complement, and NK cells use <strong>germline-encoded</strong> recognition and are already on station. No clone-finding, no expansion — recognition equals action within minutes.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--tcell)">
+          <h4>Why adaptive peaks late</h4>
+          <p>The matching B or T clone starts as perhaps one cell in a million. It must be found, licensed, and expanded ~1000-fold over days before its effector output (antibody, cytotoxic killing) can dent the pathogen.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">6</span>Why the system does not fire the strongest weapon first</div>
+      <p>It would be catastrophic to activate every cytotoxic T cell and plasma cell at the first hint of inflammation. The strongest weapons are also the least discriminating in aggregate: cytotoxic killing destroys host cells, high antibody titers can form immune complexes, and a runaway cytokine response can itself kill the host (a <strong>cytokine storm</strong>). The system therefore <strong>escalates</strong>, spending the cheapest, safest, most reversible options first and committing to the expensive, dangerous ones only after the threat is confirmed and localized.</p>
+      <div class="mono-diagram"><span class="hl-macro">local broad response</span>          (cheap, fast, reversible — innate)
+        |
+        v
+evidence gathering &amp; antigen transport  (DC migration to lymph node)
+        |
+        v
+<span class="hl-tcell">specific clonal expansion</span>       (commit only the matching clone)
+        |
+        v
+<span class="hl-bcell">targeted effector response</span>      (antibody + cytotoxicity, where needed)
+        |
+        v
+<span class="hl-dim">contraction &amp; memory</span>            (stand down; keep a record)</div>
+      <p>Each step is a checkpoint. T cells need three independent signals to commit; B cells need T-cell help to make high-affinity antibody; effector responses contract sharply once antigen is cleared. This staged escalation explains many clinical patterns: early symptoms reflect innate inflammation, later improvement coincides with adaptive control, and severe disease can arise from three distinct failures — overwhelming pathogen burden, immune-mediated tissue damage, or failure to resolve and stand down.</p>
+      <div class="alert danger">
+        <span class="alert-head">The escalation logic, in one line</span>
+        Fire the broadest, safest, fastest tool first; confirm the threat; then commit narrow, powerful, slow weapons only against a verified target — and tear them down the moment the threat is gone. Skipping the staging is how immunopathology happens.
+      </div>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Summary</span>
+      Immune responses unfold over time. Macrophages, complement, cytokines, neutrophils, and NK cells act early because their recognition is germline-encoded and pre-built. Dendritic cells then carry antigen and innate context to lymph nodes, where rare matching B and T clones are found and expanded over days before returning with precise effector functions. Vaccination works by deliberately feeding this sequence antigen plus innate context, so durable memory forms without full disease — and the whole cascade is staged, not simultaneous, precisely because the strongest weapons are the most dangerous to the host.
+    </div>
+
+    <div class="chap-nav">
+      <a href="08-nk-cells.html">← 08 · NK Cells</a>
+      <a href="../09-immune-response-timeline.md">Markdown source</a>
+      <a href="10-memory-tolerance-failure.html">10 · Memory, Tolerance &amp; Failure →</a>
+    </div>
+
+    <footer>
+      <p>⏱️ Response Timeline · Chapter 09 · <a href="index.html">Report home</a> · <a href="sources.html">Sources</a></p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>

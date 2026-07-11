@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🧭 Introduction — How the Immune System Works</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> · Foundations · Chapter 01</div>
+      <h1 class="page-title">🧭 Introduction</h1>
+      <p class="page-subtitle">No single cell can detect a threat, kill it, identify it, spare the host, and remember it. The immune system works because partial detectors are wired into a sequence — broad danger sensing gates narrow clonal expansion.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Core idea</span>
+      The immune system is a <strong>distributed recognition system</strong> that converts local uncertainty into layered evidence. Innate cells ask broad questions first and decide whether a rare, specific lymphocyte clone should be amplified into a full response. Innate immunity is not the crude first wave — it is the sensor layer that <strong>gates</strong> adaptive immunity.
+    </div>
+
+    <!-- ===== The escalation pipeline (static flow chart) ===== -->
+    <div class="section">
+      <div class="section-title"><span class="count">🧭</span>The escalation pipeline — breach to memory</div>
+      <p class="section-subtitle">The rest of this report follows this sequence: broad danger-sensing on the left gates narrow clonal expansion on the right.</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--text-light)"><div class="step-n">STAGE 0</div><div class="step-t">Barrier</div><div class="step-d">Skin, mucus, acid, and microbiota keep most microbes out.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">STAGE 1</div><div class="step-t">Innate sensing</div><div class="step-d">PRRs and complement recognize conserved danger patterns.</div></div>
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">STAGE 2</div><div class="step-t">Inflammation</div><div class="step-d">Cytokines and chemokines recruit cells and change the tissue.</div></div>
+        <div class="flow-step" style="--c:var(--primary)"><div class="step-n">STAGE 3</div><div class="step-t">Antigen presentation</div><div class="step-d">Dendritic cells carry peptide evidence to lymph nodes.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">STAGE 4</div><div class="step-t">Clonal expansion</div><div class="step-d">Rare matching B and T cells are selected and cloned.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">STAGE 5</div><div class="step-t">Effectors</div><div class="step-d">Antibodies, CD8 killing, and activated macrophages clear it.</div></div>
+        <div class="flow-step" style="--c:var(--primary)"><div class="step-n">STAGE 6</div><div class="step-t">Memory</div><div class="step-d">Long-lived B and T cells make the next response faster.</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">1</span>The core problem: five jobs, no single cell</div>
+      <p>The immune system has to solve a hard classification problem inside living tissue:</p>
+      <ol>
+        <li>Detect something dangerous quickly.</li>
+        <li>Kill or contain it before it spreads.</li>
+        <li>Learn exactly what it is.</li>
+        <li>Avoid killing the host.</li>
+        <li>Remember the encounter for next time.</li>
+      </ol>
+      <p>No single cell type can do all five. A <span class="hl-dim">macrophage</span> is fast and local, but its receptors are broad. A B cell can make an exquisitely specific antibody, but it usually needs help before it becomes dangerous. A T cell can inspect the inside of infected cells, but only through peptide fragments displayed on <strong>major histocompatibility complex (MHC)</strong> molecules. An NK cell can kill stressed or MHC-deficient cells before a T-cell clone has expanded, but it does not carry a unique rearranged antigen receptor like a B or T cell.</p>
+      <p>The system works because those partial detectors are wired into a <strong>sequence</strong>, where each stage decides whether to escalate to the next:</p>
+      <div class="mono-diagram">microbe or damage
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-innate">innate sensing</span>: barrier cells, complement, macrophages, dendritic cells, NK cells
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-macro">local inflammation</span>: cytokines, chemokines, vascular leak, recruited leukocytes
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+antigen presentation in lymph nodes
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-tcell">adaptive clonal expansion</span>: B cells and T cells with matching receptors
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-bcell">effector phase</span>: antibodies, cytotoxic T cells, activated macrophages, NK cells
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+contraction, repair, memory, tolerance</div>
+      <p>Janeway's <em>Immunobiology</em> states the bridge clearly: innate cells "play a crucial part" in starting and directing adaptive responses. That is the central idea of this report.</p>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Layered_Defense_of_the_Human_Immune_System.svg" alt="Layered immune defense diagram showing barriers, macrophage action, antigen presentation, B-cell activation, and antibody action" loading="lazy">
+        <figcaption>The report starts from this layered architecture: barrier defense, innate interpretation, antigen presentation, adaptive activation, antibody output, and memory. Source: <a href="https://commons.wikimedia.org/wiki/File:Layered_Defense_of_the_Human_Immune_System.svg">Wikimedia Commons</a>, LFrancis19, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</figcaption>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">2</span>Four cell types, four logics of recognition</div>
+      <p>This report focuses on four cells because each embodies a different logic of recognition — a different answer to "how do you tell dangerous from self?"</p>
+      <table>
+        <thead><tr><th>Cell</th><th>Recognition style</th><th>Main question it asks</th><th>Main output</th></tr></thead>
+        <tbody>
+          <tr><td>Macrophage</td><td>Germline-encoded pattern, antibody, complement, damage signals</td><td>"Is there something to eat, alarm about, or repair?"</td><td>Phagocytosis, cytokines, antigen presentation, tissue repair</td></tr>
+          <tr><td>B cell</td><td>Unique B-cell receptor generated by gene rearrangement</td><td>"Does my antibody-shaped receptor bind this extracellular target?"</td><td>Antibodies, plasma cells, memory B cells</td></tr>
+          <tr><td>T cell</td><td>Unique T-cell receptor recognizing peptide-MHC</td><td>"Is this displayed peptide dangerous in the right context?"</td><td>CD8 killing, CD4 help, macrophage activation, B-cell help, regulation</td></tr>
+          <tr><td>NK cell</td><td>Balance of inhibitory and activating receptors</td><td>"Does this cell look stressed or missing normal self markers?"</td><td>Rapid killing, interferon-γ, antibody-dependent cytotoxicity</td></tr>
+        </tbody>
+      </table>
+      <p>These cells are not independent modules — they form <strong>feedback loops</strong>. Innate signals license adaptive cells, and adaptive outputs sharpen innate effectors:</p>
+      <div class="mono-diagram"><span class="hl-macro">macrophage</span> eats microbe
+   <span class="hl-dim">→</span> releases <span class="hl-innate">IL-12</span> and other signals
+   <span class="hl-dim">→</span> helps activate <span class="hl-nk">NK cells</span> and <span class="hl-tcell">TH1</span> responses
+   <span class="hl-dim">→</span> receives <span class="hl-innate">IFN-γ</span> back from NK/TH1 cells
+   <span class="hl-dim">→</span> becomes better at killing intracellular microbes
+
+<span class="hl-bcell">B cell</span> binds antigen
+   <span class="hl-dim">→</span> presents peptide on <span class="hl-bcell">MHC II</span>
+   <span class="hl-dim">→</span> receives help from <span class="hl-tcell">T follicular helper cell</span>
+   <span class="hl-dim">→</span> becomes plasma cell and memory B cell
+   <span class="hl-dim">→</span> antibody coats microbes
+   <span class="hl-dim">→</span> <span class="hl-macro">macrophages</span> eat antibody-coated microbes more efficiently
+
+infected cell reduces <span class="hl-tcell">MHC I</span>
+   <span class="hl-dim">→</span> evades <span class="hl-tcell">CD8 T cells</span>
+   <span class="hl-dim">→</span> loses inhibitory signal to <span class="hl-nk">NK cells</span>
+   <span class="hl-dim">→</span> becomes <span class="hl-nk">NK-cell target</span></div>
+      <p>The redundancy is on purpose. If a pathogen blocks one detection route, another may still catch it — which is exactly why an MHC-I-downregulating virus that escapes CD8 T cells walks straight into NK-cell "missing-self" recognition.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">3</span>Innate and adaptive are not "weak" and "strong"</div>
+      <p>Introductory diagrams often draw <strong>innate immunity</strong> as fast but nonspecific, and <strong>adaptive immunity</strong> as slow but specific. Useful, but incomplete.</p>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--innate)">
+          <h4>Innate recognition</h4>
+          <p><strong>Speed:</strong> minutes to hours.<br><strong>Receptors:</strong> inherited in the germline — no cell invents a new Toll-like receptor.<br><strong>Targets:</strong> conserved microbial or damage patterns.<br><strong>Memory:</strong> limited "trained" / tissue-state memory, not classic clonal memory.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--tcell)">
+          <h4>Adaptive recognition</h4>
+          <p><strong>Speed:</strong> days on first exposure.<br><strong>Receptors:</strong> rearranged BCR/TCR genes — each naive lymphocyte carries one dominant specificity.<br><strong>Targets:</strong> highly specific antigens.<br><strong>Memory:</strong> long-lived antigen-specific B and T cells.</p>
+        </div>
+      </div>
+      <p>Innate immunity is not random. It reads a defined vocabulary of <strong>pathogen-associated molecular patterns (PAMPs)</strong> and <strong>damage-associated molecular patterns (DAMPs)</strong> through a small set of germline-encoded <strong>pattern-recognition receptors (PRRs)</strong>:</p>
+      <table>
+        <thead><tr><th>Sensor family</th><th>Reads</th><th>Example ligand</th></tr></thead>
+        <tbody>
+          <tr><td>TLR4 (surface)</td><td>Bacterial outer-membrane lipid</td><td>Lipopolysaccharide (LPS)</td></tr>
+          <tr><td>TLR3 / TLR7 / TLR9 (endosomal)</td><td>Microbial nucleic acids</td><td>dsRNA, ssRNA, unmethylated CpG DNA</td></tr>
+          <tr><td>TLR5 (surface)</td><td>Bacterial motility protein</td><td>Flagellin</td></tr>
+          <tr><td>C-type lectins (e.g. mannose receptor, Dectin-1)</td><td>Microbial sugars</td><td>Mannans, β-glucan</td></tr>
+          <tr><td>RIG-I / MDA5 (cytosolic)</td><td>Viral RNA in the cytosol</td><td>5′-triphosphate / long dsRNA</td></tr>
+          <tr><td>cGAS–STING (cytosolic)</td><td>Mislocalized DNA</td><td>Cytosolic dsDNA</td></tr>
+          <tr><td>NLRs / inflammasome</td><td>Cytosolic danger + ion flux</td><td>Bacterial products, crystals, ATP</td></tr>
+        </tbody>
+      </table>
+
+      <h3>The sensor layer as two recognition systems</h3>
+      <p>Innate and adaptive immunity both sense, but they sense with different hardware. Innate sensors are fixed before infection and ask broad questions about molecular patterns, misplaced host molecules, and abnormal cell state. Adaptive sensors are generated as rare BCR/TCR clones, then expanded only when innate context says the match is worth escalating.</p>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--innate)">
+          <h4>Innate sensor side</h4>
+          <p><strong>Where it watches:</strong> surface, endosome, cytosol, blood, stressed-cell surface.<br><strong>Hardware:</strong> PRRs, complement, Fc receptors, NK activating/inhibitory receptors.<br><strong>Output:</strong> cytokines, interferon, opsonization, inflammation, early killing.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--tcell)">
+          <h4>Adaptive sensor side</h4>
+          <p><strong>Where it watches:</strong> extracellular antigen for BCRs; peptide-MHC displays for TCRs.<br><strong>Hardware:</strong> rearranged B-cell and T-cell receptors.<br><strong>Output:</strong> clonal expansion, antibody, CD4 help, CD8 killing, memory.</p>
+        </div>
+      </div>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Toll-like_receptor_pathways.svg" alt="Diagram of Toll-like receptor pathways showing surface and endosomal TLRs feeding inflammatory and interferon signaling routes" loading="lazy">
+        <figcaption>Toll-like receptor pathways visualize one major innate sensor family: surface and endosomal TLRs convert microbial pattern recognition into NF-κB inflammatory output and interferon-regulatory-factor antiviral output. Source: <a href="https://commons.wikimedia.org/wiki/File:Toll-like_receptor_pathways.svg">Wikimedia Commons</a>, Niels Olson, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</figcaption>
+      </div>
+      <p>Adaptive immunity buys specificity by letting B and T cells <strong>rearrange</strong> receptor genes during development (V(D)J recombination). The price of random receptor generation is the risk of self-reactive cells, so the system spends enormous effort on <strong>tolerance</strong> — the deletion, silencing, or suppression of cells that would attack the host. The best mental model is not "innate versus adaptive." It is "<strong>broad danger sensing gates narrow clonal expansion</strong>."</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">4</span>The recognition problem is split across compartments</div>
+      <p>Different pathogens live in different physical places, and a receptor that works in one compartment is blind in another. The immune system's most important architectural decision is to <strong>map each compartment to a matched molecular solution</strong>. This is the layered architecture in molecular terms:</p>
+      <table>
+        <thead><tr><th>Where the threat lives</th><th>Hard part</th><th>Molecular sensor / solution</th><th>Effector</th></tr></thead>
+        <tbody>
+          <tr><td>Extracellular (blood, fluids, mucosa)</td><td>Toxins and free microbes spread fast</td><td><strong>Secreted antibody</strong> + the <strong>complement</strong> cascade (C3b opsonin, C5–C9 membrane-attack complex)</td><td>Neutralization, opsonization, lysis, FcγR-mediated phagocytosis</td></tr>
+          <tr><td>Vesicular (inside phagosomes)</td><td>Some bacteria survive after being eaten</td><td>Peptide on <strong>MHC II</strong> seen by a <strong>TH1 CD4 cell</strong>, which returns IFN-γ + CD40L</td><td>The IFN-γ–activated macrophage ramps up ROS / NO to finish the kill</td></tr>
+          <tr><td>Cytosolic (inside host-cell machinery)</td><td>Viruses hide behind the plasma membrane</td><td>Proteasome-clipped peptide on <strong>MHC I</strong> read by a <strong>CD8 T cell</strong></td><td>Cytotoxic T cell delivers perforin / granzymes; induced apoptosis</td></tr>
+          <tr><td>MHC-low / stressed cell surface</td><td>Tumors and viruses drop MHC I to dodge CD8</td><td><strong>NK-cell</strong> inhibitory/activating balance — "missing self" + stress ligands (MICA/B → NKG2D)</td><td>NK killing without prior clonal expansion; IFN-γ</td></tr>
+          <tr><td>Sterile damage (no microbe)</td><td>Injury can mimic infection</td><td><strong>DAMP sensing</strong> — released ATP, HMGB1, uric acid, mitochondrial DNA trigger PRRs / the inflammasome</td><td>Macrophage inflammation, recruitment, then repair</td></tr>
+        </tbody>
+      </table>
+      <p>The compartment map can also be read as a routing diagram: each physical location points to a different sensor and effector pair.</p>
+      <div class="mono-diagram">extracellular fluid  -> soluble tags       -> antibody, C3b, MAC, phagocyte Fc/CR receptors
+phagosome/endosome   -> <span class="hl-bcell">MHC II display</span>     -> CD4 TH1 / Tfh help
+cytosol              -> <span class="hl-tcell">MHC I display</span>      -> CD8 inspection and killing
+MHC-low surface      -> <span class="hl-nk">missing-self test</span>  -> NK-cell killing
+sterile damage       -> misplaced self     -> DAMP sensing, inflammasome, repair program</div>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/MHC_Endogenous_and_Exogenous_Pathways.png" alt="Diagram contrasting endogenous MHC class I antigen presentation with exogenous MHC class II antigen presentation" loading="lazy">
+        <figcaption>Two key compartments in the map: cytosolic proteins feed the endogenous MHC I pathway through proteasome/TAP/ER loading, while engulfed proteins feed the exogenous MHC II pathway through endosome/lysosome processing. Source: <a href="https://commons.wikimedia.org/wiki/File:MHC_Endogenous_and_Exogenous_Pathways.png">Wikimedia Commons</a>, author credited on Commons as סתו כסלו, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</figcaption>
+      </div>
+      <p>Read top to bottom, the table is the same picture as the layered-defense figure above — each layer is a compartment, and each compartment has a dedicated recognition-and-effector pair. The four highlighted cells coexist precisely because <strong>they cover different blind spots rather than duplicating one another</strong>. Spelled out in molecular terms, each mapping is a specific pair of proteins:</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">EXTRACELLULAR</div><div class="step-t">→ antibody / complement</div><div class="step-d">Free microbes and toxins are caught by soluble proteins. The antibody <strong>Fc</strong> tag and complement <strong>C3b</strong> coat (opsonin) both neutralize the target and hand it to phagocyte receptors (FcγR, CR1/CR3); C5–C9 can punch a membrane-attack complex.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">VESICULAR</div><div class="step-t">→ TH1-activated macrophage</div><div class="step-d">A bacterium that survives being eaten is reported as peptide on <strong>MHC II</strong>; a <strong>TH1 CD4</strong> cell returns <strong>IFN-γ</strong> + <strong>CD40L</strong>, licensing the macrophage to finish what it already holds with ROS / NO.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">CYTOSOLIC</div><div class="step-t">→ MHC I / CD8</div><div class="step-d">Everything translated inside a cell is clipped by the <strong>proteasome</strong>, pumped into the ER by <strong>TAP</strong>, loaded onto <strong>MHC I</strong>, and displayed for <strong>CD8</strong> surveillance — so a virus cannot hide just by staying intracellular.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">MHC-LOW / STRESSED</div><div class="step-t">→ NK</div><div class="step-d">A cell that drops MHC I to dodge CD8 simultaneously loses the inhibitory signal (to KIR / NKG2A) that protected it from <strong>NK</strong> cells, while stress ligands <strong>MICA/B</strong> trip the activating receptor <strong>NKG2D</strong>. The escape move becomes a new vulnerability.</div></div>
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">STERILE DAMAGE</div><div class="step-t">→ DAMP sensing</div><div class="step-d">Injury with no pathogen is still read as danger: leaked <strong>ATP</strong>, <strong>HMGB1</strong>, uric acid, and mitochondrial DNA trip PRRs and the <strong>inflammasome</strong>, so wounds, crystals, and cell death also drive inflammation and repair.</div></div>
+      </div>
+      <p>Notice that recognition lives in a different molecule from the kill: an antibody does not lyse, complement and FcγR do; MHC I does not kill, the CD8 cell's perforin/granzymes do. That separation is what lets one effector machine be retargeted by antibody, complement, or stress signals.</p>
+      <div class="alert info">
+        <strong>Why this matters for the rest of the report.</strong> "Extracellular → antibody/complement," "vesicular → TH1-activated macrophage," "cytosolic → MHC I/CD8," "MHC-low/stressed → NK," and "sterile damage → DAMP sensing" are the spine of chapters 02–10. Recognition (the tag) and the effector action (the kill) are deliberately <em>separable</em> — opsonization, MHC restriction, and missing-self all reuse this same split. See <a href="02-innate-recognition-inflammation.html">recognition &amp; inflammation (02)</a>, <a href="04-antigen-presentation.html">antigen presentation and MHC I/II (04)</a>, and <a href="08-nk-cells.html">NK cells (08)</a>.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">5</span>The central thesis</div>
+      <p>The immune system works by converting local uncertainty into layered evidence:</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">STAGE 1</div><div class="step-t">Broad questions first</div><div class="step-d">Macrophages and other innate cells recognize patterns, eat particles, release inflammatory signals, and shape tissue behavior.</div></div>
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">STAGE 2</div><div class="step-t">Carry context inward</div><div class="step-d">Dendritic cells and APCs turn local infection into a searchable peptide display in the lymph node.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">STAGE 3</div><div class="step-t">Clonal specificity</div><div class="step-d">Rare B and T cells whose rearranged receptors match the antigen are selected and expanded into armies.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">STAGE 4</div><div class="step-t">Patrol abnormal self</div><div class="step-d">NK cells kill stressed or MHC-low host cells without waiting for clonal expansion — covering the CD8 blind spot.</div></div>
+        <div class="flow-step" style="--c:var(--primary)"><div class="step-n">STAGE 5</div><div class="step-t">Improve or harm</div><div class="step-d">Memory makes second responses fast; tolerance prevents self-recognition from becoming disease.</div></div>
+      </div>
+      <p>The rest of the report fills in the mechanisms behind each sentence.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Summary</span>
+      The immune system is a distributed recognition system. Macrophages provide fast local sensing and cleanup; B cells produce antibodies against extracellular targets; T cells inspect peptide-MHC displays and coordinate cellular responses; NK cells kill cells that look stressed or lack normal inhibitory self markers. The key principle is <strong>coordination</strong>: innate signals gate adaptive specificity, and adaptive outputs make innate effector mechanisms more precise. Recognition is mapped to compartment — extracellular to antibody/complement, vesicular to TH1-activated macrophages, cytosolic to MHC I/CD8, MHC-low to NK, sterile damage to DAMP sensing.
+    </div>
+
+    <div class="chap-nav">
+      <a href="index.html">← Home</a>
+      <a href="../01-introduction.md">Markdown source</a>
+      <a href="02-innate-recognition-inflammation.html">02 · Recognition &amp; Inflammation →</a>
+    </div>
+
+    <footer>
+      <p>🧭 Introduction · Chapter 01 · <a href="index.html">Report home</a> · <a href="sources.html">Sources</a></p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>

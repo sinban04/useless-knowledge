@@ -25,6 +25,9 @@ Totally interest-oriented — no fixed theme. Past probe-lab subjects have range
 
 In reverse chronological order (newest first).
 
+- **[2026-07-11 — Immune System Cells](https://sinban04.github.io/useless-knowledge/report/2026-07-11-immune-system-cells/)**
+  Visual multi-chapter report on immune-system architecture: innate sensing, complement, macrophages, neutrophils, dendritic cells, MHC I/II antigen presentation, B cells, antibodies, T cells, NK cells, V(D)J recombination, germinal centers, memory, tolerance, and response timelines. Published from [`probe-lab/2026-07-11-immune-system-cells`](https://github.com/sinban04/useless-engineers/tree/main/probe-lab/2026-07-11-immune-system-cells).
+
 - **[2026-05-30 — Cell Structure and Mitochondria](report/2026-05-30-cell-structure-mitochondria/html/index.html)**
   Visual multi-chapter report on cell structure: membrane, nucleus, ribosomes, mitochondria, lysosomes, cytoskeleton, organelle cooperation, animal versus plant cells, autophagy, chromatin, mitochondrial relationships, and nuclear versus mitochondrial inheritance. Includes an HTML companion report with diagrams, workflow figures, and video links.
 

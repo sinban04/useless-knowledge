@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🏹 B Cells &amp; Antibodies — How the Immune System Works</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> · Adaptive Immunity · Chapter 05</div>
+      <h1 class="page-title">🏹 B Cells &amp; Antibodies</h1>
+      <p class="page-subtitle">A B cell is a precision archer that keeps one arrow: a single membrane-bound antibody. When that arrow finally meets its target, the cell copies itself into a factory and fires soluble copies into blood, mucus, and tissue fluid.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Core idea</span>
+      A B cell turns a <strong>cell-surface recognition molecule</strong> (the BCR) into a <strong>soluble molecule</strong> (antibody). Antigen does not teach the B cell what to make — the repertoire is built blind by gene rearrangement, and antigen simply <em>selects</em> the rare cell that already matches. With T-cell help, that clone enters a germinal center, mutates and refines its receptor, switches the antibody's effector class, and leaves behind plasma cells and memory.
+    </div>
+
+    <!-- ===== Signature animation ===== -->
+    <figure class="anim" data-anim="clonal-selection"
+      data-caption="Clonal selection in three beats: a diverse repertoire of naive B cells (each pre-built by V(D)J recombination), antigen binding the one rare matching BCR, then expansion into antibody-secreting plasma cells and long-lived memory B cells. Drag the scrubber or hit replay to step through each phase. Sources: NCBI Bookshelf, Immunobiology (humoral response); Burnet 1957 clonal-selection theory."></figure>
+
+    <div class="section">
+      <div class="section-title"><span class="count">1</span>What a B cell recognizes</div>
+      <p>A <strong>B cell</strong> is an adaptive lymphocyte whose receptor is a membrane-bound antibody. This <strong>B-cell receptor (BCR)</strong> binds native antigen — proteins, polysaccharides, lipids, toxins, viral surface proteins, bacterial capsules — in its natural three-dimensional shape. That is the first major contrast with T cells, which only ever see short peptides displayed on MHC.</p>
+      <table>
+        <thead><tr><th>Feature</th><th>B cell</th><th>T cell</th></tr></thead>
+        <tbody>
+          <tr><td>Receptor</td><td>BCR, a membrane immunoglobulin</td><td>TCR, a T-cell receptor</td></tr>
+          <tr><td>Antigen form</td><td>Native molecular shape (conformational or linear epitope)</td><td>Peptide bound in an MHC groove</td></tr>
+          <tr><td>Main effector output</td><td>Secreted antibodies</td><td>Cellular help, killing, regulation</td></tr>
+          <tr><td>Secreted receptor?</td><td>Yes — the BCR is released as antibody</td><td>No</td></tr>
+        </tbody>
+      </table>
+      <p>When activated, a B cell can become a <strong>plasma cell</strong>, a dedicated antibody factory. That is the unique contribution of B cells: they convert a single cell-surface recognition molecule into a soluble version that can patrol fluids far from the cell that made it.</p>
+      <div class="alert info">
+        <strong>Lymphocyte is the family name.</strong> B cells and T cells are the two major adaptive lymphocyte classes. NK cells are lymphocyte-lineage cells too, but they use innate-style receptor logic rather than a unique V(D)J-built receptor. Every B cell is a lymphocyte; not every lymphocyte is a B cell.
+      </div>
+      <h4>Anatomy of the antibody / BCR</h4>
+      <p>An immunoglobulin is two identical <strong>heavy chains</strong> paired with two identical <strong>light chains</strong> (κ or λ), held in a Y by disulfide bonds. The molecule splits cleanly into function and recognition:</p>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--bcell)">
+          <h4>Fab arms — recognition</h4>
+          <p>The two arms each carry a <strong>variable (V) region</strong> formed by heavy + light pairing. Three hypervariable loops on each chain — the <strong>complementarity-determining regions (CDR1/2/3)</strong> — form the antigen-binding surface. CDR3 sits at the V(D)J join and is the most diverse, so it dominates specificity.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--macro)">
+          <h4>Fc stem — effector function</h4>
+          <p>The heavy-chain <strong>constant (C) region</strong> forms the stem. It is the part that complement (C1q), Fc receptors on phagocytes (FcγR) and NK cells (CD16/FcγRIII), and transport machinery (FcRn, pIgR) actually grip. Class switching swaps this stem without touching the Fab.</p>
+        </div>
+      </div>
+      <div class="mono-diagram"><span class="hl-dim">              antigen</span>
+<span class="hl-bcell">  CDR loops ╲   ╱ CDR loops</span>   ← variable region (V<sub>H</sub>+V<sub>L</sub>)
+<span class="hl-bcell">     ▟█▙      ▟█▙</span>            <span class="hl-dim">Fab arms — binding</span>
+<span class="hl-bcell">       ╲    ╱</span>
+<span class="hl-bcell">        ╲  ╱</span>      ── hinge ──
+<span class="hl-macro">        ████</span>               <span class="hl-dim">Fc stem — constant region</span>
+<span class="hl-macro">        ████</span>      → grips: C1q · FcγR · CD16 · FcRn</div>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Activation_of_T_and_B_cells.png" alt="Diagram showing activation of T cells and B cells with antigen presentation and helper T-cell licensing" loading="lazy">
+        <figcaption>Activation of T and B cells: a B cell binds antigen through its BCR, presents processed peptide on MHC II, and receives help from a CD4 T cell. Source: <a href="https://commons.wikimedia.org/wiki/File:Activation_of_T_and_B_cells.png">Wikimedia Commons</a> (Immcarle105), <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</figcaption>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">2</span>How one body makes so many BCRs — V(D)J recombination</div>
+      <p>Receptor diversity is not encoded gene-by-gene. The genome stores <em>fragments</em>, and developing B cells assemble a unique gene by cutting and pasting DNA. This is <strong>V(D)J recombination</strong> (Tonegawa, 1983) — the only deliberate, programmed genome editing in normal vertebrate development.</p>
+      <div class="alert info">
+        This section gives the B-cell version. The dedicated mechanism page, <a href="12-vdj-recombination-germinal-centers.html">chapter 12</a>, walks through RAG cutting, junctional diversity, receptor checkpoints, and how germinal centers differ from V(D)J recombination.
+      </div>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">SOURCE</div><div class="step-t">Gene-segment libraries</div><div class="step-d">The heavy-chain locus holds many <strong>V</strong>, several <strong>D</strong>, and several <strong>J</strong> segments. Light-chain loci (κ, λ) hold <strong>V</strong> and <strong>J</strong> only — no D.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">CUT</div><div class="step-t">RAG1/RAG2 cleavage</div><div class="step-d">The <strong>RAG1/RAG2</strong> recombinase recognizes <strong>recombination signal sequences (RSS)</strong> flanking each segment and makes a double-strand break, obeying the <em>12/23 rule</em> so segments join in the right order.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">JOIN</div><div class="step-t">Heavy chain first</div><div class="step-d">D-to-J joins, then V-to-DJ, producing the rearranged <strong>V<sub>H</sub></strong> exon. A successful heavy chain triggers allelic exclusion so only one allele is used.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">PAIR</div><div class="step-t">Light chain &amp; assembly</div><div class="step-d">A V-J light-chain rearrangement follows; the V<sub>L</sub> pairs with V<sub>H</sub>. Heavy + light pairing multiplies diversity combinatorially.</div></div>
+      </div>
+      <p>Three independent multipliers stack to create the repertoire (textbook estimates exceed 10<sup>11</sup> possible specificities, far more than the genome could encode directly):</p>
+      <table>
+        <thead><tr><th>Source of diversity</th><th>Mechanism</th><th>Where it acts</th></tr></thead>
+        <tbody>
+          <tr><td>Combinatorial</td><td>Which V, D, J segments are chosen and joined</td><td>Heavy and light loci independently</td></tr>
+          <tr><td>Heavy/light pairing</td><td>Any heavy chain can pair with any light chain</td><td>At chain assembly</td></tr>
+          <tr><td class="right"><strong>Junctional</strong></td><td><strong>Exonuclease nibbling</strong> at the cut ends, plus <strong>P-nucleotides</strong> (palindromic) and template-independent <strong>N-nucleotides</strong> added by <strong>TdT</strong> (terminal deoxynucleotidyl transferase)</td><td>Concentrated at the CDR3 join</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>Junctional diversity is the crown jewel.</strong> Because TdT and exonuclease activity randomly add and remove bases exactly where CDR3 forms, two B cells using identical V, D, and J segments can still bind completely different antigens. This is also why ~2/3 of joins are out of frame and the cell dies — the cost of randomness.
+      </div>
+      <p>The benefit of building receptors blind is the cost of self-reactivity. B-cell development therefore includes tolerance checkpoints that <strong>delete</strong> strongly self-reactive cells, force <strong>receptor editing</strong> (a fresh light-chain rearrangement to escape self-binding), or render them <strong>anergic</strong> before they mature.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">3</span>Clonal selection</div>
+      <p><strong>Clonal selection</strong> (Burnet, 1957) is the operating principle the animation above shows. A naive B cell already carries its receptor before antigen exists. Antigen does not instruct the cell to invent a matching receptor — it selects the rare cell that already matches, and that cell's specificity is inherited by all of its descendants.</p>
+      <div class="mono-diagram"><span class="hl-bcell">large pool of naive B cells</span>  (one BCR shape each, built by V(D)J)
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+antigen binds the <span class="hl-innate">rare matching BCR</span>
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+that <span class="hl-bcell">B-cell clone</span> proliferates  (selection, not instruction)
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+progeny → <span class="hl-macro">plasma cells</span> (antibody) + <span class="hl-tcell">memory B cells</span></div>
+      <p>A matching B cell can therefore expand from rarity to dominance during a single response — exactly the rise-from-the-repertoire the scene animates.</p>
+      <div class="alert key">
+        <span class="alert-head">What if no BCR matches?</span>
+        V(D)J recombination gives the body an enormous statistical search library, not a guaranteed catalog of every possible antigen. The system works because the naive B-cell pool is large, BCRs are cross-reactive, pathogens have many possible epitopes, and germinal centers can improve a weak starting match. But a germinal center cannot rescue a clone that never bound antigen at all. If no B cell captures enough antigen, if the useful epitope is hidden, if matching clones were deleted as self-reactive, or if T-cell help is missing, the antibody response can be weak, delayed, or absent.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">4</span>T-dependent B-cell activation — the two-signal handshake</div>
+      <p>Most protein antigens require help from CD4 T cells, especially <strong>T follicular helper (Tfh)</strong> cells. The B cell is both a recognizer and an antigen-presenting cell in this exchange.</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">STEP 1</div><div class="step-t">BCR binds</div><div class="step-d">The BCR grips native antigen — signal one.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">STEP 2</div><div class="step-t">Internalize</div><div class="step-d">Receptor-mediated endocytosis pulls the antigen inside.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">STEP 3</div><div class="step-t">Process &amp; present</div><div class="step-d">The antigen is digested; peptide is loaded onto <strong>MHC II</strong> and displayed.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">STEP 4</div><div class="step-t">Tfh recognizes</div><div class="step-d">A Tfh cell's TCR reads the peptide-MHC II.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">STEP 5</div><div class="step-t">License</div><div class="step-d"><strong>CD40L-CD40</strong> ligation plus cytokines (IL-21, IL-4) deliver signal two.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">STEP 6</div><div class="step-t">Commit</div><div class="step-d">The B cell proliferates, class-switches, hypermutates, and differentiates.</div></div>
+      </div>
+      <div class="alert info">
+        <strong>The helper T cell is not carrying antigen from macrophage to B cell.</strong> A dendritic cell usually primes the naive CD4 T cell first; a macrophage can later receive TH1 help; a B cell receives Tfh help only after the B cell itself captures antigen through its BCR and presents peptide-MHC II.
+      </div>
+      <p>This coupling is a safety interlock. The B cell proves it bound antigen; the Tfh cell proves a professional antigen-presenting pathway also raised a response to the same source. The two cells do not need to recognize the exact same epitope, but their epitopes must be physically linked in the same antigenic object. Requiring <em>both</em> sharply reduces the chance that a stray self-reactive B cell receives full activation — the <strong>linked-recognition</strong> rule.</p>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--tcell)">
+          <h4>T-dependent</h4>
+          <p>Protein antigens, Tfh help, germinal centers. Slower start but yields <strong>affinity maturation, class switching, and durable memory</strong>.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--innate)">
+          <h4>T-independent</h4>
+          <p>Repetitive polysaccharides that strongly cross-link many BCRs at once (e.g. bacterial capsules). Fast and useful against encapsulated bacteria, but weaker memory and little affinity maturation.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">5</span>The germinal-center reaction — mutation plus selection</div>
+      <p>A <strong>germinal center (GC)</strong> is a transient micro-anatomical structure inside secondary lymphoid tissue (lymph node, spleen, tonsil) where activated B cells refine their antibodies through Darwinian selection on a timescale of days to weeks. It is physically split into two zones that B cells cycle between:</p>
+      <table>
+        <thead><tr><th>Zone</th><th>What happens</th><th>Key players</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Dark zone</strong></td><td>Rapid proliferation; <strong>somatic hypermutation</strong> rewrites the V-region genes. Cells here are called centroblasts.</td><td>AID, fast cell cycle</td></tr>
+          <tr><td><strong>Light zone</strong></td><td>Selection. Centrocytes compete to capture limited antigen held on <strong>follicular dendritic cells (FDCs)</strong> and to win <strong>Tfh help</strong>. Winners survive and recycle; losers die by apoptosis.</td><td>FDCs, Tfh, CD40L/IL-21</td></tr>
+        </tbody>
+      </table>
+      <h4>Somatic hypermutation (SHM) and class-switch recombination (CSR)</h4>
+      <p>Both processes are driven by one enzyme: <strong>activation-induced cytidine deaminase (AID)</strong>. AID deaminates cytosine to uracil in single-stranded DNA exposed during transcription; the resulting lesion is processed by error-prone repair (UNG, mismatch repair) into either point mutations or double-strand breaks, depending on <em>where</em> AID acts.</p>
+      <table>
+        <thead><tr><th>Process</th><th>Where AID acts</th><th>What changes</th><th>What it accomplishes</th></tr></thead>
+        <tbody>
+          <tr><td>Somatic hypermutation</td><td>V-region exon (variable region)</td><td>Point mutations at ~10<sup>6</sup>× the background rate</td><td>Creates BCR variants with different affinities to select among</td></tr>
+          <tr><td>Class-switch recombination</td><td>Switch (S) regions in the heavy-chain constant locus</td><td>Deletes one C-region exon set and joins another</td><td>Swaps the Fc effector class while keeping the V-region (specificity)</td></tr>
+        </tbody>
+      </table>
+      <div class="mono-diagram"><span class="hl-bcell">DARK ZONE</span>  centroblasts divide fast → <span class="hl-innate">AID</span> mutates V region (SHM)
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-bcell">LIGHT ZONE</span>  centrocytes test new BCR on antigen held by <span class="hl-macro">FDC</span>
+        <span class="hl-dim">|</span>     better binder → captures more antigen → presents more
+        <span class="hl-dim">v</span>                                  to <span class="hl-tcell">Tfh</span> → wins help → survives
+   recycle to dark zone (mutate again)  ─OR─  exit as plasma / memory cell
+        <span class="hl-dim">x</span>  poor binder → no help → apoptosis (selected against)</div>
+      <p><strong>Affinity maturation</strong> is the population-level outcome of repeated dark-zone/light-zone cycling: over successive rounds the average antibody affinity climbs because only the better binders capture enough antigen to earn Tfh survival signals. Class switching, run by the same AID enzyme at a different DNA address, changes <em>what the antibody does</em> after it binds — IgM can become IgG, IgA, or IgE while the antigen-binding surface stays put.</p>
+      <div class="alert warn">
+        <span class="alert-head">AID is a double-edged enzyme</span>
+        The same controlled mutator that powers antibody quality is dangerous if mistargeted. Off-target AID activity at non-immunoglobulin genes is implicated in the chromosomal translocations behind several B-cell lymphomas — the price of letting a cell deliberately damage its own DNA.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">6</span>The five antibody isotypes</div>
+      <p>Class switching produces five heavy-chain constant regions, each tuned to a different battlefield. The Fab is identical across them after a switch; only the Fc — and therefore the effector partners it recruits — changes.</p>
+      <table>
+        <thead><tr><th>Class</th><th>Heavy chain · form</th><th>Effector role</th></tr></thead>
+        <tbody>
+          <tr><td><strong>IgM</strong></td><td>μ · secreted pentamer</td><td>First antibody made; ten binding sites give strong agglutination and the most potent <strong>classical-pathway complement activation</strong> (C1q binding). Low affinity, high avidity.</td></tr>
+          <tr><td><strong>IgG</strong></td><td>γ · monomer (4 subclasses)</td><td>Workhorse of blood and tissue: <strong>neutralization, opsonization</strong> (binds FcγR on phagocytes), complement fixation, and <strong>ADCC</strong>. The only isotype actively transported across the placenta (via <strong>FcRn</strong>) to protect the newborn.</td></tr>
+          <tr><td><strong>IgA</strong></td><td>α · monomer in blood, dimer in secretions</td><td>Dominant antibody of mucosal surfaces. <strong>Secretory IgA</strong> is transported across epithelium by the polymeric Ig receptor (pIgR) into gut, airway, tears, and breast milk, where it blocks pathogen attachment.</td></tr>
+          <tr><td><strong>IgE</strong></td><td>ε · monomer</td><td>Binds <strong>FcεRI</strong> on mast cells and basophils. Cross-linking triggers degranulation — central to parasite (helminth) defense and to allergy/anaphylaxis.</td></tr>
+          <tr><td><strong>IgD</strong></td><td>δ · monomer</td><td>Co-expressed with IgM as the BCR on mature naive B cells; little-secreted, its systemic role is still partly unsettled.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">7</span>What antibodies do — six effector mechanisms</div>
+      <p>An <strong>antibody</strong> is not only a binding molecule; it is a bridge between recognition and effector machinery. The Fab decides <em>what</em> to grab; the Fc decides <em>what happens next</em>. The same separable design seen with complement and Fc receptors recurs here: tagging and action are independent.</p>
+      <table>
+        <thead><tr><th>Function</th><th>Mechanism (which part of the antibody acts)</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Neutralization</td><td>Fab arms physically block a toxin's active site or a virus's receptor-binding site</td><td>Toxin inert; virus cannot enter cells</td></tr>
+          <tr><td>Opsonization</td><td>Fc region (IgG) binds <strong>FcγR</strong> on macrophages/neutrophils</td><td>Phagocyte engulfs the coated microbe</td></tr>
+          <tr><td>Complement activation</td><td>Clustered Fc (IgM/IgG) recruits <strong>C1q</strong> — the classical pathway</td><td>C3b deposition, MAC formation, inflammation</td></tr>
+          <tr><td>Agglutination / precipitation</td><td>Multivalent binding cross-links many particles or soluble molecules</td><td>Clumps are easier to clear and neutralize</td></tr>
+          <tr><td>ADCC</td><td>An NK cell's <strong>CD16 (FcγRIII)</strong> binds antibody Fc on a coated target</td><td>NK cell releases perforin/granzyme and kills the target</td></tr>
+          <tr><td>Mucosal protection</td><td><strong>Secretory IgA</strong> binds pathogens within the mucus layer</td><td>Reduced attachment and entry at the epithelial surface</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>One target, many fates.</strong> A single antibody-coated bacterium can be neutralized, opsonized for a <a href="03-macrophages.html">macrophage</a>, lysed by complement, and clumped for clearance simultaneously — because the constant region speaks to several effector systems at once. Antibody-dependent killing by NK cells is detailed in <a href="08-nk-cells.html">chapter 08</a>.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">8</span>How antibodies and neutrophils work together</div>
+      <p>A <strong>neutrophil</strong> is a short-lived, fast-arriving phagocyte specialized for acute bacterial and fungal inflammation. Under the microscope it has a <strong>segmented, multi-lobed nucleus</strong> and many granules packed with antimicrobial enzymes. That lobed nucleus is why neutrophils are often called <strong>polymorphonuclear leukocytes</strong> or PMNs.</p>
+      <div class="compare-2">
+        <div class="figure">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Neutrophil.svg" alt="Small schematic icon of a neutrophil immune cell" loading="lazy">
+          <figcaption>Neutrophil schematic. Source: <a href="https://commons.wikimedia.org/wiki/File:Neutrophil.svg">Wikimedia Commons</a>, extracted from a hematopoiesis diagram by A. Rad, Mikael Häggström, Spacebirdy, RexxS, and domdomegg, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</figcaption>
+        </div>
+        <div class="figure">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/NeutrophilerAktion.svg" alt="Diagram of a neutrophil migrating from a blood vessel into tissue, secreting enzymes, and phagocytosing bacteria" loading="lazy">
+          <figcaption>Neutrophil action: migration out of a vessel, enzyme release, and phagocytosis of bacteria. Source: <a href="https://commons.wikimedia.org/wiki/File:NeutrophilerAktion.svg">Wikimedia Commons</a>, original Dr. med. Mario Schubert, vector Mrmw, <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>.</figcaption>
+        </div>
+      </div>
+      <p>Antibody does not usually kill a bacterium by itself. It turns the bacterium into a better target for neutrophils and macrophages. The Fab arms bind the microbial antigen; the Fc stems point outward as handles for immune cells.</p>
+      <div class="draw-figure">
+        <div class="draw-title">Antibody turns a microbe into a neutrophil target</div>
+        <div class="draw-row">
+          <span class="draw-node bcell">Fab binds<br>microbial surface</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node innate">Fc stems cluster<br>outside</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node macro">neutrophil FcγR<br>and CR receptors bind</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node nk">phagocytosis<br>burst + granules</span>
+        </div>
+        <div class="draw-caption">The neutrophil reads antibody and complement tags, not the antigen sequence itself. IgG Fc engages Fcγ receptors; C3b/iC3b engages complement receptors; C5a helps recruit and activate the neutrophil.</div>
+      </div>
+      <table>
+        <thead><tr><th>Neutrophil step</th><th>Main mechanism</th><th>Why antibody helps</th></tr></thead>
+        <tbody>
+          <tr><td>Recruitment</td><td>CXCL8/IL-8, C5a, leukotriene B4, endothelial selectins/integrins</td><td>Complement activated by antibody can generate C5a, a strong neutrophil attractant</td></tr>
+          <tr><td>Recognition</td><td>Fcγ receptors bind IgG Fc; CR1/CR3 bind C3b/iC3b</td><td>Antibody and complement coat the surface with many handles</td></tr>
+          <tr><td>Phagocytosis</td><td>Actin wraps the target into a phagosome</td><td>Clustered Fc/complement receptors give a strong "eat this" signal</td></tr>
+          <tr><td>Killing</td><td>Respiratory burst, granule enzymes, antimicrobial peptides</td><td>Opsonization makes killing focused on the tagged target</td></tr>
+          <tr><td>NETs</td><td>Neutrophil extracellular traps can ensnare microbes</td><td>Useful in some infections, but excessive NETs can damage host tissue</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>Macrophage versus neutrophil.</strong> Both can phagocytose opsonized microbes. Neutrophils arrive fast from blood, kill aggressively, and often die at the site. Macrophages live longer in tissue, coordinate cytokines and repair, and present antigen more meaningfully.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">9</span>What dendritic cells look like and do</div>
+      <p>A <strong>dendritic cell</strong> is the professional scout of adaptive immunity. It has a branched, star-like shape with long membrane projections that probe tissue and make contacts with T cells. Its job is not to secrete antibody; its job is to carry antigen plus danger context from tissue to the lymph node.</p>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Antigen_presentation_by_dendritic_cell.jpg" alt="Dendritic cell presenting antigen to a T cell, with branching projections contacting a lymphocyte" loading="lazy">
+        <figcaption>Dendritic cell presenting antigen to a T cell. The branched shape supports tissue sampling and cell-cell contact. Source: <a href="https://commons.wikimedia.org/wiki/File:Antigen_presentation_by_dendritic_cell.jpg">Wikimedia Commons</a>, Suraj at Malayalam Wikipedia, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.</figcaption>
+      </div>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">TISSUE</div><div class="step-t">Sample</div><div class="step-d">Immature dendritic cells take up antigen by macropinocytosis, phagocytosis, and receptor-mediated capture.</div></div>
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">DANGER</div><div class="step-t">Mature</div><div class="step-d">PRR signals raise MHC, B7/CD80/CD86, and CCR7; the cell stops being mainly a sampler and becomes an instructor.</div></div>
+        <div class="flow-step" style="--c:var(--primary)"><div class="step-n">LYMPHATIC</div><div class="step-t">Migrate</div><div class="step-d">CCR7 guides the dendritic cell toward CCL19/CCL21 in lymphatic vessels and draining lymph nodes.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">LYMPH NODE</div><div class="step-t">Prime</div><div class="step-d">Naive T cells scan its peptide-MHC displays plus costimulation; rare matching clones expand.</div></div>
+      </div>
+      <div class="alert key">
+        <span class="alert-head">The clean division</span>
+        A B cell is the antibody specialist. A dendritic cell is the naive-T-cell activation specialist. The B cell can present antigen too, but mainly after its BCR captures a matching antigen; the dendritic cell is built to start the T-cell response in the first place.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">10</span>Plasma cells and memory B cells</div>
+      <p>After activation and germinal-center selection, B-cell progeny diverge into output cells. This is the durable part of the response — the part a vaccine is trying to leave behind.</p>
+      <table>
+        <thead><tr><th>Fate</th><th>Function</th></tr></thead>
+        <tbody>
+          <tr><td>Short-lived plasma cell</td><td>Rapid antibody production during the acute response; dies within days</td></tr>
+          <tr><td>Long-lived plasma cell</td><td>Persistent antibody secretion for years, usually from <strong>bone-marrow survival niches</strong></td></tr>
+          <tr><td>Memory B cell</td><td>Quiescent cell poised for a fast, high-quality recall response on re-exposure</td></tr>
+        </tbody>
+      </table>
+      <p>Memory B cells are not leftovers. Many have already passed through class switching and affinity maturation, so on re-exposure they reactivate faster than naive cells and start from a higher-quality antibody. The kinetics of that secondary response are the subject of <a href="09-immune-response-timeline.html">chapter 09</a>, and how memory persists (and how tolerance keeps it from turning on self) is covered in <a href="10-memory-tolerance-failure.html">chapter 10</a>.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Summary</span>
+      B cells solve the extracellular specificity problem. Each carries a unique BCR built blind by <strong>V(D)J recombination</strong> — combinatorial choice, heavy/light pairing, and RAG-cut, TdT-driven <strong>junctional diversity</strong> at CDR3. Antigen <strong>selects</strong> the rare matching clone. With a CD40L/cytokine <strong>handshake</strong> from a Tfh cell, that clone enters a <strong>germinal center</strong>, where AID powers both <strong>somatic hypermutation</strong> and <strong>class-switch recombination</strong>. Antibody then bridges recognition to effector cells: IgG Fc and complement tags let neutrophils and macrophages phagocytose targets, while dendritic cells handle the separate job of starting naive T-cell responses. The durable output is long-lived plasma cells and memory B cells.
+    </div>
+
+    <div class="chap-nav">
+      <a href="04-antigen-presentation.html">← 04 · Antigen Presentation</a>
+      <a href="../05-b-cells-antibodies.md">Markdown source</a>
+      <a href="06-t-cells.html">06 · T Cells →</a>
+    </div>
+
+    <footer>
+      <p>🏹 B Cells &amp; Antibodies · Chapter 05 · <a href="index.html">Report home</a> · <a href="sources.html">Sources</a></p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>

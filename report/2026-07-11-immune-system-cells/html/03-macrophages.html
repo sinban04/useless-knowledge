@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🍽️ Macrophages — How the Immune System Works</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> · Innate Immunity · Chapter 03</div>
+      <h1 class="page-title">🍽️ Macrophages</h1>
+      <p class="page-subtitle">The "big eater" is really a tissue-resident decision cell: sentinel, phagocyte, cytokine broadcaster, antigen presenter, killer, and repair organizer — often all in one lifetime.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Core idea</span>
+      A macrophage's defining job is <strong>conversion</strong>: it turns a local physical event ("there are bacteria here") into both an immediate action (engulf and kill) and a tissue-wide signal ("blood vessels, plasma proteins, neutrophils, and lymphocytes should behave differently here").
+    </div>
+
+    <!-- ===== Signature animation ===== -->
+    <figure class="anim" data-anim="phagocytosis"
+      data-caption="Phagocytosis is a six-step program. Watch how recognition, engulfment, sealing, fusion, killing, and antigen display chain together. Sources: NCBI Bookshelf, Immunobiology (innate effector mechanisms). Drag the scrubber to step through any phase."></figure>
+
+    <div class="section">
+      <div class="section-title"><span class="count">1</span>What a macrophage is — and where it comes from</div>
+      <p>A <strong>macrophage</strong> is a tissue-resident phagocytic immune cell. "Big eater" is accurate but incomplete: eating is one of at least six jobs. Macrophages also sense danger, secrete cytokines, present antigen, clear dead cells, and decide whether inflammation escalates or resolves.</p>
+      <p>Two developmental origins coexist, which matters for how tissues behave:</p>
+      <div class="compare-2">
+        <div class="compare-col">
+          <h4>Monocyte-derived</h4>
+          <p>Bone-marrow monocytes circulate, enter inflamed tissue, and differentiate locally. These dominate during active infection and injury — the reinforcements.</p>
+        </div>
+        <div class="compare-col">
+          <h4>Embryonically seeded, self-renewing</h4>
+          <p>Many resident populations are laid down before birth (often from yolk-sac/fetal-liver progenitors) and <strong>maintain themselves by local proliferation</strong>, largely independent of bone marrow — the standing garrison.</p>
+        </div>
+      </div>
+      <p>Their names follow their address, and each is tuned to its tissue:</p>
+      <table>
+        <thead><tr><th>Tissue</th><th>Resident macrophage</th><th>Local tuning</th></tr></thead>
+        <tbody>
+          <tr><td>Liver</td><td>Kupffer cells</td><td>Filter gut-derived bacteria/endotoxin from portal blood</td></tr>
+          <tr><td>Brain</td><td>Microglia</td><td>Synaptic pruning + injury response, behind the blood–brain barrier</td></tr>
+          <tr><td>Lung alveoli</td><td>Alveolar macrophages</td><td>Tolerate harmless inhaled particles, stay infection-ready</td></tr>
+          <tr><td>Bone</td><td>Osteoclasts</td><td>Resorb bone matrix (a specialized fusion of the lineage)</td></tr>
+          <tr><td>Spleen / lymph node</td><td>Sinus macrophages</td><td>Capture blood- and lymph-borne particles</td></tr>
+        </tbody>
+      </table>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Macrophage.svg" alt="Schematic of a macrophage extending pseudopods" loading="lazy">
+        <figcaption>A macrophage extending pseudopods. Source: <a href="https://commons.wikimedia.org/wiki/File:Macrophage.svg">Wikimedia Commons</a>, Immune Cells Histology, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</figcaption>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">2</span>The job list</div>
+      <p>The same cell can occupy any of these states, and move between them as signals change. A macrophage quietly clearing apoptotic cells is biochemically a different machine from one activated by bacterial products plus interferon-γ.</p>
+      <table>
+        <thead><tr><th>Job</th><th>Mechanism</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Sentinel</td><td>PRRs detect microbial / damage patterns</td><td>Local alarm</td></tr>
+          <tr><td>Phagocyte</td><td>Engulf microbes, debris, apoptotic cells</td><td>Cleanup &amp; killing</td></tr>
+          <tr><td>Cytokine source</td><td>TNF-α, IL-1, IL-6, IL-12, chemokines</td><td>Inflammation &amp; recruitment</td></tr>
+          <tr><td>Antigen presenter</td><td>MHC II + costimulatory molecules</td><td>(Re)activate CD4 T cells</td></tr>
+          <tr><td>Effector</td><td>Reactive oxygen/nitrogen species, lysosomal enzymes</td><td>Microbial killing</td></tr>
+          <tr><td>Repair organizer</td><td>Growth factors, matrix remodeling, efferocytosis</td><td>Resolution &amp; rebuilding</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">3</span>Phagocytosis at the molecular level</div>
+      <p>The animation above shows the choreography; here is the machinery behind each beat. Phagocytosis is <strong>receptor-triggered</strong> — the macrophage does not engulf indiscriminately, it engulfs what its receptors grip.</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">STEP 1</div><div class="step-t">Recognition</div><div class="step-d">FcγR (binds antibody Fc), complement receptors CR1/CR3 (bind C3b/iC3b), scavenger receptors, and PRRs grip the target.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">STEP 2</div><div class="step-t">Signaling</div><div class="step-d">FcγR ITAM motifs are phosphorylated; Rho-family GTPases (Rac, Cdc42) and the Arp2/3 complex drive actin polymerization.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">STEP 3</div><div class="step-t">Engulfment</div><div class="step-d">Actin pushes the membrane into pseudopods that zipper around the particle and seal it into a <strong>phagosome</strong>.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">STEP 4</div><div class="step-t">Maturation</div><div class="step-d">The phagosome swaps Rab5 → Rab7 markers and fuses with lysosomes; a V-ATPase pumps protons, dropping pH to about 4.5.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">STEP 5</div><div class="step-t">Killing</div><div class="step-d">The NADPH oxidase (phox) "respiratory burst" makes reactive oxygen species; iNOS makes nitric oxide; proteases and defensins finish the job.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">STEP 6</div><div class="step-t">Display</div><div class="step-d">Peptide fragments are loaded onto MHC II and shown to CD4 T cells — recognition becomes information.</div></div>
+      </div>
+      <p>Two recognition routes are worth singling out because they connect innate killing to the rest of immunity:</p>
+      <table>
+        <thead><tr><th>Tag on target</th><th>Receptor</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr><td>Antibody Fc region</td><td>Fc receptor (FcγR)</td><td>Adaptive immunity has marked this target</td></tr>
+          <tr><td>C3b / iC3b</td><td>Complement receptor (CR1/CR3)</td><td>Complement has marked this target</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>Opsonization changes behavior, not just labeling.</strong> A weakly recognized bacterium can become easy prey once coated with antibody or C3b. The tag (recognition) and the eating (effector action) are <em>separable</em> — a recurring immune design principle. See <a href="02-innate-recognition-inflammation.html">complement (chapter 02)</a> and <a href="05-b-cells-antibodies.html">antibodies (chapter 05)</a>.
+      </div>
+
+      <h3>Why macrophages do not simply eat free antibody</h3>
+      <p>Your concern is exactly the right safety question. Blood contains huge amounts of free IgG, and macrophages express Fc receptors, so why are they not constantly swallowing normal antibody? The answer is that phagocytosis needs <strong>surface clustering</strong>, not just one antibody molecule touching one receptor.</p>
+      <div class="draw-figure">
+        <div class="draw-title">Free IgG is signal-poor; surface-coated IgG is signal-rich</div>
+        <div class="draw-grid">
+          <div class="draw-panel bcell">
+            <h4>Free antibody in plasma</h4>
+            <div class="draw-row">
+              <span class="draw-node bcell">single IgG</span>
+              <span class="draw-arrow">↔</span>
+              <span class="draw-node macro">one FcγR</span>
+            </div>
+            <p>Weak, transient contact. No stable receptor cluster, no actin cup, no particle-sized target to wrap.</p>
+          </div>
+          <div class="draw-panel macro">
+            <h4>Antibody-coated microbe</h4>
+            <div class="draw-row">
+              <span class="draw-node bcell">many Fc stems<br>fixed on surface</span>
+              <span class="draw-arrow">→</span>
+              <span class="draw-node macro">FcγR cluster<br>ITAM signal</span>
+              <span class="draw-arrow">→</span>
+              <span class="draw-node innate">actin zipper<br>phagosome</span>
+            </div>
+            <p>Many adjacent Fc receptors fire together, and the macrophage membrane can zipper around a real particle.</p>
+          </div>
+        </div>
+        <div class="draw-caption">Large soluble immune complexes can be cleared by Fc and complement receptors, but single normal antibodies are not a phagocytosis target. The cell responds to geometry: clustered Fc on a surface.</div>
+      </div>
+      <table>
+        <thead><tr><th>Safety layer</th><th>What it prevents</th></tr></thead>
+        <tbody>
+          <tr><td>Low effective signaling from monomeric IgG</td><td>A single floating antibody does not cross-link enough Fc receptors to trigger the engulfment program</td></tr>
+          <tr><td>Particle-size requirement</td><td>Phagocytosis needs a surface the membrane can wrap around; soluble IgG has no such geometry</td></tr>
+          <tr><td>Host Fc handling</td><td><strong>FcRn</strong> binds IgG inside acidic endosomes and rescues many molecules from degradation, recycling them back to blood and extending IgG half-life</td></tr>
+          <tr><td>Complement and Fc regulation</td><td>Host cells carry complement regulators and inhibitory receptor tuning that prevent accidental escalation on self surfaces</td></tr>
+        </tbody>
+      </table>
+      <div class="alert warn">
+        <span class="alert-head">Exception: immune-complex clearance</span>
+        If many antibodies bind the same soluble antigen, they can form large <strong>immune complexes</strong>. Those complexes may activate complement and be cleared by macrophages in the liver and spleen. That is normal cleanup when controlled, but excessive immune-complex deposition can drive disease. This is different from a macrophage eating ordinary free antibody one molecule at a time.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">4</span>Cytokines: the macrophage as a local broadcaster</div>
+      <p>When PRRs fire, signaling through <strong>NF-κB</strong> switches on inflammatory gene programs, and the <strong>inflammasome</strong> matures IL-1β. The secreted signals reprogram the neighborhood:</p>
+      <table>
+        <thead><tr><th>Signal</th><th>Main effect</th></tr></thead>
+        <tbody>
+          <tr><td>TNF-α</td><td>Activates endothelium, supports local containment; <strong>drives systemic shock if released body-wide</strong></td></tr>
+          <tr><td>IL-1</td><td>Inflammation, fever, endothelial activation</td></tr>
+          <tr><td>IL-6</td><td>Acute-phase response, lymphocyte differentiation</td></tr>
+          <tr><td>IL-12</td><td>Pushes NK and TH1 cells toward IFN-γ</td></tr>
+          <tr><td>Chemokines</td><td>Recruit neutrophils, monocytes, lymphocytes along gradients</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">5</span>The TH1 feedback loop</div>
+      <p>Some pathogens (e.g. mycobacteria) survive <em>inside</em> macrophage vesicles. The macrophage can ingest them but cannot finish the kill alone — it needs a license from a CD4 T cell.</p>
+      <div class="mono-diagram">macrophage engulfs intracellular bacterium
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+presents bacterial peptide on <span class="hl-macro">MHC II</span>
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-tcell">TH1 cell</span> recognizes peptide-MHC II
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+TH1 delivers <span class="hl-innate">IFN-γ</span> + CD40L signal
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+macrophage ramps up microbicidal machinery (ROS, NO)</div>
+      <p>When the kill still can't be finished, activated macrophages and T cells wall the pathogen off inside a <strong>granuloma</strong>. Containment protects the host — but chronic containment damages tissue. See <a href="06-t-cells.html">T cells (chapter 06)</a>.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">6</span>M1 / M2: a coordinate system, not two species</div>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--nk)">
+          <h4>M1-like</h4>
+          <p><strong>Induced by:</strong> microbial products + IFN-γ.<br><strong>Behaves:</strong> inflammatory, microbicidal, high IL-12.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--macro)">
+          <h4>M2-like</h4>
+          <p><strong>Induced by:</strong> IL-4, IL-13, repair environments.<br><strong>Behaves:</strong> tissue repair, anti-parasite responses, remodeling.</p>
+        </div>
+      </div>
+      <div class="alert warn">
+        <span class="alert-head">Treat M1/M2 as axes, not boxes</span>
+        Real tissue macrophages live in mixed, dynamic states. A tumor-associated macrophage, an alveolar macrophage, and a wound-healing macrophage may share "M2-like" markers yet behave very differently.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">7</span>Macrophages must also end inflammation</div>
+      <p>A response that cannot stop becomes pathology. Macrophages resolve inflammation by clearing apoptotic neutrophils — <strong>efferocytosis</strong> — which is actively anti-inflammatory because it removes dying cells before they spill DAMPs.</p>
+      <div class="mono-diagram">infection controlled
+   <span class="hl-dim">→</span> neutrophils die by apoptosis
+   <span class="hl-dim">→</span> macrophages engulf the apoptotic cells (<span class="hl-macro">efferocytosis</span>)
+   <span class="hl-dim">→</span> inflammatory signals fall, repair signals rise</div>
+      <p>This is why macrophages are double-edged in chronic disease: the same repair program, if it never terminates, drives fibrosis, granulomas, atherosclerotic plaques, and tumor-supportive niches. See <a href="10-memory-tolerance-failure.html">chronic inflammation (chapter 10)</a>.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Summary</span>
+      Macrophages are resident tissue sentinels that detect danger, engulf and kill targets, broadcast inflammation, present antigen, receive T-cell help, clear dead cells, and coordinate repair. Their central role is <strong>conversion</strong>: turning local damage into both immediate effector action and the signals that steer the rest of the immune system.
+    </div>
+
+    <div class="chap-nav">
+      <a href="02-innate-recognition-inflammation.html">← 02 · Recognition &amp; Inflammation</a>
+      <a href="../03-macrophages.md">Markdown source</a>
+      <a href="04-antigen-presentation.html">04 · Antigen Presentation →</a>
+    </div>
+
+    <footer>
+      <p>🍽️ Macrophages · Chapter 03 · <a href="index.html">Report home</a> · <a href="sources.html">Sources</a></p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>

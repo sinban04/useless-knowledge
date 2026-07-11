@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🧩 System Synthesis — How the Immune System Works</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> · Dynamics &amp; Outcomes · Chapter 11</div>
+      <h1 class="page-title">🧩 System Synthesis</h1>
+      <p class="page-subtitle">The immune system is not one army with stronger and weaker soldiers — it is a layered evidence-processing pipeline. This recap compresses the whole report into a short algorithm, maps it onto the four highlighted cell types, and runs three worked simulations end to end.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Core idea</span>
+      The body answers threats by <strong>staging recognition</strong>: broad innate sensing first, then peptide evidence, then rare matching clones, then precise effectors, then resolution and memory. Macrophages, B cells, T cells, and NK cells are each <em>incomplete alone</em> — they make sense only as roles inside this escalation pipeline.
+    </div>
+
+    <!-- ===== The escalation pipeline (static flow chart) ===== -->
+    <div class="section">
+      <div class="section-title"><span class="count">🧩</span>The whole system on one rail</div>
+      <p class="section-subtitle">Every chapter is one station of this layered evidence-processing pipeline.</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--text-light)"><div class="step-n">STAGE 0</div><div class="step-t">Barrier</div><div class="step-d">Skin, mucus, acid, and microbiota keep most microbes out.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">STAGE 1</div><div class="step-t">Innate sensing</div><div class="step-d">PRRs and complement recognize conserved danger patterns.</div></div>
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">STAGE 2</div><div class="step-t">Inflammation</div><div class="step-d">Cytokines and chemokines recruit cells and change the tissue.</div></div>
+        <div class="flow-step" style="--c:var(--primary)"><div class="step-n">STAGE 3</div><div class="step-t">Antigen presentation</div><div class="step-d">Dendritic cells carry peptide evidence to lymph nodes.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">STAGE 4</div><div class="step-t">Clonal expansion</div><div class="step-d">Rare matching B and T cells are selected and cloned.</div></div>
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">STAGE 5</div><div class="step-t">Effectors</div><div class="step-d">Antibodies, CD8 killing, and activated macrophages clear it.</div></div>
+        <div class="flow-step" style="--c:var(--primary)"><div class="step-n">STAGE 6</div><div class="step-t">Memory</div><div class="step-d">Long-lived B and T cells make the next response faster.</div></div>
+      </div>
+      <p style="color:var(--text-muted);font-size:13.5px;margin:12px 0 0">Broad innate sensing (left) <strong>gates</strong> narrow clonal expansion (right): each stage is also a checkpoint that decides whether the next, more powerful stage fires.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">1</span>The short algorithm</div>
+      <p>Strip away the cell names and the immune system collapses into a ten-step program — a recognition-then-action loop that runs every time something breaches a barrier:</p>
+      <div class="mono-diagram"> 1. keep microbes out
+ 2. detect conserved danger or tissue damage
+ 3. tag suspicious targets
+ 4. eat and destroy what can be eaten
+ 5. display peptide evidence to lymphocytes
+ 6. expand rare matching B and T cells
+ 7. coat extracellular targets with antibody
+ 8. kill infected, stressed, or abnormal host cells
+ 9. shut down the response
+10. remember useful specificity while preserving tolerance</div>
+      <p>Each step rests on a distinct molecular machine. Worth naming the hardware explicitly, because the same ten steps reappear in every worked example below:</p>
+      <table>
+        <thead><tr><th>Step</th><th>Molecular machinery doing the work</th></tr></thead>
+        <tbody>
+          <tr><td>Keep out</td><td>Epithelial tight junctions, mucus + secretory IgA, lysozyme, gastric acid, antimicrobial peptides (defensins, cathelicidins)</td></tr>
+          <tr><td>Detect</td><td><strong>PRRs</strong>: TLRs, NLRs (NLRP3 inflammasome), RIG-I/MDA5 for viral RNA, cGAS-STING for cytosolic DNA</td></tr>
+          <tr><td>Tag</td><td>Complement C3b/iC3b opsonins, antibody Fc, collectins/pentraxins (MBL, C-reactive protein)</td></tr>
+          <tr><td>Eat &amp; destroy</td><td>FcγR/CR3-triggered actin engulfment, phagolysosome at pH ~4.5, NADPH-oxidase respiratory burst, iNOS-derived NO</td></tr>
+          <tr><td>Display</td><td>Immunoproteasome → TAP → MHC I (endogenous); endosomal cathepsins → MHC II via invariant chain/CLIP/HLA-DM (exogenous)</td></tr>
+          <tr><td>Expand</td><td>Clonal selection of one BCR/TCR specificity; IL-2 autocrine loop; germinal-center proliferation</td></tr>
+          <tr><td>Coat</td><td>Class-switched antibody (IgG, IgA) from plasma cells; neutralization, opsonization, classical-complement triggering</td></tr>
+          <tr><td>Kill host cells</td><td>CD8 perforin/granzyme; Fas-FasL; NK missing-self killing; antibody-dependent ADCC via CD16</td></tr>
+          <tr><td>Shut down</td><td>Treg suppression (IL-10, TGF-β, CTLA-4), inhibitory checkpoints (PD-1), effector contraction, efferocytosis</td></tr>
+          <tr><td>Remember</td><td>Long-lived memory B/T cells, bone-marrow plasma cells; tolerance preserved by negative selection + Tregs</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">2</span>Mapping the algorithm onto the four cells</div>
+      <p>The four highlighted cell types do not each run the whole algorithm — they specialize. Reading the matrix by <em>column</em> shows what one cell can do; reading by <em>row</em> shows how the cells collaborate on a single step. "No" entries are as informative as the capabilities: NK cells never eat or present peptide, B cells never directly kill.</p>
+      <table>
+        <thead><tr><th>Step</th><th><span class="tag macro">Macrophage</span></th><th><span class="tag bcell">B cell</span></th><th><span class="tag tcell">T cell</span></th><th><span class="tag nk">NK cell</span></th></tr></thead>
+        <tbody>
+          <tr><td><strong>Detect</strong></td><td>PRRs, Fc receptors, complement receptors</td><td>BCR binds antigen</td><td>TCR binds peptide-MHC</td><td>Activating/inhibitory receptor balance</td></tr>
+          <tr><td><strong>Eat</strong></td><td>Strong phagocyte</td><td>Internalizes BCR-bound antigen</td><td>No</td><td>No</td></tr>
+          <tr><td><strong>Display</strong></td><td>MHC II</td><td>MHC II after antigen capture</td><td>Reads display</td><td>Reads stress/self state, not peptide-MHC</td></tr>
+          <tr><td><strong>Expand</strong></td><td>Local proliferation in some tissues, monocyte recruitment</td><td>Clonal expansion</td><td>Clonal expansion</td><td>Cytokine-driven expansion/activation</td></tr>
+          <tr><td><strong>Kill</strong></td><td>Intracellular killing after phagocytosis</td><td>Antibodies recruit killing</td><td>CD8 cytotoxicity, CD4 macrophage help</td><td>Cytotoxic granules and death pathways</td></tr>
+          <tr><td><strong>Remember</strong></td><td>Tissue training/state changes, not classic clonal memory</td><td>Memory B cells and plasma cells</td><td>Memory T cells</td><td>Limited memory-like behavior in some contexts</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>The matrix has a structure.</strong> Recognition (detect) is universal — every cell has a sensing receptor — but the <em>kind</em> of evidence differs: pattern (macrophage), free antigen (B cell), peptide-MHC (T cell), or self-status (NK cell). Killing is split by target: extracellular (antibody-guided) versus host-cell (CD8/NK). See <a href="03-macrophages.html">macrophages</a>, <a href="05-b-cells-antibodies.html">B cells</a>, <a href="06-t-cells.html">T cells</a>, and <a href="08-nk-cells.html">NK cells</a> for each column in depth.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">3</span>Why macrophages matter — the local interpreter</div>
+      <p>Macrophages are the only highlighted cell already resident in tissue when trouble begins. Their defining act is <strong>conversion</strong>: turning a local physical event into a tissue-wide inflammatory state.</p>
+      <div class="mono-diagram">tissue event <span class="hl-dim">-&gt;</span> <span class="hl-macro">macrophage interpretation</span> <span class="hl-dim">-&gt;</span> inflammatory state
+   <span class="hl-dim">|</span>
+   <span class="hl-dim">+--</span> PRRs (TLR/NLR) fire <span class="hl-dim">-&gt;</span> NF-κB program on
+   <span class="hl-dim">+--</span> NLRP3 inflammasome <span class="hl-dim">-&gt;</span> caspase-1 <span class="hl-dim">-&gt;</span> mature IL-1β
+   <span class="hl-dim">+--</span> secretes <span class="hl-innate">TNF-α, IL-6, IL-12</span> + chemokines
+   <span class="hl-dim">+--</span> recruits neutrophils &amp; monocytes along gradients</div>
+      <p>The failure modes are symmetric and clinically important:</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">UNDERREACT</div><div class="step-t">Microbes spread</div><div class="step-d">Too little sensing or cytokine output lets infection establish before reinforcements arrive.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">OVERREACT</div><div class="step-t">Tissue suffers</div><div class="step-d">Body-wide TNF-α drives the shock and capillary leak of sepsis; collateral damage exceeds the threat.</div></div>
+        <div class="flow-step" style="--c:var(--warn)"><div class="step-n">FAIL TO RESOLVE</div><div class="step-t">Chronic inflammation</div><div class="step-d">Without efferocytosis and a repair switch, the program never terminates — fibrosis, granulomas, plaques.</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">4</span>Why B cells matter — externalized specificity</div>
+      <p>B cells solve a logistics problem: a receptor stuck on a membrane can only act where the cell sits. A plasma cell <strong>externalizes</strong> that same receptor as soluble antibody, so one specificity can travel through every fluid compartment.</p>
+      <div class="mono-diagram">one <span class="hl-bcell">BCR</span> specificity
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-bcell">clonal expansion</span> + germinal-center affinity maturation
+        <span class="hl-dim">|</span>   (somatic hypermutation, class switch)
+        <span class="hl-dim">v</span>
+secreted antibody with the same binding specificity
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+neutralization · opsonization · complement · <span class="hl-nk">ADCC</span> · mucosal IgA</div>
+      <p>This is the molecular reason vaccines work. Antibody present <em>before</em> exposure can neutralize a pathogen at the barrier — blocking step 1 of the algorithm before the slower clonal-expansion steps ever need to run. The five effector functions are not interchangeable: neutralization blocks entry, opsonization and complement mark for phagocytes, ADCC arms NK cells, and secretory IgA guards mucosal surfaces. See <a href="05-b-cells-antibodies.html">B cells &amp; antibodies</a>.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">5</span>Why T cells matter — the context-dependent decision layer</div>
+      <p>T cells cannot see inside a cell directly. The trick is indirect: MHC molecules continuously sample the cell's protein contents and <strong>display peptide fragments on the surface</strong>, and T cells read that display.</p>
+      <div class="mono-diagram">cell interior <span class="hl-dim">-&gt;</span> peptide processing <span class="hl-dim">-&gt;</span> <span class="hl-tcell">MHC display</span> <span class="hl-dim">-&gt;</span> T-cell decision
+   <span class="hl-dim">|</span>                                         <span class="hl-dim">|</span>
+   <span class="hl-dim">+--</span> MHC I  (proteasome/TAP, all cells)  <span class="hl-dim">--&gt;</span> <span class="hl-tcell">CD8</span> kills infected cell
+   <span class="hl-dim">+--</span> MHC II (endosome, APCs only)       <span class="hl-dim">--&gt;</span> <span class="hl-tcell">CD4</span> chooses the program</div>
+      <p>The two T-cell lineages answer two different problems:</p>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--tcell)">
+          <h4>CD8 — the executioner</h4>
+          <p>Solves the <strong>intracellular pathogen problem</strong>. A cell making viral protein loads viral peptide on MHC I; the CD8 cell delivers perforin/granzyme and Fas-FasL signals to kill the factory before it finishes producing virus.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--tcell)">
+          <h4>CD4 — the conductor</h4>
+          <p>Solves the <strong>coordination problem</strong>. By choosing a helper program — TH1 (macrophage activation), TFH (antibody maturation), TH17 (neutrophil/barrier), or Treg (suppression) — CD4 cells decide which weapon the whole system expands.</p>
+        </div>
+      </div>
+      <p>This is why T cells are the most powerful context-dependent layer: the same peptide can drive killing, antibody help, or tolerance depending on which T cell reads it and what costimulation accompanies it. See <a href="06-t-cells.html">T cells</a> and <a href="04-antigen-presentation.html">antigen presentation</a>.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">6</span>Why NK cells matter — covering the surveillance blind spot</div>
+      <p>The MHC-I display that CD8 cells depend on has an exploit: a virus or tumor that <strong>downregulates MHC I</strong> goes invisible to CD8 surveillance. NK cells close this gap by inverting the logic — they kill cells that <em>lack</em> the normal "self" signal.</p>
+      <div class="mono-diagram">normal self display present (MHC I high)
+   <span class="hl-dim">-&gt;</span> inhibitory receptor engaged <span class="hl-dim">-&gt;</span> <span class="hl-nk">NK inhibition</span> (spare the cell)
+
+self display missing OR stress ligands high (MIC-A/B)
+   <span class="hl-dim">-&gt;</span> activating signal wins the balance <span class="hl-dim">-&gt;</span> <span class="hl-nk">NK activation</span> (kill)</div>
+      <p>NK cells are not a primitive proto-T-cell; they answer a different question — "does this cell still look like healthy self?" rather than "what peptide is this cell showing?" Two properties make them complementary: they act <strong>early</strong>, before antigen-specific T-cell expansion peaks, and they can kill antibody-coated targets through <strong>CD16</strong> (ADCC), bridging back to the B-cell response. See <a href="08-nk-cells.html">NK cells</a>.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">7</span>Three worked mental simulations</div>
+      <p>The real test of the model is running it forward on concrete threats. The same ten-step algorithm produces three very different choreographies depending on <em>where</em> the pathogen lives.</p>
+
+      <h3>Extracellular bacterium</h3>
+      <div class="mono-diagram"><span class="hl-macro">macrophage</span>/complement detect
+   <span class="hl-dim">-&gt;</span> neutrophils and inflammation contain
+   <span class="hl-dim">-&gt;</span> <span class="hl-bcell">B cells</span> produce antibody
+   <span class="hl-dim">-&gt;</span> antibody opsonizes (C3b + Fc tags)
+   <span class="hl-dim">-&gt;</span> <span class="hl-macro">macrophages</span> &amp; neutrophils clear more efficiently
+   <span class="hl-dim">-&gt;</span> <span class="hl-bcell">memory B cells</span> and plasma cells remain</div>
+      <p>Most important highlighted cell: the <span class="tag bcell">B cell</span>, with macrophages as early sentinels and antibody-guided effectors. The pathogen lives in fluids, so the fluid-borne weapon (antibody) dominates.</p>
+
+      <h3>Virus inside epithelial cells</h3>
+      <div class="mono-diagram">infected cells produce <span class="hl-innate">interferon</span>
+   <span class="hl-dim">-&gt;</span> <span class="hl-nk">NK cells</span> kill stressed or MHC-low cells early
+   <span class="hl-dim">-&gt;</span> dendritic cells prime <span class="hl-tcell">CD8 and CD4</span> T cells
+   <span class="hl-dim">-&gt;</span> <span class="hl-tcell">CD8 T cells</span> kill peptide-MHC I positive infected cells
+   <span class="hl-dim">-&gt;</span> <span class="hl-bcell">B cells</span> make neutralizing antibodies against free virus
+   <span class="hl-dim">-&gt;</span> <span class="hl-tcell">memory B and T cells</span> remain</div>
+      <p>Most important highlighted cells: <span class="tag tcell">T cells</span> and <span class="tag nk">NK cells</span>, with B cells blocking spread outside cells. Because the threat hides inside host cells, the host-cell killers lead while antibody mops up virus in transit.</p>
+
+      <h3>Intracellular bacterium in macrophages</h3>
+      <div class="mono-diagram"><span class="hl-macro">macrophage</span> eats bacterium but cannot fully kill
+   <span class="hl-dim">-&gt;</span> macrophage presents peptide on <span class="hl-macro">MHC II</span>
+   <span class="hl-dim">-&gt;</span> <span class="hl-tcell">TH1 cell</span> recognizes and releases <span class="hl-innate">IFN-γ</span>
+   <span class="hl-dim">-&gt;</span> macrophage becomes more microbicidal (ROS, NO)
+   <span class="hl-dim">-&gt;</span> chronic persistence can form granulomas</div>
+      <p>Most important highlighted cells: <span class="tag macro">macrophages</span> and CD4 <span class="tag tcell">TH1 cells</span>. The eater cannot finish the kill alone — it needs a licensing signal from the decision layer, the clearest example of cell-to-cell collaboration in the whole report. See the <a href="03-macrophages.html">TH1 feedback loop</a>.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">8</span>The final model — a layered evidence-processing system</div>
+      <p>Stepping all the way back, the report's central claim is architectural. Each layer asks one question; the answer decides whether the threat escalates to the next layer. The cells are simply the agents that staff these layers.</p>
+      <table>
+        <thead><tr><th>Layer</th><th>Main question</th><th>Representative mechanisms</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Barrier</strong></td><td>Can entry be prevented?</td><td>Skin, mucus, acid, cilia, microbiota</td></tr>
+          <tr><td><strong>Innate sensor</strong></td><td>Does this look like damage or conserved microbial pattern?</td><td>PRRs, complement, macrophages, dendritic cells</td></tr>
+          <tr><td><strong>Innate effector</strong></td><td>Can the threat be contained immediately?</td><td>Phagocytosis, inflammation, neutrophils, NK cells</td></tr>
+          <tr><td><strong>Antigen presentation</strong></td><td>What molecular evidence should lymphocytes inspect?</td><td>MHC I, MHC II, dendritic-cell migration</td></tr>
+          <tr><td><strong>Adaptive selection</strong></td><td>Which rare clone matches?</td><td>BCR/TCR clonal selection</td></tr>
+          <tr><td><strong>Adaptive effector</strong></td><td>What precise weapon should be expanded?</td><td>Antibody, CD8 killing, CD4 help</td></tr>
+          <tr><td><strong>Regulation</strong></td><td>How do we avoid host damage?</td><td>Tregs, checkpoints, contraction, resolution</td></tr>
+          <tr><td><strong>Memory</strong></td><td>How do we improve next time?</td><td>Memory B/T cells, plasma cells</td></tr>
+        </tbody>
+      </table>
+      <div class="mono-diagram"><span class="hl-dim">BARRIER</span> ── <span class="hl-macro">INNATE SENSOR</span> ── <span class="hl-innate">INNATE EFFECTOR</span> ── <span class="hl-innate">ANTIGEN PRESENTATION</span>
+                                                          <span class="hl-dim">|</span>
+                                                          <span class="hl-dim">v</span>
+   <span class="hl-tcell">MEMORY</span> ◄── <span class="hl-dim">REGULATION</span> ◄── <span class="hl-bcell">ADAPTIVE EFFECTOR</span> ◄── <span class="hl-tcell">ADAPTIVE SELECTION</span></div>
+      <p>Macrophages, B cells, T cells, and NK cells make sense only inside this architecture. Each is incomplete by itself; together they let the body respond quickly, specialize accurately, kill selectively, resolve damage, and remember. The overview animation at the top of this page traces exactly this rail — a threat token flowing from barrier to memory.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Summary</span>
+      The immune system works by <strong>staging recognition</strong>. Macrophages and innate sensors detect broad danger and shape the tissue response. Antigen-presenting cells convert local events into peptide evidence. B cells turn receptor specificity into antibodies. T cells inspect peptide-MHC displays and coordinate or execute cellular responses. NK cells kill stressed or MHC-low cells before or alongside adaptive immunity. Memory improves the next response, and tolerance keeps the system from becoming self-destructive.
+    </div>
+
+    <div class="chap-nav">
+      <a href="10-memory-tolerance-failure.html">← 10 · Memory, Tolerance &amp; Failure</a>
+      <a href="../11-system-synthesis.md">Markdown source</a>
+      <a href="12-vdj-recombination-germinal-centers.html">12 · V(D)J &amp; GC →</a>
+    </div>
+
+    <footer>
+      <p>🧩 System Synthesis · Chapter 11 · <a href="index.html">Report home</a> · <a href="sources.html">Sources</a></p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>

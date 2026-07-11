@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🧠 Memory, Tolerance &amp; Failure — How the Immune System Works</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> · Dynamics · Chapter 10</div>
+      <h1 class="page-title">🧠 Memory, Tolerance &amp; Failure</h1>
+      <p class="page-subtitle">Why a second infection is easier than the first, how the system learns not to attack you, and the five ways that whole machine can break — too little, misdirected, mistaken, evaded, or unresolved.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Core idea</span>
+      Adaptive immunity is worth its slowness only because it <strong>remembers</strong> and because it is <strong>restrained</strong>. Memory changes the starting conditions of the next encounter; tolerance keeps a randomly generated receptor repertoire from turning on the host. Every clinical failure mode — immunodeficiency, autoimmunity, allergy, cancer evasion, chronic inflammation — is one of those two properties breaking: protection that is missing, or restraint that is misapplied.
+    </div>
+
+    <!-- ===== Signature animation ===== -->
+    <figure class="anim" data-anim="memory-recall"
+      data-caption="Antibody titer over two exposures to the same antigen. The primary (1st-exposure) response is slow and low; the secondary (memory) response is faster, higher, and built from pre-affinity-matured, class-switched clones — the curve a vaccine is trying to pre-load. Sources: NCBI Bookshelf, Immunological Memory (NBK27158); Janeway's Immunobiology. Press play, drag the scrubber to step through primary vs secondary, or replay."></figure>
+
+    <div class="section">
+      <div class="section-title"><span class="count">1</span>Memory is the point of adaptive immunity</div>
+      <p><strong>Immunological memory</strong> means a second encounter with the same antigen triggers a faster, stronger, and often qualitatively better response than the first. The animation above plots the signature of memory: the primary curve is slow and modest because the matching clone is rare and must be found and expanded; the secondary curve is fast and tall because the work was already done the first time.</p>
+      <p>Memory is not a single thing — it is a set of persisting cell states, each pre-positioned to skip a different bottleneck of the primary response:</p>
+      <table>
+        <thead><tr><th>Component</th><th>What persists</th><th>What it does on re-exposure</th></tr></thead>
+        <tbody>
+          <tr><td>Long-lived plasma cell</td><td>Antibody secretion with no need for re-activation</td><td>Neutralizes or opsonizes <em>immediately</em> — antibody is already in serum/mucosa</td></tr>
+          <tr><td>Memory B cell</td><td>Antigen-experienced, class-switched, affinity-matured clone</td><td>Rapidly makes plasma cells or re-enters germinal centers for further maturation</td></tr>
+          <tr><td>Memory CD4 T cell</td><td>Helper or regulatory capacity</td><td>Faster cytokine output and faster help to B cells and macrophages</td></tr>
+          <tr><td>Memory CD8 T cell</td><td>Cytotoxic potential</td><td>Faster killing of infected cells</td></tr>
+          <tr><td>Tissue-resident memory T cell</td><td>Local memory parked in barrier tissue</td><td>Immediate local response without waiting for blood-borne reinforcement</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>Memory changes the starting conditions.</strong> A naive response begins with rare cells and no pre-existing antibody. A memory response begins with more matching cells, lower activation thresholds, higher-affinity receptors, and sometimes antibody already present. That is why the second curve in the animation departs the baseline almost vertically. See <a href="09-immune-response-timeline.html">the response timeline (chapter 09)</a>.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">2</span>The anatomy of memory: niches and T-cell subsets</div>
+      <p>Where memory lives matters as much as that it exists. The molecular detail behind the table above:</p>
+      <h4>What is a plasma cell?</h4>
+      <p>A <strong>plasma cell</strong> is the antibody-factory fate of an activated B cell. The B cell's receptor started as a membrane-bound antibody (<strong>BCR</strong>). After activation, some descendants become plasma cells that devote most of their machinery to secreting soluble antibody with the same antigen-binding specificity.</p>
+      <div class="draw-figure">
+        <div class="draw-title">B-cell fates after activation</div>
+        <div class="draw-row">
+          <span class="draw-node bcell">activated B cell<br>BCR + antigen</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">Tfh help<br>CD40L + IL-21</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node bcell">memory B cell<br>reactivates later</span>
+          <span class="draw-arrow">+</span>
+          <span class="draw-node macro">plasma cell<br>secretes antibody</span>
+        </div>
+        <div class="draw-caption">Memory B cells keep the capacity to restart and improve the response; plasma cells are already-running antibody factories. Short-lived plasma cells make the acute burst, while long-lived plasma cells maintain the antibody floor.</div>
+      </div>
+      <h4>Long-lived plasma cells and their bone-marrow niche</h4>
+      <p>The antibody floor that defends you for years comes from <strong>long-lived plasma cells</strong> that migrate to bone-marrow survival niches. Stromal cells there present <strong>CXCL12</strong>, a chemokine "come here" signal; the plasma cell follows it through the receptor <strong>CXCR4</strong> and is kept alive by survival signals including <strong>APRIL</strong> and <strong>IL-6</strong>. These cells secrete antibody constitutively without re-encountering antigen — which is exactly why protective serum titer can outlast detectable memory B cells.</p>
+      <div class="alert info">
+        <strong>Plain English version.</strong> Memory B cells are the backup army that can restart production. Long-lived plasma cells are already-running antibody factories kept alive in a protected bone-marrow neighborhood. The niche is like a reserved power outlet: without CXCL12/CXCR4 homing and APRIL/IL-6 survival support, a plasma cell is much less likely to keep secreting antibody for years.
+      </div>
+      <h4>Memory B cells vs the germinal-center origin of quality</h4>
+      <p>Memory B cells are antigen-experienced clones that have usually passed through a <strong>germinal center</strong>, where <strong>activation-induced cytidine deaminase (AID)</strong> drives both <strong>somatic hypermutation</strong> (the basis of affinity maturation) and <strong>class-switch recombination</strong> (IgM&nbsp;→&nbsp;IgG/IgA/IgE). On recall they re-differentiate into plasma cells fast, or re-enter germinal centers to mature further.</p>
+      <h4>Three flavors of T-cell memory</h4>
+      <div class="role-grid">
+        <div class="role-card tcell">
+          <div class="role-emoji">🧭</div>
+          <div class="role-tag">T<sub>CM</sub></div>
+          <div class="role-name">Central memory</div>
+          <ul>
+            <li>Patrols lymph nodes (CCR7⁺ / CD62L⁺)</li>
+            <li>High proliferative reserve</li>
+            <li>Refills the effector pool on recall</li>
+          </ul>
+        </div>
+        <div class="role-card tcell">
+          <div class="role-emoji">⚡</div>
+          <div class="role-tag">T<sub>EM</sub></div>
+          <div class="role-name">Effector memory</div>
+          <ul>
+            <li>Circulates through blood &amp; tissue (CCR7⁻)</li>
+            <li>Rapid effector function</li>
+            <li>Front-line cytokine / killing</li>
+          </ul>
+        </div>
+        <div class="role-card tcell">
+          <div class="role-emoji">📍</div>
+          <div class="role-tag">T<sub>RM</sub></div>
+          <div class="role-name">Tissue-resident memory</div>
+          <ul>
+            <li>Parked in skin, gut, lung (CD69⁺ / CD103⁺)</li>
+            <li>Does not recirculate</li>
+            <li>Immediate local alarm at the entry site</li>
+          </ul>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>Arm</th><th>Long-term mechanism</th><th>What is ready before re-exposure?</th></tr></thead>
+        <tbody>
+          <tr><td>B-cell arm</td><td>Long-lived plasma cells</td><td>Antibody already secreted into serum or mucosa</td></tr>
+          <tr><td>B-cell arm</td><td>Memory B cells</td><td>Faster plasma-cell generation and renewed germinal-center maturation</td></tr>
+          <tr><td>CD4 T-cell arm</td><td>Memory helper T cells</td><td>Faster cytokine and help signals for macrophages and B cells</td></tr>
+          <tr><td>CD8 T-cell arm</td><td>Memory cytotoxic T cells</td><td>More antigen-specific cells, faster proliferation, faster killing after restimulation</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">3</span>B-cell memory versus T-cell memory</div>
+      <p>The two arms of memory solve different problems, and good vaccines try to engage both.</p>
+      <table>
+        <thead><tr><th>Feature</th><th>B-cell memory</th><th>T-cell memory</th></tr></thead>
+        <tbody>
+          <tr><td>Main product</td><td>Antibodies and rapid plasma-cell generation</td><td>Faster helper or killing response</td></tr>
+          <tr><td>Best at</td><td>Blocking extracellular pathogen entry and toxins</td><td>Controlling infected or abnormal host cells</td></tr>
+          <tr><td>Quality improvement</td><td>Affinity maturation and class switching</td><td>Functional differentiation and population expansion</td></tr>
+          <tr><td>Anatomical forms</td><td>Memory B cells; plasma cells in survival niches</td><td>Central, effector, and tissue-resident memory subsets</td></tr>
+        </tbody>
+      </table>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--bcell)">
+          <h4>When antibody is enough</h4>
+          <p>A toxin-driven disease (tetanus, diphtheria) is prevented mainly by <span class="tag bcell">neutralizing antibody</span>. Pre-existing antibody, held by long-lived plasma cells, can stop the toxin before it acts.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--tcell)">
+          <h4>When T cells are needed</h4>
+          <p>A virus that mutates its surface or hides inside cells evades antibody, so control leans on <span class="tag tcell">CD8 T-cell memory</span> that kills infected cells and on CD4 help that sustains the response.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">4</span>Tolerance: learning what <em>not</em> to attack</div>
+      <p><strong>Tolerance</strong> is the set of mechanisms that prevent immune responses against self and harmless antigens. It is necessary because receptor generation is random: V(D)J recombination produces a repertoire that <em>will</em> include self-reactive receptors. The system does not avoid the problem by making only "safe" receptors — it makes many and filters them, in two layers.</p>
+      <table>
+        <thead><tr><th>Layer</th><th>Location</th><th>Mechanism</th></tr></thead>
+        <tbody>
+          <tr><td>Central B-cell tolerance</td><td>Bone marrow</td><td>Deletion, receptor editing, and anergy of strongly self-reactive B cells</td></tr>
+          <tr><td>Central T-cell tolerance</td><td>Thymus</td><td>Negative selection against self-peptide–MHC; generation of regulatory T cells</td></tr>
+          <tr><td>Peripheral tolerance</td><td>Tissues &amp; lymphoid organs</td><td>Anergy, deletion, Tregs, inhibitory receptors, and lack of costimulation</td></tr>
+        </tbody>
+      </table>
+      <h4>The AIRE trick: showing the thymus the whole body</h4>
+      <p>A self-reactive T cell can only be deleted in the thymus if it sees its target self-peptide there. The transcription factor <strong>AIRE</strong> (autoimmune regulator), expressed by medullary thymic epithelial cells, drives "promiscuous" expression of thousands of tissue-restricted antigens — insulin, thyroid proteins, retinal proteins — so the thymus can audition T cells against antigens they would otherwise never meet until adulthood. Loss-of-function AIRE mutations cause the multi-organ autoimmune syndrome APECED, the cleanest proof that central tolerance is an active, gene-driven program.</p>
+      <div class="mono-diagram"><span class="hl-dim">CENTRAL TOLERANCE — the editing room</span>
+
+  random receptor repertoire (V(D)J)
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+  <span class="hl-tcell">thymus</span>: AIRE shows self-peptides on self-<span class="hl-tcell">MHC</span>
+        <span class="hl-dim">|</span>
+   +----+--------------------+
+   <span class="hl-dim">|</span>                       <span class="hl-dim">|</span>
+binds self <span class="hl-dim">too</span> strongly     binds weakly / not
+   <span class="hl-dim">|</span>                       <span class="hl-dim">|</span>
+   <span class="hl-dim">v</span>                       <span class="hl-dim">v</span>
+<span class="hl-nk">DELETED</span> or diverted        survives -> mature naive
+to <span class="hl-tcell">Treg</span> fate                <span class="hl-tcell">T cell</span> exported
+
+<span class="hl-dim">PERIPHERAL TOLERANCE — the backstop</span> (for self-reactive cells that escaped)
+  no costimulation -> <span class="hl-dim">anergy</span>   |   <span class="hl-tcell">Treg</span> suppression
+  inhibitory receptors (CTLA-4, PD-1)  |   activation-induced cell death</div>
+      <p>Central tolerance is leaky by design — perfect deletion would also erase useful cross-reactive cells — so peripheral tolerance catches the escapees. See <a href="06-t-cells.html">T cells (chapter 06)</a> for thymic selection and <a href="05-b-cells-antibodies.html">B cells (chapter 05)</a> for receptor editing.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">5</span>Checkpoints and brakes — and why oncology cares</div>
+      <p>Immune responses use inhibitory pathways to prevent runaway activation. These "brakes" are the molecular substance of peripheral tolerance.</p>
+      <table>
+        <thead><tr><th>Brake</th><th>Broad role</th></tr></thead>
+        <tbody>
+          <tr><td>CTLA-4</td><td>Competes with CD28 for B7 ligands and restrains T-cell <em>priming</em> in lymph nodes</td></tr>
+          <tr><td>PD-1</td><td>Dampens T-cell activity in <em>tissues</em> and under chronic stimulation</td></tr>
+          <tr><td>Tregs</td><td>Suppress activation and maintain tolerance</td></tr>
+          <tr><td>Anti-inflammatory cytokines</td><td>IL-10 and TGF-β reduce inflammatory programs</td></tr>
+          <tr><td>Activation-induced cell death</td><td>Removes expanded clones after a response</td></tr>
+          <tr><td>Resolution macrophage programs</td><td>Clear dead cells and promote repair</td></tr>
+        </tbody>
+      </table>
+      <div class="compare-2">
+        <div class="compare-col">
+          <h4>CTLA-4 — the priming brake</h4>
+          <p>A naive T cell needs signal&nbsp;1 (peptide–MHC) <em>plus</em> signal&nbsp;2 (CD28 binding B7). <strong>CTLA-4</strong> is a higher-affinity decoy for the same B7 ligands; by outcompeting CD28 it pulls signal&nbsp;2 away and shuts priming down. It is constitutively expressed by Tregs, which is part of how they suppress.</p>
+        </div>
+        <div class="compare-col">
+          <h4>PD-1 — the effector brake</h4>
+          <p>An activated T cell raises <strong>PD-1</strong>; when it engages <strong>PD-L1/PD-L2</strong> on tissue or tumor, PD-1's cytoplasmic ITIM/ITSM motifs recruit the phosphatase <strong>SHP-2</strong>, which dephosphorylates TCR/CD28 signaling intermediates and damps the cell. Chronic antigen keeps PD-1 high — the "exhaustion" state.</p>
+        </div>
+      </div>
+      <div class="alert warn">
+        <span class="alert-head">Checkpoint blockade: the same brake, released on purpose</span>
+        Tumors exploit these brakes. <strong>Anti-CTLA-4</strong> (ipilimumab) and <strong>anti-PD-1/PD-L1</strong> antibodies block the brake and restore antitumor T-cell activity — the basis of the 2018 Nobel Prize. The cost is mechanistic: releasing a tolerance brake everywhere also lifts restraint on self-reactive cells, producing <strong>immune-related adverse events</strong> (colitis, dermatitis, thyroiditis, hypophysitis). The therapy and the toxicity are the same biology. See the companion <a href="https://github.com/sinban04/recherche/tree/main/reports/2026-06-07-pd1-pdl1-checkpoint-drugs">PD-1/PD-L1 checkpoint report</a> and <a href="https://github.com/sinban04/recherche/tree/main/reports/2026-03-20-anti-cancer-medication">anti-cancer medication report</a>.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">6</span>Failure mode I — immunodeficiency (too little response)</div>
+      <p><strong>Immunodeficiency</strong> occurs when part of the immune system is missing or impaired. Its great diagnostic gift is that the <em>pattern of infection points to the broken module</em>.</p>
+      <table>
+        <thead><tr><th>Broken module</th><th>Typical vulnerability</th><th>Illustrative defect</th></tr></thead>
+        <tbody>
+          <tr><td>Neutrophil / phagocyte killing</td><td>Recurrent bacterial and fungal infections, abscesses</td><td>Chronic granulomatous disease — NADPH-oxidase (respiratory-burst) defect</td></tr>
+          <tr><td>Complement</td><td>Encapsulated bacteria, or immune-complex disease, by component</td><td>Terminal (C5–C9) defect → Neisseria; early-component defect → lupus-like disease</td></tr>
+          <tr><td>B cell / antibody</td><td>Extracellular bacteria; poor vaccine antibody responses</td><td>X-linked agammaglobulinemia (BTK), common variable immunodeficiency</td></tr>
+          <tr><td>T cell</td><td>Viral, fungal, intracellular bacterial, and opportunistic infections</td><td>SCID; HIV-driven CD4 depletion</td></tr>
+          <tr><td>NK cell</td><td>Severe / recurrent herpesvirus susceptibility in some cases</td><td>Rare NK-deficiency syndromes</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>Read the infection, infer the defect.</strong> Recurrent <em>extracellular bacterial</em> infections point toward antibody, complement, or phagocyte problems. <em>Opportunistic viral and fungal</em> infections point toward T-cell defects. The map runs straight back to which effector each chapter described — see <a href="03-macrophages.html">macrophages</a>, <a href="02-innate-recognition-inflammation.html">complement</a>, <a href="05-b-cells-antibodies.html">antibodies</a>, <a href="06-t-cells.html">T cells</a>, <a href="08-nk-cells.html">NK cells</a>.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">7</span>Failure mode II — autoimmunity (misdirected specificity)</div>
+      <p><strong>Autoimmunity</strong> is an immune response against self tissue. It is <em>not</em> simply "too much immunity" — it is misdirected specificity plus the inflammatory context that lets that specificity become destructive. It arises from failed tolerance, molecular mimicry, tissue damage exposing hidden self antigens, abnormal costimulation, genetic risk (e.g. HLA alleles, AIRE/FOXP3 defects), infection-triggered inflammation, or checkpoint imbalance.</p>
+      <table>
+        <thead><tr><th>Mechanism</th><th>Example pattern</th></tr></thead>
+        <tbody>
+          <tr><td>Autoantibodies</td><td>Antibodies bind receptors, blood cells, nuclear antigens, or basement membranes (e.g. anti-TSH-receptor, anti-dsDNA, anti-GBM)</td></tr>
+          <tr><td>Autoreactive T cells</td><td>T cells attack tissue antigens or drive local inflammation (e.g. islet β-cell or myelin attack)</td></tr>
+          <tr><td>Immune complexes</td><td>Antigen–antibody complexes deposit in tissue and activate complement</td></tr>
+          <tr><td>Innate amplification</td><td>Macrophages and dendritic cells sustain inflammatory cytokines and re-present self antigen</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">8</span>Failure mode III — allergy (mistaken target)</div>
+      <p><strong>Allergy</strong> is an immune response to harmless environmental antigens. IgE-mediated (type&nbsp;I) hypersensitivity has two phases: a silent <em>sensitization</em> on first exposure, then explosive <em>degranulation</em> on re-exposure. The same machinery evolved to defend against parasites; pointed at pollen or peanut, it produces asthma, rhinitis, urticaria, or anaphylaxis.</p>
+      <div class="mono-diagram"><span class="hl-dim">FIRST EXPOSURE — sensitization (silent)</span>
+
+  allergen + <span class="hl-dim">TH2-skewed</span> help (IL-4 / IL-13)
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+  <span class="hl-bcell">B cell</span> class-switches to <span class="hl-bcell">IgE</span> (AID-driven)
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+  IgE binds high-affinity receptor <span class="hl-innate">FcεRI</span> on <span class="hl-nk">mast cells</span> / basophils
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+  <span class="hl-nk">mast cell</span> now "armed" — no symptoms yet
+
+<span class="hl-dim">RE-EXPOSURE — degranulation (seconds to minutes)</span>
+
+  allergen <span class="hl-dim">cross-links</span> two adjacent IgE on <span class="hl-nk">mast cell</span>
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+  <span class="hl-innate">FcεRI</span> clustering -> Syk/PLCγ signaling -> Ca²⁺ influx
+        <span class="hl-dim">|</span>
+   +----+--------------------+
+   <span class="hl-dim">v</span>                       <span class="hl-dim">v</span>
+preformed granules:      newly made lipid &amp;
+<span class="hl-innate">histamine</span>, tryptase       cytokine mediators
+        <span class="hl-dim">|</span>                  (leukotrienes,
+        <span class="hl-dim">v</span>                   prostaglandins, TNF)
+  vasodilation, smooth-muscle contraction, mucus,
+  edema -> rhinitis / asthma / urticaria / <span class="hl-nk">anaphylaxis</span></div>
+      <p>The key structural point is that a single bound IgE does nothing — degranulation requires the allergen to <strong>cross-link adjacent IgE/FcεRI complexes</strong>, clustering the receptors so their signaling can fire. That cross-linking requirement is also why a multivalent allergen is far more potent than a monovalent one.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">9</span>Failure mode IV — cancer immune evasion (evaded response)</div>
+      <p>Tumors are <strong>altered self</strong>. The immune system can detect some tumor neoantigens, stress ligands, and abnormal inflammatory contexts — but tumors evolve under that pressure (immunoediting), and the variants that survive are the ones that hide.</p>
+      <table>
+        <thead><tr><th>Evasion route</th><th>Immune consequence</th></tr></thead>
+        <tbody>
+          <tr><td>Loss of antigen</td><td>T cells no longer recognize the target</td></tr>
+          <tr><td>Reduced MHC&nbsp;I</td><td>CD8 T cells lose their display — though this can hand the advantage to <span class="tag nk">NK cells</span> (missing-self)</td></tr>
+          <tr><td>PD-L1 expression</td><td>T-cell activity is inhibited through PD-1 (the brake from section 5)</td></tr>
+          <tr><td>Immunosuppressive cytokines</td><td>IL-10 / TGF-β dampen effector responses</td></tr>
+          <tr><td>Treg &amp; suppressive myeloid recruitment</td><td>The local microenvironment becomes tolerant</td></tr>
+          <tr><td>Poor antigen presentation</td><td>T-cell priming and re-stimulation fail</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>A three-way contest.</strong> Cancer immunology is a running fight between <em>recognition</em>, <em>editing</em>, and <em>suppression</em>. Note the tension built into the table: dropping MHC&nbsp;I escapes CD8 T cells but exposes the tumor to NK cells — see <a href="08-nk-cells.html">NK cells (chapter 08)</a> for the missing-self logic that checkpoint-evading tumors run into.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">10</span>Failure mode V — chronic inflammation (unresolved response)</div>
+      <p>Acute inflammation is useful and self-limiting. <strong>Chronic inflammation</strong> is persistent tissue remodeling under immune pressure — a repair-and-defense program that never receives its stop signal.</p>
+      <p>Macrophages are central. If they cannot clear the trigger, or the tissue keeps supplying danger signals, they keep recruiting cells, releasing cytokines, remodeling matrix, and presenting antigen:</p>
+      <div class="mono-diagram"><span class="hl-macro">macrophage</span> meets a trigger it cannot clear
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+  persistent cytokines (TNF-α, IL-1, IL-6)  +  matrix remodeling
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+  continual recruitment of <span class="hl-innate">monocytes</span> / <span class="hl-tcell">T cells</span>; no resolution
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+  fibrosis · atherosclerosis · IBD · chronic <span class="hl-macro">granuloma</span> · tumor-promoting niche</div>
+      <div class="alert warn">
+        <span class="alert-head">The problem is not that macrophages are bad</span>
+        It is that a repair-and-defense program that never terminates becomes destructive. The same <strong>efferocytosis</strong> and resolution programs that should switch inflammation off (see <a href="03-macrophages.html">macrophages, chapter 03</a>) are exactly what fails here.
+      </div>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Summary</span>
+      Memory makes adaptive responses faster and better on re-exposure — held in long-lived plasma cells, memory B cells, and central/effector/tissue-resident memory T cells. Tolerance, built centrally (thymic negative selection, AIRE, receptor editing) and peripherally (anergy, Tregs, CTLA-4/PD-1 brakes), stops a randomly generated repertoire from attacking self. Immune failure is one of those breaking: <strong>too little</strong> response (immunodeficiency), <strong>misdirected</strong> response (autoimmunity), <strong>mistaken</strong> target (allergy), <strong>evaded</strong> response (cancer), or <strong>unresolved</strong> response (chronic inflammation). The same macrophage, B-cell, T-cell, and NK-cell mechanisms that protect the host can harm it when regulation fails.
+    </div>
+
+    <div class="chap-nav">
+      <a href="09-immune-response-timeline.html">← 09 · Response Timeline</a>
+      <a href="../10-memory-tolerance-failure.md">Markdown source</a>
+      <a href="11-system-synthesis.html">11 · System Synthesis →</a>
+    </div>
+
+    <footer>
+      <p>🧠 Memory, Tolerance &amp; Failure · Chapter 10 · <a href="index.html">Report home</a> · <a href="sources.html">Sources</a></p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>⚖️ NK Cells — How the Immune System Works</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> · Innate Lymphocytes · Chapter 08</div>
+      <h1 class="page-title">⚖️ NK Cells</h1>
+      <p class="page-subtitle">A natural killer cell carries no rearranged receptor and asks no question about a specific peptide. It runs a continuous subtraction — activating signals minus inhibitory signals — and kills only when the balance tips.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Core idea</span>
+      An NK cell decides by <strong>integrating opposing germline-encoded receptors</strong>, not by recognizing one antigen. Inhibitory receptors read normal self (mostly MHC class I); activating receptors read stress, infection, and antibody coating. Killing happens only when activation outweighs inhibition — so the same NK cell spares a healthy neighbor and destroys a virus-infected or transformed one.
+    </div>
+
+    <!-- ===== Signature animation ===== -->
+    <figure class="anim" data-anim="nk-balance"
+      data-caption="The NK kill/spare decision as a live balance. Drag the two sliders — MHC I (self, inhibitory) and stress ligand (activating) — and watch the inhibition-vs-activation meter, the receptor strengths, and the verdict flip between 🛡 SPARED and ⚔ KILL. Try high MHC I + low stress (healthy self → spared), then drop MHC I and raise stress (missing-self + induced-self → killed). Sources: Lanier (2005), Annu. Rev. Immunol.; Ljunggren &amp; Kärre (1990) missing-self framework."></figure>
+
+    <div class="section">
+      <div class="section-title"><span class="count">1</span>What an NK cell is</div>
+      <p>A <strong>natural killer (NK) cell</strong> is an innate lymphocyte that can kill abnormal host cells without first undergoing antigen-specific clonal expansion. NK cells are especially important early in viral infection and in surveillance against cells that reduce MHC class I expression.</p>
+      <p>An NK cell does <em>not</em> use a rearranged T-cell receptor or B-cell receptor. Instead it integrates signals from a fixed, <strong>germline-encoded</strong> set of inhibitory and activating receptors. There is no clonal selection step and no somatic recombination — the receptor repertoire ships from the genome, and the cell's specificity is the <em>net</em> of many receptors firing at once.</p>
+      <div class="mono-diagram">NK-cell decision
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">+--></span> <span class="hl-macro">inhibitory receptors</span> detect normal self signals, often <span class="hl-macro">MHC I</span>
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">+--></span> <span class="hl-nk">activating receptors</span> detect stress ligands, infection signals, antibody Fc
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-nk">kill</span> only if <span class="hl-nk">activating signals</span> outweigh <span class="hl-macro">inhibitory signals</span></div>
+      <p>The decision is <strong>analog</strong>, not a single on/off receptor. The sliders in the animation above make this concrete: neither input alone decides the outcome — only their difference does.</p>
+
+      <h3>The receptor toolkit, named</h3>
+      <p>It helps to know the actual molecules the two arms use, because their ligands explain <em>why</em> the cell reads "self" the way it does.</p>
+      <table>
+        <thead><tr><th>Arm</th><th>Receptors</th><th>Ligands they read</th><th>Signal</th></tr></thead>
+        <tbody>
+          <tr><td>Inhibitory</td><td><strong>KIRs</strong> (killer-cell Ig-like receptors, human) and <strong>Ly49</strong> (mouse); <strong>NKG2A/CD94</strong></td><td>Classical MHC I (HLA-A/B/C) and the non-classical <strong>HLA-E</strong> (read by NKG2A)</td><td>ITIM motifs recruit the phosphatase <strong>SHP-1</strong>, which strips activating phosphorylations</td></tr>
+          <tr><td>Activating</td><td><strong>NKG2D</strong>; natural cytotoxicity receptors <strong>NKp46, NKp44, NKp30</strong>; <strong>CD16</strong> (FcγRIIIa); activating KIRs</td><td>Stress-induced self ligands <strong>MICA/MICB</strong> and <strong>ULBP1&ndash;6</strong> (NKG2D); viral/cellular ligands (NCRs); antibody Fc (CD16)</td><td>ITAM-bearing adaptors (DAP12, CD3ζ, FcRγ) recruit Syk/ZAP-70-family kinases; NKG2D also pairs with the YINM adaptor DAP10 (recruits PI3K)</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>The phosphatase wins ties.</strong> Inhibitory <strong>ITIMs</strong> (immunoreceptor tyrosine-based inhibitory motifs) recruit SHP-1 / SHP-2, which dephosphorylate the very kinases that activating <strong>ITAMs</strong> are trying to turn on. So inhibition is not a passive absence of activation — it actively erases the activating signal. This is why a healthy cell with plenty of MHC I is safe even if it carries a little stress ligand.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">2</span>Missing-self recognition</div>
+      <p>Many viruses and tumors reduce MHC I expression to evade CD8 T cells. That move creates a vulnerability. NK cells detect the <em>absence</em> of normal inhibitory MHC I signals — the <strong>missing-self</strong> principle (Kärre and Ljunggren).</p>
+      <div class="mono-diagram"><span class="hl-macro">healthy nucleated cell</span>
+   normal <span class="hl-macro">MHC I</span> <span class="hl-dim">-></span> <span class="hl-macro">inhibitory NK receptor (KIR / NKG2A) engaged</span> <span class="hl-dim">-></span> no killing
+
+<span class="hl-nk">virus-infected or tumor cell</span>
+   low <span class="hl-macro">MHC I</span>      <span class="hl-dim">-></span> <span class="hl-macro">inhibitory signal reduced</span>
+   <span class="hl-nk">stress ligands</span> <span class="hl-dim">-></span> <span class="hl-nk">activating signals increased</span>
+   result        <span class="hl-dim">-></span> <span class="hl-nk">NK killing</span></div>
+      <p>This complements CD8 T-cell immunity by attacking exactly the escape route T cells cannot follow:</p>
+      <table>
+        <thead><tr><th>Target strategy</th><th>CD8 T-cell problem</th><th>NK-cell advantage</th></tr></thead>
+        <tbody>
+          <tr><td>Normal MHC I with viral peptide</td><td>CD8 T cell can recognize</td><td>NK inhibition may dominate unless stress signals are strong</td></tr>
+          <tr><td>Reduced MHC I</td><td>CD8 T cell loses peptide-MHC target</td><td>NK cell loses inhibitory signal</td></tr>
+          <tr><td>Stress ligand expression</td><td>May or may not produce a known peptide target</td><td>NK activating receptors can respond</td></tr>
+        </tbody>
+      </table>
+      <div class="alert key">
+        <span class="alert-head">The MHC-I trap</span>
+        The system sets a no-win choice for the pathogen: <strong>keep MHC I</strong> and risk CD8 T-cell detection, or <strong>reduce MHC I</strong> and risk NK-cell detection. Some viruses (e.g. human cytomegalovirus) try a third path — leaving the non-classical <strong>HLA-E</strong> up to keep NKG2A inhibited — which is why NK biology and viral immune-evasion co-evolve so visibly.
+      </div>
+      <p>Drag the MHC I slider down in the animation while leaving stress modest: you can watch inhibition shrink in the balance meter until the verdict flips, even without raising the activating input — that is missing-self in action.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">3</span>Induced-self recognition</div>
+      <p>NK cells also respond to <strong>induced-self</strong> signals: host molecules upregulated by stress, DNA damage, infection, or transformation. These ligands engage activating NK receptors — chiefly <strong>NKG2D</strong>, whose ligands <strong>MICA/MICB</strong> and <strong>ULBP1&ndash;6</strong> are nearly absent on healthy cells but driven up by the DNA-damage response and oncogenic stress.</p>
+      <p>The logic differs from PAMP recognition. NK cells are not necessarily detecting a microbial molecule. They are detecting a host cell whose surface declares, "I am stressed, infected, transformed, or damaged."</p>
+      <div class="mono-diagram">cell stress (DNA damage, viral infection, transformation)
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-nk">stress ligand (MICA/MICB, ULBPs)</span> expression rises
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-nk">NK activating receptor (NKG2D)</span> engaged
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-nk">kill</span> if <span class="hl-macro">inhibition</span> is insufficient</div>
+      <p>This is useful for cancer surveillance and antiviral defense, but it requires restraint. Too little NK activity lets abnormal cells escape; too much can contribute to inflammatory damage. The animation's verdict logic mirrors this: high stress alone can flip the result to <strong>⚔ KILL</strong> only once it overcomes the standing inhibition.</p>
+      <div class="alert warn">
+        <span class="alert-head">Tumors fight back at the ligand level</span>
+        Many tumors <strong>shed soluble MICA/MICB</strong> by proteolytic cleavage. Soluble ligand mops up NKG2D and even down-modulates the receptor on NK cells, blunting induced-self recognition — one reason the surveillance arm is not foolproof.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">4</span>NK-cell effector mechanisms</div>
+      <p>Once the balance tips to kill, NK cells use several outputs — and crucially they also <em>talk</em> to the rest of the immune system through cytokines.</p>
+      <table>
+        <thead><tr><th>Output</th><th>Mechanism</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Cytotoxic granules</td><td><strong>Perforin</strong> permeabilizes the target; <strong>granzymes</strong> (esp. granzyme B) enter and trigger caspase-dependent apoptosis</td><td>Target-cell apoptosis</td></tr>
+          <tr><td>Death receptors</td><td><strong>FasL</strong> or <strong>TRAIL</strong> engage death receptors on the target</td><td>Apoptosis in susceptible targets</td></tr>
+          <tr><td>IFN-γ</td><td>Cytokine secretion (amplified by IL-12 priming)</td><td>Macrophage activation and TH1 shaping</td></tr>
+          <tr><td>TNF-family signals</td><td>Inflammatory and cytotoxic effects</td><td>Context-dependent</td></tr>
+          <tr><td>ADCC</td><td><strong>CD16</strong> binds antibody Fc on the target</td><td>Antibody-coated target is killed</td></tr>
+        </tbody>
+      </table>
+
+      <h3>The cytotoxic synapse, step by step</h3>
+      <p>Granule killing is not a spray — it is a directed, polarized event so that only the bound target dies.</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">STEP 1</div><div class="step-t">Conjugate</div><div class="step-d">Activating receptors win the balance; integrin <strong>LFA-1</strong> grips ICAM on the target to form a stable conjugate.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">STEP 2</div><div class="step-t">Polarize</div><div class="step-d">The microtubule-organizing center and lytic granules reorient toward the contact — the <strong>immunological synapse</strong>.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">STEP 3</div><div class="step-t">Release</div><div class="step-d">Granules dock and fuse, secreting <strong>perforin + granzymes</strong> into the narrow synaptic cleft only.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">STEP 4</div><div class="step-t">Apoptosis</div><div class="step-d">Granzyme B activates caspases / cleaves Bid; the target dies by apoptosis without spilling its contents.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">STEP 5</div><div class="step-t">Detach &amp; recycle</div><div class="step-d">The NK cell detaches, re-arms its granule stores, and can serially kill additional targets.</div></div>
+      </div>
+
+      <h3>ADCC: how B cells hand NK cells a target</h3>
+      <p><strong>Antibody-dependent cellular cytotoxicity (ADCC)</strong> connects B cells to NK cells. If antibodies coat a target-cell surface, NK-cell <strong>CD16 (FcγRIIIa)</strong> binds the antibody <strong>Fc</strong> region. CD16 signals through ITAM-bearing adaptors (CD3ζ / FcRγ), and — uniquely among NK triggers — engagement of CD16 alone is strong enough to override inhibition and force a kill.</p>
+      <div class="mono-diagram">target cell coated with <span class="hl-bcell">IgG</span>
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-nk">NK CD16 (FcγRIIIa)</span> binds Fc portion of <span class="hl-bcell">IgG</span>
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+ITAM signaling <span class="hl-dim">-></span> <span class="hl-nk">NK cell releases cytotoxic granules</span>
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+target cell dies</div>
+      <p>This is one reason therapeutic antibodies can recruit immune killing even when they do not directly poison the target — and why antibody engineering tunes the Fc region for CD16 affinity. See <a href="05-b-cells-antibodies.html">B cells &amp; antibodies (chapter 05)</a>.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">5</span>Cytokines activate NK cells early</div>
+      <p>NK cells respond to cytokines made by infected tissue, macrophages, and dendritic cells. Important activators include <strong>type I interferons</strong> (IFN-α/β), <strong>IL-12</strong>, <strong>IL-15</strong>, and <strong>IL-18</strong> — and each does a distinct job.</p>
+      <table>
+        <thead><tr><th>Cytokine</th><th>Made by</th><th>Effect on NK cell</th></tr></thead>
+        <tbody>
+          <tr><td>Type I IFN (α/β)</td><td>Infected cells, plasmacytoid DCs</td><td>Boosts cytotoxicity and survival</td></tr>
+          <tr><td>IL-12</td><td>Macrophages, dendritic cells</td><td>Drives strong <strong>IFN-γ</strong> output (synergizes with IL-18)</td></tr>
+          <tr><td>IL-15</td><td>Dendritic cells, stroma (trans-presented)</td><td>Survival, proliferation, priming/arming</td></tr>
+          <tr><td>IL-18</td><td>Macrophages (via inflammasome)</td><td>Amplifies IFN-γ with IL-12</td></tr>
+        </tbody>
+      </table>
+      <div class="mono-diagram">virus infects tissue
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+infected cells &amp; <span class="hl-macro">dendritic cells</span> produce <span class="hl-innate">type I interferons</span>
+<span class="hl-macro">macrophages / dendritic cells</span> produce <span class="hl-innate">IL-12, IL-15, IL-18</span>
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+<span class="hl-nk">NK cells</span> increase cytotoxicity and <span class="hl-innate">IFN-γ</span> production
+        <span class="hl-dim">|</span>
+        <span class="hl-dim">v</span>
+early containment before <span class="hl-tcell">CD8 T-cell</span> expansion peaks</div>
+      <p>NK cells can therefore act during the gap between initial infection and adaptive clonal expansion. Cytokine "priming" raises the cell's baseline so that the same surface-receptor balance now reaches the kill threshold faster — the activation arm starts pre-charged. See the cross-talk with macrophages in <a href="03-macrophages.html">chapter 03</a> and the timing picture in <a href="09-immune-response-timeline.html">chapter 09</a>.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">6</span>NK cells are educated (licensed)</div>
+      <p>NK cells must avoid killing every normal cell. During development and maturation, NK cells undergo a process often called <strong>education</strong> or <strong>licensing</strong>. Cells whose inhibitory receptors can engage self MHC become functionally competent (licensed); cells lacking such interactions are tuned to be hyporesponsive.</p>
+      <p>The broad idea is <strong>calibration</strong>, not classroom-style learning. NK receptors are mostly germline-encoded; the NK cell is not rearranging a new receptor the way a T cell or B cell does. Education tunes the response threshold according to the self-MHC signals the NK cell actually experiences.</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">1</div><div class="step-t">Random receptor mix</div><div class="step-d">An immature NK cell expresses a stochastic combination of inhibitory receptors.</div></div>
+        <div class="flow-step" style="--c:var(--macro)"><div class="step-n">2</div><div class="step-t">Self-MHC test</div><div class="step-d">If one inhibitory receptor binds this body's own MHC I, the cell receives a calibration signal.</div></div>
+        <div class="flow-step" style="--c:var(--safe)"><div class="step-n">3A</div><div class="step-t">Licensed</div><div class="step-d">The cell becomes fully responsive because it has learned what normal inhibition feels like.</div></div>
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">3B</div><div class="step-t">Unlicensed</div><div class="step-d">No useful self-MHC match means the cell is tuned down for safety.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">4</div><div class="step-t">Missing-self meaning</div><div class="step-d">Only a cell calibrated to depend on self-MHC treats loss of that signal as a strong kill cue.</div></div>
+      </div>
+      <div class="compare-2">
+        <div class="compare-col" style="border-left:4px solid var(--safe)">
+          <h4>Licensed (educated)</h4>
+          <p>An inhibitory receptor (e.g. a KIR) <strong>found a matching self-MHC I</strong> during development. The cell is set fully responsive — and is the one that reacts strongly to missing-self.</p>
+        </div>
+        <div class="compare-col" style="border-left:4px solid var(--nk)">
+          <h4>Unlicensed (hyporesponsive)</h4>
+          <p>No inhibitory receptor matched a self-MHC ligand. To stay safe the cell is <strong>tuned down</strong>, so the absence of inhibition it could never sense does not trigger autoreactive killing.</p>
+        </div>
+      </div>
+      <div class="alert info">
+        <strong>Education is the safety counterpart of missing-self.</strong> Missing-self only works if an NK cell was first taught to depend on a specific self-MHC signal. Licensing ensures that the cells most ready to kill on lost inhibition are exactly the cells that were calibrated against real self MHC — preventing them from attacking healthy tissue that simply never expressed a matching ligand. Think of education as a rheostat, not a switch: stronger self-MHC calibration can make the NK cell more responsive when that signal disappears.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">7</span>NK cells versus CD8 T cells</div>
+      <p>NK cells and CD8 T cells can both kill host cells, and they are complementary lymphocyte-lineage killers. A <strong>CD8 T cell</strong> is an adaptive T lymphocyte with a rearranged TCR. An <strong>NK cell</strong> is an innate lymphocyte / innate lymphoid cell with germline-encoded receptor sets. They share the cytotoxic granule toolkit, but they decide when to use it by opposite information rules.</p>
+      <div class="draw-figure">
+        <div class="draw-title">Two lymphocyte killers cover opposite MHC-I states</div>
+        <div class="draw-row">
+          <span class="draw-node tcell">MHC I present<br>viral peptide displayed</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">CD8 T cell<br>TCR + CD8</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node safe">antigen-specific<br>killing</span>
+        </div>
+        <div class="draw-row">
+          <span class="draw-node nk">MHC I missing / low<br>stress ligands high</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node nk">NK cell<br>missing-self balance</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node safe">innate cytotoxic<br>killing</span>
+        </div>
+        <div class="draw-caption">Pathogen trap: keep MHC I and CD8 T cells can see peptide; lose MHC I and NK cells lose inhibition. Both arms often finish with a focused synapse, perforin, granzymes, and apoptosis.</div>
+      </div>
+      <table>
+        <thead><tr><th>Feature</th><th>NK cell</th><th>CD8 T cell</th></tr></thead>
+        <tbody>
+          <tr><td>Receptor source</td><td>Germline-encoded receptor set</td><td>Rearranged TCR</td></tr>
+          <tr><td>Specificity</td><td>Stress, missing-self, antibody Fc, receptor balance</td><td>Specific peptide-MHC I</td></tr>
+          <tr><td>First-response speed</td><td>Hours to early days</td><td>Several days for primary response</td></tr>
+          <tr><td>Memory</td><td>Limited, context-dependent innate memory-like behavior</td><td>Classic antigen-specific memory</td></tr>
+          <tr><td>Best against</td><td>MHC-low, stressed, antibody-coated, early infected cells</td><td>Cells displaying known foreign or abnormal peptide on MHC I</td></tr>
+        </tbody>
+      </table>
+      <p>The immune system uses both because each covers the other's blind spot: the CD8 T cell needs MHC I to see its target, and the NK cell pounces precisely when MHC I disappears. See <a href="06-t-cells.html">T cells (chapter 06)</a> for the CD8 side of this pairing.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Summary</span>
+      NK cells are innate lymphocytes that kill through a balance of inhibitory and activating signals. Inhibitory receptors (KIR, NKG2A/CD94) read MHC I and HLA-E and recruit SHP-1 to erase activation; activating receptors (NKG2D, the NCRs NKp30/44/46, and CD16) read induced-self stress ligands (MICA/MICB, ULBPs) and antibody Fc. They detect <strong>missing self</strong> when MHC I is reduced, <strong>induced self</strong> when stress ligands rise, and antibody-coated targets through CD16-mediated <strong>ADCC</strong>. Education/licensing calibrates them against real self MHC, and cytokine priming (type I IFN, IL-12/15/18) pre-charges the activation arm. NK cells provide early antiviral and antitumor pressure, produce IFN-γ, and complement CD8 T cells by targeting cells that try to escape peptide-MHC recognition.
+    </div>
+
+    <div class="chap-nav">
+      <a href="07-t-cell-immunotherapy.html">← 07 · T-Cell Immunotherapy</a>
+      <a href="../08-nk-cells.md">Markdown source</a>
+      <a href="09-immune-response-timeline.html">09 · Response Timeline →</a>
+    </div>
+
+    <footer>
+      <p>⚖️ NK Cells · Chapter 08 · <a href="index.html">Report home</a> · <a href="sources.html">Sources</a></p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>

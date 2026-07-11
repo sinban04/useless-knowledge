@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🧬 V(D)J &amp; Germinal Centers — How the Immune System Works</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="main">
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> · Adaptive Immunity · Chapter 12</div>
+      <h1 class="page-title">🧬 V(D)J &amp; Germinal Centers</h1>
+      <p class="page-subtitle">How one genome creates enormous BCR/TCR diversity before infection, then improves a selected B-cell clone inside germinal centers after antigen appears.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Core idea</span>
+      <strong>V(D)J recombination</strong> builds the starting lymphocyte receptor repertoire by cutting and joining DNA fragments. It happens before antigen exposure. The <strong>germinal-center reaction</strong> is a later B-cell quality-control factory: after antigen selects a clone, AID mutates and class-switches that clone while Tfh cells and follicular dendritic cells select the winners.
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">1</span>The receptor-diversity problem</div>
+      <p>The body cannot store a separate antibody or T-cell receptor gene for every possible pathogen. Instead it stores <strong>gene fragments</strong> and assembles a different receptor gene in each developing lymphocyte. Antigen does not teach the cell what receptor to make; antigen later selects the rare cell that already matches.</p>
+      <div class="alert info">
+        <strong>Preparation does not mean certainty.</strong> V(D)J recombination creates a huge, partly cross-reactive search library. It does not guarantee an exact match for every possible future antigen. If no clone binds enough, if the useful epitope is hidden, or if the matching clone was removed as self-reactive, the response can be weak or absent.
+      </div>
+      <div class="draw-figure">
+        <div class="draw-title">Selection, not instruction</div>
+        <div class="draw-row">
+          <span class="draw-node bcell">before infection<br>many receptors already exist</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node innate">antigen appears</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">rare matching clone selected</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node safe">expansion and memory</span>
+        </div>
+        <div class="draw-caption">This is why adaptive immunity starts slowly: the matching clone may be rare, but once found it can expand thousands-fold.</div>
+      </div>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/V%28D%29J_recombination-diagram.svg" alt="Diagram showing V, D, and J gene segment recombination to form an immunoglobulin variable region" loading="lazy">
+        <figcaption>V(D)J recombination assembles an immunoglobulin variable region from separate V, D, and J gene segments. Source: <a href="https://commons.wikimedia.org/wiki/File:V(D)J_recombination-diagram.svg">Wikimedia Commons</a>, Rantes / Marek Mazurkiewicz, multi-license including <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</figcaption>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">2</span>The segment libraries</div>
+      <p>The genome stores receptor parts in libraries. A developing lymphocyte chooses one part from each needed library, cuts out the intervening DNA, and joins the chosen pieces into a usable variable-region exon.</p>
+      <table>
+        <thead><tr><th>Receptor chain</th><th>Segment pattern</th><th>Main note</th></tr></thead>
+        <tbody>
+          <tr><td>Immunoglobulin heavy chain</td><td>V + D + J</td><td>D-to-J first, then V-to-DJ</td></tr>
+          <tr><td>Immunoglobulin light chain (κ or λ)</td><td>V + J</td><td>No D segment</td></tr>
+          <tr><td>TCR beta chain</td><td>V + D + J</td><td>Similar logic to antibody heavy chain</td></tr>
+          <tr><td>TCR alpha chain</td><td>V + J</td><td>Similar logic to antibody light chain</td></tr>
+        </tbody>
+      </table>
+      <div class="draw-figure">
+        <div class="draw-title">Heavy-chain assembly</div>
+        <div class="draw-row">
+          <span class="draw-node bcell">many V</span>
+          <span class="draw-node innate">many D</span>
+          <span class="draw-node tcell">many J</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node safe">one V-D-J exon</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node bcell">one BCR specificity</span>
+        </div>
+        <div class="draw-caption">V means variable, D means diversity, and J means joining. The CDR3 loop sits at the join, so it receives the most randomness and usually contacts antigen most directly.</div>
+      </div>
+      <h3>When are receptors made?</h3>
+      <table>
+        <thead><tr><th>Cell stage</th><th>Main machinery</th><th>What changes</th></tr></thead>
+        <tbody>
+          <tr><td>Developing B cell in bone marrow</td><td>RAG1/RAG2</td><td>Immunoglobulin heavy chain rearranges first, then light chain; a working BCR is displayed</td></tr>
+          <tr><td>Self-reactive immature B cell</td><td>RAG can be re-induced</td><td>Light-chain receptor editing can try to escape self-reactivity</td></tr>
+          <tr><td>Mature naive B cell</td><td>RAG off</td><td>BCR is mostly fixed while the cell circulates and waits for antigen</td></tr>
+          <tr><td>Activated germinal-center B cell</td><td>AID, not RAG</td><td>Somatic hypermutation tweaks the selected BCR; class switching changes Fc class</td></tr>
+          <tr><td>Developing T cell in thymus</td><td>RAG1/RAG2</td><td>TCR beta rearranges first, then TCR alpha; thymic selection tests the result</td></tr>
+          <tr><td>Mature T cell</td><td>RAG off; no normal somatic hypermutation</td><td>TCR is fixed so a useful, self-screened specificity is not randomly changed later</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">3</span>RAG cutting and the 12/23 rule</div>
+      <p>The cell does not cut anywhere it wants. Each gene segment is flanked by a <strong>recombination signal sequence (RSS)</strong>. The <strong>RAG1/RAG2 recombinase</strong> recognizes paired RSSs and makes a double-strand break. The <strong>12/23 rule</strong> says RAG normally joins one RSS with a 12-base-pair spacer to one RSS with a 23-base-pair spacer, keeping the order biologically sensible.</p>
+      <div class="flow">
+        <div class="flow-step" style="--c:var(--bcell)"><div class="step-n">1</div><div class="step-t">Choose compatible segments</div><div class="step-d">RAG pairs RSSs that satisfy the 12/23 rule.</div></div>
+        <div class="flow-step" style="--c:var(--innate)"><div class="step-n">2</div><div class="step-t">Cut DNA</div><div class="step-d">RAG makes hairpin coding ends and blunt signal ends.</div></div>
+        <div class="flow-step" style="--c:var(--nk)"><div class="step-n">3</div><div class="step-t">Open and modify ends</div><div class="step-d">Artemis, exonucleases, and TdT create junctional diversity.</div></div>
+        <div class="flow-step" style="--c:var(--tcell)"><div class="step-n">4</div><div class="step-t">Repair join</div><div class="step-d">NHEJ machinery seals the coding joint.</div></div>
+      </div>
+      <table>
+        <thead><tr><th>Part</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td>RAG1/RAG2</td><td>Recognizes RSSs and cuts DNA at receptor gene segments</td></tr>
+          <tr><td>RSS</td><td>Barcode-like recombination signal sequence beside each segment</td></tr>
+          <tr><td>12/23 rule</td><td>Prevents many wrong joins by requiring unlike RSS spacers to pair</td></tr>
+          <tr><td>Artemis</td><td>Opens DNA hairpin coding ends</td></tr>
+          <tr><td>TdT</td><td>Adds random N-nucleotides at the join</td></tr>
+          <tr><td>NHEJ</td><td>DNA repair pathway that seals the coding joint</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">4</span>Junctional diversity: where most randomness enters</div>
+      <p>After RAG cuts, the coding ends are not joined perfectly. Hairpin opening can add short palindromic bases, exonucleases trim bases away, and <strong>TdT</strong> adds random, template-independent bases. This is why two lymphocytes that picked the same V, D, and J segments can still have different receptors.</p>
+      <div class="draw-figure">
+        <div class="draw-title">The CDR3 join is deliberately messy</div>
+        <div class="draw-row">
+          <span class="draw-node bcell">segment end</span>
+          <span class="draw-arrow">+</span>
+          <span class="draw-node innate">P bases</span>
+          <span class="draw-arrow">+</span>
+          <span class="draw-node nk">N bases by TdT</span>
+          <span class="draw-arrow">−</span>
+          <span class="draw-node warn">trimmed bases</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">unique CDR3</span>
+        </div>
+        <div class="draw-caption">The CDR3 loop sits at this join and often contacts antigen directly. The cost is waste: many joins are out of frame, so those cells die.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">5</span>Quality control</div>
+      <p>Random receptor generation is powerful and dangerous, so lymphocytes are screened before they mature.</p>
+      <table>
+        <thead><tr><th>Checkpoint</th><th>B cell version</th><th>T cell version</th></tr></thead>
+        <tbody>
+          <tr><td>Productive rearrangement</td><td>Heavy chain must work, then light chain must work</td><td>Beta chain must work, then alpha chain must work</td></tr>
+          <tr><td>Allelic exclusion</td><td>A successful heavy-chain rearrangement shuts down the other heavy-chain allele</td><td>A successful beta-chain rearrangement limits further beta rearrangement</td></tr>
+          <tr><td>Self-reactivity control</td><td>Deletion, anergy, or receptor editing</td><td>Positive and negative thymic selection</td></tr>
+          <tr><td>Final output</td><td>One dominant BCR specificity</td><td>One dominant TCR specificity</td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">
+        <strong>Receptor editing is a B-cell rescue route.</strong> A self-reactive immature B cell can try another light-chain rearrangement to change its specificity before it is deleted.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">6</span>Germinal centers are the second stage</div>
+      <p>V(D)J recombination and germinal centers are often confused because both alter antibody genes. They are different stages.</p>
+      <table>
+        <thead><tr><th>Feature</th><th>V(D)J recombination</th><th>Germinal-center reaction</th></tr></thead>
+        <tbody>
+          <tr><td>Timing</td><td>Before antigen exposure</td><td>After antigen selects a B cell</td></tr>
+          <tr><td>Location</td><td>Bone marrow for B cells; thymus for T cells</td><td>Lymph node, spleen, tonsil, other lymphoid tissue</td></tr>
+          <tr><td>Main enzyme</td><td>RAG1/RAG2</td><td>AID</td></tr>
+          <tr><td>What changes</td><td>Builds the initial receptor variable region</td><td>Mutates the selected BCR and changes antibody class</td></tr>
+          <tr><td>Applies to</td><td>B cells and T cells</td><td>B cells only</td></tr>
+        </tbody>
+      </table>
+      <div class="alert key">
+        V(D)J makes the first lottery ticket. Germinal centers improve the winning ticket after antigen selects it.
+      </div>
+      <div class="alert warn">
+        <strong>Germinal centers cannot improve a non-starter.</strong> They can improve a weak or moderate starting BCR match by mutation and selection, but a B cell must first capture antigen and present peptide-MHC II to Tfh cells. No capture means no germinal-center entry.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">7</span>The germinal-center cycle</div>
+      <p>A <strong>germinal center (GC)</strong> is a temporary structure inside a B-cell follicle. It separates mutation and selection into two zones.</p>
+      <div class="figure">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Germinal_center.svg" alt="Diagram of germinal-center organization including dark zone, light zone, follicular dendritic cells, and B-cell selection" loading="lazy">
+        <figcaption>Germinal-center organization: dark-zone proliferation and light-zone selection. Source: <a href="https://commons.wikimedia.org/wiki/File:Germinal_center.svg">Wikimedia Commons</a>, Billy10drs, multi-license including GFDL.</figcaption>
+      </div>
+      <div class="draw-figure">
+        <div class="draw-title">Dark zone mutates; light zone selects</div>
+        <div class="draw-grid">
+          <div class="draw-panel bcell">
+            <h4>Dark zone</h4>
+            <p>Centroblasts divide rapidly. AID drives somatic hypermutation in variable-region genes.</p>
+          </div>
+          <div class="draw-panel macro">
+            <h4>Light zone</h4>
+            <p>Centrocytes test their new BCRs by capturing antigen from follicular dendritic cells.</p>
+          </div>
+          <div class="draw-panel tcell">
+            <h4>Tfh selection</h4>
+            <p>Better binders present more peptide-MHC II and win CD40L plus IL-21 survival help.</p>
+          </div>
+        </div>
+        <div class="draw-row">
+          <span class="draw-node bcell">mutate</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node macro">compete</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">win help</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node safe">recycle<br>or exit</span>
+        </div>
+        <div class="draw-caption">Poor binders fail to capture enough antigen, receive little Tfh help, and die by apoptosis. Winners either recycle for another mutation round or leave as plasma cells and memory B cells.</div>
+      </div>
+      <table>
+        <thead><tr><th>AID-dependent process</th><th>DNA target</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Somatic hypermutation</td><td>Variable-region exon</td><td>Point mutations that change affinity</td></tr>
+          <tr><td>Class-switch recombination</td><td>Heavy-chain switch regions</td><td>New Fc class, same antigen specificity</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="count">8</span>Why it matters</div>
+      <p>V(D)J recombination explains how the immune system prepares for antigens it has never seen. Germinal centers explain how a selected B-cell clone improves after seeing antigen. Together they produce the central adaptive-immunity pattern:</p>
+      <div class="draw-figure">
+        <div class="draw-row">
+          <span class="draw-node bcell">random receptor<br>generation</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node innate">antigen selects<br>rare clone</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node tcell">clonal expansion</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node macro">GC improvement</span>
+          <span class="draw-arrow">→</span>
+          <span class="draw-node safe">high-affinity antibody<br>and memory</span>
+        </div>
+        <div class="draw-caption">This is controlled genomic instability: RAG and AID deliberately damage lymphocyte DNA, but only in the right cells and under strong selection. When control fails, the same machinery can contribute to immunodeficiency, autoimmunity, or B-cell lymphoma.</div>
+      </div>
+      <p>In practical terms, V(D)J prepares the immune system the way a very large search index prepares for future queries. It does not contain every exact answer, but it contains enough diverse entries and near-matches that many new antigens find a useful starting clone. Antigen selects that clone; germinal centers refine selected B-cell matches; memory keeps the improved answer for next time. Deviant antigens still exist, which is why immune escape, poor vaccine responses, immune deficiency, and delayed primary responses are possible.</p>
+    </div>
+
+    <div class="alert key">
+      <span class="alert-head">Summary</span>
+      V(D)J recombination builds the initial BCR and TCR repertoire by cutting and joining V, D, and J gene fragments with RAG1/RAG2, then adding major diversity at the junction through trimming, P-nucleotides, TdT-driven N-nucleotides, and NHEJ repair. It happens before antigen exposure. The germinal-center reaction happens after antigen selects a B cell: AID drives somatic hypermutation in the dark zone and selection in the light zone, while class-switch recombination changes Fc function without changing antigen specificity.
+    </div>
+
+    <div class="chap-nav">
+      <a href="11-system-synthesis.html">← 11 · System Synthesis</a>
+      <a href="../12-vdj-recombination-germinal-centers.md">Markdown source</a>
+      <a href="sources.html">Sources &amp; Figures →</a>
+    </div>
+
+    <footer>
+      <p>🧬 V(D)J &amp; Germinal Centers · Chapter 12 · <a href="index.html">Report home</a> · <a href="sources.html">Sources</a></p>
+    </footer>
+  </main>
+
+  <script src="assets/anim.js"></script>
+  <script src="assets/nav.js"></script>
+</body>
+</html>
