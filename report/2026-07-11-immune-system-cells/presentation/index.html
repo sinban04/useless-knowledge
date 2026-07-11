@@ -1,0 +1,1171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Immune System Cells - Presentation</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --paper: #f8fafc;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #d7dee8;
+      --blue: #2563eb;
+      --green: #059669;
+      --amber: #d97706;
+      --red: #dc2626;
+      --violet: #7c3aed;
+      --teal: #0f766e;
+      --pink: #be185d;
+      --dark: #172033;
+      --shadow: 0 22px 70px rgba(15, 23, 42, 0.22);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(37, 99, 235, 0.20), transparent 32rem),
+        radial-gradient(circle at 80% 70%, rgba(5, 150, 105, 0.18), transparent 30rem),
+        var(--bg);
+      color: var(--paper);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+
+    a { color: inherit; }
+
+    .deck {
+      height: 100vh;
+      width: 100vw;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+    }
+
+    .slide {
+      display: none;
+      width: min(1280px, calc(100vw - 56px));
+      height: min(720px, calc(100vh - 96px));
+      background: var(--paper);
+      color: var(--ink);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slide.active { display: grid; }
+
+    .slide-inner {
+      padding: 40px 48px 34px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 22px;
+      min-height: 100%;
+    }
+
+    .slide-title {
+      margin: 0;
+      font-size: 42px;
+      line-height: 1.02;
+      letter-spacing: 0;
+      max-width: 1040px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent, var(--blue));
+    }
+
+    .lead {
+      font-size: 24px;
+      line-height: 1.35;
+      color: #334155;
+      max-width: 900px;
+      margin: 0;
+    }
+
+    .body {
+      display: grid;
+      gap: 22px;
+      align-content: start;
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .three {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .four {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      background: #fff;
+      min-height: 0;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      line-height: 1.1;
+    }
+
+    .card p, .card li {
+      color: #475569;
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .card p { margin: 0; }
+    .card ul { margin: 8px 0 0 18px; padding: 0; }
+    .card li + li { margin-top: 6px; }
+
+    .accent-blue { --accent: var(--blue); border-top: 5px solid var(--blue); }
+    .accent-green { --accent: var(--green); border-top: 5px solid var(--green); }
+    .accent-amber { --accent: var(--amber); border-top: 5px solid var(--amber); }
+    .accent-red { --accent: var(--red); border-top: 5px solid var(--red); }
+    .accent-violet { --accent: var(--violet); border-top: 5px solid var(--violet); }
+    .accent-teal { --accent: var(--teal); border-top: 5px solid var(--teal); }
+    .accent-pink { --accent: var(--pink); border-top: 5px solid var(--pink); }
+
+    .dark-slide {
+      background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(17, 24, 39, 0.82)),
+        #111827;
+      color: var(--paper);
+    }
+
+    .dark-slide .slide-title,
+    .dark-slide .lead,
+    .dark-slide .eyebrow { color: var(--paper); }
+
+    .dark-slide .lead { color: #dbe4ef; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 32px;
+      align-items: center;
+      height: 100%;
+    }
+
+    .hero-image {
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 16px;
+      padding: 18px;
+      min-height: 420px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .hero-image img, .figure img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .hero-note {
+      display: grid;
+      gap: 18px;
+      align-content: center;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #e5eef9;
+      font-weight: 800;
+      font-size: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .stage {
+      position: relative;
+      padding: 16px;
+      min-height: 118px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      display: grid;
+      align-content: start;
+      gap: 8px;
+    }
+
+    .stage .n {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--accent, var(--blue));
+      color: white;
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .stage strong {
+      display: block;
+      font-size: 19px;
+      line-height: 1.12;
+    }
+
+    .stage span {
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .map-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1.1fr 1.1fr 1.1fr 1.1fr;
+      gap: 12px;
+    }
+
+    .route {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 14px;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 8px;
+      min-height: 255px;
+    }
+
+    .route h3 {
+      margin: 0;
+      color: var(--accent);
+      font-size: 20px;
+      line-height: 1.1;
+    }
+
+    .route .q {
+      color: #475569;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .route p {
+      margin: 0;
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .figure {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 14px;
+      display: grid;
+      place-items: center;
+      min-height: 280px;
+      overflow: hidden;
+    }
+
+    .figure.small { min-height: 210px; }
+
+    .caption {
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.25;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .compare > div {
+      padding: 20px;
+      min-height: 260px;
+    }
+
+    .compare > div + div { border-left: 1px solid var(--line); }
+
+    .compare h3 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      color: var(--accent);
+    }
+
+    .compare ul { margin: 0; padding-left: 20px; }
+    .compare li { color: #475569; font-size: 18px; line-height: 1.38; margin: 7px 0; }
+
+    .diagram {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 18px;
+    }
+
+    .flow {
+      display: grid;
+      gap: 10px;
+    }
+
+    .flow-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .flow-row .label {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 900;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .flow-row .desc {
+      color: #475569;
+      font-size: 17px;
+      line-height: 1.35;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      background: #f8fafc;
+    }
+
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      font-size: 16px;
+    }
+
+    .mini-table th,
+    .mini-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 14px;
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.28;
+    }
+
+    .mini-table th {
+      background: #e9eef6;
+      color: #1e293b;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .mini-table tr:last-child td { border-bottom: 0; }
+
+    .callout {
+      border-left: 7px solid var(--accent, var(--blue));
+      background: #eef6ff;
+      color: #334155;
+      padding: 16px 18px;
+      border-radius: 10px;
+      font-size: 20px;
+      line-height: 1.35;
+    }
+
+    .signal {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      align-items: center;
+    }
+
+    .signal .box {
+      min-height: 100px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      padding: 14px;
+      display: grid;
+      align-content: center;
+      text-align: center;
+      gap: 6px;
+    }
+
+    .signal strong { color: var(--accent); font-size: 18px; line-height: 1.1; }
+    .signal span { color: #64748b; font-size: 13px; line-height: 1.2; }
+
+    .memory-map {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .memory {
+      min-height: 250px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 18px;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 10px;
+    }
+
+    .memory .type {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .memory h3 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.1;
+    }
+
+    .memory p {
+      margin: 0;
+      color: #475569;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .scenario {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 20px;
+      min-height: 360px;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 14px;
+    }
+
+    .scenario h3 {
+      margin: 0;
+      font-size: 24px;
+      color: var(--accent);
+    }
+
+    .scenario .route-text {
+      font-weight: 900;
+      color: #1e293b;
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .scenario ol {
+      margin: 0;
+      padding-left: 21px;
+      color: #475569;
+      font-size: 16px;
+      line-height: 1.33;
+    }
+
+    .scenario li + li { margin-top: 8px; }
+
+    .footer {
+      position: absolute;
+      left: 48px;
+      right: 48px;
+      bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #94a3b8;
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    .controls {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.86);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 8px 10px;
+      border-radius: 999px;
+      backdrop-filter: blur(12px);
+      z-index: 20;
+    }
+
+    .controls button {
+      border: 0;
+      color: #e5e7eb;
+      background: rgba(255, 255, 255, 0.11);
+      border-radius: 999px;
+      min-width: 76px;
+      min-height: 34px;
+      padding: 0 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .controls button:hover { background: rgba(255, 255, 255, 0.18); }
+
+    .counter {
+      color: #dbe4ef;
+      font-weight: 900;
+      min-width: 86px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .progress {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.12);
+      z-index: 30;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--green), var(--blue), var(--violet));
+      transition: width 160ms ease;
+    }
+
+    .notes {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      body { overflow: auto; }
+      .deck { height: auto; min-height: 100vh; padding: 14px; }
+      .slide {
+        width: 100%;
+        height: auto;
+        min-height: calc(100vh - 84px);
+        overflow: visible;
+      }
+      .slide-inner { padding: 26px 24px 52px; }
+      .slide-title { font-size: 32px; }
+      .lead { font-size: 20px; }
+      .hero-grid, .two, .three, .four, .pipeline, .map-grid, .memory-map, .scenario-grid, .signal {
+        grid-template-columns: 1fr;
+      }
+      .hero-image { min-height: 260px; }
+      .footer { left: 24px; right: 24px; bottom: 12px; }
+      .controls { bottom: 8px; }
+    }
+
+    @media print {
+      body { background: #fff; overflow: visible; }
+      .deck { display: block; height: auto; padding: 0; }
+      .slide {
+        display: grid !important;
+        width: 100vw;
+        height: 100vh;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        page-break-after: always;
+      }
+      .controls, .progress { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <main class="deck" id="deck">
+    <section class="slide dark-slide active" data-title="Title">
+      <div class="slide-inner">
+        <div class="hero-grid">
+          <div class="hero-note">
+            <div>
+              <div class="eyebrow">Immune system cells</div>
+              <h1 class="slide-title">The immune system is a staged decision system</h1>
+            </div>
+            <p class="lead">Macrophages, B cells, T cells, and NK cells make sense when you place each one on the path from danger detection to memory.</p>
+            <div class="pill-row">
+              <span class="pill">25-35 minute teaching deck</span>
+              <span class="pill">Based on the 2026-04-30 report</span>
+              <span class="pill">Use arrows to navigate</span>
+            </div>
+          </div>
+          <figure class="hero-image">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Layered_Defense_of_the_Human_Immune_System.svg" alt="Layered defense of the human immune system">
+          </figure>
+        </div>
+      </div>
+      <aside class="notes">Open with the classification problem: detect danger, kill selectively, avoid self-damage, and remember.</aside>
+    </section>
+
+    <section class="slide" data-title="Algorithm" style="--accent: var(--green)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Core frame</div>
+          <h2 class="slide-title">One threat passes through staged gates</h2>
+        </header>
+        <div class="body">
+          <p class="lead">The useful memory hook is a rail, not a vocabulary list.</p>
+          <div class="pipeline">
+            <div class="stage accent-green"><div class="n">1</div><strong>Keep out</strong><span>barrier, mucus, acid, IgA</span></div>
+            <div class="stage accent-amber"><div class="n">2</div><strong>Detect</strong><span>PRRs, complement, DAMPs</span></div>
+            <div class="stage accent-blue"><div class="n">3</div><strong>Tag</strong><span>C3b, antibody Fc, opsonins</span></div>
+            <div class="stage accent-red"><div class="n">4</div><strong>Eat / kill</strong><span>phagocytosis, NK, CD8</span></div>
+            <div class="stage accent-violet"><div class="n">5</div><strong>Display</strong><span>MHC I and MHC II evidence</span></div>
+            <div class="stage accent-blue"><div class="n">6</div><strong>Decide</strong><span>T-cell costimulation and cytokines</span></div>
+            <div class="stage accent-green"><div class="n">7</div><strong>Clone</strong><span>rare matching B/T cells expand</span></div>
+            <div class="stage accent-pink"><div class="n">8</div><strong>Coat</strong><span>plasma cells secrete antibody</span></div>
+            <div class="stage accent-teal"><div class="n">9</div><strong>Calm</strong><span>Tregs, checkpoints, contraction</span></div>
+            <div class="stage accent-violet"><div class="n">10</div><strong>Remember</strong><span>plasma cells, memory B/T cells</span></div>
+          </div>
+          <div class="callout accent-green">Every immune term becomes easier when you ask: where does it sit on this rail?</div>
+        </div>
+      </div>
+      <div class="footer"><span>Immune System Cells</span><span>Algorithm</span></div>
+    </section>
+
+    <section class="slide" data-title="Two clocks" style="--accent: var(--blue)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Speed versus specificity</div>
+          <h2 class="slide-title">Two clocks explain most immune-response confusion</h2>
+        </header>
+        <div class="body">
+          <div class="compare">
+            <div style="--accent: var(--amber)">
+              <h3>Innate clock: minutes to hours</h3>
+              <ul>
+                <li>Receptors are germline-encoded and pre-built.</li>
+                <li>PRRs, complement, macrophages, neutrophils, and NK cells act before clonal expansion.</li>
+                <li>Output: containment, inflammation, interferon, early killing.</li>
+              </ul>
+            </div>
+            <div style="--accent: var(--violet)">
+              <h3>Adaptive clock: days on first exposure</h3>
+              <ul>
+                <li>BCR and TCR specificities are generated by V(D)J recombination.</li>
+                <li>The rare matching clone must be found, licensed, and expanded.</li>
+                <li>Output: antibody, CD4 help, CD8 killing, durable memory.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout accent-blue">Fast sensors tell the slow clonal system which match is worth expanding.</div>
+        </div>
+      </div>
+      <div class="footer"><span>Innate is fixed and fast</span><span>Adaptive is selected and precise</span></div>
+    </section>
+
+    <section class="slide" data-title="Compartments" style="--accent: var(--teal)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Routing rule</div>
+          <h2 class="slide-title">Location decides the weapon</h2>
+        </header>
+        <div class="body">
+          <div class="map-grid">
+            <div class="route" style="--accent: var(--blue)"><h3>Extracellular</h3><div class="q">Free microbes or toxins</div><p>Antibody and complement neutralize, coat, and hand targets to phagocytes.</p></div>
+            <div class="route" style="--accent: var(--green)"><h3>Vesicular</h3><div class="q">Microbes inside phagosomes</div><p>MHC II shows eaten material to CD4 TH1 cells, which activate macrophages.</p></div>
+            <div class="route" style="--accent: var(--red)"><h3>Cytosolic</h3><div class="q">Virus inside host machinery</div><p>MHC I displays intracellular peptides to CD8 T cells for focused killing.</p></div>
+            <div class="route" style="--accent: var(--violet)"><h3>MHC-low</h3><div class="q">Escape from CD8 inspection</div><p>NK cells detect missing self and stress ligands without clonal expansion.</p></div>
+            <div class="route" style="--accent: var(--amber)"><h3>Sterile damage</h3><div class="q">Broken tissue, no microbe</div><p>DAMPs trigger macrophages, inflammasome signals, recruitment, and repair.</p></div>
+          </div>
+          <div class="callout accent-teal">Antibody cannot inspect the cytosol. CD8 cannot see free toxin. NK cells do not usually kill loose antigen. Compartment matters.</div>
+        </div>
+      </div>
+      <div class="footer"><span>Compartment map</span><span>Choose the right tool</span></div>
+    </section>
+
+    <section class="slide" data-title="Innate sensing" style="--accent: var(--amber)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Permission layer</div>
+          <h2 class="slide-title">Innate sensing decides whether specificity is safe to expand</h2>
+        </header>
+        <div class="body two">
+          <figure class="figure">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Toll-like_receptor_pathways.svg" alt="Toll-like receptor signaling pathways">
+            <figcaption class="caption">TLR pathways convert microbial patterns into inflammatory and antiviral transcription programs. Source: Wikimedia Commons.</figcaption>
+          </figure>
+          <div class="three" style="grid-template-columns: 1fr;">
+            <div class="card accent-amber"><h3>Pattern-recognition receptors</h3><p>TLRs, NLRs, RIG-I/MDA5, and cGAS-STING read conserved microbial or misplaced-self signals.</p></div>
+            <div class="card accent-green"><h3>Complement</h3><p>Soluble plasma proteins test surfaces and deposit sticky opsonin on targets that lack host protection.</p></div>
+            <div class="card accent-blue"><h3>Interferon</h3><p>Viral nucleic-acid sensors induce type I interferon, warning nearby cells and priming NK and CD8 responses.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>Innate is not random</span><span>It reads defined danger patterns</span></div>
+    </section>
+
+    <section class="slide" data-title="Complement" style="--accent: var(--green)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Soluble recognition</div>
+          <h2 class="slide-title">Complement is a surface test built around C3</h2>
+        </header>
+        <div class="body two">
+          <div class="diagram">
+            <div class="flow">
+              <div class="flow-row" style="--accent: var(--amber)"><div class="label">3 paths</div><div class="desc">Classical, lectin, and alternative pathways ask: is this surface suspicious?</div></div>
+              <div class="flow-row" style="--accent: var(--blue)"><div class="label">C3 convertase</div><div class="desc">An enzyme complex that cuts C3 into C3a and C3b.</div></div>
+              <div class="flow-row" style="--accent: var(--green)"><div class="label">C3b coat</div><div class="desc">Sticky opsonin attaches to the target and gives phagocytes a handle.</div></div>
+              <div class="flow-row" style="--accent: var(--red)"><div class="label">C5-C9</div><div class="desc">Escalation builds a membrane-attack complex pore on vulnerable microbes.</div></div>
+            </div>
+          </div>
+          <figure class="figure">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Complement_pathway.svg" alt="Complement pathway diagram">
+            <figcaption class="caption">Three pathways converge on C3 cleavage, then C5 cleavage and MAC formation. Source: Wikimedia Commons.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="footer"><span>C3 is the hub</span><span>C3 convertase is the cutter</span></div>
+    </section>
+
+    <section class="slide" data-title="Phagocytes" style="--accent: var(--red)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Early cleanup crew</div>
+          <h2 class="slide-title">Macrophages interpret tissue context; neutrophils arrive as short-lived attackers</h2>
+        </header>
+        <div class="body two">
+          <div class="card accent-green">
+            <h3>Macrophage</h3>
+            <ul>
+              <li>Resident sentinel in tissue.</li>
+              <li>Reads PRRs, Fc tags, complement tags, and damage signals.</li>
+              <li>Eats, releases cytokines, recruits help, resolves debris.</li>
+            </ul>
+            <figure class="figure small"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Macrophage.svg" alt="Macrophage illustration"></figure>
+          </div>
+          <div class="card accent-red">
+            <h3>Neutrophil</h3>
+            <ul>
+              <li>Bone-marrow-derived myeloid granulocyte.</li>
+              <li>Follows CXCL8, C5a, and bacterial gradients from blood into tissue.</li>
+              <li>Phagocytosis, respiratory burst, granules, and NETs.</li>
+            </ul>
+            <figure class="figure small"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Neutrophil.svg" alt="Neutrophil illustration"></figure>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>Both are phagocyte logic</span><span>Different timing and temperament</span></div>
+    </section>
+
+    <section class="slide" data-title="Dendritic cells" style="--accent: var(--violet)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Bridge to adaptive immunity</div>
+          <h2 class="slide-title">Dendritic cells turn local tissue trouble into lymph-node evidence</h2>
+        </header>
+        <div class="body two">
+          <figure class="figure">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Antigen_presentation_by_dendritic_cell.jpg" alt="Dendritic cell antigen presentation">
+            <figcaption class="caption">A dendritic cell captures antigen and presents peptide evidence to T cells. Source: Wikimedia Commons.</figcaption>
+          </figure>
+          <div class="diagram">
+            <div class="flow">
+              <div class="flow-row" style="--accent: var(--green)"><div class="label">Tissue</div><div class="desc">Capture antigen plus danger context through PRRs, phagocytosis, and macropinocytosis.</div></div>
+              <div class="flow-row" style="--accent: var(--amber)"><div class="label">Migrate</div><div class="desc">CCR7 directs movement to the draining lymph node.</div></div>
+              <div class="flow-row" style="--accent: var(--blue)"><div class="label">Present</div><div class="desc">Peptide-MHC plus B7 costimulation tests rare naive T cells.</div></div>
+              <div class="flow-row" style="--accent: var(--violet)"><div class="label">Program</div><div class="desc">Cytokines tell the selected clone what kind of response to become.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>APC as courier</span><span>Local event becomes searchable evidence</span></div>
+    </section>
+
+    <section class="slide" data-title="MHC" style="--accent: var(--blue)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Peptide display</div>
+          <h2 class="slide-title">MHC I and MHC II sample different compartments</h2>
+        </header>
+        <div class="body two">
+          <figure class="figure">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/MHC_Endogenous_and_Exogenous_Pathways.png" alt="MHC endogenous and exogenous pathways">
+            <figcaption class="caption">Endogenous MHC I and exogenous MHC II antigen-presentation routes. Source: Wikimedia Commons.</figcaption>
+          </figure>
+          <table class="mini-table">
+            <thead><tr><th>Route</th><th>Samples</th><th>Reader</th><th>Main decision</th></tr></thead>
+            <tbody>
+              <tr><td><strong>MHC I</strong></td><td>Cytosolic proteins, proteasome, TAP, ER loading</td><td>CD8 T cell</td><td>Is this host cell making dangerous protein?</td></tr>
+              <tr><td><strong>MHC II</strong></td><td>Engulfed proteins, endosome/lysosome, HLA-DM exchange</td><td>CD4 T cell</td><td>What helper program should coordinate the response?</td></tr>
+              <tr><td><strong>Cross-presentation</strong></td><td>Engulfed material routed onto MHC I by dendritic cells</td><td>CD8 T cell</td><td>Prime cytotoxicity even if the APC was not infected.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="footer"><span>MHC I: inside cell</span><span>MHC II: what APC ate</span></div>
+    </section>
+
+    <section class="slide" data-title="TCR signal" style="--accent: var(--violet)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">From bond to signal</div>
+          <h2 class="slide-title">A weak TCR touch becomes an intracellular signal</h2>
+        </header>
+        <div class="body">
+          <div class="signal">
+            <div class="box" style="--accent: var(--blue)"><strong>pMHC</strong><span>peptide plus MHC frame</span></div>
+            <div class="box" style="--accent: var(--green)"><strong>TCR</strong><span>recognition head</span></div>
+            <div class="box" style="--accent: var(--amber)"><strong>CD4/CD8</strong><span>coreceptor binds MHC class</span></div>
+            <div class="box" style="--accent: var(--red)"><strong>Lck</strong><span>kinase brought by coreceptor</span></div>
+            <div class="box" style="--accent: var(--violet)"><strong>CD3 ITAMs</strong><span>phosphorylated signal module</span></div>
+            <div class="box" style="--accent: var(--teal)"><strong>ZAP-70/LAT</strong><span>signalosome and gene program</span></div>
+          </div>
+          <div class="callout accent-violet">The peptide is not handed to CD3. TCR binds outside; CD3 and coreceptor machinery convert that binding event into phosphorylation inside.</div>
+          <div class="two">
+            <div class="card accent-blue"><h3>Why weak binding helps</h3><p>Fast scanning, serial engagement, and kinetic proofreading. Bonds must last long enough to finish the phosphorylation timer.</p></div>
+            <div class="card accent-red"><h3>Why context still matters</h3><p>A strong pMHC match is only signal 1 for a naive T cell. Costimulation and cytokines decide expansion and fate.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>TCR recognizes</span><span>CD3 signals</span></div>
+    </section>
+
+    <section class="slide" data-title="V(D)J" style="--accent: var(--green)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Prepared before exposure</div>
+          <h2 class="slide-title">B and T receptors are prepared statistically, not custom-built after infection</h2>
+        </header>
+        <div class="body two">
+          <figure class="figure">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/V%28D%29J_recombination-diagram.svg" alt="V(D)J recombination diagram">
+            <figcaption class="caption">V(D)J recombination creates diverse receptor genes before antigen exposure. Source: Wikimedia Commons.</figcaption>
+          </figure>
+          <div class="diagram">
+            <div class="flow">
+              <div class="flow-row" style="--accent: var(--blue)"><div class="label">Before antigen</div><div class="desc">RAG1/2 cuts and rejoins V, D, and J gene segments during B- and T-cell development.</div></div>
+              <div class="flow-row" style="--accent: var(--green)"><div class="label">Diversity</div><div class="desc">Combinatorial choice, junctional diversity, TdT additions, and chain pairing build a huge repertoire.</div></div>
+              <div class="flow-row" style="--accent: var(--amber)"><div class="label">Selection</div><div class="desc">Antigen selects an existing clone; it does not design the first receptor from scratch.</div></div>
+              <div class="flow-row" style="--accent: var(--red)"><div class="label">Failure case</div><div class="desc">If no clone binds well enough, the first response may be weak. Diversity is statistical coverage, not a guarantee.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>RAG creates initial diversity</span><span>Before the infection</span></div>
+    </section>
+
+    <section class="slide" data-title="Germinal center" style="--accent: var(--pink)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Improving the selected clone</div>
+          <h2 class="slide-title">Germinal centers refine B cells after activation</h2>
+        </header>
+        <div class="body two">
+          <div class="diagram">
+            <div class="flow">
+              <div class="flow-row" style="--accent: var(--green)"><div class="label">Start</div><div class="desc">BCR binds antigen; B cell presents peptide on MHC II and gets Tfh help.</div></div>
+              <div class="flow-row" style="--accent: var(--violet)"><div class="label">Dark zone</div><div class="desc">AID drives somatic hypermutation while selected B cells proliferate.</div></div>
+              <div class="flow-row" style="--accent: var(--amber)"><div class="label">Light zone</div><div class="desc">Cells compete for antigen and Tfh help. Better binders survive.</div></div>
+              <div class="flow-row" style="--accent: var(--pink)"><div class="label">Output</div><div class="desc">Memory B cells and plasma cells; class switching changes Fc function, not specificity.</div></div>
+            </div>
+          </div>
+          <figure class="figure">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Germinal_center.svg" alt="Germinal center diagram">
+            <figcaption class="caption">Germinal-center dark-zone and light-zone selection. Source: Wikimedia Commons.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="footer"><span>RAG before antigen</span><span>AID in germinal centers</span></div>
+    </section>
+
+    <section class="slide" data-title="Antibody effectors" style="--accent: var(--blue)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Fab and Fc split recognition from action</div>
+          <h2 class="slide-title">Antibody is a tag that chooses partners</h2>
+        </header>
+        <div class="body">
+          <table class="mini-table">
+            <thead><tr><th>What antibody coats</th><th>Main partner</th><th>Typical result</th></tr></thead>
+            <tbody>
+              <tr><td>Free virus or toxin</td><td>Antibody itself</td><td>Neutralization blocks entry or active site.</td></tr>
+              <tr><td>Bacterium or fungal particle</td><td>Neutrophil, macrophage, complement</td><td>Opsonization and phagocytosis; complement inflammation.</td></tr>
+              <tr><td>Infected host cell with surface viral protein</td><td>NK cell via CD16</td><td>ADCC: focused perforin/granzyme killing.</td></tr>
+              <tr><td>Tumor cell coated by therapeutic IgG</td><td>NK cell, macrophage, complement</td><td>ADCC or antibody-dependent phagocytosis, depending on antibody and tissue.</td></tr>
+            </tbody>
+          </table>
+          <div class="callout accent-blue">Fab decides what to bind. Fc decides which effector system can grip the tag.</div>
+        </div>
+      </div>
+      <div class="footer"><span>Antibody is recognition plus instructions</span><span>Target surface controls the partner</span></div>
+    </section>
+
+    <section class="slide" data-title="NK vs CD8" style="--accent: var(--red)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Complementary lymphocyte killers</div>
+          <h2 class="slide-title">NK and CD8 T cells close each other's blind spots</h2>
+        </header>
+        <div class="body two">
+          <div class="card accent-blue">
+            <h3>CD8 T cell</h3>
+            <ul>
+              <li>Adaptive T lymphocyte with rearranged TCR.</li>
+              <li>Reads specific peptide on MHC I.</li>
+              <li>Powerful after clonal expansion and memory formation.</li>
+              <li>Problem: loses the target when MHC I is downregulated.</li>
+            </ul>
+          </div>
+          <div class="card accent-red">
+            <h3>NK cell</h3>
+            <ul>
+              <li>Innate lymphocyte with germline-encoded receptor sets.</li>
+              <li>Reads missing self, stress ligands, and antibody Fc.</li>
+              <li>Fast early response without antigen-specific expansion.</li>
+              <li>Advantage: punishes the MHC-loss escape route.</li>
+            </ul>
+          </div>
+          <div class="diagram" style="grid-column: 1 / -1;">
+            <div class="flow">
+              <div class="flow-row" style="--accent: var(--blue)"><div class="label">MHC I present</div><div class="desc">CD8 can inspect peptide-MHC I. If the peptide matches, CTL killing is precise.</div></div>
+              <div class="flow-row" style="--accent: var(--red)"><div class="label">MHC I missing</div><div class="desc">CD8 loses the display, but NK inhibitory signaling drops. Stress plus missing self can trigger NK killing.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>Keep MHC I: CD8 sees peptide</span><span>Lose MHC I: NK sees missing self</span></div>
+    </section>
+
+    <section class="slide" data-title="Memory" style="--accent: var(--teal)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Long-term response</div>
+          <h2 class="slide-title">Memory is stored in several formats</h2>
+        </header>
+        <div class="body">
+          <div class="memory-map">
+            <div class="memory" style="--accent: var(--blue)"><div class="type">B-cell memory</div><h3>Memory B cell</h3><p>Resting clone that can re-enter response and germinal-center-like improvement after re-exposure.</p></div>
+            <div class="memory" style="--accent: var(--pink)"><div class="type">Antibody floor</div><h3>Long-lived plasma cell</h3><p>Bone-marrow resident factory that secretes antibody without re-seeing antigen.</p></div>
+            <div class="memory" style="--accent: var(--violet)"><div class="type">T-cell memory</div><h3>Central / effector memory</h3><p>Expanded, primed T-cell pools in lymph nodes, blood, and tissues.</p></div>
+            <div class="memory" style="--accent: var(--green)"><div class="type">Barrier memory</div><h3>Tissue-resident T cell</h3><p>Memory T cells parked in lung, gut, skin, and other entry sites for rapid local response.</p></div>
+          </div>
+          <div class="callout accent-teal">B-cell memory can leave antibody already floating. T-cell memory leaves more antigen-specific cells, already primed for faster action.</div>
+        </div>
+      </div>
+      <div class="footer"><span>Memory B and T cells differ</span><span>Plasma cells are active factories</span></div>
+    </section>
+
+    <section class="slide" data-title="Tolerance" style="--accent: var(--amber)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Safety system</div>
+          <h2 class="slide-title">Tolerance is the price of powerful recognition</h2>
+        </header>
+        <div class="body three">
+          <div class="card accent-blue"><h3>Central tolerance</h3><p>Bone marrow and thymus delete or divert strongly self-reactive clones before release.</p></div>
+          <div class="card accent-green"><h3>Peripheral tolerance</h3><p>Tregs, anergy, deletion, and missing costimulation restrain escaped clones in tissue.</p></div>
+          <div class="card accent-violet"><h3>Checkpoints</h3><p>CTLA-4 and PD-1 reduce activation when immune damage would exceed benefit.</p></div>
+          <div class="card accent-red"><h3>Failure mode</h3><p>Autoimmunity, allergy, immunodeficiency, cancer evasion, or chronic inflammation.</p></div>
+          <div class="card accent-amber"><h3>Clinical tradeoff</h3><p>Checkpoint blockade can restore antitumor T cells but also releases self-reactive damage.</p></div>
+          <div class="card accent-teal"><h3>Resolution</h3><p>Contraction, efferocytosis, and repair programs stop the response after the threat is contained.</p></div>
+        </div>
+      </div>
+      <div class="footer"><span>Diversity creates risk</span><span>Brakes make diversity usable</span></div>
+    </section>
+
+    <section class="slide" data-title="Scenarios" style="--accent: var(--green)">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Run the model</div>
+          <h2 class="slide-title">Three encounters use the same routing rules</h2>
+        </header>
+        <div class="body">
+          <div class="scenario-grid">
+            <div class="scenario" style="--accent: var(--amber)">
+              <h3>Bacterial splinter</h3>
+              <div class="route-text">Extracellular plus damaged tissue</div>
+              <ol>
+                <li>Macrophages and complement detect.</li>
+                <li>Neutrophils arrive fast.</li>
+                <li>B cells make antibody.</li>
+                <li>Antibody and C3b opsonize for phagocytes.</li>
+              </ol>
+            </div>
+            <div class="scenario" style="--accent: var(--red)">
+              <h3>Respiratory virus</h3>
+              <div class="route-text">Cytosolic infection plus free virus</div>
+              <ol>
+                <li>Viral RNA/DNA triggers interferon.</li>
+                <li>NK cells kill stressed or MHC-low cells early.</li>
+                <li>CD8 T cells kill peptide-MHC-I-positive cells.</li>
+                <li>Antibody neutralizes free virus.</li>
+              </ol>
+            </div>
+            <div class="scenario" style="--accent: var(--blue)">
+              <h3>Vaccination</h3>
+              <div class="route-text">Antigen plus safe innate context</div>
+              <ol>
+                <li>Adjuvant activates antigen-presenting cells.</li>
+                <li>B and T clones expand without full disease.</li>
+                <li>Germinal centers improve antibody.</li>
+                <li>Memory and plasma cells remain.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>Ask where the threat lives</span><span>Then predict the dominant arm</span></div>
+    </section>
+
+    <section class="slide dark-slide" data-title="Close">
+      <div class="slide-inner">
+        <header>
+          <div class="eyebrow">Final model</div>
+          <h2 class="slide-title">Keep the algorithm, not the vocabulary</h2>
+        </header>
+        <div class="body">
+          <p class="lead">Macrophages sense and clean locally. Dendritic cells carry evidence. B cells externalize specificity as antibody. T cells inspect peptide-MHC and coordinate or kill. NK cells punish stressed or MHC-low cells. Memory improves the next response, and tolerance keeps the system from turning inward.</p>
+          <div class="pipeline">
+            <div class="stage accent-green"><div class="n">1</div><strong>Tag</strong><span>C3b, Fc, MHC, stress</span></div>
+            <div class="stage accent-amber"><div class="n">2</div><strong>Eat</strong><span>macrophage, neutrophil</span></div>
+            <div class="stage accent-blue"><div class="n">3</div><strong>Display</strong><span>MHC I and II</span></div>
+            <div class="stage accent-violet"><div class="n">4</div><strong>Decide</strong><span>CD4, CD8, B, NK</span></div>
+            <div class="stage accent-red"><div class="n">5</div><strong>Remember</strong><span>plasma cells, memory B/T</span></div>
+          </div>
+          <div class="pill-row">
+            <a class="pill" href="../">Source report</a>
+            <a class="pill" href="../html/index.html">HTML companion</a>
+            <a class="pill" href="speaker-notes.md">Speaker notes</a>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Close by returning to the same rail from slide 2. The names are less important than the routing logic.</aside>
+    </section>
+  </main>
+
+  <nav class="controls" aria-label="Slide controls">
+    <button type="button" id="prevBtn">Prev</button>
+    <span class="counter" id="counter">1 / 18</span>
+    <button type="button" id="nextBtn">Next</button>
+  </nav>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const counter = document.getElementById('counter');
+      const progressBar = document.getElementById('progressBar');
+      let index = 0;
+
+      function clamp(value, min, max) {
+        return value < min ? min : value > max ? max : value;
+      }
+
+      function show(next, updateHash) {
+        index = clamp(next, 0, slides.length - 1);
+        slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+        counter.textContent = `${index + 1} / ${slides.length}`;
+        progressBar.style.width = `${((index + 1) / slides.length) * 100}%`;
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index === slides.length - 1;
+        if (updateHash !== false) {
+          history.replaceState(null, '', `#${index + 1}`);
+        }
+      }
+
+      function readHash() {
+        const n = Number((location.hash || '').replace('#', ''));
+        if (Number.isFinite(n) && n >= 1 && n <= slides.length) index = n - 1;
+      }
+
+      prevBtn.addEventListener('click', () => show(index - 1));
+      nextBtn.addEventListener('click', () => show(index + 1));
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight' || event.key === 'PageDown' || event.key === ' ') {
+          event.preventDefault();
+          show(index + 1);
+        } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+          event.preventDefault();
+          show(index - 1);
+        } else if (event.key === 'Home') {
+          event.preventDefault();
+          show(0);
+        } else if (event.key === 'End') {
+          event.preventDefault();
+          show(slides.length - 1);
+        }
+      });
+
+      window.addEventListener('hashchange', () => {
+        readHash();
+        show(index, false);
+      });
+
+      readHash();
+      show(index, false);
+    }());
+</script>
+</body>
+</html>
