@@ -25,13 +25,11 @@ Totally interest-oriented — no fixed theme. Past probe-lab subjects have range
 
 In reverse chronological order (newest first).
 
-<<<<<<< HEAD
-- **[2026-07-11 — Immune System Cells](https://sinban04.github.io/useless-knowledge/report/2026-07-11-immune-system-cells/)**
-  Visual multi-chapter report on immune-system architecture: innate sensing, complement, macrophages, neutrophils, dendritic cells, MHC I/II antigen presentation, B cells, antibodies, T cells, NK cells, V(D)J recombination, germinal centers, memory, tolerance, and response timelines. Includes a [presentation deck](https://sinban04.github.io/useless-knowledge/report/2026-07-11-immune-system-cells/presentation/). Published from [`probe-lab/2026-07-11-immune-system-cells`](https://github.com/sinban04/useless-engineers/tree/main/probe-lab/2026-07-11-immune-system-cells).
-=======
 - **[2026-07-24 — Newton to Noether](report/2026-07-24-Newton-to-Noether-Suhwan)** *(Suhwan)*
   Korean-language seminar (~60-90 min, for non-physics engineers) tracing how the description of motion was rewritten five times: Newton's three laws, the Lagrangian action principle, special relativity (from the magnet-conductor asymmetry to Minkowski spacetime and E=mc2), general relativity (reading the field equations, and the strange status of energy conservation), and Noether's two theorems - conservation laws as shadows of symmetry. Includes a 44-slide deck with original historical figures.
->>>>>>> ff3fdd9 (report 2026-07-24 Newton to Noether: 세미나 게시 (챕터 md + 44슬라이드 덱))
+
+- **[2026-07-11 — Immune System Cells](https://sinban04.github.io/useless-knowledge/report/2026-07-11-immune-system-cells/)**
+  Visual multi-chapter report on immune-system architecture: innate sensing, complement, macrophages, neutrophils, dendritic cells, MHC I/II antigen presentation, B cells, antibodies, T cells, NK cells, V(D)J recombination, germinal centers, memory, tolerance, and response timelines. Includes a [presentation deck](https://sinban04.github.io/useless-knowledge/report/2026-07-11-immune-system-cells/presentation/). Published from [`probe-lab/2026-07-11-immune-system-cells`](https://github.com/sinban04/useless-engineers/tree/main/probe-lab/2026-07-11-immune-system-cells).
 
 - **[2026-05-30 — Cell Structure and Mitochondria](report/2026-05-30-cell-structure-mitochondria/html/index.html)**
   Visual multi-chapter report on cell structure: membrane, nucleus, ribosomes, mitochondria, lysosomes, cytoskeleton, organelle cooperation, animal versus plant cells, autophagy, chromatin, mitochondrial relationships, and nuclear versus mitochondrial inheritance. Includes an HTML companion report with diagrams, workflow figures, and video links.
