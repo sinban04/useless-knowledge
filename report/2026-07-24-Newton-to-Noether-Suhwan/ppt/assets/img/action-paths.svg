@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,-apple-system,sans-serif">
+  <rect width="800" height="420" fill="#ffffff"/>
+  <!-- candidate paths (light) -->
+  <path d="M 110 330 C 250 320, 430 300, 690 130" fill="none" stroke="#cbd5e1" stroke-width="2"/>
+  <path d="M 110 330 C 220 120, 480 60, 690 130" fill="none" stroke="#cbd5e1" stroke-width="2"/>
+  <path d="M 110 330 C 300 400, 560 330, 690 130" fill="none" stroke="#cbd5e1" stroke-width="2"/>
+  <path d="M 110 330 C 180 240, 300 380, 460 250 S 640 230, 690 130" fill="none" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="360" y="86" font-size="13" fill="#94a3b8">S₂</text>
+  <text x="420" y="292" font-size="13" fill="#94a3b8">S₃</text>
+  <text x="410" y="382" font-size="13" fill="#94a3b8">S₄</text>
+  <text x="470" y="222" font-size="13" fill="#94a3b8">S₅</text>
+  <!-- actual path -->
+  <path d="M 110 330 C 300 190, 500 120, 690 130" fill="none" stroke="#2563eb" stroke-width="4"/>
+  <text x="330" y="196" font-size="14.5" fill="#1d4ed8" font-weight="600">실제 경로 — δS = 0 (극값)</text>
+  <!-- endpoints -->
+  <circle cx="110" cy="330" r="7" fill="#0f172a"/>
+  <circle cx="690" cy="130" r="7" fill="#0f172a"/>
+  <text x="96" y="362" font-size="14" fill="#334155">출발 A (t₁)</text>
+  <text x="650" y="106" font-size="14" fill="#334155">도착 B (t₂)</text>
+  <!-- legend -->
+  <text x="110" y="52" font-size="14" fill="#64748b">후보 경로마다 채점표 하나 — S = ∫(T−V) dt</text>
+</svg>

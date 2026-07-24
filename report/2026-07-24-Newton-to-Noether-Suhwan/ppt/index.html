@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>뉴턴에서 뇌터까지 — 운동을 기술하는 방법의 역사 (v2)</title>
+<link rel="stylesheet" href="assets/katex/katex.min.css">
+<link rel="stylesheet" href="assets/viz.css">
+<!-- SKIN: render.py inlines the chosen skins/<name>.css (:root token block) here. -->
+<style id="skin">/* skin: dark-pro — charcoal/navy DARK slides, cyan+lime+violet neon accents, code/graph-forward (from template-b). */
+:root{
+  --ink:#eef2f8; --ink2:#c2cad8; --muted:#8e99ad; --faint:#67718a;
+  --paper:#11151e; --card:#161d2e; --line:#2a3346; --line2:#39435c;
+  --stage-bg:#080b11;
+  --row-alt:rgba(255,255,255,.035);
+  --code-bg:rgba(255,255,255,.08); --code-fg:#27e0d4;
+  --codeblock-bg:#0c111b; --codeblock-fg:#dfe7f2;
+  --note-bg:rgba(255,255,255,.05); --note-op-bg:rgba(182,242,58,.10); --note-op-line:#b6f23a; --note-q-bg:rgba(200,121,255,.12);
+  --th-bg:#1b2233; --th-fg:#eef2f8;
+  --p1:#7c8cff; --p2:#27e0d4; --p3:#b6f23a; --p4:#c879ff;
+  --accent:var(--p2); --bar:var(--p2); --note-q-line:#c879ff;
+  --cover-bg:linear-gradient(150deg,#080b11 0%,#0e2230 55%,#11161f 100%);
+  --cover-fg:#eef2f8; --cover-eyebrow:#27e0d4; --cover-sub:#9fb0c4; --cover-meta:#7e8aa0;
+  --divider-fg:#eef2f8; --divider-sub:rgba(255,255,255,.72); --divider-rule:#27e0d4;
+  --div-p1:linear-gradient(140deg,#11162a,#23306b);
+  --div-p2:linear-gradient(140deg,#062a2c,#0e4f4a);
+  --div-p3:linear-gradient(140deg,#1c2410,#3a4f12);
+  --div-p4:linear-gradient(140deg,#231033,#4a2a6b);
+  --map-bg:radial-gradient(120% 90% at 50% 0%, #0e1622 0%, #070a10 70%);
+  --serif:"Iowan Old Style",Georgia,"Noto Serif KR",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Pretendard","Noto Sans KR",system-ui,sans-serif;
+  --mono:ui-monospace,"SFMono-Regular","JetBrains Mono",Menlo,Consolas,monospace;
+}
+</style>
+<style>
+/* ===== structure (skin-agnostic): consumes only var(--*) from the skin above ===== */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--stage-bg); font-family:var(--sans); color:var(--ink);
+  overflow:hidden; display:flex; align-items:center; justify-content:center; -webkit-font-smoothing:antialiased}
+#stage{position:relative}
+#deck{width:1280px; height:720px; position:relative; transform-origin:top left}
+.slide{position:absolute; inset:0; background:var(--paper); padding:54px 70px 52px;
+  display:none; flex-direction:column; overflow:hidden; border-radius:6px; box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.slide.active{display:flex}
+.slide[data-part=p1]{--accent:var(--p1)}
+.slide[data-part=p2]{--accent:var(--p2)}
+.slide[data-part=p3]{--accent:var(--p3)}
+.slide[data-part=p4]{--accent:var(--p4)}
+.slide::before{content:""; position:absolute; top:0; left:0; right:0; height:6px; background:var(--accent)}
+
+.kicker{font-size:13.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent);
+  font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:10px}
+h1.s{font-size:38px; line-height:1.12; font-weight:800; letter-spacing:-.01em; color:var(--ink)}
+h2.s{font-size:31px; line-height:1.15; font-weight:800; letter-spacing:-.01em; color:var(--ink); margin-bottom:4px}
+.sub{font-size:18px; color:var(--muted); margin-top:12px; line-height:1.5; max-width:62ch}
+.body{margin-top:14px; font-size:18px; line-height:1.6; color:var(--ink2); flex:1; min-height:0; overflow:hidden;
+  display:flex; flex-direction:column; justify-content:center}
+.bodyinner{width:100%; transform-origin:center center}
+.lead{font-size:20px; line-height:1.5; color:var(--ink2); margin-bottom:10px}
+em{color:var(--accent); font-style:normal; font-weight:700}
+b,strong{font-weight:700; color:var(--ink)}
+code{font-family:var(--mono); font-size:.9em; background:var(--code-bg); padding:1px 6px; border-radius:5px; color:var(--code-fg)}
+.small{font-size:14px; color:var(--muted)}
+.foot{position:absolute; left:70px; right:70px; bottom:20px; display:flex; justify-content:space-between;
+  align-items:center; font-size:12px; color:var(--faint); border-top:1px solid var(--line); padding-top:8px}
+.foot .pg{font-family:var(--mono)}
+
+/* cover */
+.cover{background:var(--cover-bg); color:var(--cover-fg)}
+.cover::before{height:0}
+.cover .wrap{margin:auto 0}
+.cover .eyebrow{font-size:14px; letter-spacing:.3em; text-transform:uppercase; color:var(--cover-eyebrow); font-weight:700}
+.cover h1{font-family:var(--serif); font-size:70px; line-height:1.04; font-weight:800; margin:16px 0 8px; letter-spacing:-.02em}
+.cover .en{font-size:23px; color:var(--cover-sub); font-weight:400; font-family:var(--serif); font-style:italic; line-height:1.4}
+.cover .tags{display:flex; gap:10px; margin:30px 0 0; flex-wrap:wrap}
+.cover .tag{font-size:14px; padding:6px 15px; border-radius:30px; font-weight:700; color:#fff}
+.cover .tag.t-p1{background:var(--p1)} .cover .tag.t-p2{background:var(--p2)}
+.cover .tag.t-p3{background:var(--p3)} .cover .tag.t-p4{background:var(--p4)}
+.cover .meta{margin-top:26px; font-size:15px; color:var(--cover-meta); line-height:1.7}
+.cover .strip{position:absolute; left:0; right:0; bottom:0; height:10px; display:flex}
+.cover .strip span{flex:1}
+.cover .strip .b-p1{background:var(--p1)} .cover .strip .b-p2{background:var(--p2)}
+.cover .strip .b-p3{background:var(--p3)} .cover .strip .b-p4{background:var(--p4)}
+
+/* divider */
+.divider{justify-content:center; color:var(--divider-fg)}
+.divider::before{height:0}
+.divider .num{font-family:var(--serif); font-size:140px; font-weight:800; line-height:1; opacity:.9}
+.divider h1{font-size:44px; font-weight:800; margin-top:2px; letter-spacing:-.01em}
+.divider .d-sub{font-size:18px; color:var(--divider-sub); margin-top:14px; max-width:64ch; line-height:1.55}
+.divider .rule{width:62px; height:5px; border-radius:3px; background:var(--divider-rule); margin:22px 0 0}
+.divider[data-part=p1]{background:var(--div-p1)}
+.divider[data-part=p2]{background:var(--div-p2)}
+.divider[data-part=p3]{background:var(--div-p3)}
+.divider[data-part=p4]{background:var(--div-p4)}
+
+/* layout */
+.cols{display:grid; gap:28px; flex:1; min-height:0}
+.c2{grid-template-columns:1fr 1fr}
+.col{min-width:0; display:flex; flex-direction:column; justify-content:center}
+.col.fig-col{justify-content:center; align-items:center}
+.fig{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; width:100%; text-align:left}
+.fig img{max-width:100%; max-height:430px; object-fit:contain; border-radius:8px; background:#fff; padding:8px}
+figcaption{font-size:12px; color:var(--muted); margin-top:8px; line-height:1.4; text-align:center}
+
+ul.clean{list-style:none}
+ul.clean li{position:relative; padding-left:24px; margin:9px 0; line-height:1.48}
+ul.clean li::before{content:""; position:absolute; left:3px; top:9px; width:8px; height:8px; border-radius:50%; background:var(--accent)}
+ol.num{list-style:none; counter-reset:n}
+ol.num li{position:relative; padding-left:40px; margin:11px 0; line-height:1.48; counter-increment:n}
+ol.num li::before{content:counter(n); position:absolute; left:0; top:-1px; width:27px; height:27px; background:var(--accent);
+  color:#fff; border-radius:50%; font-weight:700; font-size:15px; display:flex; align-items:center; justify-content:center}
+
+table{width:100%; border-collapse:collapse; font-size:15px}
+table.sm{font-size:14px} table.xs{font-size:12.6px}
+th,td{text-align:left; padding:8px 11px; border-bottom:1px solid var(--line)}
+thead th{background:var(--th-bg); color:var(--th-fg); font-weight:700; font-size:13px; border:none}
+tbody tr:nth-child(even){background:var(--row-alt)}
+
+.note{background:var(--note-bg); border-left:4px solid var(--accent); padding:13px 17px; border-radius:0 8px 8px 0;
+  font-size:15.5px; line-height:1.5; color:var(--ink2); margin:10px 0}
+.note.op{background:var(--note-op-bg); border-color:var(--note-op-line)}
+.note.op::first-line{font-weight:700}
+.note.q{background:var(--note-q-bg); border-color:var(--note-q-line)}
+
+.statement{font-family:var(--serif); font-size:30px; line-height:1.4; color:var(--ink); font-weight:600; margin:8px 0}
+.statement em{font-style:italic; color:var(--accent); font-weight:700}
+
+.codeblock{background:var(--codeblock-bg); color:var(--codeblock-fg); font-family:var(--mono); font-size:13.5px; line-height:1.5;
+  padding:14px 18px; border-radius:10px; margin:8px 0; white-space:pre}
+.codeblock code{background:none; color:inherit; padding:0; font-size:inherit}
+
+.eq{margin:10px 0; text-align:center; font-size:17px; overflow-x:auto}
+.katex-display{margin:.4em 0}
+
+figure.diagram{margin:4px 0; width:100%; text-align:left}
+figure.diagram .cy{width:100%; height:320px; background:none}
+.col.fig-col figure.diagram .cy{height:360px}
+figure.diagram .cy-err{font-family:var(--mono); font-size:13px; color:var(--accent); text-align:center; padding:1rem}
+.slide.vizonly figure.diagram .cy{height:505px}
+.slide.vizonly .fig img{max-height:520px}
+.slide.vizonly pre.codeblock{font-size:17.5px; line-height:1.7}
+.slide.vizonly table{margin-left:auto; margin-right:auto}
+pre.mermaid{margin:4px 0; text-align:center; background:none; line-height:initial}
+.vizbox .pv-caption{font-size:17px}
+
+.vizwrap{width:100%}
+.vizbox{width:100%; position:relative}
+.vizph{display:flex; align-items:center; justify-content:center; height:420px; color:var(--muted);
+  font-family:var(--mono); font-size:14px; border:1.5px dashed var(--line2); border-radius:12px}
+
+#progress{position:fixed; top:0; left:0; height:3px; background:var(--bar); z-index:50; transition:width .25s}
+#hud{position:fixed; bottom:14px; right:18px; z-index:50; display:flex; gap:10px; align-items:center; font-family:var(--mono); font-size:12px; color:#cfc9bd}
+#hud button{background:rgba(255,255,255,.08); color:#e8e3d8; border:1px solid rgba(255,255,255,.14); width:30px; height:30px; border-radius:8px; cursor:pointer; font-size:14px}
+#hud button:hover{background:rgba(255,255,255,.18)}
+#counter{background:rgba(0,0,0,.35); padding:6px 12px; border-radius:20px}
+#hint{position:fixed; bottom:16px; left:18px; z-index:50; font-family:var(--mono); font-size:11.5px; color:#7d7972; opacity:.8}
+#overview{position:fixed; inset:0; background:#15171d; z-index:100; display:none; overflow-y:auto; padding:34px}
+#overview.on{display:block}
+#overview h3{color:#e8e3d8; font-size:16px; margin-bottom:18px}
+.ovgrid{display:grid; grid-template-columns:repeat(5,1fr); gap:14px}
+.ovcell{aspect-ratio:16/9; background:#23262e; border:2px solid transparent; border-radius:8px; cursor:pointer; overflow:hidden; position:relative; padding:10px; color:#d8d3c8}
+.ovcell:hover{border-color:var(--bar)}
+.ovcell .ovn{font-family:var(--mono); font-size:11px; color:#8a8578}
+.ovcell .ovt{font-size:12px; font-weight:700; margin-top:4px; line-height:1.25; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden}
+.ovcell .ovbar{position:absolute; left:0; top:0; bottom:0; width:4px}
+.deck-exit{position:fixed;top:12px;left:12px;z-index:9999;font-family:var(--mono);font-size:12px;font-weight:600;text-decoration:none;color:#eee;background:rgba(0,0,0,.45);padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.20);backdrop-filter:blur(4px)}
+.deck-exit:hover{color:#fff;border-color:var(--accent)}
+.deck-level{position:fixed;top:12px;left:96px;z-index:9999;font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;background:var(--bar);padding:7px 11px;border-radius:999px;opacity:.92;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<a class="deck-exit" href="../../index.html" title="프레젠테이션 목록으로">← 목록</a>
+<span class="deck-level">L5 · Deep</span>
+<div id="progress"></div>
+<div id="stage"><div id="deck">
+<section class="slide cover active"><div class="wrap"><div class="eyebrow">Useless Engineers · Seminar</div><h1>뉴턴에서 뇌터까지</h1><div class="en">물체의 운동을 기술하는 방법 — 힘, 작용, 시공간, 그리고 대칭</div><div class="tags"><span class="tag t-p2">작용 · δS = 0</span><span class="tag t-p3">시공간 · 장방정식</span><span class="tag t-p4">대칭 · 보존</span></div><div class="meta">발표자 <b style="color:#e8e3d8">Suhwan</b> &nbsp;·&nbsp; 2026-07-24 &nbsp;·&nbsp; L5 심층 · 물리 비전공 엔지니어 대상</div></div><div class="strip"><span class="b-p1"></span><span class="b-p2"></span><span class="b-p3"></span><span class="b-p4"></span></div></section>
+<section class="slide" data-part="p1"><div class="kicker">전체 흐름</div><h2 class="s">다섯 걸음 — 한 장으로</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">각 이론은 앞 이론이 남긴 질문에서 출발한다. 이 순서 그대로 간다.</p><ol class="num"><li><b>뉴턴 역학</b> — 힘과 세 법칙: 지금의 상태 + 힘의 법칙 → 미래 전체가 계산된다.</li><li><b>라그랑지안 역학</b> — 같은 운동을 작용의 극값($\delta S=0$)으로: 대칭이 눈에 보이는 언어.</li><li><b>특수상대성</b> — 전자기 설명의 비대칭에서 출발, 두 공준이 시간·공간을 하나의 시공간으로 묶는다.</li><li><b>일반상대성</b> — 중력을 힘에서 시공간의 모양으로: 장방정식, 그리고 에너지 보존의 이상한 구석.</li><li><b>뇌터 정리</b> — 그 이상함의 판결: 보존량은 대칭의 산물이다.</li></ol></div><div class="col fig-col"><figure class="diagram"><div class="cy"></div><script type="application/json" class="cy-spec">{"rankDir":"LR","elements":[{"data":{"id":"N","label":"뉴턴\n힘"}},{"data":{"id":"L","label":"라그랑주\n작용"}},{"data":{"id":"S","label":"특수상대성\n시공간"}},{"data":{"id":"G","label":"일반상대성\n휜 시공간"}},{"data":{"id":"X","label":"뇌터\n대칭"}},{"data":{"source":"N","target":"L"}},{"data":{"source":"L","target":"S"}},{"data":{"source":"S","target":"G"}},{"data":{"source":"G","target":"X"}}]}</script></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide divider" data-part="p1"><div class="num">01</div><h1>뉴턴 역학</h1><div class="d-sub">세 가지 법칙 — 물체의 움직임을 기술하는 첫 번째 방법</div><div class="rule"></div></section>
+<section class="slide" data-part="p1"><div class="kicker">01 · 1609–1687</div><h2 class="s">패턴은 있는데 원인이 없다</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">뉴턴 이전에도 운동의 <b>패턴</b>은 정밀하게 알려져 있었다. 없던 것은 <b>원인</b>과, 원인에서 패턴을 계산해내는 방법이다.</p><ul class="clean"><li>케플러(1609·1619): 행성은 타원을 돌고, 같은 시간에 같은 면적을 쓸고, 주기²은 궤도 크기³에 비례한다 — 관측 데이터에서 뽑아낸 세 개의 규칙. <b>왜 그런지는 없음.</b></li><li>갈릴레이: 낙하는 등가속이고, 힘이 없으면 운동은 유지된다 — 지상 실험의 규칙들. 역시 하늘의 규칙과는 별개로 취급됐다.</li><li>당시의 상식: 천상의 운동(원·영원)과 지상의 운동(낙하·마찰)은 <b>다른 종류</b>의 현상이다.</li><li>뉴턴의 질문: 사과를 떨어뜨리는 그것이 달도 붙잡고 있는가 — 하늘과 땅에 <b>같은 원인</b>을 세울 수 있는가.</li></ul><div class="note">패턴의 목록(케플러)과 원인의 법칙(뉴턴)의 차이 — 이 장의 끝에서 케플러의 세 규칙은 전부 계산 결과로 다시 나온다.</div></div><div class="col fig-col"><figure class="fig"><img src="assets/img/ext/kepler-areas.png" alt=""><figcaption>케플러 2법칙 — 행성(pianeta)이 같은 시간에 쓸고 가는 회색 부채꼴 넓이는 항상 같다 · sole=태양 (Wikimedia Commons, CC0)</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p1"><div class="kicker">01 · 세 법칙</div><h2 class="s">1687 프린키피아 — 운동의 세 법칙</h2><div class="body"><div class="bodyinner"><p class="lead">모든 역학을 떠받치는 세 개의 진술. 각각 일상에서 그대로 확인된다.</p><ul class="clean"><li>셋 중 계산의 심장은 제2법칙이다 — 힘을 알면 가속도가, 가속도를 알면 다음 순간의 속도·위치가 나온다.</li></ul><table class="sm"><thead><tr><th>법칙</th><th>내용</th><th>일상 예시</th></tr></thead><tbody><tr><td>제1법칙 · 관성</td><td>힘이 없으면 정지는 정지로, 등속은 등속으로 유지된다</td><td>버스가 급정거하면 몸이 앞으로 쏠린다 — 몸은 하던 운동을 계속하는 중</td></tr><tr><td>제2법칙 · $F=ma$</td><td>가속도는 힘에 비례하고 질량에 반비례한다</td><td>같은 힘으로 밀어도 빈 카트는 잘 나가고, 짐을 가득 실은 카트는 굼뜨다</td></tr><tr><td>제3법칙 · 작용–반작용</td><td>A가 B를 밀면, B도 A를 같은 크기로 되민다</td><td>로켓은 가스를 뒤로 밀고, 가스가 로켓을 앞으로 민다 — 허공에서도 가속하는 이유</td></tr></tbody></table></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p1"><div class="kicker">01 · 두 개의 식</div><h2 class="s">기술 방법의 본질 — 상태 + 법칙 = 미래</h2><div class="body"><div class="bodyinner"><p class="lead">뉴턴의 방법은 식 두 개로 완결된다. 읽는 법이 중요하다.</p><ul class="clean"><li>$F=ma$ 읽기: 가속도는 힘의 <b>결과</b>이고, 질량은 변화에 대한 <b>저항</b>이다. 힘이 곧 운동의 원인이라는 선언.</li><li>만유인력 읽기: 질량 곱에 비례, 거리 제곱에 반비례 — <b>사과·달·행성이 한 식</b>. 천상/지상의 구분이 여기서 소멸한다.</li><li>방법의 본질: <b>(지금의 위치·속도) + 힘의 법칙 → 다음 순간이 결정</b>. 이를 반복하면 미래 전체 — 운동이 미분방정식의 해가 된다.</li><li>케플러의 세 규칙(타원·면적·주기²∝크기³)은 이 두 식에서 전부 <b>계산으로 유도</b>된다 — 패턴의 목록이 원인의 귀결로.</li></ul><div class="eq">$$ \vec F = m\,\vec a $$</div><div class="eq">$$ F = G\,\frac{m_1 m_2}{r^2} $$</div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p1"><div class="kicker">01 · 사고실험</div><h2 class="s">낙하와 궤도는 같은 운동이다</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">뉴턴의 사고실험 — 산꼭대기 대포(『세계의 체계』 1728, 프린키피아 3권의 대중판 초고). 던지는 속도를 올려 보면 낙하와 궤도 사이에 경계가 없다.</p><ul class="clean"><li>느리게 쏘면 포물선을 그리며 떨어진다. 더 빠르면 더 멀리 가서 떨어진다.</li><li>어느 속도(약 7.9 km/s)부터는 <b>떨어지는 곡선이 지구가 굽는 정도와 같아져</b> — 계속 떨어지는데 영원히 땅에 닿지 않는다. 그것이 궤도다.</li><li>달도 정확히 이 상태다: 달은 사과처럼 지구를 향해 <b>떨어지는 중</b>이고, 옆으로 빠른 것뿐이다.</li><li>하나의 힘 법칙이 낙하·포물선·궤도를 전부 담는다 — 통일의 그림.</li></ul></div><div class="col fig-col"><figure class="fig"><img src="assets/img/newton-cannon.svg" alt=""><figcaption>산꼭대기 대포 — 발사 속도가 커질수록 포물선이 길어지다, 임계 속도에서 낙하가 궤도가 된다</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p1"><div class="kicker">01 · 1758 · 1846</div><h2 class="s">본 적 없는 것을 계산하다</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">이 기술 방법의 힘은 설명이 아니라 <b>예측</b>에서 드러났다 — 아직 일어나지 않은 일의 시각과 위치를 종이 위에서 내놓는다.</p><ul class="clean"><li><b>핼리 혜성</b>: 핼리가 1682년 혜성의 궤도를 뉴턴 법칙으로 풀어 "1758년에 돌아온다"고 공표 — 두 사람 모두 죽은 뒤인 1758년 성탄절 밤, 혜성이 예고대로 나타났다.</li><li><b>해왕성</b>: 천왕성의 궤도가 계산과 미세하게 어긋났다. 르베리에는 오차를 일으킬 <b>미지 행성의 위치</b>를 역산해 편지로 보냈고, 베를린 천문대는 그날 밤 그 자리(1° 이내)에서 해왕성을 찾았다(1846).</li><li>관측을 따라가는 이론이 아니라, 관측을 <b>앞지르는</b> 이론 — 망원경이 아니라 계산이 행성을 발견했다.</li></ul><div class="note">같은 정밀도가 뒷날 균열도 드러낸다 — 수성 궤도의 미세한 초과 회전(43″/세기)은 이 방법으로 끝내 설명되지 않았다(4장).</div></div><div class="col fig-col"><figure class="fig"><img src="assets/img/ext/halley-1986.jpg" alt=""><figcaption>1986년 회귀한 핼리 혜성 — 1758년의 첫 예측 귀환 이후 매번 계산대로 돌아온다 (W. Liller/NASA, PD)</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide divider" data-part="p2"><div class="num">02</div><h1>라그랑지안 역학</h1><div class="d-sub">작용량 — 같은 운동을 기술하는 두 번째 방법</div><div class="rule"></div></section>
+<section class="slide" data-part="p2"><div class="kicker">02 · 1662–1788</div><h2 class="s">빛은 가장 빠른 길을 고른다 — 물체도 그런가</h2><div class="body"><div class="bodyinner"><p class="lead">출발점은 역학이 아니라 광학이다. 페르마(1662): 빛이 물에서 꺾이는 각도는, 모든 후보 경로 중 <b>도착 시간이 가장 짧은 길</b>을 고른 결과와 정확히 같다.</p><ul class="clean"><li>굴절 법칙(스넬)이 각도 공식이 아니라 <b>하나의 극값 원리</b>에서 통째로 나온다 — "각도가 이렇다"에서 "이 양이 최소다"로.</li><li>자연스러운 질문: 빛이 무언가를 극값으로 만들며 간다면, <b>돌멩이의 포물선에도 그런 양이 있는가?</b></li><li>모페르튀(1744)가 '작용'이라는 양을 제안하고, 오일러가 수학으로 다듬고, 라그랑주가 완성한다.</li><li>라그랑주 『해석역학』(1788) — 서문의 유명한 선언대로 <b>그림이 한 장도 없는</b> 역학책: 힘의 화살표 대신 식 하나로 역학 전체를 재구성했다.</li></ul></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p2"><div class="kicker">02 · 작용 S</div><h2 class="s">경로마다 점수를 매긴다 — 작용</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">출발점과 도착점을 고정하고, 그 사이의 <b>모든 후보 경로</b>를 생각한다. 경로 하나마다 숫자 하나 — 작용 $S$ — 를 매긴다.</p><ul class="clean"><li>$L$ 읽기: 매 순간의 (운동에너지 − 위치에너지). $S$는 그것을 여행 내내 누적한 <b>채점표</b>.</li><li>$\delta S = 0$ 읽기: 실제 경로는 <b>이웃 경로로 살짝 바꿔도 $S$가 1차로 변하지 않는</b> 경로 — 극값(정확히는 정류점: 최소 또는 안장)에 있는 경로다.</li><li>힘·가속도라는 단어 없이, "자연은 작용이 극값인 경로를 고른다"는 한 문장이 역학의 전부가 된다.</li></ul><div class="eq">$$ S = \int_{t_1}^{t_2} L\,dt,\qquad L = T - V $$</div><div class="eq">$$ \delta S = 0 $$</div></div><div class="col fig-col"><figure class="fig"><img src="assets/img/action-paths.svg" alt=""><figcaption>A→B의 후보 경로들 — 각 경로에 S 하나씩. 실제 운동(굵은 선)은 S의 극값</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p2"><div class="kicker">02 · 오일러–라그랑주</div><h2 class="s">극값 조건을 식으로 — 그리고 F=ma와의 관계</h2><div class="body"><div class="bodyinner"><p class="lead">"$S$가 극값"이라는 조건을 좌표마다 쓰면 방정식이 된다. 유도는 생략하고 읽는 법만.</p><ul class="clean"><li>읽기: 좌표 $q$ 하나마다 이 식이 하나 — 풀면 궤적 $q(t)$가 나온다. 뉴턴의 미분방정식과 같은 역할.</li><li>핵심 사실: 이 식은 $F=ma$와 <b>동일한 내용의 다른 언어</b>다. 같은 문제에 넣으면 같은 궤적이 나온다 — 예측이 다른 새 이론이 아니라, 같은 자연의 새 표기법.</li><li>$q$는 <b>아무 좌표나</b> 된다 — 직교좌표일 필요가 없고, 각도든 거리비든 문제에 맞는 것을 고르면 된다. 이 자유가 다음 슬라이드에서 위력을 보인다.</li></ul><div class="eq">$$ \frac{d}{dt}\!\left(\frac{\partial L}{\partial \dot q}\right) - \frac{\partial L}{\partial q} = 0 $$</div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p2"><div class="kicker">02 · 같은 진자, 두 언어</div><h2 class="s">진자 하나를 두 방법으로 풀어 보면</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">길이 $\ell$의 줄에 매달린 진자 — 두 방법의 차이가 가장 선명하게 갈리는 예제.</p><ul class="clean"><li><b>뉴턴</b>: 좌표 $x,y$ 두 개 + 줄의 장력 $T$(크기 미지, 방향은 매 순간 변함) + 구속조건 $x^2+y^2=\ell^2$ — 셋을 연립해야 한다. 장력은 <b>답에 필요 없는데 계산에는 필요한</b> 미지수.</li><li><b>라그랑주</b>: 애초에 각도 $\theta$ 하나만 좌표로 잡는다. $L=\tfrac12 m\ell^2\dot\theta^2+mg\ell\cos\theta$ 를 쓰고 오일러–라그랑주에 넣으면 끝 —</li><li>$\ddot\theta = -(g/\ell)\sin\theta$ 한 줄. <b>장력은 아예 등장하지 않는다</b> — 줄이 하는 일(구속)은 좌표 선택에 이미 녹아 있다.</li><li>물체가 많아지고 구속이 얽힐수록(로봇 관절·분자·행성계) 이 차이는 기하급수로 벌어진다.</li></ul></div><div class="col fig-col"><figure class="fig"><img src="assets/img/pendulum-two-ways.svg" alt=""><figcaption>같은 진자 — 왼쪽: 힘 벡터와 장력 분해(뉴턴), 오른쪽: 각도 θ 하나(라그랑주)</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p2"><div class="kicker">02 · 두 방법 비교</div><h2 class="s">무엇이 잘 보이는 언어인가</h2><div class="body"><div class="bodyinner"><p class="lead">예측은 동일하다. 다른 것은 <b>무엇이 잘 보이는가</b>다.</p><ul class="clean"><li>마지막 줄이 이 장의 유산이다 — 작용의 언어에서는 <b>대칭과 보존의 관계가 눈에 보인다</b>. 5장에서 뇌터가 정확히 이 무대 위에서 판결한다.</li></ul><table class="sm"><thead><tr><th></th><th>뉴턴 — 힘</th><th>라그랑주 — 작용</th></tr></thead><tbody><tr><td>입력</td><td>힘 <b>벡터</b> — 방향 분해 필요</td><td>스칼라 $L=T-V$ <b>하나</b></td></tr><tr><td>좌표</td><td>사실상 직교좌표 중심</td><td>문제에 맞는 좌표를 <b>자유 선택</b></td></tr><tr><td>구속력(장력·수직항력)</td><td>미지수로 함께 풀어야 함</td><td>좌표 선택에 흡수 — <b>자동 소거</b></td></tr><tr><td>대칭</td><td>식에서 잘 드러나지 않음</td><td>$L$에 어떤 좌표가 <b>안 나타나면</b>, 그 짝 운동량이 자동 보존(순환좌표)</td></tr></tbody></table></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide divider" data-part="p3"><div class="num">03</div><h1>특수상대성이론</h1><div class="d-sub">1905 — 전자기의 의문에서 시공간까지</div><div class="rule"></div></section>
+<section class="slide" data-part="p3"><div class="kicker">03 · 1865–1887</div><h2 class="s">에테르, 그리고 아무것도 안 나온 실험</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">맥스웰(1865): 빛은 전자기 파동이고, 속도 $c$가 이론에서 상수로 나온다. 그런데 파동이라면 — <b>무엇의</b> 파동인가?</p><ul class="clean"><li>당시의 답: 우주를 채운 매질 <b>에테르</b>. $c$는 '에테르 기준'의 속도라고 해석됐다.</li><li>그렇다면 초속 30 km로 공전하는 지구에는 <b>에테르 바람</b>이 불어야 하고, 방향에 따라 빛의 속도가 $c\pm v$로 달라져야 한다.</li><li>마이컬슨–몰리(1887): 직각 두 팔의 빛 왕복 시간차를 간섭무늬로 재는 장치 — 예상 효과의 1/40까지 잴 감도. 결과는 <b>0</b>. 방향을 돌려도 0 — 이후 수십 년의 반복 실험(계절을 바꿔도)마다 0. 🔬 <a href="http://218.155.221.161:10101/physics-map/experiments/michelson-morley/index.html">간섭계 시뮬레이션</a></li><li>로런츠·피츠제럴드의 수습: "운동 방향 팔이 $\sqrt{1-v^2/c^2}$배로 줄어든다면 0이 설명된다" — 수치는 맞지만 <b>왜 줄어드는지는 없는</b>, 결과에서 역산한 가설이었다.</li></ul></div><div class="col fig-col"><figure class="fig"><img src="assets/img/ext/mm-schematic.png" alt=""><figcaption>마이컬슨 간섭계 개략 — 반은거울이 빛을 직각 두 팔로 가르고 다시 합친다; 두 팔의 시간차는 간섭무늬로 나타난다 (Wikimedia Commons, PD)</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">03 · 1905 논문</div><h2 class="s">「움직이는 물체의 전기역학에 관하여」 — 첫 문단의 불편</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">1905년 논문의 출발점은 실험 위기가 아니라, 전자기학이 하나의 현상에 <b>두 개의 다른 이야기</b>를 하고 있다는 불편이다.</p><ul class="clean"><li>전류계 눈금은 <b>상대 속도만으로</b> 결정된다 — 관측은 하나인데 이론은 '누가 진짜 움직였나'에 따라 설명을 갈아탄다. 심지어 전기장의 존재 여부까지.</li><li>관측 불가능한 구분(절대 정지 기준)에 이론이 기대고 있다 — 아인슈타인은 이것을 이론이 잘못 세워진 신호로 읽었다.</li></ul><div class="note q">논문 제목이 '전기역학'인 이유 — 시간·공간의 재정의는 이 전자기 퍼즐을 푸는 과정에서 나온 결과물이다.</div></div><div class="col fig-col"><figure class="fig"><img src="assets/img/ext/faraday-induction.png" alt=""><figcaption>전자기 유도 실험 판화(19세기) — 코일 A를 코일 B에 넣었다 빼면 검류계 G가 움직인다. 상대운동은 하나인데 설명은 둘이었다 (Wikimedia Commons, PD)</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide vizonly" data-part="p3"><div class="kicker">03 · 1905 논문</div><h2 class="s">「움직이는 물체의 전기역학에 관하여」 — 첫 문단의 불편 <span class="small">(계속)</span></h2><div class="body"><div class="bodyinner"><table class="sm"><thead><tr><th>관점</th><th>당시 전자기학의 설명</th><th>전기장의 존재</th></tr></thead><tbody><tr><td>자석이 움직인다</td><td>변하는 자기장이 전기장을 <b>유도</b>하고, 그 전기장이 도체 속 전하를 민다</td><td>있다</td></tr><tr><td>도체가 움직인다</td><td>자기장은 변하지 않는다 — 움직이는 전하가 자기력 $q\vec v\times\vec B$를 받는다</td><td>없다</td></tr></tbody></table></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">03 · 두 공준</div><h2 class="s">고친 것은 전자기학이 아니라 전제 두 줄</h2><div class="body"><div class="bodyinner"><p class="lead">아인슈타인의 처방은 이론 수리가 아니라, 물리 전체가 따라야 할 <b>공준 두 개</b>를 앞에 세우는 것이었다.</p><ul class="clean"><li>공준 ①이 '자석이냐 도체냐'라는 질문 자체를 이론에서 지운다 — 남는 것은 상대 운동뿐.</li><li>공준 ②는 맥스웰의 상수 $c$를 특정 매질의 속도가 아니라 <b>모든 관측자의 사실</b>로 승격 — 에테르라는 특권 기준계가 불필요해지고, 마이컬슨–몰리의 0은 설명할 것도 없는 당연한 결과가 된다.</li><li>대가: 두 공준을 동시에 지키려면 <b>시간과 공간의 측정이 관측자마다 달라져야</b> 한다. 그 정량화가 다음 슬라이드들이다.</li></ul><ol class="num"><li><b>상대성 원리</b> — 역학만이 아니라 전자기까지, 모든 물리 법칙은 모든 관성계에서 같은 꼴이다.</li><li><b>광속 불변</b> — 진공에서 빛의 속도 $c$는 광원의 운동과 무관하게 누구에게나 같다.</li></ol><div class="note">수축 가설과의 차이가 이 장의 요점 — 같은 수식이 나와도, 하나는 결과에 맞춘 보정이고 하나는 원리의 귀결이다.</div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">03 · 빛시계</div><h2 class="s">두 공준만으로 시계를 늦추기</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">두 거울 사이를 빛이 한 번 왕복하면 1틱 — 두 공준만 쓰는 가장 단순한 시계.</p><ul class="clean"><li>옆에서 보면 움직이는 시계의 빛은 <b>지그재그</b> — 경로가 더 길다. 그런데 속도는 똑같이 $c$(공준 ②) → 1틱이 더 오래 걸린다. <b>움직이는 시계는 느리게 간다.</b></li><li>경로의 직각삼각형에 피타고라스 한 번이면 $\gamma$가 나온다 — 시간 지연은 신비가 아니라 기하다.</li><li>같은 논리를 진행 방향에 쓰면 <b>길이 수축</b> — 마이컬슨–몰리에서 임시 가설이던 그 수축이, 여기서는 공준의 귀결로 다시 나온다. 🔬 <a href="http://218.155.221.161:10101/physics-map/experiments/light-clock/index.html">빛시계 시뮬레이션</a></li></ul><div class="eq">$$ \Delta t' = \gamma\,\Delta t,\qquad \gamma = \frac{1}{\sqrt{1-v^2/c^2}} $$</div></div><div class="col fig-col"><figure class="fig"><img src="assets/img/light-clock-zigzag.svg" alt=""><figcaption>정지 시계는 상하 왕복, 움직이는 시계는 지그재그 — 더 긴 경로 ÷ 같은 c = 더 긴 틱</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">03 · 로런츠 변환</div><h2 class="s">관점을 바꾸는 규칙 — 시간에 공간이 섞인다</h2><div class="body"><div class="bodyinner"><p class="lead">두 공준과 양립하는 좌표 변환은 하나뿐이다. 읽는 법이 전부다.</p><ul class="clean"><li>$t'$ 식에 <b>위치 $x$가 들어 있다</b> — 새 관점의 시간이 옛 관점의 공간에 의존한다. 갈릴레이($t'=t$, 만인의 시계는 하나)와의 결별점.</li><li>$v\ll c$면 $\gamma\to1$, $vx/c^2\to0$ — 뉴턴·갈릴레이로 복귀. 옛 역학은 폐기가 아니라 <b>저속 근사</b>로 생존한다.</li><li>속도 덧셈($u'$=우주선에서 잰 속도, $u$=지상에서 본 속도): $0.9c$ 우주선에서 $0.9c$로 쏘아도 $0.994c$ — 어떻게 쌓아도 $c$를 넘지 못한다.</li><li>확인: 대기 상층에서 생긴 뮤온(수명 2.2 μs)은 제 수명으로는 지표에 못 닿는데, $\gamma$ 덕에 실험실에서 일상적으로 검출된다.</li></ul><div class="eq">$$ t' = \gamma\left(t - \frac{v\,x}{c^2}\right),\qquad x' = \gamma\,(x - v\,t) $$</div><div class="eq">$$ u = \frac{u' + v}{1 + u'v/c^2} $$</div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">03 · 회수</div><h2 class="s">자기력 = 전기력의 다른 단면 — 첫 의문이 닫힌다</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">이 장 두 번째 슬라이드의 비대칭이 여기서 해소된다. 전류가 흐르는 도선과, 나란히 달리는 시험전하.</p><ul class="clean"><li>실험실 관점: 도선은 +격자와 −전자의 밀도가 같아 <b>중성</b> — 달리는 전하가 받는 것은 자기력이다.</li><li>전하와 같이 달리는 관점: +와 −의 <b>속도가 서로 다르므로 길이 수축이 다르게</b> 걸린다 → 밀도가 어긋나 도선이 알짜 전하를 띤다 → 순수한 <b>전기력</b>이 민다.</li><li>같은 힘, 두 이름 — '전기장이 있는가'가 관점에 따라 갈리던 비대칭은, <b>전기와 자기가 한 장(field)의 두 단면</b>이라는 답으로 통일된다.</li><li>수축의 밀도 차는 극미하지만 도선 속 전자가 ~10²³개라 곱하면 손에 느껴지는 힘 — 상대론은 고속 전용이 아니라 <b>책상 위 자석에서 이미 작동 중</b>이다. 🔗 <a href="http://218.155.221.161:10101/physics-map/theories/relativity.html">인터랙티브: 속도 슬라이더로 인력↔척력 전환</a></li></ul></div><div class="col fig-col"><figure class="fig"><img src="assets/img/ext/magsim-shot.png" alt=""><figcaption>실험실 미리보기 — 시험전하 +0.60c 틀에서 +·− 줄 간격이 다르게 수축해 알짜전하·힘이 생긴다 (이론 페이지 인터랙티브)</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">03 · 1908 민코프스키 ①</div><h2 class="s">시공간 — 사건의 지도와 광원뿔</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">민코프스키(1908): 관측자마다 다르게 쪼개지는 시간과 공간을 버리고, <b>둘을 합친 4차원</b>을 실체로 삼는다. 지도의 점 하나 = 사건(어디+언제).</p><ul class="clean"><li>세로축을 $ct$로 잡으면 빛은 정확히 45° — 사건마다 <b>광원뿔</b>이 선다.</li><li>원뿔 안쪽 위 = 영향을 줄 수 있는 <b>미래</b>, 아래 = 영향을 받을 수 있었던 <b>과거</b>, 바깥 = 인과가 불가능한 <b>다른곳</b> — 그 영역의 사건은 시간 순서조차 관측자마다 다르다(동시성의 상대성이 그림 한 장에 담긴다).</li><li>$s^2$ 읽기: 피타고라스의 $+$가 $-$로 바뀐 거리 — 이 <b>마이너스 부호 하나</b>가 시공간 기하의 전부다.</li><li>관측자마다 $t$와 $x$는 다르게 재지만, 조합 $s^2$만은 <b>모두가 같은 값</b>을 얻는다(불변량).</li></ul><div class="eq">$$ s^2 = (ct)^2 - x^2 $$</div></div><div class="col fig-col"><figure class="fig"><img src="assets/img/light-cone.svg" alt=""><figcaption>광원뿔 — 빛(45°)이 모든 사건을 미래·과거·다른곳으로 삼분한다</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">03 · 1908 민코프스키 ②</div><h2 class="s">불변량으로 생각하기 — 그리고 다음 장의 무대</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">민코프스키가 바꾼 것은 그림이 아니라 <b>사고방식</b>이다: 관점마다 달라지는 양이 아니라, 모두가 합의하는 양으로 물리를 쓴다.</p><ul class="clean"><li>로런츠 변환의 정체 = $s^2$를 보존하는 시공간의 <b>'회전'</b> — 평면 회전이 거리²를 보존하는 것의 시공간판.</li><li>아인슈타인은 처음 이 기하화를 불필요한 수학 치장으로 여겼다 — 그러나 <b>중력을 넣으려는 순간, '휠 수 있는 무대'가 필요해진다</b>. 기하로 쓰여 있어야 구부릴 수 있다. 4장의 무대가 여기서 준비된다.</li></ul></div><div class="col fig-col"><figure class="fig"><img src="assets/img/ext/minkowski-1908.jpg" alt=""><figcaption>민코프스키의 1908년 강연 원판 슬라이드 — t²−x²=1 쌍곡선과 두 관성계의 축 (Wikimedia Commons, PD)</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide vizonly" data-part="p3"><div class="kicker">03 · 1908 민코프스키 ②</div><h2 class="s">불변량으로 생각하기 — 그리고 다음 장의 무대 <span class="small">(계속)</span></h2><div class="body"><div class="bodyinner"><table class="sm"><thead><tr><th>관점에 따라 달라짐</th><th>모두가 합의(불변량)</th></tr></thead><tbody><tr><td>시간 간격 $t$ · 거리 $x$</td><td>시공간 간격 $s^2$</td></tr><tr><td>동시성(무엇이 '같은 순간'인가)</td><td>광속 $c$ · 인과 순서(원뿔 안)</td></tr><tr><td>에너지 $E$ · 운동량 $p$ 각각</td><td>정지질량 (둘의 조합)</td></tr></tbody></table></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">03 · 부록 · 1905년 9월</div><h2 class="s">E = mc² — 석 달 뒤의 후속 논문</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">「물체의 관성은 에너지 함량에 의존하는가?」 — 본 논문의 귀결을 밀어붙인 3쪽짜리 부록. 빛을 방출한 물체는 그만큼 가벼워진다는 논증에서 나온다.</p><ul class="clean"><li>읽기: 질량은 에너지의 한 <b>형태</b>이고, $c^2$은 둘 사이의 <b>환율</b>이다 — 1 g ↔ $9\times10^{13}$ J.</li><li>확인 ① 질량 결손: 원자핵의 질량은 구성 핵자 질량의 합보다 <b>가볍다</b> — 모자란 만큼이 결합 에너지($\Delta m\,c^2$). 질량분석기로 일상적으로 측정되는 사실.</li><li>확인 ② 태양은 초당 약 430만 톤을 빛으로 바꿔 방출하며 가벼워지는 중이다.</li><li>확인 ③ 전자–양전자 쌍소멸은 정확히 $2\times511$ keV의 빛을 낸다 — 질량이 통째로 에너지가 되는 사건.</li></ul><div class="eq">$$ E = m\,c^2 $$</div></div><div class="col fig-col"><figure class="fig"><img src="assets/img/ext/binding-energy.png" alt=""><figcaption>핵자당 결합에너지 곡선 — 융합·분열에서 사라지는 질량이 E=mc²의 에너지로 나온다 (Wikimedia Commons, PD)</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide divider" data-part="p3"><div class="num">04</div><h1>일반상대성이론</h1><div class="d-sub">1907–1915 — 중력을 힘에서 시공간의 모양으로</div><div class="rule"></div></section>
+<section class="slide" data-part="p3"><div class="kicker">04 · 1905 직후</div><h2 class="s">특수상대성이 남긴 두 개의 의문</h2><div class="body"><div class="bodyinner"><p class="lead">이론을 완성하자마자 두 가지가 어긋나 있었다 — 하나는 중력, 하나는 이론 자신의 전제.</p><ul class="clean"><li><b>의문 ① 중력이 안 들어온다</b>: 뉴턴의 만유인력은 거리만의 함수 — 태양이 지금 사라지면 지구 궤도가 <b>그 순간</b> 반응해야 한다. 그러나 방금 세운 이론은 어떤 영향도 $c$를 넘지 못한다고 못박았다. 중력만 상대성 밖에 남았다.</li><li><b>의문 ② 왜 관성계만 특별한가</b>: 등속끼리는 평등하다고 해놓고, 가속은 여전히 절대적인가? '특별한 관점의 클럽'이 남아 있다는 것 자체가 찜찜했다.</li><li>두 의문이 한 지점을 가리킨다 — 중력과 가속을 함께 다룰 수 있는 더 큰 틀.</li></ul></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">04 · 1907</div><h2 class="s">가장 행복한 생각 — 떨어지는 사람은 무게가 없다</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">특허국 의자에서의 착상: <b>지붕에서 떨어지는 사람은 자기 무게를 느끼지 못한다.</b> 손에서 놓은 물건은 곁에 둥둥 떠 있다.</p><ul class="clean"><li>자유낙하라는 관점을 고르면 중력이 <b>지워진다</b> — 반대로, 무중력 우주에서 9.8 m/s²로 가속하는 방 안은 지구의 방과 <b>구별할 수 없다</b>(공을 던지면 포물선, 저울은 눌린다).</li><li><b>등가원리</b>: 국소적으로 중력 = 가속. 중력은 관점 선택으로 만들 수도, 지울 수도 있는 것이었다.</li><li>관점 하나로 지워지는 것을 '진짜 힘'이라 부를 수 있는가 — 중력의 힘 자격에 대한 의심이 시작된다.</li></ul></div><div class="col fig-col"><figure class="fig"><img src="assets/img/elevator-rocket.svg" alt=""><figcaption>구별 불가능한 두 방 — 지구 위에 선 방과 9.8 m/s²로 가속하는 방</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">04 · 보편성</div><h2 class="s">모두가 같은 궤적 — 그렇다면 무대의 성질이다</h2><div class="body"><div class="bodyinner"><p class="lead">결정적 단서는 중력의 오래된 특징에 있었다: <b>중력은 물체가 무엇인지 묻지 않는다.</b></p><ul class="clean"><li>진공에서 깃털과 쇠공은 같이 떨어진다 — 아폴로 15호(1971)가 달에서 망치와 깃털로 실연했다.</li><li>전기력은 전하/질량 비에 따라 물체마다 다르게 가속시킨다. <b>중력만이 예외</b> — 조성·질량과 무관하게 전원 같은 궤적.</li><li>추론: 궤적이 여행자와 무관하다면, 그 궤적은 물체의 성질이 아니라 <b>길 — 무대(시공간) — 의 성질</b>이다.</li><li>자연 상태의 재정의: <b>자유낙하가 힘 0의 상태</b>다(떨어지는 동안 저울은 0). 오히려 땅에 서 있는 지금이 발바닥이 밀어 올리는 힘을 받는 상태다.</li></ul></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">04 · 시간의 휨</div><h2 class="s">휘는 것의 주역은 공간이 아니라 시간이다</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">가속 로켓에서 꼬리의 시계는 머리보다 느리게 간다(빛 신호의 도플러로 유도된다). 등가원리로 번역하면 — <b>낮은 곳의 시계는 느리다.</b></p><ul class="clean"><li>지표에서 높이 1 m당 시계 빠르기 차이는 비율로 ~$10^{-16}$ — 현대 광시계는 이 차이를 직접 분해한다.</li><li>이 티끌 같은 기울기가 낙하의 주역이다: 시간축의 환산 배율이 $c$라서, $c^2\times(g/c^2) = g = 9.8\,\mathrm{m/s^2}$ — 정확히 맞아떨어진다.</li><li>일상 중력에서 공간의 휨은 부차적 — '고무판 위의 공' 그림이 놓치는 지점이 바로 이것.</li><li>여기까지의 그림: 물체는 힘을 받는 게 아니라, <b>시계·자의 눈금이 장소마다 다른 무대</b> 위에서 제 갈 길(직진)을 갈 뿐이다.</li></ul></div><div class="col fig-col"><figure class="fig"><img src="assets/img/clocks-height.svg" alt=""><figcaption>높이마다 다른 시계 빠르기 — 낮을수록 느리다. 이 기울기가 곧 중력</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">04 · 1912–1915</div><h2 class="s">무대를 구부리는 수학 — 그리고 두 번의 시도</h2><div class="body"><div class="bodyinner"><p class="lead">중력이 시계와 자를 바꾼다면, 그것은 힘이 아니라 <b>기하</b>다. 그리고 기하를 구부리려면 3장의 민코프스키 언어가 전제였다.</p><ul class="clean"><li>1912 취리히: 친구 그로스만이 리만의 휜 공간 기하학(1854)을 소개 — 휜 공간을 다루는 수학이 이미 있었다.</li><li>1913 초안(Entwurf): '모든 좌표계에서 같은 꼴'이라는 요구를 <b>포기한 절충안</b> — 이 식으로 수성의 초과 세차를 계산하니 43″가 아니라 18″. 실패.</li><li>1915년 11월: 요구를 복원한 최종 방정식 — 한 달 사이 네 편의 논문으로 완성.</li><li>3장의 다리가 여기서 회수된다: 아인슈타인이 처음 무시했던 민코프스키의 기하화가, 구부릴 수 있는 무대의 <b>전제 조건</b>이었다.</li></ul></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">04 · 장방정식</div><h2 class="s">장방정식 — 읽는 법</h2><div class="body"><div class="bodyinner"><p class="lead">유도 없이, 각 부분이 무엇인지만 정확히 읽는다.</p><ul class="clean"><li>한 줄 읽기: <b>물질·에너지의 분포가 곡률을 정하고, 물체는 그 휜 무대에서 힘 없이 직진한다</b> — 낙하·궤도는 그 직진의 겉모습이다.</li></ul><div class="eq">$$ G_{\mu\nu} = \frac{8\pi G}{c^{4}}\,T_{\mu\nu} $$</div><table class="sm"><thead><tr><th>부분</th><th>정체</th><th>읽기</th></tr></thead><tbody><tr><td>좌변 $G_{\mu\nu}$</td><td>시공간 곡률(기하)</td><td>첨자 $\mu\nu$는 시간·공간 4방향의 짝 — 대칭 4×4, 실은 <b>식 10개의 묶음</b></td></tr><tr><td>우변 $T_{\mu\nu}$</td><td>에너지·운동량 장부(원천)</td><td>질량만이 아니라 <b>에너지 밀도·흐름·압력</b>까지 전부 그 지점의 중력원</td></tr><tr><td>상수 $8\pi G/c^4$</td><td>환율</td><td>약한 중력에서 뉴턴 법칙으로 복귀하도록 보정 — 분모의 $c^4$: 시공간은 <b>지독히 뻣뻣</b>하다(중력파 검출에 $10^{-18}$ m 정밀도가 필요했던 이유 — LIGO 2015)</td></tr></tbody></table></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">04 · 심판</div><h2 class="s">피팅이 아니라 제약의 교차점 — 그래서 시험할 수 있었다</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">이 식은 현상에 맞춰 조정된 것이 아니다. 네 개의 요구가 꼴을 거의 유일하게 못박았고, 관측이 들어간 곳은 상수 하나뿐이다.</p><ul class="clean"><li>네 개의 제약: 모든 좌표계에서 같은 꼴 · 계량의 2계 미분까지 · 보존이 자동으로 성립하는 조합 · 약한 중력에서 뉴턴 복귀(상수 보정 — 유일한 관측 입력).</li><li>조정할 손잡이가 없다는 것은 <b>실패할 수 있다</b>는 뜻 — 그래서 검증이 의미를 가진다.</li><li><b>수성 43″/세기</b>: 완성 와중(11월 18일 수성 논문)에 계산해 보니 그대로 나왔다 — 입력이 아니라 <b>출력</b>. 심계항진이 왔다고 적었고, 며칠간 기쁨에 넋이 나가 있었다는 회고가 남아 있다.</li><li><b>1919 일식(에딩턴)</b>: 별빛 휨 1.75″ — 뉴턴식 계산의 정확히 2배 쪽이 관측됐다. <b>중력 적색편이</b>: 높이에 따른 시계 차 — 🔬 <a href="http://218.155.221.161:10101/physics-map/experiments/mossbauer-effect/index.html">뫼스바우어 효과로 실측</a>. <b>GPS</b>: 위성 시계는 하루 38 μs 어긋난다 — 보정 없이는 하루에 km급 오차.</li></ul></div><div class="col fig-col"><figure class="fig"><img src="assets/img/ext/eclipse-1919.jpg" alt=""><figcaption>1919년 5월 29일 개기일식 원판(에딩턴 원정) — 태양 곁 별빛의 이동이 1.75″ 예측과 일치 (Dyson·Eddington·Davidson 1920, PD)</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p3"><div class="kicker">04 · 이상한 구석</div><h2 class="s">승리의 한복판에서 — 에너지 보존이 이상하다</h2><div class="body"><div class="bodyinner"><p class="lead">이론은 완성됐고 검증도 통과했다. 그런데 완성 직후부터, <b>에너지 보존</b> 자리에서 이상한 일들이 발견된다.</p><ul class="clean"><li>우변 $T$에는 물질·전자기의 에너지가 다 있는데, <b>중력장 자신의 에너지 칸이 없다</b> — 그럼 중력파가 나르는 에너지는 어느 장부에 적나?</li><li>아인슈타인의 보완 장치(의사텐서)는 <b>좌표를 바꾸면 값이 생기고 사라졌다</b> — 중력이 전혀 없는 평평한 시공간에서 에너지가 찍히기도 하고(바우어), 별 주위 어디서나 0이 되기도 했다(슈뢰딩거). 좌표 선택에 흔들리는 양은 물리량이 아니다.</li><li>클라인의 해부: 그 '보존 법칙'을 뜯어 보니 <b>위반이 불가능하게 짜인 항등식</b> — 1+1=2처럼 무조건 참이라, 세계에 대해 아무것도 말하지 않는 식이었다.</li><li>힐베르트의 직감: 이것은 계산 실수가 아니라 <b>이런 종류의 이론이 갖는 구조적 특징</b>이다 — 문제는 물리학자의 손을 떠나 수학자의 문제가 된다.</li></ul><div class="note q">법칙은 어겨질 수 있어야 정보를 담는다 — 자동으로 참인 문장은 대체 무엇을 '보존'하고 있는가? 이 질문을 들고 5장으로 간다.</div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide divider" data-part="p4"><div class="num">05</div><h1>뇌터의 정리</h1><div class="d-sub">1918 — 보존이라는 개념에 대한 판결</div><div class="rule"></div></section>
+<section class="slide" data-part="p4"><div class="kicker">05 · 1915 괴팅겐</div><h2 class="s">수학자를 부르다</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">4장의 마지막 질문 — 자동으로 참인 보존식은 무엇을 보존하는가 — 은 방정식 풀이가 아니라 <b>식의 신분 감별</b> 문제였다. 힐베르트와 클라인은 그 감별의 전문가를 데려온다.</p><ul class="clean"><li>에미 뇌터 — <b>불변량 이론</b>(변환해도 변하지 않는 양의 수학) 전문가. 1915년 괴팅겐으로 초빙된다.</li><li>당시 프로이센 대학은 여성에게 교수 자격을 주지 않았다 — 수년간 힐베르트 이름으로 공고된 강의를 대신 진행하며 연구했다.</li><li>위임된 문제: 일반 공변 이론에서 에너지 보존의 지위. 답은 1918년 논문 「Invariante Variationsprobleme」 — <b>정리 두 개</b>로 돌아온다.</li><li>무대는 2장에서 준비된 그 언어다 — 작용 $S$와 $\delta S=0$. 대칭을 말할 수 있는 언어여야 대칭을 판결할 수 있다.</li></ul><div class="note">시간 압축 주의: 초빙(1915년 초)은 GR 완성(1915.11) 전 — 불변량 이론 조력이 먼저였고, 에너지 문제 위임은 1916–18년에 구체화됐다.</div></div><div class="col fig-col"><figure class="fig"><img src="assets/img/ext/noether.jpg" alt=""><figcaption>에미 뇌터(1882–1935) (Wikimedia Commons, PD)</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p4"><div class="kicker">05 · 정리 I</div><h2 class="s">정리 I — 연속 대칭 하나마다 보존량 하나</h2><div class="body"><div class="bodyinner"><p class="lead">진술: 작용을 바꾸지 않는 <b>연속 변환</b>(대칭)이 하나 있을 때마다, 시간이 흘러도 변하지 않는 양(보존량)이 하나씩 반드시 따라 나온다.</p><ul class="clean"><li>수백 년간 <b>개별 증명</b>으로 쌓여 있던 역학의 보존량 목록이, '10개 대칭의 10개 그림자'로 한 번에 정리된다.</li><li>처음으로 '<b>왜</b> 보존되는가'에 답이 생겼다 — 무대가 그 방향으로 균일하기 때문이다.</li></ul><div class="note">세부: 갈릴레이 부스트는 작용이 전미분만큼 변하는 준대칭(발산 항 허용 확장은 Bessel-Hagen 1921) — 상대론 무대에서는 문제없다.</div><table class="sm"><thead><tr><th>대칭 — 무엇을 해도 물리가 같은가</th><th>따라 나오는 보존량</th></tr></thead><tbody><tr><td>시간을 옮겨도 (오늘의 물리 = 내일의 물리)</td><td>에너지</td></tr><tr><td>공간을 옮겨도 (여기 = 저기, 3방향)</td><td>운동량</td></tr><tr><td>방향을 돌려도 (3축)</td><td>각운동량</td></tr><tr><td>등속 관점으로 갈아타도 (부스트, 3방향)</td><td>질량중심의 등속 운동</td></tr></tbody></table></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p4"><div class="kicker">05 · 메커니즘</div><h2 class="s">증명의 뼈대 한 컷 — 대칭 다이얼을 흔들어 본다</h2><div class="body"><div class="bodyinner"><div class="cols c2"><div class="col"><p class="lead">대칭을 <b>일정하게</b> 돌리는 대신, 시간에 따라 흔들어 본다($\theta(t)$). 두 사실이 충돌하며 보존이 튀어나온다.</p><ul class="clean"><li>2장의 작용 언어가 여기서 필수 부품이 된다 — 힘의 언어에는 이 논증을 놓을 자리가 없다.</li></ul><ol class="num"><li>대칭의 정의상, 작용은 다이얼의 <b>값</b>에는 반응하지 못한다 — 일정량 돌리기는 아무 흔적이 없다.</li><li>그러므로 흔들 때 작용이 반응할 수 있는 것은 <b>돌리는 속도 $\dot\theta$</b>뿐 — 그 반응의 계수를 $Q$라 부르자: $\delta S = \int Q\,\dot\theta\,dt$.</li><li>그런데 실제 경로에서는 어떤 변형에도 $\delta S = 0$ (2장) — 임의의 흔들기에 반응이 0이려면 길은 하나뿐: $\dot Q = 0$. <b>$Q$는 보존된다.</b></li></ol></div><div class="col fig-col"><figure class="fig"><img src="assets/img/dial-mechanism.svg" alt=""><figcaption>값에는 무감(대칭) + 속도 반응도 금지(δS=0) → 계수 Q는 상수일 수밖에</figcaption></figure></div></div></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p4"><div class="kicker">05 · 정리 II</div><h2 class="s">정리 II — 4장의 수수께끼에 대한 판결</h2><div class="body"><div class="bodyinner"><p class="lead">두 번째 정리는 대칭의 <b>종류</b>를 가른다 — 우주 전체를 한꺼번에 돌리는가, 장소마다 제각각 돌릴 수 있는가.</p><ul class="clean"><li>판결: 4장에서 본 상황 — 보존식이 1+1=2가 되어버린 것 — 은 결함도 실수도 아니고, <b>국소 대칭을 가진 이론이면 반드시 그렇게 되는 필연</b>이다.</li><li>그리고 에너지 보존의 재정의: 에너지 보존은 자연의 공리가 아니라 <b>시간-이동 대칭이 있는 무대에서만 성립하는 조건부 개념</b>이다 — 시간에 따라 변하는 무대(팽창하는 우주)에서는 대역 보존량 자체가 정의되지 않는다.</li><li>판결의 두 얼굴: 불가능 증명(좌표에 정직한 국소 중력 에너지는 존재할 수 없다 — 찾기를 멈춰라) + 구제(대칭이 살아 있는 무대에서는 보존이 돌아온다).</li></ul><table class="sm"><thead><tr><th>대칭의 종류</th><th>보존법칙의 신분</th></tr></thead><tbody><tr><td><b>대역</b> — 우주 전체를 한꺼번에 (시간 이동·회전 …)</td><td>진짜 보존법칙 — 어겨질 수 있는데 성립한다 (정보 있음)</td></tr><tr><td><b>국소</b> — 장소·시각마다 제각각 (일반상대성의 좌표 자유)</td><td>보존식이 <b>자동 성립하는 항등식</b>이 된다 (위반 불가 — 내용 없음)</td></tr></tbody></table></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p4"><div class="kicker">05 · 그 후</div><h2 class="s">파급 — 다음 이야기의 예고</h2><div class="body"><div class="bodyinner"><p class="lead">이 정리의 사정거리는 GR의 한 문제를 훌쩍 넘는다. 상세는 다음 세미나의 몫 — 여기서는 방향만.</p><ul class="clean"><li>파동함수의 위상을 <b>전체적으로</b> 돌려도 물리는 불변 — 그 대칭이 뇌터 기계를 지나면 <b>전하 보존</b>이 나온다.</li><li>같은 대칭을 <b>장소마다 제각각</b> 허용하라고 요구하면, 그것을 가능하게 하는 장이 강제로 등장한다 — 그 장이 <b>전자기장</b>이다(게이지 원리).</li><li>이 요구를 다른 대칭에 반복하면 약력·강력 — <b>표준모형은 대칭 세 개의 선택</b>이다.</li><li>설계 원리의 역전: '보존량을 관찰하고 신성시한다'에서 '<b>대칭을 고르면 보존과 힘이 따라온다</b>'로 — 20세기 물리학의 문법이 된다.</li></ul></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p4"><div class="kicker">다음 · 자료</div><h2 class="s">다음 예고 — 대칭이 힘을 낳는다 (게이지)</h2><div class="body"><div class="bodyinner"><p class="lead">뇌터의 마지막 슬라이드가 던진 질문 — 대칭을 <b>장소마다 제각각</b> 요구하면 무슨 일이 생기는가 — 가 다음 세미나의 전부다.</p><ul class="clean"><li>다음 주제: 국소 위상 대칭 → 전자기력의 탄생(QED) → 표준모형까지.</li><li>🗺 <b>물리학 지도</b> — 이론 페이지·선수 트리·진행 표시: <a href="http://218.155.221.161:10101/physics-map/physics-map.html">physics-map</a></li><li>🔬 <b>실험 갤러리</b> — 본 덱에 링크된 실험 포함, 인터랙티브 112+: <a href="http://218.155.221.161:10101/physics-map/experiments/index.html">experiments</a></li><li>📄 뇌터 정리 이론 페이지: <a href="http://218.155.221.161:10101/physics-map/theories/noether-symmetry.html">noether-symmetry</a></li></ul></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide" data-part="p4"><div class="kicker">References</div><h2 class="s">참고문헌</h2><div class="body"><div class="bodyinner"><ol class="num"><li>[1] I. Newton, <em>Philosophiæ Naturalis Principia Mathematica</em> (1687).</li><li>[2] J.-L. Lagrange, <em>Mécanique analytique</em> (1788).</li><li>[3] A. Einstein, "Zur Elektrodynamik bewegter Körper", <em>Ann. Phys.</em> 17, 891 (1905).</li><li>[4] A. Einstein, "Ist die Trägheit eines Körpers von seinem Energieinhalt abhängig?", <em>Ann. Phys.</em> 18, 639 (1905).</li><li>[5] H. Minkowski, "Raum und Zeit", 쾰른 자연과학자·의사 대회(80차) 강연 (1908).</li><li>[6] A. Einstein, "Die Feldgleichungen der Gravitation" (1915) · "Die Grundlage der allgemeinen Relativitätstheorie", <em>Ann. Phys.</em> 49 (1916).</li><li>[7] E. Noether, "Invariante Variationsprobleme", <em>Nachr. Ges. Wiss. Göttingen</em> (1918).</li><li>[8] C. Misner, K. Thorne, J. A. Wheeler, <em>Gravitation</em> (1973) — 장방정식·등가원리 표준 교과서.</li><li>[9] 도판: Wikimedia Commons (PD·CC0)·NASA — 출처·라이선스는 각 슬라이드 캡션에 개별 표기.</li></ol></div></div><div class="foot"><span>뉴턴에서 뇌터까지 v2 · Suhwan</span><span class="pg"></span></div></section>
+<section class="slide divider" data-part="p4"><div class="num">끝</div><h1>감사합니다</h1><div class="d-sub">덱 허브 · useless-engineers/html-ppt — 발표자 Suhwan</div><div class="rule"></div></section>
+</div></div>
+
+<div id="hud">
+  <button id="btnPrev" title="이전 (←)">‹</button>
+  <span id="counter">1 / 1</span>
+  <button id="btnNext" title="다음 (→)">›</button>
+  <button id="btnGrid" title="개요 (O / Esc)">▦</button>
+</div>
+<div id="hint">← → 이동 · 휠 확대 · 🔍 그림확대 · 0 화면맞춤 · P 펜 · O 개요 · F 전체화면</div>
+<div id="overview"><h3>슬라이드 개요 — 클릭하여 이동 (Esc 닫기)</h3><div class="ovgrid" id="ovgrid"></div></div>
+
+<script src="assets/cytoscape.min.js"></script>
+<script src="assets/dagre.min.js"></script>
+<script src="assets/cytoscape-dagre.min.js"></script>
+<script src="assets/cyto.js?v=20260625a"></script>
+<script src="assets/zoom.js?v=20260709a"></script>
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/auto-render.min.js"></script>
+<script src="assets/tviz.js?v=20260625a"></script>
+<script src="assets/tviz-scenes.js?v=20260625a"></script>
+<script>
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=Array.from(deck.querySelectorAll('.slide'));
+  const stage=document.getElementById('stage');
+  const counter=document.getElementById('counter');
+  const progress=document.getElementById('progress');
+  const overview=document.getElementById('overview');
+  const ovgrid=document.getElementById('ovgrid');
+  const N=slides.length;
+  let cur=0;
+
+  slides.forEach((s,k)=>{ const f=s.querySelector('.foot .pg'); if(f) f.textContent=(k+1)+' / '+N; });
+
+  function mountViz(box){
+    if(box.dataset.mounted) return; box.dataset.mounted="1";
+    box.addEventListener('click', function(e){ e.stopPropagation(); });
+    const slug=box.getAttribute("data-scene");
+    const scene=window.TVIZ_SCENES&&window.TVIZ_SCENES[slug];
+    if(!scene||!window.TVIZ){ box.innerHTML='<div class="vizph">애니메이션 로드 실패: '+slug+'</div>'; return; }
+    box.innerHTML=""; try{ window.TVIZ.mount(box,scene); }
+    catch(e){ console.warn("TVIZ",slug,e); box.innerHTML='<div class="vizph">로드 실패: '+slug+'</div>'; }
+  }
+  function fitInner(inner){
+    if(!inner) return; const body=inner.parentElement; if(!body) return;
+    inner.style.transform='none';
+    const aw=body.clientWidth, ah=body.clientHeight, nw=inner.scrollWidth, nh=inner.scrollHeight;
+    if(!ah||!nh) return;
+    const sc=Math.min(1, ah/nh, (aw&&nw)?aw/nw:1);
+    inner.style.transform = sc<0.995 ? 'scale('+sc.toFixed(4)+')' : 'none';
+  }
+  function fitSlide(slide){ if(slide) fitInner(slide.querySelector('.bodyinner')); }
+  const roFit = ('ResizeObserver' in window) ? new ResizeObserver(function(es){ es.forEach(function(e){ fitInner(e.target); }); }) : null;
+
+  function renderAssets(slide){
+    if(!slide||slide.dataset.assetsDone) return; slide.dataset.assetsDone="1";
+    if(window.renderMathInElement){ try{ window.renderMathInElement(slide,{
+        delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],
+        ignoredTags:["script","noscript","style","textarea","pre","code","option"], throwOnError:false}); }catch(e){} }
+    const inner=slide.querySelector('.bodyinner');
+    const done=function(){
+      slide.querySelectorAll('.vizbox[data-scene]').forEach(mountViz);
+      if(roFit&&inner) roFit.observe(inner);
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ fitSlide(slide); }); });
+      setTimeout(function(){ fitSlide(slide); }, 250);
+      setTimeout(function(){ fitSlide(slide); }, 700);
+    };
+    if(window.SeminarCyto){ try{ window.SeminarCyto.renderIn(slide); }catch(e){ console.warn("cyto",e); } }
+    done();
+  }
+
+  function fit(){ const m=(Math.min(window.innerWidth||9999,window.innerHeight||9999)<820?8:24); var de=document.documentElement,vw=(de&&de.clientWidth)||innerWidth,vh=(de&&de.clientHeight)||innerHeight;const sc=Math.min((vw-m)/1280,(vh-m)/720);/*__DECKFIT_MOBILE__*/
+    deck.style.transform='scale('+sc+')'; stage.style.width=(1280*sc)+'px'; stage.style.height=(720*sc)+'px'; }
+  function show(i){ cur=Math.max(0,Math.min(N-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    counter.textContent=(cur+1)+' / '+N; progress.style.width=((cur+1)/N*100)+'%'; location.hash=cur+1;
+    renderAssets(slides[cur]); fitSlide(slides[cur]);
+    window.dispatchEvent(new CustomEvent('deck:show',{detail:{cur:cur}})); }
+  function next(){show(cur+1);} function prev(){show(cur-1);}
+  window.SeminarDeck={ deck:deck, stage:stage, get cur(){return cur;}, count:N, fit:fit, show:show, next:next, prev:prev };
+
+  document.getElementById('btnNext').onclick=next;
+  document.getElementById('btnPrev').onclick=prev;
+  document.getElementById('btnGrid').onclick=toggleOv;
+  document.addEventListener('keydown',e=>{
+    if(overview.classList.contains('on')){ if(e.key==='Escape'||e.key==='o'||e.key==='O') toggleOv(); return; }
+    switch(e.key){
+      case 'ArrowRight': case ' ': case 'PageDown': next(); e.preventDefault(); break;
+      case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+      case 'Home': show(0); break; case 'End': show(N-1); break;
+      case 'o': case 'O': toggleOv(); break;
+      case 'f': case 'F': if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); break;
+    }
+  });
+
+  slides.forEach((s,k)=>{
+    const cell=document.createElement('div'); cell.className='ovcell';
+    let title='';
+    if(s.classList.contains('cover')) title=(s.querySelector('h1')||{}).textContent||'Title';
+    else if(s.classList.contains('divider')) title=(s.querySelector('h1')||{}).textContent||'';
+    else { const h1=s.querySelector('h2.s,h1.s'); const k1=s.querySelector('.kicker'); title=(h1?h1.textContent:(k1?k1.textContent:'')); }
+    const part=s.dataset.part||'p2';
+    const col='var(--'+part+')';
+    cell.innerHTML='<span class="ovbar" style="background:'+col+'"></span><div class="ovn">'+(k+1)+'</div><div class="ovt">'+title+'</div>';
+    cell.onclick=()=>{ show(k); toggleOv(); }; ovgrid.appendChild(cell);
+  });
+  function toggleOv(){ overview.classList.toggle('on'); }
+
+  function refit(){try{fit();if(slides[cur])fitSlide(slides[cur]);}catch(e){}}/*__DECKFIT_MOBILE__*/addEventListener('resize',refit);addEventListener('orientationchange',function(){refit();setTimeout(refit,250);});addEventListener('pageshow',refit);if(window.visualViewport){try{visualViewport.addEventListener('resize',refit);}catch(e){}}addEventListener('load',function(){refit();setTimeout(refit,150);});fit();requestAnimationFrame(refit);setTimeout(refit,300);
+  const h=parseInt(location.hash.replace('#','')); show(isNaN(h)?0:h-1);
+  if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(function(){ fitSlide(slides[cur]); }); }
+})();
+</script>
+<script src="assets/present.js?v=20260715c"></script>
+</body>
+</html>

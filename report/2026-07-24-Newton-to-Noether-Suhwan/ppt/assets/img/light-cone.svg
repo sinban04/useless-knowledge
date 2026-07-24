@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" font-family="system-ui,-apple-system,sans-serif">
+  <rect width="800" height="440" fill="#ffffff"/>
+  <!-- cones -->
+  <polygon points="400,255 235,90 565,90" fill="#f59e0b" opacity="0.13"/>
+  <polygon points="400,255 235,420 565,420" fill="#7c3aed" opacity="0.10"/>
+  <!-- axes -->
+  <line x1="400" y1="428" x2="400" y2="42" stroke="#94a3b8" stroke-width="1.8"/>
+  <path d="M 400 34 L 395 47 L 405 47 Z" fill="#94a3b8"/>
+  <line x1="90" y1="255" x2="716" y2="255" stroke="#94a3b8" stroke-width="1.8"/>
+  <path d="M 724 255 L 711 250 L 711 260 Z" fill="#94a3b8"/>
+  <text x="414" y="52" font-size="14" fill="#475569">시간 ct</text>
+  <text x="694" y="276" font-size="14" fill="#475569">공간 x</text>
+  <!-- light lines 45° -->
+  <line x1="400" y1="255" x2="230" y2="85" stroke="#d97706" stroke-width="2.6"/>
+  <line x1="400" y1="255" x2="570" y2="85" stroke="#d97706" stroke-width="2.6"/>
+  <line x1="400" y1="255" x2="230" y2="425" stroke="#d97706" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="400" y1="255" x2="570" y2="425" stroke="#d97706" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="556" y="120" font-size="13.5" fill="#b45309">빛 — 정확히 45°</text>
+  <!-- regions -->
+  <text x="400" y="120" font-size="14.5" fill="#b45309" text-anchor="middle" font-weight="600">미래 — 영향 줄 수 있음</text>
+  <text x="400" y="396" font-size="14.5" fill="#7c3aed" text-anchor="middle" font-weight="600">과거 — 영향 받을 수 있었음</text>
+  <text x="170" y="238" font-size="14" fill="#64748b" text-anchor="middle">다른곳</text>
+  <text x="640" y="238" font-size="14" fill="#64748b" text-anchor="middle">다른곳</text>
+  <text x="170" y="222" font-size="12" fill="#94a3b8" text-anchor="middle">(인과 불가 —</text>
+  <text x="640" y="222" font-size="12" fill="#94a3b8" text-anchor="middle">시간 순서도 관점 나름)</text>
+  <!-- event -->
+  <circle cx="400" cy="255" r="6.5" fill="#0891b2"/>
+  <text x="388" y="286" font-size="13.5" fill="#0e7490" text-anchor="end">사건 — 여기·지금</text>
+</svg>

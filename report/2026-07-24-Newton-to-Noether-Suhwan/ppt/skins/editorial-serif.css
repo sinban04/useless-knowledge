@@ -1,0 +1,24 @@
+/* skin: editorial-serif — cream/ivory slides, serif body, terracotta+olive accents (from template-c). */
+:root{
+  --ink:#2b2620; --ink2:#4a4339; --muted:#857c6e; --faint:#a89e8e;
+  --paper:#fbf6ec; --card:#fffdf8; --line:#e6ddcd; --line2:#d6ccb8;
+  --stage-bg:#1c1916;
+  --row-alt:#f3ecdd;
+  --code-bg:#efe7d6; --code-fg:#9a4a22;
+  --codeblock-bg:#2b2620; --codeblock-fg:#efe7d6;
+  --note-bg:#f4ece0; --note-op-bg:#f6efe0; --note-op-line:#b5853e; --note-q-bg:#eef0e2;
+  --th-bg:#3a322a; --th-fg:#fbf6ec;
+  --p1:#9a6a2f; --p2:#b5532e; --p3:#7d7f3f; --p4:#8a5a6f;
+  --accent:var(--p2); --bar:var(--p2); --note-q-line:#7d7f3f;
+  --cover-bg:linear-gradient(150deg,#241f19 0%,#4a2c1e 55%,#3a3320 100%);
+  --cover-fg:#f6efe2; --cover-eyebrow:#d8a06a; --cover-sub:#cdbfa8; --cover-meta:#a99a86;
+  --divider-fg:#f6efe2; --divider-sub:rgba(255,255,255,.74); --divider-rule:#fff;
+  --div-p1:linear-gradient(140deg,#2c2418,#473515);
+  --div-p2:linear-gradient(140deg,#3a1d12,#5e2e1a);
+  --div-p3:linear-gradient(140deg,#26271a,#43461f);
+  --div-p4:linear-gradient(140deg,#2c2126,#4a2f3d);
+  --map-bg:radial-gradient(120% 90% at 50% 0%, #241f19 0%, #15110d 70%);
+  --serif:"Iowan Old Style",Georgia,"Noto Serif KR",serif;
+  --sans:Georgia,"Iowan Old Style","Noto Serif KR",serif;
+  --mono:ui-monospace,"SFMono-Regular","JetBrains Mono",Menlo,Consolas,monospace;
+}

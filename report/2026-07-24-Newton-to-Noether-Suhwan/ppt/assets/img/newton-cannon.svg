@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" font-family="system-ui,-apple-system,sans-serif">
+  <rect width="800" height="460" fill="#ffffff"/>
+  <!-- earth -->
+  <circle cx="400" cy="900" r="700" fill="#e0f2fe" stroke="#94a3b8" stroke-width="2"/>
+  <text x="400" y="430" font-size="15" fill="#64748b" text-anchor="middle">지구</text>
+  <!-- mountain + cannon -->
+  <path d="M 360 208 L 400 148 L 440 208 Z" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.5"/>
+  <rect x="396" y="136" width="26" height="9" rx="3" fill="#475569" transform="rotate(-18 396 141)"/>
+  <text x="330" y="128" font-size="14" fill="#334155" text-anchor="middle">산꼭대기 대포</text>
+  <!-- trajectories -->
+  <path d="M 418 142 Q 480 140 555 214" fill="none" stroke="#f97316" stroke-width="2.5"/>
+  <path d="M 418 142 Q 560 110 700 268" fill="none" stroke="#ea580c" stroke-width="2.5"/>
+  <circle cx="555" cy="214" r="4" fill="#f97316"/>
+  <circle cx="700" cy="268" r="4" fill="#ea580c"/>
+  <text x="548" y="250" font-size="13.5" fill="#c2410c" text-anchor="middle">느리면 → 낙하</text>
+  <text x="682" y="306" font-size="13.5" fill="#c2410c" text-anchor="middle">빠르면 → 더 먼 낙하</text>
+  <!-- orbit -->
+  <path d="M 0 271 A 745 745 0 0 1 800 271" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-dasharray="9 7"/>
+  <text x="150" y="238" font-size="14" fill="#1d4ed8">7.9 km/s — 낙하가 궤도가 된다</text>
+  <!-- moon -->
+  <circle cx="695" cy="78" r="13" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="674" y="83" font-size="13" fill="#64748b" text-anchor="end">달 — 계속 떨어지는 중</text>
+</svg>

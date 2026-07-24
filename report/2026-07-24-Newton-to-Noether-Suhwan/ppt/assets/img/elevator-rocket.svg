@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 430" font-family="system-ui,-apple-system,sans-serif">
+  <rect width="800" height="430" fill="#ffffff"/>
+  <!-- left: room on Earth -->
+  <text x="215" y="46" font-size="15" fill="#0f172a" font-weight="600" text-anchor="middle">지구 위의 방</text>
+  <rect x="120" y="70" width="190" height="270" fill="#f8fafc" stroke="#475569" stroke-width="3"/>
+  <line x1="60" y1="340" x2="370" y2="340" stroke="#475569" stroke-width="3"/>
+  <g stroke="#94a3b8" stroke-width="1.5">
+    <line x1="70" y1="340" x2="55" y2="358"/><line x1="110" y1="340" x2="95" y2="358"/>
+    <line x1="150" y1="340" x2="135" y2="358"/><line x1="190" y1="340" x2="175" y2="358"/>
+    <line x1="230" y1="340" x2="215" y2="358"/><line x1="270" y1="340" x2="255" y2="358"/>
+    <line x1="310" y1="340" x2="295" y2="358"/><line x1="350" y1="340" x2="335" y2="358"/>
+  </g>
+  <text x="215" y="382" font-size="13" fill="#64748b" text-anchor="middle">지면 — g = 9.8 m/s²</text>
+  <!-- person + ball -->
+  <circle cx="170" cy="220" r="13" fill="none" stroke="#334155" stroke-width="2.5"/>
+  <line x1="170" y1="233" x2="170" y2="290" stroke="#334155" stroke-width="2.5"/>
+  <line x1="170" y1="290" x2="155" y2="330" stroke="#334155" stroke-width="2.5"/>
+  <line x1="170" y1="290" x2="185" y2="330" stroke="#334155" stroke-width="2.5"/>
+  <line x1="170" y1="250" x2="205" y2="238" stroke="#334155" stroke-width="2.5"/>
+  <circle cx="245" cy="160" r="9" fill="#dc2626"/>
+  <line x1="245" y1="176" x2="245" y2="240" stroke="#dc2626" stroke-width="2.2"/>
+  <path d="M 245 248 L 240 236 L 250 236 Z" fill="#dc2626"/>
+  <!-- right: accelerating room -->
+  <text x="580" y="46" font-size="15" fill="#0f172a" font-weight="600" text-anchor="middle">가속하는 방 — 우주 한가운데</text>
+  <rect x="485" y="70" width="190" height="270" fill="#f8fafc" stroke="#475569" stroke-width="3"/>
+  <!-- flame -->
+  <path d="M 540 342 L 555 385 L 570 342 Z" fill="#f97316" opacity="0.85"/>
+  <path d="M 590 342 L 605 393 L 620 342 Z" fill="#f97316" opacity="0.85"/>
+  <!-- acceleration arrow -->
+  <line x1="730" y1="300" x2="730" y2="170" stroke="#2563eb" stroke-width="3"/>
+  <path d="M 730 160 L 723 176 L 737 176 Z" fill="#2563eb"/>
+  <text x="722" y="150" font-size="13.5" fill="#2563eb" text-anchor="middle">a = 9.8 m/s²</text>
+  <!-- person + ball -->
+  <circle cx="535" cy="220" r="13" fill="none" stroke="#334155" stroke-width="2.5"/>
+  <line x1="535" y1="233" x2="535" y2="290" stroke="#334155" stroke-width="2.5"/>
+  <line x1="535" y1="290" x2="520" y2="330" stroke="#334155" stroke-width="2.5"/>
+  <line x1="535" y1="290" x2="550" y2="330" stroke="#334155" stroke-width="2.5"/>
+  <line x1="535" y1="250" x2="570" y2="238" stroke="#334155" stroke-width="2.5"/>
+  <circle cx="610" cy="160" r="9" fill="#dc2626"/>
+  <line x1="610" y1="176" x2="610" y2="240" stroke="#dc2626" stroke-width="2.2"/>
+  <path d="M 610 248 L 605 236 L 615 236 Z" fill="#dc2626"/>
+  <!-- middle -->
+  <text x="400" y="412" font-size="14.5" fill="#0f172a" text-anchor="middle" font-weight="600">안에서는 어떤 실험으로도 구별 불가 — 국소적으로 중력 = 가속</text>
+</svg>

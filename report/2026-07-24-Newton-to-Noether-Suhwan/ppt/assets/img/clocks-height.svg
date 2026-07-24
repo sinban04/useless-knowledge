@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,-apple-system,sans-serif">
+  <rect width="800" height="420" fill="#ffffff"/>
+  <!-- height axis -->
+  <line x1="90" y1="390" x2="90" y2="50" stroke="#94a3b8" stroke-width="1.8"/>
+  <path d="M 90 42 L 85 55 L 95 55 Z" fill="#94a3b8"/>
+  <text x="104" y="58" font-size="14" fill="#475569">높이</text>
+  <!-- clocks -->
+  <g stroke-width="2.5" fill="#ffffff">
+    <circle cx="200" cy="100" r="34" stroke="#0d9488"/>
+    <circle cx="200" cy="215" r="34" stroke="#64748b"/>
+    <circle cx="200" cy="330" r="34" stroke="#dc2626"/>
+  </g>
+  <line x1="200" y1="100" x2="200" y2="76" stroke="#0d9488" stroke-width="2.5"/>
+  <line x1="200" y1="100" x2="222" y2="110" stroke="#0d9488" stroke-width="2"/>
+  <line x1="200" y1="215" x2="200" y2="191" stroke="#64748b" stroke-width="2.5"/>
+  <line x1="200" y1="215" x2="218" y2="228" stroke="#64748b" stroke-width="2"/>
+  <line x1="200" y1="330" x2="200" y2="306" stroke="#dc2626" stroke-width="2.5"/>
+  <line x1="200" y1="330" x2="212" y2="346" stroke="#dc2626" stroke-width="2"/>
+  <text x="258" y="100" font-size="13.5" fill="#0d9488">빠름</text>
+  <text x="258" y="335" font-size="13.5" fill="#dc2626">느림</text>
+  <text x="130" y="392" font-size="12.5" fill="#94a3b8">1 m당 비율 ~10⁻¹⁶ — 광시계로 실측</text>
+  <!-- bending trajectory -->
+  <path d="M 420 110 C 540 118, 640 170, 706 330" fill="none" stroke="#2563eb" stroke-width="3.2"/>
+  <path d="M 710 340 L 698 330 L 708 324 Z" fill="#2563eb"/>
+  <circle cx="420" cy="110" r="6" fill="#1d4ed8"/>
+  <text x="430" y="90" font-size="13.5" fill="#1d4ed8">자유 운동 — 힘 0의 직진</text>
+  <text x="560" y="250" font-size="14" fill="#1d4ed8">시계가 느린 쪽으로 굽는다</text>
+  <text x="560" y="272" font-size="14" fill="#1d4ed8">= 낙하</text>
+  <text x="470" y="392" font-size="13.5" fill="#475569">c² × (기울기 g/c²) = g = 9.8 m/s² — 정확히 일치</text>
+</svg>

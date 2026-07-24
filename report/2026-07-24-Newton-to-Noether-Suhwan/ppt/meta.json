@@ -1,0 +1,16 @@
+{
+  "slug": "2026-07-23-newton-to-noether-v2-l5-deep-suhwan",
+  "title": "뉴턴에서 뇌터까지 — 운동을 기술하는 방법의 역사 (v2)",
+  "author": "Suhwan",
+  "topic": "physics",
+  "date": "2026-07-23",
+  "level": "L5 · Deep",
+  "skin": "dark-pro",
+  "slides": 44,
+  "summary": "전면 신작(v2) — 전체 흐름 1페이지 후 다섯 장: 뉴턴(케플러의 패턴→세 법칙→상태+법칙=미래→핼리·해왕성) → 라그랑주(페르마→작용 δS=0→오일러-라그랑주→진자 하나를 두 언어로·비교표) → 특수상대성(에테르·MM→1905 논문의 자석-도체 비대칭→두 공준→빛시계·로런츠·자성=전기의 단면→민코프스키 2매·부록 E=mc²) → 일반상대성(두 의문→행복한 생각→보편성→시간의 휨→장방정식 읽는 법→제약의 교차점·심판→에너지 보존의 이상한 구석) → 뇌터(괴팅겐→정리 I 표·다이얼 메커니즘→정리 II 판결→게이지 예고). 자체 SVG 8종·실험 링크 4종. deck-dark-pro × content-l5-deep.",
+  "sources": [
+    "topics/quantum-mechanics/theories/* (physics-map 이론 페이지)",
+    "2026-07-12-newton-to-noether-l5-deep-suhwan (구판 — 보존)"
+  ],
+  "style": "deck-dark-pro × content-l5-deep"
+}

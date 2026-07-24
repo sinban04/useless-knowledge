@@ -1,0 +1,42 @@
+/* skin: paper-dark — light "paper" slides on a dark stage, bronze/red/blue/violet accents.
+   A skin is a pure :root token block. shell.html (structure) consumes only var(--*),
+   so swapping this block reskins any deck without touching content or layout.
+   Default skin of the deck kit. */
+:root{
+  /* base palette */
+  --ink:#191b22; --ink2:#3a3e4d; --muted:#6b7180; --faint:#9aa0ad;
+  --paper:#fbfaf7; --card:#ffffff; --line:#e7e3da; --line2:#d6d1c4;
+  --stage-bg:#1b1d24;
+  --row-alt:#f4f1ea;
+  --code-bg:#efece4; --code-fg:#7a2d1a;
+  --codeblock-bg:#1d1f27; --codeblock-fg:#e7e3d8;
+  --note-bg:#eef5fb;
+  --note-op-bg:#fff7ec; --note-op-line:#e8923a;
+  --note-q-bg:#f3eefb;
+  --th-bg:var(--ink); --th-fg:#ffffff;   /* table header — dark skins override --th-bg */
+
+  /* 4 thematic accent buckets — assign your topic's parts to p1..p4 (p1 = intro/overview by convention) */
+  --p1:#9a7b3f; --p2:#b5341f; --p3:#2f6f9f; --p4:#6d4aa3;
+  --accent:var(--p2);          /* per-slide accent default (overridden by [data-part]) */
+  --bar:var(--p2);             /* global chrome accent: progress bar, deck-level pill, overview hover */
+  --note-q-line:var(--p4);
+
+  /* cover */
+  --cover-bg:linear-gradient(150deg,#1b1d24 0%,#1e2f3d 55%,#3a1d1a 100%);
+  --cover-fg:#f4f1ea; --cover-eyebrow:#7fb0d0; --cover-sub:#cabfb6; --cover-meta:#a89e93;
+
+  /* divider (per-part full-bleed backgrounds) */
+  --divider-fg:#f4f1ea; --divider-sub:rgba(255,255,255,.74); --divider-rule:#fff;
+  --div-p1:linear-gradient(140deg,#2c2820,#3f3722);
+  --div-p2:linear-gradient(140deg,#3a1d1a,#5a241c);
+  --div-p3:linear-gradient(140deg,#16242f,#1f3a4d);
+  --div-p4:linear-gradient(140deg,#241f33,#392f4d);
+
+  /* map (node-graph) landing background */
+  --map-bg:radial-gradient(120% 90% at 50% 0%, #1a2330 0%, #11161f 70%);
+
+  /* fonts */
+  --serif:"Iowan Old Style","Apple Garamond",Georgia,"Noto Serif KR",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Pretendard","Noto Sans KR",system-ui,sans-serif;
+  --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+}

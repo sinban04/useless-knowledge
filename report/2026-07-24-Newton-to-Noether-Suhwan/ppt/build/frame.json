@@ -1,0 +1,75 @@
+{
+  "title": "뉴턴에서 뇌터까지 — 운동을 기술하는 방법의 역사 (v2)",
+  "level": "L5 · Deep",
+  "footer": "뉴턴에서 뇌터까지 v2 · Suhwan",
+  "skin": "dark-pro",
+  "cover": {
+    "kind": "cover",
+    "eyebrow": "Useless Engineers · Seminar",
+    "title": "뉴턴에서 뇌터까지",
+    "subtitle": "물체의 운동을 기술하는 방법 — 힘, 작용, 시공간, 그리고 대칭",
+    "tags": [
+      {"k": "p2", "label": "작용 · δS = 0"},
+      {"k": "p3", "label": "시공간 · 장방정식"},
+      {"k": "p4", "label": "대칭 · 보존"}
+    ],
+    "meta": "발표자 <b style=\"color:#e8e3d8\">Suhwan</b> &nbsp;·&nbsp; 2026-07-24 &nbsp;·&nbsp; L5 심층 · 물리 비전공 엔지니어 대상"
+  },
+  "agenda": [
+    {
+      "kind": "content",
+      "part": "p1",
+      "kicker": "전체 흐름",
+      "title": "다섯 걸음 — 한 장으로",
+      "layout": "split",
+      "lead": "각 이론은 앞 이론이 남긴 질문에서 출발한다. 이 순서 그대로 간다.",
+      "numbered": [
+        "<b>뉴턴 역학</b> — 힘과 세 법칙: 지금의 상태 + 힘의 법칙 → 미래 전체가 계산된다.",
+        "<b>라그랑지안 역학</b> — 같은 운동을 작용의 극값($\\delta S=0$)으로: 대칭이 눈에 보이는 언어.",
+        "<b>특수상대성</b> — 전자기 설명의 비대칭에서 출발, 두 공준이 시간·공간을 하나의 시공간으로 묶는다.",
+        "<b>일반상대성</b> — 중력을 힘에서 시공간의 모양으로: 장방정식, 그리고 에너지 보존의 이상한 구석.",
+        "<b>뇌터 정리</b> — 그 이상함의 판결: 보존량은 대칭의 산물이다."
+      ],
+      "mermaid": "flowchart LR\n  N[뉴턴<br/>힘] --> L[라그랑주<br/>작용] --> S[특수상대성<br/>시공간] --> G[일반상대성<br/>휜 시공간] --> X[뇌터<br/>대칭]"
+    }
+  ],
+  "closing": [
+    {
+      "kind": "content",
+      "part": "p4",
+      "kicker": "다음 · 자료",
+      "title": "다음 예고 — 대칭이 힘을 낳는다 (게이지)",
+      "lead": "뇌터의 마지막 슬라이드가 던진 질문 — 대칭을 <b>장소마다 제각각</b> 요구하면 무슨 일이 생기는가 — 가 다음 세미나의 전부다.",
+      "bullets": [
+        "다음 주제: 국소 위상 대칭 → 전자기력의 탄생(QED) → 표준모형까지.",
+        "🗺 <b>물리학 지도</b> — 이론 페이지·선수 트리·진행 표시: <a href=\"http://218.155.221.161:10101/physics-map/physics-map.html\">physics-map</a>",
+        "🔬 <b>실험 갤러리</b> — 본 덱에 링크된 실험 포함, 인터랙티브 112+: <a href=\"http://218.155.221.161:10101/physics-map/experiments/index.html\">experiments</a>",
+        "📄 뇌터 정리 이론 페이지: <a href=\"http://218.155.221.161:10101/physics-map/theories/noether-symmetry.html\">noether-symmetry</a>"
+      ]
+    },
+    {
+      "kind": "content",
+      "part": "p4",
+      "kicker": "References",
+      "title": "참고문헌",
+      "numbered": [
+        "[1] I. Newton, <em>Philosophiæ Naturalis Principia Mathematica</em> (1687).",
+        "[2] J.-L. Lagrange, <em>Mécanique analytique</em> (1788).",
+        "[3] A. Einstein, \"Zur Elektrodynamik bewegter Körper\", <em>Ann. Phys.</em> 17, 891 (1905).",
+        "[4] A. Einstein, \"Ist die Trägheit eines Körpers von seinem Energieinhalt abhängig?\", <em>Ann. Phys.</em> 18, 639 (1905).",
+        "[5] H. Minkowski, \"Raum und Zeit\", 쾰른 자연과학자·의사 대회(80차) 강연 (1908).",
+        "[6] A. Einstein, \"Die Feldgleichungen der Gravitation\" (1915) · \"Die Grundlage der allgemeinen Relativitätstheorie\", <em>Ann. Phys.</em> 49 (1916).",
+        "[7] E. Noether, \"Invariante Variationsprobleme\", <em>Nachr. Ges. Wiss. Göttingen</em> (1918).",
+        "[8] C. Misner, K. Thorne, J. A. Wheeler, <em>Gravitation</em> (1973) — 장방정식·등가원리 표준 교과서.",
+        "[9] 도판: Wikimedia Commons (PD·CC0)·NASA — 출처·라이선스는 각 슬라이드 캡션에 개별 표기."
+      ]
+    },
+    {
+      "kind": "divider",
+      "part": "p4",
+      "num": "끝",
+      "title": "감사합니다",
+      "subtitle": "덱 허브 · useless-engineers/html-ppt — 발표자 Suhwan"
+    }
+  ]
+}

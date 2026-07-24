@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,-apple-system,sans-serif">
+  <rect width="800" height="420" fill="#ffffff"/>
+  <!-- dial -->
+  <circle cx="150" cy="120" r="52" fill="#f8fafc" stroke="#475569" stroke-width="2.5"/>
+  <line x1="150" y1="120" x2="185" y2="85" stroke="#0d9488" stroke-width="3.5"/>
+  <circle cx="150" cy="120" r="5" fill="#475569"/>
+  <path d="M 210 92 A 66 66 0 0 1 212 146" fill="none" stroke="#0d9488" stroke-width="2" stroke-dasharray="4 4"/>
+  <path d="M 214 152 L 206 142 L 216 139 Z" fill="#0d9488"/>
+  <text x="150" y="200" font-size="14" fill="#334155" text-anchor="middle">대칭 다이얼 θ</text>
+  <text x="150" y="222" font-size="12.5" fill="#64748b" text-anchor="middle">(평행이동 · 회전 · 위상 …)</text>
+  <!-- wiggle curve -->
+  <line x1="80" y1="330" x2="300" y2="330" stroke="#94a3b8" stroke-width="1.5"/>
+  <path d="M 80 330 C 110 330, 120 296, 150 296 S 190 352, 220 352 S 270 330, 300 330" fill="none" stroke="#0d9488" stroke-width="2.6"/>
+  <text x="190" y="392" font-size="13" fill="#475569" text-anchor="middle">일정하게 말고 — 흔들어 본다: θ(t)</text>
+  <!-- steps -->
+  <g font-size="13.5" fill="#0f172a">
+    <rect x="360" y="56" width="392" height="76" rx="10" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="376" y="86" font-weight="600">① 대칭 — 값 θ에는 무감</text>
+    <text x="376" y="112" fill="#475569">일정량 돌리기는 작용 S에 흔적이 없다</text>
+    <rect x="360" y="152" width="392" height="76" rx="10" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="376" y="182" font-weight="600">② 반응은 돌리는 속도에만 — 계수 Q</text>
+    <text x="376" y="208" fill="#475569">δS = ∫ Q · (dθ/dt) dt — 이 식이 Q의 정의</text>
+    <rect x="360" y="248" width="392" height="76" rx="10" fill="#ecfdf5" stroke="#34d399" stroke-width="1.8"/>
+    <text x="376" y="278" font-weight="600">③ 실제 경로는 δS = 0 (2장)</text>
+    <text x="376" y="304" fill="#475569">임의의 흔들기에 0이려면 — dQ/dt = 0, Q 보존</text>
+  </g>
+  <path d="M 556 138 L 556 146" stroke="#94a3b8" stroke-width="2"/>
+  <path d="M 556 152 L 551 142 L 561 142 Z" fill="#94a3b8"/>
+  <path d="M 556 234 L 556 242" stroke="#94a3b8" stroke-width="2"/>
+  <path d="M 556 248 L 551 238 L 561 238 Z" fill="#94a3b8"/>
+</svg>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><!--TITLE--></title>
+<link rel="stylesheet" href="assets/katex/katex.min.css">
+<link rel="stylesheet" href="assets/viz.css">
+<!-- SKIN: build_map.py inlines the chosen skins/<name>.css (:root token block) here. -->
+<style id="skin">/*SKIN*/<!--SKIN--></style>
+<style>
+/* ===== structure (skin-agnostic): consumes only var(--*) from the skin above ===== */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--stage-bg); font-family:var(--sans); color:var(--ink); overflow:hidden;
+  display:flex; align-items:center; justify-content:center; -webkit-font-smoothing:antialiased}
+#stage{position:relative}
+#deck{width:1280px; height:720px; position:relative; transform-origin:top left}
+.slide{position:absolute; inset:0; background:var(--paper); padding:46px 64px 48px;
+  display:none; flex-direction:column; overflow:hidden; border-radius:6px; box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.slide.active{display:flex}
+.slide[data-part=p1]{--accent:var(--p1)} .slide[data-part=p2]{--accent:var(--p2)}
+.slide[data-part=p3]{--accent:var(--p3)} .slide[data-part=p4]{--accent:var(--p4)}
+.slide.topic::before{content:""; position:absolute; top:0; left:0; right:0; height:6px; background:var(--accent)}
+
+/* ---- map slide ---- */
+.slide.map{padding:0; background:var(--map-bg)}
+.map .maphead{position:absolute; top:20px; left:30px; right:30px; z-index:5; display:flex; align-items:flex-end; gap:18px; pointer-events:none}
+.map .maphead h1{font-family:var(--serif); font-size:34px; color:#f1ede4; font-weight:800; letter-spacing:-.01em; line-height:1.05}
+.map .maphead .hsub{font-size:14px; color:#9fb0c4; margin-top:4px}
+.map .legend{margin-left:auto; display:flex; gap:14px; pointer-events:auto}
+.map .legend .lg{display:flex; align-items:center; gap:6px; font-size:12px; color:#c7cfdb; font-family:var(--mono)}
+.map .legend .sw{width:13px; height:13px; border-radius:4px; border:2px solid}
+#cymap{position:absolute; inset:64px 12px 16px; text-align:left}
+.map .hudbar{position:absolute; bottom:16px; left:30px; z-index:5; display:flex; gap:12px; align-items:center}
+.map .prog{font-family:var(--mono); font-size:13px; color:#cbd3df; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16); padding:6px 13px; border-radius:999px}
+.map .prog b{color:#5ce6a3}
+.map .reset{font-family:var(--mono); font-size:12px; color:#aeb6c2; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); padding:6px 12px; border-radius:999px; cursor:pointer}
+.map .reset:hover{color:#fff; border-color:var(--accent)}
+.map .tip{position:absolute; bottom:18px; right:30px; z-index:5; font-family:var(--mono); font-size:11.5px; color:#7d8694}
+
+/* ---- topic slide ---- */
+.kicker{font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:6px}
+h2.s{font-size:30px; line-height:1.15; font-weight:800; letter-spacing:-.01em; color:var(--ink)}
+.body{margin-top:12px; font-size:18px; line-height:1.6; color:var(--ink2); flex:1; min-height:0; overflow:hidden; display:flex; flex-direction:column; justify-content:center}
+.bodyinner{width:100%; transform-origin:center center}
+.lead{font-size:19px; line-height:1.5; color:var(--ink2); margin-bottom:10px}
+em{color:var(--accent); font-style:normal; font-weight:700}
+b,strong{font-weight:700; color:var(--ink)}
+code{font-family:var(--mono); font-size:.88em; background:var(--code-bg); padding:1px 6px; border-radius:5px; color:var(--code-fg)}
+.cols{display:grid; gap:26px; flex:1; min-height:0} .c2{grid-template-columns:1fr 1fr}
+.col{min-width:0; display:flex; flex-direction:column; justify-content:center}
+.col.fig-col{align-items:center} .single{display:flex; flex-direction:column; justify-content:center; height:100%}
+.fig{display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; width:100%; text-align:left}
+.fig img{max-width:100%; max-height:420px; object-fit:contain; border-radius:8px; background:#fff; padding:8px}
+figcaption{font-size:12px; color:var(--muted); margin-top:8px; text-align:center}
+ul.clean{list-style:none}
+ul.clean li{position:relative; padding-left:23px; margin:9px 0; line-height:1.46}
+ul.clean li::before{content:""; position:absolute; left:3px; top:9px; width:8px; height:8px; border-radius:50%; background:var(--accent)}
+table{width:100%; border-collapse:collapse; font-size:14.5px}
+th,td{text-align:left; padding:7px 10px; border-bottom:1px solid var(--line)}
+thead th{background:var(--th-bg); color:var(--th-fg); font-weight:700; font-size:12.5px; border:none}
+tbody tr:nth-child(even){background:var(--row-alt)}
+.note{background:var(--note-bg); border-left:4px solid var(--accent); padding:12px 16px; border-radius:0 8px 8px 0; font-size:15px; line-height:1.5; color:var(--ink2); margin:10px 0}
+.statement{font-family:var(--serif); font-size:25px; line-height:1.4; color:var(--ink); font-weight:600; margin:8px 0}
+.statement em{font-style:italic; color:var(--accent)}
+.eq{margin:10px 0; text-align:left; font-size:17px; overflow-x:auto}
+.fig-col .vizwrap, .vizwrap{width:100%} .vizbox{width:100%; position:relative}
+.vizbox .pv-caption{font-size:16px}
+.vizph{display:flex; align-items:center; justify-content:center; height:300px; color:var(--muted); font-family:var(--mono); font-size:13px; border:1.5px dashed var(--line2); border-radius:12px}
+.foot{position:absolute; left:64px; right:64px; bottom:18px; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--faint); border-top:1px solid var(--line); padding-top:8px}
+.foot .pg{font-family:var(--mono)}
+.ret{position:absolute; left:64px; bottom:48px; z-index:6; font-family:var(--sans); font-size:14px; font-weight:700; color:#fff; background:var(--accent); border:none; padding:10px 18px; border-radius:999px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.ret:hover{filter:brightness(1.08)}
+.ret.done::before{content:"✓ "; }
+
+#hud{position:fixed; bottom:14px; right:18px; z-index:50; display:flex; gap:10px; align-items:center; font-family:var(--mono); font-size:12px; color:#cfc9bd}
+#hud button{background:rgba(255,255,255,.08); color:#e8e3d8; border:1px solid rgba(255,255,255,.14); height:30px; min-width:30px; padding:0 9px; border-radius:8px; cursor:pointer; font-size:13px}
+#hud button:hover{background:rgba(255,255,255,.18)}
+#counter{background:rgba(0,0,0,.35); padding:6px 12px; border-radius:20px}
+.deck-exit{position:fixed;top:12px;left:12px;z-index:9999;font-family:var(--mono);font-size:12px;font-weight:600;text-decoration:none;color:#eee;background:rgba(0,0,0,.45);padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.20);backdrop-filter:blur(4px)}
+.deck-exit:hover{color:#fff;border-color:var(--accent)}
+.deck-level{position:fixed;top:12px;left:96px;z-index:9999;font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;background:var(--bar);padding:7px 11px;border-radius:999px;opacity:.92;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<a class="deck-exit" href="../../index.html" title="프레젠테이션 목록으로">← 목록</a>
+<span class="deck-level"><!--LEVEL--></span>
+<div id="stage"><div id="deck">
+
+<section class="slide map active" data-part="p3">
+  <div class="maphead">
+    <div><h1><!--MAPTITLE--></h1><div class="hsub"><!--MAPSUB--></div></div>
+    <div class="legend" id="legend"></div>
+  </div>
+  <div id="cymap"></div>
+  <div class="hudbar">
+    <span class="prog" id="prog">0 / 0 발표완료</span>
+    <button class="reset" id="reset">진행 초기화</button>
+  </div>
+  <div class="tip">휠=확대 · 드래그=이동 · 노드 드래그=재배치 · 더블클릭=리셋</div>
+</section>
+
+<!--TOPICS-->
+
+</div></div>
+
+<div id="hud">
+  <button id="btnMap" title="지도로 (Home)">▦ 지도</button>
+  <button id="btnPrev" title="이전 (←)">‹</button>
+  <span id="counter">1 / 1</span>
+  <button id="btnNext" title="다음 (→)">›</button>
+</div>
+
+<script src="assets/cytoscape.min.js"></script>
+<script src="assets/dagre.min.js"></script>
+<script src="assets/cytoscape-dagre.min.js"></script>
+<script src="assets/zoom.js?v=20260709a"></script>
+<script src="assets/katex/katex.min.js"></script>
+<script src="assets/katex/auto-render.min.js"></script>
+<script src="assets/tviz.js?v=20260625a"></script>
+<script src="assets/tviz-scenes.js?v=20260625a"></script>
+<script>
+(function(){
+  const DATA = /*DATA*/null;
+  const LSKEY = DATA.lskey;
+  const cssVar=(v)=>getComputedStyle(document.documentElement).getPropertyValue(v).trim()||'#888';
+  const GC={}; Object.keys(DATA.groupPart||{}).forEach(g=>{ GC[g]=cssVar('--'+DATA.groupPart[g]); });
+  const deck=document.getElementById('deck');
+  const slides=Array.from(deck.querySelectorAll('.slide'));
+  const stage=document.getElementById('stage');
+  const counter=document.getElementById('counter');
+  const N=slides.length; let cur=0; let cy=null;
+
+  slides.forEach((s,k)=>{ const f=s.querySelector('.foot .pg'); if(f) f.textContent=(k+1)+' / '+N; });
+
+  function getDone(){ try{ return new Set(JSON.parse(localStorage.getItem(LSKEY)||"[]")); }catch(e){ return new Set(); } }
+  function setDone(set){ try{ localStorage.setItem(LSKEY, JSON.stringify([...set])); }catch(e){} }
+
+  // ----- legend -----
+  (function(){
+    const lg=document.getElementById('legend');
+    Object.keys(DATA.groupName).forEach(g=>{
+      const el=document.createElement('span'); el.className='lg';
+      el.innerHTML='<span class="sw" style="border-color:'+GC[g]+';background:'+GC[g]+'22"></span>'+DATA.groupName[g];
+      lg.appendChild(el);
+    });
+    const el=document.createElement('span'); el.className='lg';
+    el.innerHTML='<span class="sw" style="border-color:#2e8b6f;background:#2e8b6f"></span>발표완료';
+    lg.appendChild(el);
+  })();
+
+  function progText(){
+    const done=getDone(); const tot=Object.keys(DATA.topicIndex).length;
+    document.getElementById('prog').innerHTML='<b>'+done.size+'</b> / '+tot+' 발표완료';
+  }
+
+  function buildMap(){
+    if(cy) { cy.resize(); cy.fit(undefined,30); return; }
+    const done=getDone();
+    const els = DATA.nodes.map(n=>({data:{id:n.data.id,label:n.data.label,col:GC[n.data.grp]||'#888'},classes: done.has(n.data.id)?'done':''}))
+      .concat(DATA.edges.map(e=>({data:e.data})));
+    cy = cytoscape({
+      container: document.getElementById('cymap'),
+      elements: els,
+      wheelSensitivity: 0.25,
+      minZoom: 0.3, maxZoom: 3,
+      boxSelectionEnabled: false, autoungrabify:false,
+      style: [
+        {selector:'node', style:{
+          'label':'data(label)','text-wrap':'wrap','text-valign':'center','text-halign':'center',
+          'font-size':'14px','font-weight':'700','color':'#26303a','text-max-width':'128px',
+          'background-color':'#fbf7ef','border-width':3,'border-color':'data(col)',
+          'shape':'round-rectangle','width':'138px','height':'60px','padding':'6px',
+          'transition-property':'background-color,border-color,color','transition-duration':'250ms'}},
+        {selector:'node.done', style:{'background-color':'data(col)','color':'#fff','border-color':'data(col)','border-width':4}},
+        {selector:'node:active', style:{'overlay-color':'data(col)','overlay-opacity':0.18}},
+        {selector:'edge', style:{
+          'width':2.2,'line-color':'#b9c2cf','target-arrow-color':'#b9c2cf','target-arrow-shape':'triangle',
+          'curve-style':'bezier','arrow-scale':1.15,'opacity':0.85}},
+      ],
+      layout:{ name:'cose', idealEdgeLength:115, nodeOverlap:18, nodeRepulsion:16000,
+        gravity:0.05, numIter:2600, componentSpacing:140, edgeElasticity:90,
+        animate:false, randomize:true, padding:16, fit:true,
+        boundingBox:{ x1:0, y1:0, x2:1240, y2:560 } }
+    });
+    window.__cy=cy;
+    cy.on('tap','node', function(evt){ const id=evt.target.id(); const idx=DATA.topicIndex[id]; if(idx!=null) show(idx); });
+    cy.on('dblclick', function(){ cy.fit(undefined,30); });
+    document.getElementById('cymap').style.textAlign='left';
+    setTimeout(()=>{ cy.resize(); cy.fit(undefined,30); }, 60);
+  }
+  function recolorMap(){ if(!cy) return; const done=getDone(); cy.nodes().forEach(n=>{ n.toggleClass('done', done.has(n.id())); }); }
+
+  function markDone(id){ const d=getDone(); d.add(id); setDone(d); progText(); recolorMap(); refreshRetBtns(); }
+  function refreshRetBtns(){ const done=getDone();
+    slides.forEach(s=>{ const t=s.getAttribute('data-topic'); const b=s.querySelector('.ret'); if(t&&b) b.classList.toggle('done', done.has(t)); }); }
+
+  // return buttons
+  deck.querySelectorAll('.ret').forEach(b=>{
+    b.addEventListener('click', function(e){ e.stopPropagation(); markDone(b.getAttribute('data-topic')); show(0); });
+  });
+
+  // ----- lazy asset render + fit -----
+  function fitInner(inner){ if(!inner) return; const body=inner.parentElement; if(!body) return;
+    inner.style.transform='none'; const aw=body.clientWidth, ah=body.clientHeight, nw=inner.scrollWidth, nh=inner.scrollHeight;
+    if(!ah||!nh) return; const sc=Math.min(1, ah/nh, (aw&&nw)?aw/nw:1);
+    inner.style.transform = sc<0.995 ? 'scale('+sc.toFixed(4)+')' : 'none'; }
+  function fitSlide(slide){ if(slide) fitInner(slide.querySelector('.bodyinner')); }
+  const roFit = ('ResizeObserver' in window) ? new ResizeObserver(es=>es.forEach(e=>fitInner(e.target))) : null;
+
+  function mountViz(box){ if(box.dataset.mounted) return; box.dataset.mounted="1";
+    box.addEventListener('click', e=>e.stopPropagation());
+    const slug=box.getAttribute("data-scene"); const scene=window.TVIZ_SCENES&&window.TVIZ_SCENES[slug];
+    if(!scene||!window.TVIZ){ box.innerHTML='<div class="vizph">애니 로드 실패: '+slug+'</div>'; return; }
+    box.innerHTML=""; try{ window.TVIZ.mount(box,scene); }catch(e){ box.innerHTML='<div class="vizph">로드 실패</div>'; } }
+
+  function renderAssets(slide){
+    if(slide.classList.contains('map')){ buildMap(); return; }
+    if(slide.dataset.assetsDone) return; slide.dataset.assetsDone="1";
+    if(window.renderMathInElement){ try{ window.renderMathInElement(slide,{
+      delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],
+      ignoredTags:["script","noscript","style","textarea","pre","code","option"], throwOnError:false}); }catch(e){} }
+    const inner=slide.querySelector('.bodyinner');
+    slide.querySelectorAll('.vizbox[data-scene]').forEach(mountViz);
+    if(roFit&&inner) roFit.observe(inner);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>fitSlide(slide)));
+    setTimeout(()=>fitSlide(slide),250); setTimeout(()=>fitSlide(slide),700);
+  }
+
+  function fit(){ const m=(Math.min(window.innerWidth||9999,window.innerHeight||9999)<820?8:24); var de=document.documentElement,vw=(de&&de.clientWidth)||innerWidth,vh=(de&&de.clientHeight)||innerHeight;const sc=Math.min((vw-m)/1280,(vh-m)/720);/*__DECKFIT_MOBILE__*/
+    deck.style.transform='scale('+sc+')'; stage.style.width=(1280*sc)+'px'; stage.style.height=(720*sc)+'px'; }
+  function show(i){ cur=Math.max(0,Math.min(N-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    counter.textContent=(cur+1)+' / '+N; location.hash=cur+1;
+    renderAssets(slides[cur]); fitSlide(slides[cur]);
+    if(cur===0){ progText(); recolorMap(); }
+    window.dispatchEvent(new CustomEvent('deck:show',{detail:{cur:cur}})); }
+  function next(){show(cur+1);} function prev(){show(cur-1);}
+  window.SeminarDeck={ deck:deck, stage:stage, get cur(){return cur;}, count:N, fit:fit, show:show, next:next, prev:prev };
+
+  document.getElementById('btnNext').onclick=next;
+  document.getElementById('btnPrev').onclick=prev;
+  document.getElementById('btnMap').onclick=()=>show(0);
+  document.getElementById('reset').addEventListener('click', function(e){ e.stopPropagation(); if(confirm('발표완료 표시를 모두 지울까요?')){ setDone(new Set()); progText(); recolorMap(); refreshRetBtns(); } });
+  document.addEventListener('keydown',e=>{
+    switch(e.key){
+      case 'ArrowRight': case ' ': case 'PageDown': next(); e.preventDefault(); break;
+      case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+      case 'Home': show(0); break; case 'End': show(N-1); break;
+      case 'f': case 'F': if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); break;
+    }
+  });
+
+  addEventListener('resize',()=>{ fit(); if(cur===0&&cy){ cy.resize(); cy.fit(undefined,30);} });
+  fit(); refreshRetBtns();
+  const h=parseInt(location.hash.replace('#','')); show(isNaN(h)?0:h-1);
+  if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(()=>fitSlide(slides[cur])); }
+})();
+</script>
+<script src="assets/present.js?v=20260715c"></script>
+</body>
+</html>

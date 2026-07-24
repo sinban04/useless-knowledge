@@ -1,0 +1,24 @@
+/* skin: academic-dense — calm navy/slate, serif titles + sans body, table-forward (from template-d). */
+:root{
+  --ink:#1a2433; --ink2:#3a4253; --muted:#6b7384; --faint:#9aa1b0;
+  --paper:#fbfbf9; --card:#ffffff; --line:#e3e5ea; --line2:#d2d6dd;
+  --stage-bg:#141821;
+  --row-alt:#eef0f4;
+  --code-bg:#eaeef3; --code-fg:#2f5d7c;
+  --codeblock-bg:#1a2433; --codeblock-fg:#e7ecf2;
+  --note-bg:#eaf1f6; --note-op-bg:#f6efe8; --note-op-line:#8a5a3b; --note-q-bg:#ebf2ec;
+  --th-bg:#22303f; --th-fg:#ffffff;
+  --p1:#4a6b52; --p2:#2f5d7c; --p3:#8a5a3b; --p4:#5a4a7c;
+  --accent:var(--p2); --bar:var(--p2); --note-q-line:#4a6b52;
+  --cover-bg:linear-gradient(150deg,#141a24 0%,#1d3447 55%,#1a2433 100%);
+  --cover-fg:#eef2f6; --cover-eyebrow:#7fb0d0; --cover-sub:#bfc8d2; --cover-meta:#97a0ac;
+  --divider-fg:#eef2f6; --divider-sub:rgba(255,255,255,.74); --divider-rule:#fff;
+  --div-p1:linear-gradient(140deg,#19241d,#2d432f);
+  --div-p2:linear-gradient(140deg,#142430,#1f4863);
+  --div-p3:linear-gradient(140deg,#26201a,#43331f);
+  --div-p4:linear-gradient(140deg,#221f30,#3a3252);
+  --map-bg:radial-gradient(120% 90% at 50% 0%, #18202c 0%, #0f131b 70%);
+  --serif:"Iowan Old Style",Georgia,"Noto Serif KR",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Pretendard","Noto Sans KR",system-ui,sans-serif;
+  --mono:ui-monospace,"SFMono-Regular","JetBrains Mono",Menlo,Consolas,monospace;
+}
